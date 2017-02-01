@@ -7,16 +7,6 @@ from flask import Flask, abort, render_template
 app = Flask(__name__)
 
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('error/404.html', systemtitle=system_title), 404
-
-
-@app.errorhandler(500)
-def page_not_found(e):
-    return render_template('error/500.html', systemtitle=system_title), 500
-
-
 # 分组页面
 @app.route("/")
 @app.route("/<pagename>")
@@ -27,7 +17,7 @@ def LoadPage(pagename="index", page="1"):
     if cache_result is not None:
         return cache_result
     if pagename == "index":
-        LoadIndex(int(page))
+        return LoadIndex(int(page))
     if os.path.isfile("document/" + pagename + ".md"):
         return LoadDocument(pagename)
     else:
@@ -46,7 +36,7 @@ def LoadIndex(page):
     pagelist = page_list[Start_num:Start_num + system_info["Paging"]]
     Document = render_template("index.html", title="主页", menu_list=menu_list, pagelist=pagelist,
                                project_name=project_name, project_description=project_description,
-                               pagerow=page_row,
+                               pagerow=page_row, author_image=author_image, cover_image=system_info["Cover_image"],
                                nowpage=page, lastpage=page - 1, newpage=page + 1)
     SetCache("index/page:" + str(page), Document)
     return Document
@@ -55,10 +45,16 @@ def LoadIndex(page):
 def LoadDocument(name):
     request_page = name
     Document_Raw = ReadDocument("document/" + name + ".md")
-    Document = markdown.markdown(Document_Raw)
-    pageinfo = page_list[name]
-    Document = render_template("post.html", pageinfo=pageinfo, menu_list=menu_list,
-                               project_name=project_name, context=Document,
+    if name in page_list:
+        pageinfo = page_list[name]
+        Document = markdown.markdown(Document_Raw)
+    else:
+        Documents = Document_Raw.split("<!--infoend-->")
+        pageinfo = json.loads(Documents[0])
+        Document = markdown.markdown(Documents[1])
+
+    Document = render_template("post.html",title=pageinfo["title"], pageinfo=pageinfo, menu_list=menu_list,
+                               project_name=project_name, context=Document, author_image=author_image,
                                requestpage=request_page)
     SetCache(name, Document)
     return Document
@@ -93,7 +89,8 @@ page_list = json.loads(ReadDocument("config/page.json"))
 menu_list = json.loads(ReadDocument("config/menu.json"))
 system_info = json.loads(ReadDocument("config/system.json"))
 project_name = system_info["Project_name"]
-project_description=system_info["project_description"]
+project_description = system_info["Project_description"]
+author_image = system_info["author_image"]
 Item_name_list = getItemName()
 if system_info["cache"]:
     if "redis_password" in system_info:
