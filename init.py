@@ -43,8 +43,9 @@ def LoadIndex(page):
         page_row = page_row_mod[0] + 1
     if page <= 0:
         abort(404)
-    pagelist=page_list[Start_num:Start_num + system_info["Paging"]]
-    Document = render_template("index.html", title="主页",menu_list=menu_list, pagelist=pagelist, systemtitle=system_title,
+    pagelist = page_list[Start_num:Start_num + system_info["Paging"]]
+    Document = render_template("index.html", title="主页", menu_list=menu_list, pagelist=pagelist,
+                               project_name=project_name, project_description=project_description,
                                pagerow=page_row,
                                nowpage=page, lastpage=page - 1, newpage=page + 1)
     SetCache("index/page:" + str(page), Document)
@@ -55,8 +56,9 @@ def LoadDocument(name):
     request_page = name
     Document_Raw = ReadDocument("document/" + name + ".md")
     Document = markdown.markdown(Document_Raw)
-    title = ""
-    Document = render_template("post.html", title=title,menu_list=menu_list, pagelist=page_list, systemtitle=system_title, context=Document,
+    pageinfo = page_list[name]
+    Document = render_template("post.html", pageinfo=pageinfo, menu_list=menu_list,
+                               project_name=project_name, context=Document,
                                requestpage=request_page)
     SetCache(name, Document)
     return Document
@@ -90,7 +92,8 @@ def getItemName():
 page_list = json.loads(ReadDocument("config/page.json"))
 menu_list = json.loads(ReadDocument("config/menu.json"))
 system_info = json.loads(ReadDocument("config/system.json"))
-system_title = system_info["ProjectName"]
+project_name = system_info["Project_name"]
+project_description=system_info["project_description"]
 Item_name_list = getItemName()
 if system_info["cache"]:
     if "redis_password" in system_info:
@@ -99,7 +102,6 @@ if system_info["cache"]:
     else:
         redis_connect = redis.Redis(host=system_info["redis_connect"], port=6379, db=0)
     redis_connect.flushdb()
-
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0')

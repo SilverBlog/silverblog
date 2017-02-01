@@ -1,4 +1,4 @@
-{% include "head.html" %}
+{% include "public/head.html" %}
 <div class="site-wrapper">
     <header class="main-header" data-original="https://oneanime.zsxsoft.com/lovelive">
         <nav class="main-nav overlay clearfix">
@@ -6,8 +6,8 @@
         </nav>
         <div class="vertical">
             <div class="main-header-content inner">
-                <h1 class="page-title">qwe7002的个人博客</h1>
-                <h2 class="page-description">人生に梦があるのではなく、梦が人生をつくるのです。</h2>
+                <h1 class="page-title">{{ project_name }}</h1>
+                <h2 class="page-description">{{ project_description }}</h2>
             </div>
         </div>
         <a class="scroll-down icon-arrow-left" href="#content" data-offset="-45"><span
@@ -18,7 +18,7 @@
     {% for pageinfo in page_list %}
         <article class="post">
             <header class="post-header">
-                <h2 class="post-title"><a href="">{{ pageinfo.title }}</a></h2>
+                <h2 class="post-title"><a href="{{ pageinfo.name }}">{{ pageinfo.title }}</a></h2>
             </header>
             <section class="post-excerpt"><p>{{ pageinfo.excerpt }}</p>
             </section>
@@ -43,4 +43,4 @@
     </footer>
 
 </div>
-{% include "foot.html" %}
+{% include "public/foot.html" %}
