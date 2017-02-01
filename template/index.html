@@ -1,0 +1,46 @@
+{% include "head.html" %}
+<div class="site-wrapper">
+    <header class="main-header" data-original="https://oneanime.zsxsoft.com/lovelive">
+        <nav class="main-nav overlay clearfix">
+            <a class="menu-button icon-menu" href="#"><span class="word">菜单</span></a>
+        </nav>
+        <div class="vertical">
+            <div class="main-header-content inner">
+                <h1 class="page-title">qwe7002的个人博客</h1>
+                <h2 class="page-description">人生に梦があるのではなく、梦が人生をつくるのです。</h2>
+            </div>
+        </div>
+        <a class="scroll-down icon-arrow-left" href="#content" data-offset="-45"><span
+                class="hidden">下拉显示</span></a>
+    </header>
+
+    <main id="content" class="content" role="main">
+    {% for pageinfo in page_list %}
+        <article class="post">
+            <header class="post-header">
+                <h2 class="post-title"><a href="">{{ pageinfo.title }}</a></h2>
+            </header>
+            <section class="post-excerpt"><p>{{ pageinfo.excerpt }}</p>
+            </section>
+            <footer class="post-meta">
+                <img class="author-thumb" src="" alt="qwe7002" nopin="nopin">{{ pageinfo.time }}
+            </footer>
+        </article>
+    {% endfor %}
+
+        <nav class="pagination" role="navigation">
+            {% if nowpage!=1 %}
+                <a class="newer-posts" href="/{{ pagename }}/page:{{ lastpage }}">&larr; 上一页</a> {% endif %}
+            <span class="page-number">第 {{ nowpage }} 页 ⁄ 共 {{ pagerow }} 页</span>
+            {% if newpage!=pagerow %}
+                <a class="older-posts" href="/{{ pagename }}/page:{{ newpage }}">下一页 &rarr;</a> {% endif %}
+        </nav>
+
+    </main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="/">qwe7002的个人博客</a> © 2017</section>
+        <section class="poweredby">Powered by SmartCMS , Theme Modify Casper</section>
+    </footer>
+
+</div>
+{% include "foot.html" %}
