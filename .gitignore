@@ -13,3 +13,5 @@ config.php
 install.lock
 config.json
 .idea
+config
+document
