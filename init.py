@@ -2,7 +2,6 @@ import datetime
 import json
 import os
 import os.path
-
 import PyRSS2Gen
 import markdown
 import redis
@@ -25,7 +24,7 @@ def LoadPage(pagename="index", page="1"):
     if pagename == "index":
         return LoadIndex(int(page))
     if pagename == "rss" or pagename == "feed":
-        return pagerss,200,{'Content-Type': 'text/xml; charset=utf-8'}
+        return pagerss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
     if os.path.isfile("document/" + pagename + ".md"):
         return LoadDocument(pagename)
     else:
@@ -44,7 +43,7 @@ def LoadIndex(page):
     pagelist = page_list[Start_num:Start_num + system_info["Paging"]]
     Document = render_template("index.html", title="主页", menu_list=menu_list, page_list=pagelist,
                                project_name=project_name, project_description=project_description,
-                               pagerow=page_row-1, author_image=author_image, cover_image=system_info["Cover_image"],
+                               pagerow=page_row - 1, author_image=author_image, cover_image=system_info["Cover_image"],
                                nowpage=page, lastpage=page - 1, newpage=page + 1)
     SetCache("index/page:" + str(page), Document)
     return Document
@@ -109,7 +108,7 @@ def genrss():
         description=project_description,
         lastBuildDate=datetime.datetime.now(),
         items=pagersslist)
-    return rss.to_xml()
+    return rss.to_xml(encoding='utf-8')
 
 
 page_list = json.loads(ReadDocument("config/page.json"))
