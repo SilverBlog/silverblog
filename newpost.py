@@ -22,7 +22,7 @@ if len(nameinput) == 0:
     name = name[1:len(name)]
 else:
     name=nameinput
-file = input("请输入要复制的文件路径(留空为新建):")
+file = input("请输入要复制的文件路径(留空或不存在将新建):")
 if len(nameinput) != 0:
     os.system("cp " + file + " ./document/" + name + ".md")
 os.system("vim ./document/" + name + ".md")
