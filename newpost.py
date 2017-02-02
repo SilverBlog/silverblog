@@ -14,7 +14,7 @@ if len(nameinput) == 0:
                                                                                                                   "").replace(
         "?", "").replace("/", "").replace("/", "").replace("\\", "").replace("(", "").replace("（", "").replace(")",
                                                                                                                "").replace(
-        "）", "").replace("!", "").replace("！", "").replace("-", "").replace("——", "")
+        "）", "").replace("!", "").replace("！", "").replace("——", "")
     namelist = lazy_pinyin(tempname)
     name = ""
     for item in namelist:
