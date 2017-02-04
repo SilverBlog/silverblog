@@ -2,6 +2,7 @@ import datetime
 import json
 import os
 import os.path
+
 import PyRSS2Gen
 import markdown
 import redis
@@ -130,6 +131,7 @@ if system_info["cache"]:
     else:
         redis_connect = redis.Redis(host=system_info["redis_connect"], port=6379, db=0)
     redis_connect.flushdb()
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0')

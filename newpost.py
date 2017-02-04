@@ -21,14 +21,18 @@ if len(nameinput) == 0:
         name = name + "-" + item
     name = name[1:len(name)]
 else:
-    name=nameinput
+    name = nameinput
 file = input("请输入要复制的文件路径(留空或不存在将新建):")
 if len(nameinput) != 0:
     os.system("cp " + file + " ./document/" + name + ".md")
 os.system("vim ./document/" + name + ".md")
 Document = open("./document/" + name + ".md", newline=None)
 Document = Document.read()
-excerpt = filter.filter_tags(markdown.markdown(Document))[0:140]
+filetered = filter.filter_tags(markdown.markdown(Document))
+if len(filetered) > 140:
+    excerpt = filetered[0:140]
+else:
+    excerpt = filetered
 postinfo = {"name": name, "title": title, "excerpt": excerpt, "time": str(datetime.date.today())}
 if os.path.isfile("./config/page.json"):
     f = open("./config/page.json", newline=None)
