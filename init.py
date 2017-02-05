@@ -61,7 +61,7 @@ def LoadDocument(name):
         pageinfo = json.loads(Documents[0])
         Document = Documents[1]
     Document=markdown.html(Document, extensions=markdown.EXT_FENCED_CODE |
-                                                markdown.EXT_AUTOLINK | markdown.EXT_TABLES | markdown.EXT_STRIKETHROUGH,render_flags=markdown.HTML_HARD_WRAP)
+                                                markdown.EXT_AUTOLINK | markdown.EXT_TABLES | markdown.EXT_STRIKETHROUGH)
     Document = render_template("post.html", title=pageinfo["title"], pageinfo=pageinfo, menu_list=menu_list,
                                project_name=project_name, context=Document, author_image=author_image,
                                requestpage=request_page)
