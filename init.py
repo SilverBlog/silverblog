@@ -59,7 +59,9 @@ def LoadDocument(name):
         Documents = Document_Raw.split("<!--infoend-->")
         pageinfo = json.loads(Documents[0])
         Document = Documents[1]
-    Document=markdown.html(Document,extensions=markdown.EXT_FENCED_CODE | markdown.EXT_AUTOLINK)
+    Document=markdown.html(Document,extensions=markdown.EXT_NO_INTRA_EMPHASIS | markdown.EXT_FENCED_CODE |
+            markdown.EXT_AUTOLINK | markdown.EXT_LAX_HTML_BLOCKS |
+            markdown.EXT_TABLES)
     Document = render_template("post.html", title=pageinfo["title"], pageinfo=pageinfo, menu_list=menu_list,
                                project_name=project_name, context=Document, author_image=author_image,
                                requestpage=request_page)
