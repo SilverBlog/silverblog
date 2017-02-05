@@ -54,12 +54,12 @@ def LoadDocument(name):
     Document_Raw = ReadDocument("document/" + name + ".md")
     if name in page_name_list:
         pageinfo = page_list[page_name_list.index(name)]
-        Document = markdown.html(Document_Raw)
+        Document = Document_Raw
     else:
         Documents = Document_Raw.split("<!--infoend-->")
         pageinfo = json.loads(Documents[0])
-        Document = markdown.html(Documents[1])
-
+        Document = Documents[1]
+    Document=markdown.html(Document,extensions=markdown.EXT_FENCED_CODE | markdown.EXT_NO_INTRA_EMPHASI | markdown.EXT_AUTOLINK)
     Document = render_template("post.html", title=pageinfo["title"], pageinfo=pageinfo, menu_list=menu_list,
                                project_name=project_name, context=Document, author_image=author_image,
                                requestpage=request_page)
