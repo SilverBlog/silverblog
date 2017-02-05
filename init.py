@@ -124,6 +124,7 @@ for item in page_list:
     page_name_list.append(item["name"])
 if system_info["cache"]:
     mc = memcache.Client([system_info["memcache_connect"]], debug=0)
+    mc.flush_all()
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0')
