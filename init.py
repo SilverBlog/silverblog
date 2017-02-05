@@ -2,9 +2,8 @@ import datetime
 import json
 import os
 import os.path
-
+import misaka as markdown
 import PyRSS2Gen
-import markdown
 import redis
 from flask import Flask, abort, render_template
 
@@ -55,11 +54,11 @@ def LoadDocument(name):
     Document_Raw = ReadDocument("document/" + name + ".md")
     if name in page_name_list:
         pageinfo = page_list[page_name_list.index(name)]
-        Document = markdown.markdown(Document_Raw)
+        Document = markdown.html(Document_Raw)
     else:
         Documents = Document_Raw.split("<!--infoend-->")
         pageinfo = json.loads(Documents[0])
-        Document = markdown.markdown(Documents[1])
+        Document = markdown.html(Documents[1])
 
     Document = render_template("post.html", title=pageinfo["title"], pageinfo=pageinfo, menu_list=menu_list,
                                project_name=project_name, context=Document, author_image=author_image,

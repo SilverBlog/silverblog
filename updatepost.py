@@ -11,7 +11,7 @@ pagelist = json.loads(config)
 for item in pagelist:
     Document = open("./document/" + item["name"] + ".md", newline=None)
     Document = Document.read()
-    filetered = filter.filter_tags(markdown.markdown(Document))
+    filetered = markdown.html(Document, extensions=HTML_SKIP_HTML)
     if len(filetered) > 140:
         excerpt = filetered[0:140]
     else:
