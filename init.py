@@ -4,8 +4,8 @@ import os
 import os.path
 
 import PyRSS2Gen
+import memcache
 import misaka as markdown
-import redis
 from flask import Flask, abort, render_template
 
 app = Flask(__name__)
@@ -71,15 +71,12 @@ def LoadDocument(name):
 
 def GetCache(pagename):
     if system_info["cache"]:
-        try:
-            return redis_connect[pagename]
-        except:
-            return None
+        mc.get(pagename)
 
 
 def SetCache(pagename, Document):
     if system_info["cache"]:
-        redis_connect[pagename] = Document
+        mc.set(pagename,Document)
 
 
 def ReadDocument(filename):
@@ -126,13 +123,7 @@ pagerss = genrss()
 for item in page_list:
     page_name_list.append(item["name"])
 if system_info["cache"]:
-    if "redis_password" in system_info:
-        redis_connect = redis.Redis(host=system_info["redis_connect"], port=6379, db=0,
-                                    password=system_info["redis_password"])
-    else:
-        redis_connect = redis.Redis(host=system_info["redis_connect"], port=6379, db=0)
-    redis_connect.flushdb()
-
+    mc = memcache.Client([system_info["memcache_connect"]], debug=0)
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0')

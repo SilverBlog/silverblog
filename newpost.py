@@ -1,6 +1,7 @@
 import datetime
 import json
 import os.path
+
 import misaka as markdown
 from pypinyin import lazy_pinyin
 
@@ -33,9 +34,9 @@ else:
 postinfo = {"name": name, "title": title, "excerpt": excerpt, "time": str(datetime.date.today())}
 if os.path.isfile("./config/page.json"):
     f = open("./config/page.json", newline=None)
-    config = f.read()
+    pagelist_raw = f.read()
     f.close()
-    pagelist = json.loads(config)
+    pagelist = json.loads(pagelist_raw)
 else:
     pagelist = list()
 pagelist.insert(0, postinfo)
