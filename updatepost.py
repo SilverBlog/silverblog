@@ -18,5 +18,5 @@ for item in pagelist:
         excerpt = filetered
     item["excerpt"] = excerpt
 f = open("./config/page.json", "w", newline=None)
-f.write(json.dumps(pagelist))
+f.write(json.dumps(pagelist,ensure_ascii=False))
 f.close()

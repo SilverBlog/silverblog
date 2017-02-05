@@ -43,5 +43,5 @@ else:
     pagelist = list()
 pagelist.insert(0, postinfo)
 f = open("./config/page.json", "w", newline=None)
-f.write(json.dumps(pagelist))
+f.write(json.dumps(pagelist,ensure_ascii=False))
 f.close()
