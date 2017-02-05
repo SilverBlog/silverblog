@@ -1,1 +1,1 @@
-memcached -m 256 -c 1000 -p 11211
+memcached -m 256 -c 1000 -p 11211 -u root
