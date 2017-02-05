@@ -1,1 +1,1 @@
-memcached -m 256 -c 1000 -p 11211 -u root
+memcached -m 256 -c 1000 -p 11211 -u root -l 127.0.0.1
