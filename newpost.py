@@ -25,7 +25,7 @@ if len(nameinput) != 0:
 os.system("vim ./document/" + name + ".md")
 Document = open("./document/" + name + ".md", newline=None)
 Document = Document.read()
-filetered = markdown.html(Document, extensions=HTML_SKIP_HTML)
+filetered = filter.filter_tags(markdown.html(Document))
 if len(filetered) > 140:
     excerpt = filetered[0:140]
 else:
