@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import PyRSS2Gen
 import datetime
 import json
@@ -119,6 +122,7 @@ author_image = system_info["author_image"]
 Item_name_list = getItemName()
 page_name_list = list()
 pagerss = genrss()
+
 for item in page_list:
     page_name_list.append(item["name"])
 if system_info["cache"]:
