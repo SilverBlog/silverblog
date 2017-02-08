@@ -1,11 +1,10 @@
+import PyRSS2Gen
 import datetime
 import json
-import os
-import os.path
-
-import PyRSS2Gen
 import memcache
 import misaka as markdown
+import os
+import os.path
 from flask import Flask, abort, render_template
 
 app = Flask(__name__)
@@ -60,8 +59,8 @@ def LoadDocument(name):
         Documents = Document_Raw.split("<!--infoend-->")
         pageinfo = json.loads(Documents[0])
         Document = Documents[1]
-    Document=markdown.html(Document, extensions=markdown.EXT_FENCED_CODE |
-                                                markdown.EXT_AUTOLINK | markdown.EXT_TABLES | markdown.EXT_STRIKETHROUGH | markdown.EXT_UNDERLINE)
+    Document = markdown.html(Document, extensions=markdown.EXT_FENCED_CODE |
+                                                  markdown.EXT_AUTOLINK | markdown.EXT_TABLES | markdown.EXT_STRIKETHROUGH | markdown.EXT_UNDERLINE)
     Document = render_template("post.html", title=pageinfo["title"], pageinfo=pageinfo, menu_list=menu_list,
                                project_name=project_name, context=Document, author_image=author_image,
                                requestpage=request_page)
@@ -76,7 +75,7 @@ def GetCache(pagename):
 
 def SetCache(pagename, Document):
     if system_info["cache"]:
-        mc.set(pagename,Document)
+        mc.set(pagename, Document)
 
 
 def ReadDocument(filename):
@@ -96,7 +95,7 @@ def genrss():
     for item in page_list:
         pagersslist.append(PyRSS2Gen.RSSItem(
             title=item["title"],
-            link="/" + item["name"],
+            link=project_url + "/" + item["name"],
             description=item["excerpt"],
             guid=PyRSS2Gen.Guid(project_url + "/" + item["name"]),
             pubDate=item["time"]))
