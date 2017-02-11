@@ -5,32 +5,25 @@ import os.path
 
 import misaka as markdown
 
-import filter
+import getexcerpt
 import genrss
 
 f = open("./config/page.json", newline=None)
-pagelist_row = f.read()
+page_list_row = f.read()
 f.close()
-pagelist = json.loads(pagelist_row)
-removelist = list()
-for item in pagelist:
+page_list = json.loads(page_list_row)
+remove_list = list()
+for item in page_list:
     if not os.path.isfile("./document/" + item["name"] + ".md"):
-        removelist.append(item["name"])
+        remove_list.append(item["name"])
     else:
-        Document = open("./document/" + item["name"] + ".md", newline=None)
-        Document = Document.read()
-        filetered = filter.filter_tags(markdown.html(Document))
-        if len(filetered) > 140:
-            excerpt = filetered[0:140]
-        else:
-            excerpt = filetered
-        item["excerpt"] = excerpt
+        item["excerpt"] = getexcerpt.get_excerpt("./document/" + item["name"] + ".md")
 
-for item in range(len(pagelist) - 1, -1, -1):
-    if pagelist[item]["name"] in removelist:
-        pagelist.pop(item)
+for item in range(len(page_list) - 1, -1, -1):
+    if page_list[item]["name"] in remove_list:
+        page_list.pop(item)
 
 f = open("./config/page.json", "w", newline=None)
-f.write(json.dumps(pagelist,ensure_ascii=False))
+f.write(json.dumps(page_list, ensure_ascii=False))
 f.close()
-genrss.writerss(pagelist)
+genrss.write_rss(page_list)

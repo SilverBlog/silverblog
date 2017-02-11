@@ -1,5 +1,19 @@
 import re
 
+import misaka as markdown
+
+
+def get_excerpt(file):
+    Document = open(file, newline=None)
+    Document = Document.read()
+    fileter_excerpt = filter_tags(markdown.html(Document,
+                                                extensions=markdown.EXT_FENCED_CODE | markdown.EXT_AUTOLINK | markdown.EXT_TABLES | markdown.EXT_STRIKETHROUGH | markdown.EXT_UNDERLINE))
+    if len(fileter_excerpt) > 140:
+        excerpt = fileter_excerpt[0:140]
+    else:
+        excerpt = fileter_excerpt
+    return excerpt
+
 def filter_tags(htmlstr):
     # 先过滤CDATA
     re_cdata = re.compile('//<!\[CDATA\[[^>]*//\]\]>', re.I)  # 匹配CDATA

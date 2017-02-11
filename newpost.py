@@ -5,10 +5,9 @@ import json
 import os.path
 import sys
 
-import misaka as markdown
 from pypinyin import lazy_pinyin
 
-import filter
+import getexcerpt
 import genrss
 
 
@@ -24,6 +23,7 @@ def getname(nameinput):
         for item in namelist:
             name = name + "-" + item
         return name[1:len(name)]
+
 def new_post(name,title,file,content=""):
     if len(name)==0:
         name=title
@@ -32,33 +32,25 @@ def new_post(name,title,file,content=""):
         Document = open("./document/" + name + ".md","w", newline=None)
         Document.write(content)
         Document.close()
-        Document_raw=content
     else:
         if os.path.isfile(file):
             os.system("cp " + file + " ./document/" + name + ".md")
         else:
             os.system("vim ./document/" + name + ".md")
-        Document = open("./document/" + name + ".md", newline=None)
-        Document_raw = Document.read()
-        Document.close()
-    filetered = filter.filter_tags(markdown.html(Document_raw))
-    if len(filetered) > 140:
-        excerpt = filetered[0:140]
-    else:
-        excerpt = filetered
+    excerpt = getexcerpt.get_excerpt("./document/" + name + ".md")
     postinfo = {"name": name, "title": title, "excerpt": excerpt, "time": str(datetime.date.today())}
     if os.path.isfile("./config/page.json"):
         f = open("./config/page.json", newline=None)
         pagelist_raw = f.read()
         f.close()
-        pagelist = json.loads(pagelist_raw)
+        page_list = json.loads(pagelist_raw)
     else:
-        pagelist = list()
-    pagelist.insert(0, postinfo)
+        page_list = list()
+    page_list.insert(0, postinfo)
     f = open("./config/page.json", "w", newline=None)
-    f.write(json.dumps(pagelist,ensure_ascii=False))
+    f.write(json.dumps(page_list, ensure_ascii=False))
     f.close()
-    genrss.writerss(pagelist)
+    genrss.write_rss(page_list)
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
