@@ -1,7 +1,12 @@
-import PyRSS2Gen
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import datetime
-import misaka as markdown
 import json
+
+import PyRSS2Gen
+import misaka as markdown
+
+
 class NoOutput:
     def __init__(self):
         pass

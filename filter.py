@@ -1,4 +1,5 @@
 import re
+
 def filter_tags(htmlstr):
     # 先过滤CDATA
     re_cdata = re.compile('//<!\[CDATA\[[^>]*//\]\]>', re.I)  # 匹配CDATA

@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
-
 import json
-import memcache
-import misaka as markdown
 import os
 import os.path
+
+import memcache
+import misaka as markdown
 from flask import Flask, abort, render_template
 
 app = Flask(__name__)
