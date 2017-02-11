@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import PyRSS2Gen
-import datetime
+
 import json
 import memcache
 import misaka as markdown
@@ -93,24 +92,6 @@ def getItemName():
     return list
 
 
-def genrss():
-    pagersslist = list();
-    for item in page_list:
-        pagersslist.append(PyRSS2Gen.RSSItem(
-            title=item["title"],
-            link=project_url + "/" + item["name"],
-            description=item["excerpt"],
-            guid=PyRSS2Gen.Guid(project_url + "/" + item["name"]),
-            pubDate=item["time"]))
-
-    rss = PyRSS2Gen.RSS2(
-        title=project_name,
-        link=project_url,
-        description=project_description,
-        lastBuildDate=datetime.datetime.now(),
-        items=pagersslist)
-    return rss.to_xml(encoding='utf-8')
-
 
 page_list = json.loads(ReadDocument("config/page.json"))
 menu_list = json.loads(ReadDocument("config/menu.json"))
@@ -121,7 +102,7 @@ project_description = system_info["Project_description"]
 author_image = system_info["author_image"]
 Item_name_list = getItemName()
 page_name_list = list()
-pagerss = genrss()
+pagerss = ReadDocument("document/rss.xml")
 
 for item in page_list:
     page_name_list.append(item["name"])

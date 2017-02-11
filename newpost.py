@@ -5,9 +5,13 @@ import datetime
 import json
 import os.path
 import sys
+
 import misaka as markdown
-import filter
 from pypinyin import lazy_pinyin
+
+import filter
+import genrss
+
 
 def getname(nameinput):
         tempname = nameinput.replace(" ", "").replace(",", "").replace(".", "").replace("，", "").replace("。", "").replace(
@@ -55,6 +59,7 @@ def new_post(name,title,file,content=""):
     f = open("./config/page.json", "w", newline=None)
     f.write(json.dumps(pagelist,ensure_ascii=False))
     f.close()
+    genrss.writerss(pagelist)
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

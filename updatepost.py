@@ -3,8 +3,11 @@
 
 import json
 import os.path
+
 import misaka as markdown
+
 import filter
+import genrss
 
 f = open("./config/page.json", newline=None)
 pagelist_row = f.read()
@@ -31,3 +34,4 @@ for item in range(len(pagelist) - 1, -1, -1):
 f = open("./config/page.json", "w", newline=None)
 f.write(json.dumps(pagelist,ensure_ascii=False))
 f.close()
+genrss.writerss(pagelist)
