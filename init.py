@@ -5,109 +5,97 @@ import os
 import os.path
 
 import memcache
-import misaka as markdown
 from flask import Flask, abort, render_template
+
+from common import file
+from common import markdown
 
 app = Flask(__name__)
 
-
 # 分组页面
 @app.route("/")
-@app.route("/<pagename>")
-@app.route("/<pagename>/")
-@app.route('/<pagename>/page:<page>')
-@app.route('/<pagename>/page:<page>/')
-def LoadPage(pagename="index", page="1"):
-    cache_pagename = pagename
-    cache_result = GetCache(cache_pagename + "/page:" + str(page))
+@app.route("/<file_name>")
+@app.route("/<file_name>/")
+@app.route('/<file_name>/page:<page>')
+@app.route('/<file_name>/page:<page>/')
+def route(file_name="index", page="1"):
+    cache_pagename = file_name
+    cache_result = get_cache("{0}/page:{1}".format(cache_pagename, str(page)))
     if cache_result is not None:
         return cache_result
-    if pagename == "index":
-        return LoadIndex(int(page))
-    if pagename == "rss" or pagename == "feed":
-        return pagerss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
-    if os.path.isfile("document/" + pagename + ".md"):
-        return LoadDocument(pagename)
+    if file_name == "index":
+        return build_index(int(page))
+    if file_name == "rss" or file_name == "feed":
+        return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
+    if os.path.isfile("document/{0}.md".format(file_name)):
+        return build_page(file_name)
     else:
         abort(404)
 
 
-def LoadIndex(page):
-    Start_num = -system_info["Paging"] + (int(page) * system_info["Paging"])
-    page_row_mod = divmod(len(page_list), system_info["Paging"])
-    if page_row_mod[1] != 0 and len(page_list) > system_info["Paging"]:
+def build_index(page):
+    Start_num = -system_config["Paging"] + (int(page) * system_config["Paging"])
+    page_row_mod = divmod(len(page_list), system_config["Paging"])
+    if page_row_mod[1] != 0 and len(page_list) > system_config["Paging"]:
         page_row = page_row_mod[0] + 2
     else:
         page_row = page_row_mod[0] + 1
     if page <= 0:
         abort(404)
-    pagelist = page_list[Start_num:Start_num + system_info["Paging"]]
-    Document = render_template("index.html", title="主页", menu_list=menu_list, page_list=pagelist,
-                               project_name=project_name, project_description=project_description,
-                               pagerow=page_row - 1, author_image=author_image, cover_image=system_info["Cover_image"],
-                               nowpage=page, lastpage=page - 1, newpage=page + 1)
-    SetCache("index/page:" + str(page), Document)
+    index_list = page_list[Start_num:Start_num + system_config["Paging"]]
+    Document = render_template("./{0}/index.html".format(system_config["Theme"]), title="主页", menu_list=menu_list,
+                               page_list=index_list,
+                               system_config=system_config,
+                               page_row=page_row - 1,
+                               now_page=page, last_page=page - 1, next_page=page + 1)
+    set_cache("index/page:{0}".format(str(page)), Document)
     return Document
 
 
-def LoadDocument(name):
-    request_page = name
-    Document_Raw = ReadDocument("document/" + name + ".md")
+def build_page(name):
+    Document_Raw = file.read_file("document/{0}.md".format(name))
     if name in page_name_list:
-        pageinfo = page_list[page_name_list.index(name)]
-        Document = Document_Raw
+        page_info = page_list[page_name_list.index(name)]
+        content = Document_Raw
     else:
         Documents = Document_Raw.split("<!--infoend-->")
-        pageinfo = json.loads(Documents[0])
-        Document = Documents[1]
-    Document = markdown.html(Document, extensions=markdown.EXT_FENCED_CODE |
-                                                  markdown.EXT_AUTOLINK | markdown.EXT_TABLES | markdown.EXT_STRIKETHROUGH | markdown.EXT_UNDERLINE)
-    Document = render_template("post.html", title=pageinfo["title"], pageinfo=pageinfo, menu_list=menu_list,
-                               project_name=project_name, context=Document, author_image=author_image,
-                               requestpage=request_page)
-    SetCache(name, Document)
-    return Document
+        page_info = json.loads(Documents[0])
+        content = Documents[1]
+    document = markdown.markdown(content)
+    document = render_template("./{0}/post.html".format(system_config["Theme"]), title=page_info["title"],
+                               page_info=page_info, menu_list=menu_list, content=document, system_config=system_config)
+    set_cache(name, document)
+    return document
 
 
-def GetCache(pagename):
-    if system_info["cache"]:
-        mc.get(pagename)
+def get_cache(pagename):
+    if system_config["Cache"]:
+        return mc.get(pagename)
+    else:
+        return None
 
 
-def SetCache(pagename, Document):
-    if system_info["cache"]:
-        mc.set(pagename, Document)
+def set_cache(page_name, content):
+    if system_config["Cache"]:
+        mc.set(page_name, content)
 
 
-def ReadDocument(filename):
-    f = open(filename, newline=None)
-    return f.read()
+def get_item_name():
+    item_list = []
+    for page_item in page_list:
+        item_list.append(page_item["name"])
+    return item_list
 
 
-def getItemName():
-    list = []
-    for item in page_list:
-        list.append(item["name"])
-    return list
-
-
-
-page_list = json.loads(ReadDocument("config/page.json"))
-menu_list = json.loads(ReadDocument("config/menu.json"))
-system_info = json.loads(ReadDocument("config/system.json"))
-project_name = system_info["Project_name"]
-project_url = system_info["Project_URL"]
-project_description = system_info["Project_description"]
-author_image = system_info["author_image"]
-Item_name_list = getItemName()
+page_list = json.loads(file.read_file("config/page.json"))
+menu_list = json.loads(file.read_file("config/menu.json"))
+system_config = json.loads(file.read_file("config/system.json"))
+item_name_list = get_item_name()
 page_name_list = list()
-pagerss = ReadDocument("document/rss.xml")
+rss = file.read_file("document/rss.xml")
 
 for item in page_list:
     page_name_list.append(item["name"])
-if system_info["cache"]:
-    mc = memcache.Client([system_info["memcache_connect"]], debug=0)
+if system_config["Cache"]:
+    mc = memcache.Client([system_config["Memcached_Connect"]], debug=0)
     mc.flush_all()
-if __name__ == '__main__':
-    app.debug = True
-    app.run(host='0.0.0.0')

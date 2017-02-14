@@ -13,5 +13,8 @@ config.php
 install.lock
 config.json
 .idea
-config
+system.json
+menu.json
+page.json
 document
+user_file
