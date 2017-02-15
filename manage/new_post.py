@@ -2,6 +2,7 @@ import datetime
 import json
 import os.path
 import re
+import shutil
 
 from pypinyin import lazy_pinyin
 
@@ -22,9 +23,10 @@ def new_post(name, title, filename, editor):
     if len(name)==0:
         name = get_name(title)
     if os.path.isfile(filename):
-        os.system("cp {0} ./document/{1}.md".format(filename, name))
+        shutil.copyfile(filename,"./document/{0}.md".format(name))
     else:
-        os.system("{1} ./document/{1}.md".format(editor, name))
+        if editor is not None:
+            os.system("{0} ./document/{1}.md".format(editor, name))
     excerpt = get_excerpt.get_excerpt("./document/{0}.md".format(name))
     post_info = {"name": name, "title": title, "excerpt": excerpt, "time": str(datetime.date.today())}
     if os.path.isfile("./config/page.json"):

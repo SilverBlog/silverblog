@@ -22,7 +22,7 @@ def new():
     if encode == hash_md5 and len(content) != 0:
         name = new_post.get_name(str(title))
         file.write_file("./document/{0}.md".format(name), str(content))
-        new_post.new_post("", str(title), "")
+        new_post.new_post(None, str(title), None,None)
         return '{"status":"ok"}'
     else:
         return '{"status":"no"}'
