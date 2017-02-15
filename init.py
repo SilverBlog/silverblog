@@ -16,8 +16,8 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/<file_name>")
 @app.route("/<file_name>/")
-@app.route('/<file_name>/page:<page>')
-@app.route('/<file_name>/page:<page>/')
+@app.route('/<file_name>/p/<page>')
+@app.route('/<file_name>/p/<page>/')
 def route(file_name="index", page="1"):
     cache_pagename = file_name
     cache_result = get_cache("{0}/page:{1}".format(cache_pagename, str(page)))
@@ -48,7 +48,7 @@ def build_index(page):
                                system_config=system_config,
                                page_row=page_row - 1,
                                now_page=page, last_page=page - 1, next_page=page + 1)
-    set_cache("index/page:{0}".format(str(page)), Document)
+    set_cache("index/p{0}".format(str(page)), Document)
     return Document
 
 
