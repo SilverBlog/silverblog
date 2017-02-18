@@ -27,14 +27,18 @@ class rss_item(PyRSS2Gen.RSSItem):
         handler._write("<{1}><![CDATA[{0}]]></{1}>".format(self.do_not_autooutput_description, "description"))
 
 
-def make_rss(project_name, project_url, project_description, page_list):
+def make_rss(project_name, project_url, project_description, page_list, full_content):
     page_rss_list = list();
     for item in page_list:
         location = "{0}/{1}".format(item["Project_URL"], item["name"])
+        if full_content:
+            desc = str(markdown.markdown(file.read_file("./document/{0}.md".format(item["name"]))))
+        else:
+            desc = item["excerpt"]
         page_rss_list.append(rss_item(
             title=item["title"],
             link=location,
-            description=str(markdown.markdown(file.read_file("./document/{0}.md".format(item["name"])))),
+            description=desc,
             guid=PyRSS2Gen.Guid(location),
             pubDate=item["time"]
         ))
@@ -48,8 +52,12 @@ def make_rss(project_name, project_url, project_description, page_list):
 
 
 def build_rss():
-    page_list = json.loads(file.read_file("./config/page.json"))
     system_config = json.loads(file.read_file("./config/system.json"))
+    page_list = json.loads(file.read_file("./config/page.json"))
+    if "Rss_Full_Content" not in system_config:
+        full_content = True
+    else:
+        full_content = system_config["Rss_Full_Content"]
     file.write_file("./document/rss.xml", make_rss(system_config["Project_Name"], system_config["Project_URL"],
                                                    system_config["Project_Description"],
-                                                   page_list))
+                                                   page_list, full_content))
