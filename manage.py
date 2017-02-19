@@ -10,6 +10,7 @@ from common import file
 from manage import build_rss
 from manage import new_post
 from manage import update_post
+from manage import build_static_page
 
 app = Flask(__name__)
 @app.route('/newpost', methods=['POST'])
@@ -41,3 +42,5 @@ if __name__ == '__main__':
         build_rss.build_rss()
     if args.command == "build_rss":
         build_rss.build_rss()
+    if args.command == "build_static_page":
+        build_static_page.build()

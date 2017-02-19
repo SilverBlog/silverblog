@@ -90,17 +90,10 @@ def set_cache(page_name, content):
         mc.set(page_name, content)
 
 
-def get_item_name():
-    item_list = []
-    for page_item in page_list:
-        item_list.append(page_item["name"])
-    return item_list
-
-
 page_list = json.loads(file.read_file("./config/page.json"))
 menu_list = json.loads(file.read_file("./config/menu.json"))
 system_config = json.loads(file.read_file("config/system.json"))
-item_name_list = get_item_name()
+
 rss = file.read_file("document/rss.xml")
 restful_switch = False
 
