@@ -34,22 +34,28 @@ def route(file_name="index", page="1"):
 
 
 def build_index(page):
-    Start_num = -system_config["Paging"] + (int(page) * system_config["Paging"])
-    page_row_mod = divmod(len(page_list), system_config["Paging"])
-    if page_row_mod[1] != 0 and len(page_list) > system_config["Paging"]:
-        page_row = page_row_mod[0] + 2
+    page_info = {"title": "主页"}
+    if restful_switch:
+        result = {"menu_list": menu_list, "page_list": page_list, "system_config": system_config}
+        result = json.dumps(result)
     else:
-        page_row = page_row_mod[0] + 1
-    if page <= 0:
-        abort(404)
-    index_list = page_list[Start_num:Start_num + system_config["Paging"]]
-    Document = render_template("./{0}/index.html".format(system_config["Theme"]), title="主页", menu_list=menu_list,
-                               page_list=index_list,
-                               system_config=system_config,
-                               page_row=page_row - 1,
-                               now_page=page, last_page=page - 1, next_page=page + 1)
-    set_cache("index/p{0}".format(str(page)), Document)
-    return Document
+        Start_num = -system_config["Paging"] + (int(page) * system_config["Paging"])
+        page_row_mod = divmod(len(page_list), system_config["Paging"])
+        if page_row_mod[1] != 0 and len(page_list) > system_config["Paging"]:
+            page_row = page_row_mod[0] + 2
+        else:
+            page_row = page_row_mod[0] + 1
+        if page <= 0:
+            abort(404)
+        index_list = page_list[Start_num:Start_num + system_config["Paging"]]
+        result = render_template("./{0}/index.html".format(system_config["Theme"]), menu_list=menu_list,
+                                 page_list=index_list,
+                                 page_info=page_info,
+                                 system_config=system_config,
+                                 page_row=page_row - 1,
+                                 now_page=page, last_page=page - 1, next_page=page + 1)
+    set_cache("index/p{0}".format(str(page)), result)
+    return result
 
 
 def build_page(name):
@@ -62,21 +68,25 @@ def build_page(name):
         page_info = json.loads(Documents[0])
         content = Documents[1]
     document = markdown.markdown(content)
-    document = render_template("./{0}/post.html".format(system_config["Theme"]), title=page_info["title"],
-                               page_info=page_info, menu_list=menu_list, content=document, system_config=system_config)
-    set_cache(name, document)
-    return document
-
+    if restful_switch:
+        result = {"menu_list": menu_list, "page_info": page_info,
+                  "system_config": system_config, "content": document}
+        result = json.dumps(result)
+    else:
+        result = render_template("./{0}/post.html".format(system_config["Theme"]),
+                                 page_info=page_info, menu_list=menu_list, content=document,
+                                 system_config=system_config)
+    set_cache(name, result)
+    return result
 
 def get_cache(pagename):
-    if system_config["Cache"]:
+    if cache_switch:
         return mc.get(pagename)
     else:
         return None
 
-
 def set_cache(page_name, content):
-    if system_config["Cache"]:
+    if cache_switch:
         mc.set(page_name, content)
 
 
@@ -91,11 +101,21 @@ page_list = json.loads(file.read_file("config/page.json"))
 menu_list = json.loads(file.read_file("config/menu.json"))
 system_config = json.loads(file.read_file("config/system.json"))
 item_name_list = get_item_name()
-page_name_list = list()
 rss = file.read_file("document/rss.xml")
+restful_switch = False
 
+if "Restful_API" in system_config:
+    if system_config["Restful_API"]:
+        restful_switch = True
+
+page_name_list = list()
 for item in page_list:
     page_name_list.append(item["name"])
-if system_config["Cache"]:
-    mc = memcache.Client([system_config["Memcached_Connect"]], debug=0)
-    mc.flush_all()
+
+cache_switch = system_config["Cache"]
+if cache_switch:
+    try:
+        mc = memcache.Client([system_config["Memcached_Connect"]], debug=0)
+        mc.flush_all()
+    except:
+        cache_switch = False
