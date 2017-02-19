@@ -53,7 +53,7 @@ def build_index(page):
                                  page_info=page_info,
                                  system_config=system_config,
                                  page_row=page_row - 1,
-                                 now_page=page, last_page=page - 1, next_page=page + 1)
+                                 now_page=page, last_page=page - 1, next_page=page + 1,static=False)
     set_cache("index/p{0}".format(str(page)), result)
     return result
 
@@ -75,7 +75,7 @@ def build_page(name):
     else:
         result = render_template("./{0}/post.html".format(system_config["Theme"]),
                                  page_info=page_info, menu_list=menu_list, content=document,
-                                 system_config=system_config)
+                                 system_config=system_config,static=False)
     set_cache(name, result)
     return result
 
