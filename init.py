@@ -97,8 +97,8 @@ def get_item_name():
     return item_list
 
 
-page_list = json.loads(file.read_file("config/page.json"))
-menu_list = json.loads(file.read_file("config/menu.json"))
+page_list = json.loads(file.read_file("./config/page.json"))
+menu_list = json.loads(file.read_file("./config/menu.json"))
 system_config = json.loads(file.read_file("config/system.json"))
 item_name_list = get_item_name()
 rss = file.read_file("document/rss.xml")
