@@ -27,10 +27,10 @@ class rss_item(PyRSS2Gen.RSSItem):
         handler._write("<{1}><![CDATA[{0}]]></{1}>".format(self.do_not_autooutput_description, "description"))
 
 
-def make_rss(project_name, project_url, project_description, page_list, full_content):
+def make_rss(project_name, project_url, project_description, page_list, full_content,system_config):
     page_rss_list = list();
     for item in page_list:
-        location = "{0}/{1}".format(item["Project_URL"], item["name"])
+        location = "{0}/{1}".format(system_config["Project_URL"], item["name"])
         if full_content:
             desc = str(markdown.markdown(file.read_file("./document/{0}.md".format(item["name"]))))
         else:
@@ -60,4 +60,4 @@ def build_rss():
         full_content = system_config["Rss_Full_Content"]
     file.write_file("./document/rss.xml", make_rss(system_config["Project_Name"], system_config["Project_URL"],
                                                    system_config["Project_Description"],
-                                                   page_list, full_content))
+                                                   page_list, full_content,system_config))
