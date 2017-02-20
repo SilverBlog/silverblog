@@ -64,8 +64,9 @@ def build():
             file.write_file("./static_page/{0}.html".format(filename.replace(".md", "")),
                             build_page(filename.replace(".md", ""), menu_list, page_list, system_config,
                                        page_name_list))
+
+    shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
     shutil.copytree("./templates/static/{0}/".format(system_config["Theme"]),
                     "./static_page/static/{0}/".format(system_config["Theme"]))
     shutil.copytree("./templates/static/user_file",
                     "./static_page/static/user_file")
-    shutil.copyfile("./document/rss.xml","./static_page/rss.xml")
