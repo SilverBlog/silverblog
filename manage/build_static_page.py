@@ -41,7 +41,7 @@ def build_page(name, menu_list, page_list, system_config, page_name_list):
     document = markdown.markdown(content)
     template = env.get_template("./{0}/post.html".format(system_config["Theme"]))
     content = template.render(page_info=page_info, menu_list=menu_list, content=document,
-                              system_config=system_config, static=False)
+                              system_config=system_config, static=True)
     return content
 
 
@@ -68,3 +68,4 @@ def build():
                     "./static_page/static/{0}/".format(system_config["Theme"]))
     shutil.copytree("./templates/static/user_file",
                     "./static_page/static/user_file")
+    shutil.copyfile("./document/rss.xml","./static_page/rss.xml")
