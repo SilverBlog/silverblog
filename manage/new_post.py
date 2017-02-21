@@ -46,7 +46,7 @@ def new_post_init(config_file=None, editor="vim"):
             filename = config["file"]
             new_post(name, title, filename, editor)
     else:
-        title = input("请输入文章标题: ")
-        name = input("请输入文章URL(留空使用标题拼音):")
-        filename = input("请输入要复制的文件路径(留空或不存在将新建):")
+        title = input("Please enter the title of the article:")
+        name = input("Please enter the URL (Leave a blank use pinyin):")
+        filename = input("Please enter the file path to copy (blank or Non-existent will be new):")
         new_post(name, title, filename, editor)

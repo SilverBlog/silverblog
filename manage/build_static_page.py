@@ -66,7 +66,8 @@ def build():
                                        page_name_list))
 
     shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
-    shutil.copytree("./templates/static/{0}/".format(system_config["Theme"]),
+    if os.path.exists("./static_page/static/{0}/".format(system_config["Theme"])):
+        shutil.copytree("./templates/static/{0}/".format(system_config["Theme"]),
                     "./static_page/static/{0}/".format(system_config["Theme"]))
-    shutil.copytree("./templates/static/user_file",
+        shutil.copytree("./templates/static/user_file",
                     "./static_page/static/user_file")
