@@ -94,7 +94,10 @@ page_list = json.loads(file.read_file("./config/page.json"))
 menu_list = json.loads(file.read_file("./config/menu.json"))
 system_config = json.loads(file.read_file("config/system.json"))
 
-rss = file.read_file("document/rss.xml")
+rss = None
+if os.path.exists("document/rss.xml"):
+    rss = file.read_file("document/rss.xml")
+
 restful_switch = False
 
 if "Restful_API" in system_config:
