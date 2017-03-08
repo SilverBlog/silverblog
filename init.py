@@ -34,7 +34,7 @@ def route(file_name="index", page="1"):
 
 
 def build_index(page):
-    page_info = {"title": "主页"}
+    page_info = {"title": "index"}
     if restful_switch:
         result = {"menu_list": menu_list, "page_list": page_list, "system_config": system_config}
         result = json.dumps(result)
