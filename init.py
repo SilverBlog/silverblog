@@ -79,9 +79,9 @@ def build_page(name):
     set_cache("{0}/p/1".format(name), result)
     return result
 
-def get_cache(pagename):
+def get_cache(page_name):
     if cache_switch:
-        return mc.get(pagename)
+        return mc.get(page_name)
     else:
         return None
 
