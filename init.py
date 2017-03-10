@@ -45,6 +45,8 @@ def build_index(page):
             page_row = page_row_mod[0] + 1
         else:
             page_row = page_row_mod[0]
+        if page_row==0:
+            page_row=1
         if page <= 0:
             abort(404)
         index_list = page_list[Start_num:Start_num + system_config["Paging"]]
