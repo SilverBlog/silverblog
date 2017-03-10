@@ -42,9 +42,9 @@ def build_index(page):
         Start_num = -system_config["Paging"] + (int(page) * system_config["Paging"])
         page_row_mod = divmod(len(page_list), system_config["Paging"])
         if page_row_mod[1] != 0 and len(page_list) > system_config["Paging"]:
-            page_row = page_row_mod[0] + 2
-        else:
             page_row = page_row_mod[0] + 1
+        else:
+            page_row = page_row_mod[0]
         if page <= 0:
             abort(404)
         index_list = page_list[Start_num:Start_num + system_config["Paging"]]
@@ -52,7 +52,7 @@ def build_index(page):
                                  page_list=index_list,
                                  page_info=page_info,
                                  system_config=system_config,
-                                 page_row=page_row - 1,
+                                 page_row=page_row,
                                  now_page=page, last_page=page - 1, next_page=page + 1,static=False)
     set_cache("index/p/{0}".format(str(page)), result)
     return result
