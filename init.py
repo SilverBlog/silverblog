@@ -47,7 +47,7 @@ def build_index(page):
             page_row = page_row_mod[0]
         if page_row==0:
             page_row=1
-        if page <= 0:
+        if page <= 0 or page>page_row:
             abort(404)
         index_list = page_list[Start_num:Start_num + system_config["Paging"]]
         result = render_template("./{0}/index.html".format(system_config["Theme"]), menu_list=menu_list,
