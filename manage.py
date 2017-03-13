@@ -1,14 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import argparse
-import hashlib
-import json
 
-from common import file
 from manage import build_rss
+from manage import build_static_page
 from manage import new_post
 from manage import update_post
-from manage import build_static_page
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
