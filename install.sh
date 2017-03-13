@@ -5,5 +5,4 @@ mkdir document
 cp ./config/menu.example.json ./config/menu.json
 cp ./config/page.example.json ./config/page.json
 cp ./config/system.example.json ./config/system.json
-touch ./document/rss.xml
 vim ./config/system.json
