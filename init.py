@@ -12,6 +12,20 @@ from common import markdown
 
 app = Flask(__name__)
 
+@app.route('/control/newpost', methods=['POST'])
+def new():
+    title=request.json["title"]
+    content= request.json["content"]
+    encode=request.json["encode"]
+    hash_md5 = hashlib.md5(str(title + system_config["API_Password"]).encode('utf-8')).hexdigest()
+    if encode == hash_md5 and len(content) != 0:
+        name = new_post.get_name(str(title))
+        file.write_file("./document/{0}.md".format(name), str(content))
+        new_post.new_post(None, str(title), None,None)
+        return '{"status":"ok"}'
+    else:
+        return '{"status":"no"}'
+
 # 分组页面
 @app.route("/")
 @app.route("/<file_name>")
@@ -19,8 +33,8 @@ app = Flask(__name__)
 @app.route('/<file_name>/p/<page>')
 @app.route('/<file_name>/p/<page>/')
 def route(file_name="index", page="1"):
-    cache_pagename = file_name
-    cache_result = get_cache("{0}/p/{1}".format(cache_pagename, str(page)))
+    cache_page_name = file_name
+    cache_result = get_cache("{0}/p/{1}".format(cache_page_name, str(page)))
     if cache_result is not None:
         return cache_result
     if file_name == "index":
@@ -61,14 +75,14 @@ def build_index(page):
 
 
 def build_page(name):
-    Document_Raw = file.read_file("document/{0}.md".format(name))
+    content = file.read_file("document/{0}.md".format(name))
     if name in page_name_list:
         page_info = page_list[page_name_list.index(name)]
-        content = Document_Raw
     else:
-        Documents = Document_Raw.split("<!--infoend-->")
-        page_info = json.loads(Documents[0])
-        content = Documents[1]
+        if os.path.exists("document/{0}.json".format(name)):
+            page_info = json.loads(file.read_file("document/{0}.json".format(name)))
+        else:
+            page_info = {"title": "undefined"}
     document = markdown.markdown(content)
     if restful_switch:
         result = {"menu_list": menu_list, "page_info": page_info,

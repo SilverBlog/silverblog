@@ -30,14 +30,14 @@ def build_index(page, menu_list, page_list, system_config):
 
 
 def build_page(name, menu_list, page_list, system_config, page_name_list):
-    Document_Raw = file.read_file("./document/{0}.md".format(name))
+    content = file.read_file("./document/{0}.md".format(name))
     if name in page_name_list:
         page_info = page_list[page_name_list.index(name)]
-        content = Document_Raw
     else:
-        Documents = Document_Raw.split("<!--infoend-->")
-        page_info = json.loads(Documents[0])
-        content = Documents[1]
+        if os.path.exists("document/{0}.json".format(name)):
+            page_info = json.loads(file.read_file("document/{0}.json".format(name)))
+        else:
+            page_info = {"title": "undefined"}
     document = markdown.markdown(content)
     template = env.get_template("./{0}/post.html".format(system_config["Theme"]))
     content = template.render(page_info=page_info, menu_list=menu_list, content=document,
