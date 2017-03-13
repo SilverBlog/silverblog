@@ -1,10 +1,12 @@
 import hashlib
 import json
 
+from flask import Flask,request
+
 from common import file
 from manage import new_post
-from flask import request
 
+app = Flask(__name__)
 @app.route('/control/newpost', methods=['POST'])
 def new():
     title=request.json["title"]

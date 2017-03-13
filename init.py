@@ -3,36 +3,12 @@
 import json
 import os
 import os.path
+
 import memcache
 from flask import Flask, abort, render_template
 
-
 from common import file
 from common import markdown
-
-app = Flask(__name__)
-
-
-
-# 分组页面
-@app.route("/")
-@app.route("/<file_name>")
-@app.route("/<file_name>/")
-@app.route('/<file_name>/p/<page>')
-@app.route('/<file_name>/p/<page>/')
-def route(file_name="index", page="1"):
-    cache_page_name = file_name
-    cache_result = get_cache("{0}/p/{1}".format(cache_page_name, str(page)))
-    if cache_result is not None:
-        return cache_result
-    if file_name == "index":
-        return build_index(int(page))
-    if file_name == "rss" or file_name == "feed":
-        return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
-    if os.path.isfile("document/{0}.md".format(file_name)):
-        return build_page(file_name)
-    else:
-        abort(404)
 
 
 def build_index(page):
@@ -94,9 +70,11 @@ def set_cache(page_name, content):
         mc.set(page_name, content)
 
 
+app = Flask(__name__)
 page_list = json.loads(file.read_file("./config/page.json"))
-menu_list = json.loads(file.read_file("./config/menu.json"))
 system_config = json.loads(file.read_file("config/system.json"))
+if os.path.exists("./config/menu.json"):
+    menu_list = json.loads(file.read_file("./config/menu.json"))
 
 rss = None
 if os.path.exists("document/rss.xml"):
@@ -119,3 +97,25 @@ if cache_switch:
         mc.flush_all()
     except:
         cache_switch = False
+        pass
+
+
+# 分组页面
+@app.route("/")
+@app.route("/<file_name>")
+@app.route("/<file_name>/")
+@app.route('/<file_name>/p/<page>')
+@app.route('/<file_name>/p/<page>/')
+def route(file_name="index", page="1"):
+    cache_page_name = file_name
+    cache_result = get_cache("{0}/p/{1}".format(cache_page_name, str(page)))
+    if cache_result is not None:
+        return cache_result
+    if file_name == "index":
+        return build_index(int(page))
+    if file_name == "rss" or file_name == "feed":
+        return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
+    if os.path.isfile("document/{0}.md".format(file_name)):
+        return build_page(file_name)
+    else:
+        abort(404)
