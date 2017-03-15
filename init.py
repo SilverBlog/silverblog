@@ -107,14 +107,16 @@ if cache_switch:
 @app.route('/<file_name>/p/<page>')
 @app.route('/<file_name>/p/<page>/')
 def route(file_name="index", page="1"):
+    if file_name == "rss" or file_name == "feed":
+        return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
+
     cache_page_name = file_name
     cache_result = get_cache("{0}/p/{1}".format(cache_page_name, str(page)))
     if cache_result is not None:
         return cache_result
+
     if file_name == "index":
         return build_index(int(page))
-    if file_name == "rss" or file_name == "feed":
-        return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
     if os.path.isfile("document/{0}.md".format(file_name)):
         return build_page(file_name)
     else:
