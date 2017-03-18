@@ -25,4 +25,5 @@ if __name__ == '__main__':
     if args.command == "build_rss":
         build_rss.build_rss()
     if args.command == "build_static_page":
+        build_rss.build_rss()
         build_static_page.build()

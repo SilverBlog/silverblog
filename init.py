@@ -5,59 +5,12 @@ import os
 import os.path
 
 import memcache
-from flask import Flask, abort, render_template
+from flask import Flask, abort
 
 from common import file
 from common import markdown
+from common import page
 
-
-def build_index(page):
-    page_info = {"title": "index"}
-    if restful_switch:
-        result = {"menu_list": menu_list, "page_list": page_list, "system_config": system_config}
-        result = json.dumps(result)
-    else:
-        Start_num = -system_config["Paging"] + (int(page) * system_config["Paging"])
-        page_row_mod = divmod(len(page_list), system_config["Paging"])
-        if page_row_mod[1] != 0 and len(page_list) > system_config["Paging"]:
-            page_row = page_row_mod[0] + 1
-        else:
-            page_row = page_row_mod[0]
-        if page_row==0:
-            page_row=1
-        if page <= 0 or page>page_row:
-            abort(404)
-        index_list = page_list[Start_num:Start_num + system_config["Paging"]]
-        result = render_template("./{0}/index.html".format(system_config["Theme"]), menu_list=menu_list,
-                                 page_list=index_list,
-                                 page_info=page_info,
-                                 system_config=system_config,
-                                 page_row=page_row,
-                                 now_page=page, last_page=page - 1, next_page=page + 1,static=False)
-    set_cache("index/p/{0}".format(str(page)), result)
-    return result
-
-
-def build_page(name):
-    content = file.read_file("document/{0}.md".format(name))
-    if name in page_name_list:
-        page_info = page_list[page_name_list.index(name)]
-    else:
-        if os.path.exists("document/{0}.json".format(name)):
-            page_info = json.loads(file.read_file("document/{0}.json".format(name)))
-        else:
-            page_info = {"title": "undefined"}
-    document = markdown.markdown(content)
-    if restful_switch:
-        result = {"menu_list": menu_list, "page_info": page_info,
-                  "system_config": system_config, "content": document}
-        result = json.dumps(result)
-    else:
-        result = render_template("./{0}/post.html".format(system_config["Theme"]),
-                                 page_info=page_info, menu_list=menu_list, content=document,
-                                 system_config=system_config,static=False)
-    set_cache("{0}/p/1".format(name), result)
-    return result
 
 def get_cache(page_name):
     if cache_switch:
@@ -65,14 +18,34 @@ def get_cache(page_name):
     else:
         return None
 
+
 def set_cache(page_name, content):
     if cache_switch:
         mc.set(page_name, content)
 
 
+def restful_result(name):
+    content = None
+    page_info = None
+    if name != "index":
+        content = file.read_file("document/{0}.md".format(name))
+        if name in page_name_list:
+            page_info = page_list[page_name_list.index(name)]
+        else:
+            if os.path.exists("document/{0}.json".format(name)):
+                page_info = json.loads(file.read_file("document/{0}.json".format(name)))
+            else:
+                page_info = {"title": "undefined"}
+        content = markdown.markdown(content)
+    result = {"menu_list": menu_list, "page_list": page_list, "system_config": system_config, "page_info": page_info,
+              "content": content}
+    return json.dumps(result, ensure_ascii=False)
+
+
 app = Flask(__name__)
 page_list = json.loads(file.read_file("./config/page.json"))
 system_config = json.loads(file.read_file("config/system.json"))
+system_config["API_Password"] = None
 if os.path.exists("./config/menu.json"):
     menu_list = json.loads(file.read_file("./config/menu.json"))
 
@@ -104,20 +77,27 @@ if cache_switch:
 @app.route("/")
 @app.route("/<file_name>")
 @app.route("/<file_name>/")
-@app.route('/<file_name>/p/<page>')
-@app.route('/<file_name>/p/<page>/')
-def route(file_name="index", page="1"):
+@app.route('/<file_name>/p/<page_index>')
+@app.route('/<file_name>/p/<page_index>/')
+def route(file_name="index", page_index="1"):
     if file_name == "rss" or file_name == "feed":
         return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
 
-    cache_page_name = file_name
-    cache_result = get_cache("{0}/p/{1}".format(cache_page_name, str(page)))
+    cache_result = get_cache("{0}/p/{1}".format(file_name, str(page_index)))
     if cache_result is not None:
         return cache_result
 
-    if file_name == "index":
-        return build_index(int(page))
-    if os.path.isfile("document/{0}.md".format(file_name)):
-        return build_page(file_name)
+    if restful_switch:
+        result = restful_result(file_name)
+    else:
+        if file_name == "index":
+            result, row = page.build_index(int(page_index), system_config, page_list, menu_list, False)
+        elif os.path.exists("document/{0}.md".format(file_name)):
+            result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list, False)
+        else:
+            result = None
+    if result is not None:
+        set_cache("{0}/p/{1}".format(file_name, str(page_index)), result)
+        return result
     else:
         abort(404)
