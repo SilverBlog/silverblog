@@ -25,16 +25,12 @@ def build():
             file.write_file("./static_page/index_{0}.html".format(str(page_id)), content)
     for filename in os.listdir("./document/"):
         if filename.endswith(".md"):
-            try:
-                file.write_file("./static_page/{0}.html".format(filename.replace(".md", "")),
-                                page.build_page(filename.replace(".md", ""), system_config, page_list, page_name_list,
-                                                menu_list, True))
-            except:
-                pass
-
+            content=page.build_page(filename.replace(".md", ""), system_config, page_list, page_name_list,menu_list, True)
+            if content is not None:
+                file.write_file("./static_page/{0}.html".format(filename.replace(".md", "")),content)
     shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
     shutil.copytree("./templates/static/{0}/".format(system_config["Theme"]),
                     "./static_page/static/{0}/".format(system_config["Theme"]))
     shutil.copytree("./templates/static/user_file",
                     "./static_page/static/user_file")
-    print("Build Static Page Success!")
+    print("Build Github Pages Success!")

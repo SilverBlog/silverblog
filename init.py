@@ -12,18 +12,6 @@ from common import markdown
 from common import page
 
 
-def get_cache(page_name):
-    if cache_switch:
-        return mc.get(page_name)
-    else:
-        return None
-
-
-def set_cache(page_name, content):
-    if cache_switch:
-        mc.set(page_name, content)
-
-
 def restful_result(name):
     content = None
     page_info = None
@@ -65,12 +53,8 @@ for item in page_list:
 
 cache_switch = system_config["Cache"]
 if cache_switch:
-    try:
-        mc = memcache.Client([system_config["Memcached_Connect"]], debug=0)
-        mc.flush_all()
-    except:
-        cache_switch = False
-        pass
+    mc = memcache.Client([system_config["Memcached_Connect"]], socket_timeout=500, debug=0)
+    mc.flush_all()
 
 
 # 分组页面
@@ -83,9 +67,10 @@ def route(file_name="index", page_index="1"):
     if file_name == "rss" or file_name == "feed":
         return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
 
-    cache_result = get_cache("{0}/p/{1}".format(file_name, str(page_index)))
-    if cache_result is not None:
-        return cache_result
+    if cache_switch:
+        cache_result = mc.get("{0}/p/{1}".format(file_name, str(page_index)))
+        if cache_result is not None:
+            return cache_result
 
     if restful_switch:
         result = restful_result(file_name)
@@ -97,7 +82,8 @@ def route(file_name="index", page_index="1"):
         else:
             result = None
     if result is not None:
-        set_cache("{0}/p/{1}".format(file_name, str(page_index)), result)
+        if cache_switch:
+            mc.set("{0}/p/{1}".format(file_name, str(page_index)), result)
         return result
     else:
         abort(404)

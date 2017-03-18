@@ -38,15 +38,14 @@ def new_post(name, title, filename, editor):
 
 
 def new_post_init(config_file=None, editor="vim"):
-    if config_file is not None:
-        if os.path.isfile(config_file):
+    if config_file is not None and os.path.exists(config_file):
             config = json.loads(file.read_file(config_file))
             title = config["title"]
             name = config["name"]
             filename = config["file"]
-            new_post(name, title, filename, editor)
     else:
         title = input("Please enter the title of the article:")
         name = input("Please enter the URL (Leave a blank use pinyin):")
         filename = input("Please enter the file path to copy (blank or Non-existent will be new):")
-        new_post(name, title, filename, editor)
+    new_post(name, title, filename, editor)
+    print("Success!")

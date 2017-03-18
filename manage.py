@@ -9,7 +9,7 @@ from manage import update_post
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", help="The name of the function to execute.(e.g: new,update,build_rss)")
+    parser.add_argument("command", help="The name of the function to execute.(e.g: new,update,build-rss,build-gh-page)")
     parser.add_argument("--config", help="The configuration file location you want to load.")
     parser.add_argument("--editor", help="Your favorite editor(e.g: vim,nano,gedit,vi)")
     args = parser.parse_args()
@@ -22,8 +22,8 @@ if __name__ == '__main__':
     if args.command == "update":
         update_post.update()
         build_rss.build_rss()
-    if args.command == "build_rss":
+    if args.command == "build-rss":
         build_rss.build_rss()
-    if args.command == "build_static_page":
+    if args.command == "build-gh-page":
         build_rss.build_rss()
         build_static_page.build()

@@ -17,9 +17,9 @@ class NoOutput:
 class rss_item(PyRSS2Gen.RSSItem):
     def __init__(self, **kwargs):
         PyRSS2Gen.RSSItem.__init__(self, **kwargs)
+        self.do_not_autooutput_description = self.description
 
     def publish(self, handler):
-        self.do_not_autooutput_description = self.description
         self.description = NoOutput()
         PyRSS2Gen.RSSItem.publish(self, handler)
 
@@ -28,7 +28,7 @@ class rss_item(PyRSS2Gen.RSSItem):
 
 
 def make_rss(project_name, project_url, project_description, page_list, full_content,system_config):
-    page_rss_list = list();
+    page_rss_list = list()
     for item in page_list:
         location = "{0}/{1}".format(system_config["Project_URL"], item["name"])
         if full_content:
@@ -61,3 +61,4 @@ def build_rss():
     file.write_file("./document/rss.xml", make_rss(system_config["Project_Name"], system_config["Project_URL"],
                                                    system_config["Project_Description"],
                                                    page_list, full_content,system_config))
+    print("Build Rss Success!")

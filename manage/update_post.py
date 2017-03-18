@@ -19,3 +19,4 @@ def update():
             page_list.pop(item)
 
     file.write_file("./config/page.json",json.dumps(page_list, ensure_ascii=False))
+    print("Success!")
