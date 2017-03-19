@@ -6,16 +6,15 @@ from common import markdown
 
 def get_excerpt(filename):
     content = file.read_file(filename)
-    fileter_excerpt = filter_tags(markdown.markdown(content))
-    if len(fileter_excerpt) > 140:
-        excerpt = fileter_excerpt[0:140]
+    filter_excerpt = filter_tags(markdown.markdown(content))
+    if len(filter_excerpt) > 140:
+        excerpt = filter_excerpt[0:140]
     else:
-        excerpt = fileter_excerpt
+        excerpt = filter_excerpt
     return excerpt
 
 
 def filter_tags(html):
-    # 先过滤CDATA
     re_cdata = re.compile('//<!\[CDATA\[[^>]*//\]\]>', re.I)
     re_script = re.compile('<\s*script[^>]*>[^<]*<\s*/\s*script\s*>', re.I)
     re_style = re.compile('<\s*style[^>]*>[^<]*<\s*/\s*style\s*>', re.I)
