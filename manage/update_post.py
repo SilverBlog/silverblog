@@ -18,5 +18,5 @@ def update():
         if page_list[item]["name"] in remove_list:
             page_list.pop(item)
 
-    file.write_file("./config/page.json",json.dumps(page_list, ensure_ascii=False))
+    file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False))
     print("Success!")

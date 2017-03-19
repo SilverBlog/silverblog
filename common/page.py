@@ -29,7 +29,7 @@ def build_index(page, system_config, page_list, menu_list, static):
                              system_config=system_config,
                              page_row=page_row,
                              now_page=page, last_page=page - 1, next_page=page + 1, static=static)
-    return result,page_row
+    return result, page_row
 
 
 def build_page(name, system_config, page_list, page_name_list, menu_list, static):
