@@ -20,10 +20,10 @@ def get_name(nameinput):
 
 
 def new_post(name, title, filename, editor):
-    if len(name)==0:
+    if len(name) == 0:
         name = get_name(title)
     if os.path.isfile(filename):
-        shutil.copyfile(filename,"./document/{0}.md".format(name))
+        shutil.copyfile(filename, "./document/{0}.md".format(name))
     else:
         if editor is not None:
             os.system("{0} ./document/{1}.md".format(editor, name))
@@ -39,10 +39,10 @@ def new_post(name, title, filename, editor):
 
 def new_post_init(config_file=None, editor="vim"):
     if config_file is not None and os.path.exists(config_file):
-            config = json.loads(file.read_file(config_file))
-            title = config["title"]
-            name = config["name"]
-            filename = config["file"]
+        config = json.loads(file.read_file(config_file))
+        title = config["title"]
+        name = config["name"]
+        filename = config["file"]
     else:
         title = input("Please enter the title of the article:")
         name = input("Please enter the URL (Leave a blank use pinyin):")
