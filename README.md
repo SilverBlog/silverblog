@@ -1,16 +1,17 @@
 # SmartBlog
 
 ***
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/qwe7002/SmartBlog/blob/master/LICENSE)
 
 SmartBlog是一个基于Python的轻量级博客。
 
-## 为什么选择SmartBlog
+## 为什么选择 SmartBlog
 
 * 简单、小巧的博客系统
 * 易于安装部署
 * 完整的 Rss 支持
 * 模块化设计，方便自行添加，删除
-* 无数据库化设计，提供Memcache缓存加速
+* 无数据库化设计，提供 Memcache 缓存加速
 * 拥有媲美 Hexo 的静态页面生成模块，只需一行命令，就可在 Github Page 上运行
 * 支持 Mac os 和 Linux
 * 拥有一个正在开发的Android客户端
@@ -29,19 +30,19 @@ cd SmartBlog
 
 然后您只需要执行目录内的 install.sh ，即可进行安装。
 
-本安装脚本默认使用 nginx+uwsgi 执行模式，如果您没有修改 uwsgi.json 文件中的端口号，那么清将n ginx_example 文件放到您的 nginx 软件包（默认位置在/etc/nginx/sites-enabled)的网站配置目录下，并且将文件内的{your SmartBlog location}替换成您的SmartBlog存放目录。
+本安装脚本默认使用 nginx+uwsgi 执行模式，如果您没有修改 uwsgi.json 文件中的端口号，那么请将 nginx_example 文件放到您的 nginx 软件包（默认位置在 /etc/nginx/sites-enabled )的网站配置目录下，并且将文件内的 {your SmartBlog location} 替换成您的 SmartBlog 存放目录。
 
 ## 开始运行
 
-您可以使用 Tmux 或者 Screen 等工具运行 SmartBlog 。您只需要执行 `./start.sh`就可以打开您的博客。
+您可以使用 Tmux 或者 Screen 等工具运行 SmartBlog 。您只需要执行 `./start.sh` 就可以打开您的博客。
 
-由于缓存，每次添加文章，更新文章列表等操作时，您需要重新启动SmartBlog来重新读取数据。若要做到自动监控并且重启SmartBlog，请看下节
+由于缓存，每次添加文章，更新文章列表等操作时，您需要重新启动 SmartBlog 来重新读取数据。若要做到自动监控并且重启 SmartBlog ，请看下节
 
 ## 持续运行并监控您的博客
 
-为了避免每次更新，程序错误给您带来的困扰。SmartBlog强烈推荐您使用基于NodeJS的监控程序：PM2
+为了避免每次更新，程序错误给您带来的困扰。 SmartBlog 强烈推荐您使用基于 NodeJS 的监控程序： PM2
 
-有关PM2的安装请查看[How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04)和[PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
+有关PM2的安装请查看 [How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04) 和 [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
 
 然后，您只需要运行
 
@@ -50,7 +51,7 @@ pm2 start start.json
 
 ```
 
-就可以实现在更新文件或者程序错误之后，自动重启SmartBlog。
+就可以实现在更新文件或者程序错误之后，自动重启 SmartBlog。
 
 您还可以使用
 
@@ -61,7 +62,7 @@ pm2 save
 
 使得您的 SmartBlog 能够在系统开机的时候，自动启动
 
-## 如何使用manage.py
+## 如何使用管理脚本
 
 您可以随时使用`./manage.py -h`来获取 SmartBlog 管理模块的帮助信息
 
