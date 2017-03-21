@@ -3,9 +3,7 @@ import json
 
 import PyRSS2Gen
 
-from common import file
-from common import markdown
-
+from common import file,markdown
 
 class NoOutput:
     def __init__(self):

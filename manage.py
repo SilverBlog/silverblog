@@ -2,10 +2,7 @@
 # -*- coding: utf-8 -*-
 import argparse
 
-from manage import build_rss
-from manage import build_static_page
-from manage import new_post
-from manage import update_post
+from manage import build_rss,build_static_page,new_post,update_post
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

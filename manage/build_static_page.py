@@ -2,8 +2,7 @@ import json
 import os
 import shutil
 
-from common import file
-from common import page
+from common import file,page
 
 
 def build():

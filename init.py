@@ -7,9 +7,7 @@ import os.path
 import memcache
 from flask import Flask, abort
 
-from common import file
-from common import markdown
-from common import page
+from common import file,page,markdown
 
 
 def restful_result(name):
