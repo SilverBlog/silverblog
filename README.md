@@ -36,7 +36,7 @@ cd SmartBlog
 
 您需要修改处于 config 文件夹下的 system.json 。这是您的全局配置文件。以下是变量定义：(记得，Json 是不能支持注释的)
 
-```json
+```
 {
   "Project_Name": "",(网站名称)
   "Project_Description":"",(网站简介，显示于副标题)
@@ -57,7 +57,7 @@ cd SmartBlog
 ```
 您需要编辑 menu.json ，menu.json为导航栏的配置文件
 
-```json
+```
 [
   {
     "name": "主页",(显示的名称)
