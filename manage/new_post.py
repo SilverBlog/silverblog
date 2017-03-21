@@ -6,7 +6,7 @@ import shutil
 
 from pypinyin import lazy_pinyin
 
-from common import file
+from common import file, get_excerpt
 from manage import get_excerpt
 
 

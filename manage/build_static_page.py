@@ -34,4 +34,4 @@ def build():
                     "./static_page/static/{0}/".format(system_config["Theme"]))
     shutil.copytree("./templates/static/user_file",
                     "./static_page/static/user_file")
-    print("Build Github Pages Success!")
+    print("Create Github Page Success!")
