@@ -4,7 +4,7 @@
 
 SmartBlog是一个基于Python的轻量级博客。
 
-##为什么选择SmartBlog
+## 为什么选择SmartBlog
 
 * 简单、小巧的博客系统
 * 易于安装部署
