@@ -3,8 +3,7 @@ import os.path
 
 from jinja2 import Environment, PackageLoader
 
-from common import file
-from common import markdown
+from common import file,markdown
 
 env = Environment(loader=PackageLoader('init', 'templates'))
 

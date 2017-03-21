@@ -1,7 +1,6 @@
 import re
 
-from common import file
-from common import markdown
+from common import file,markdown
 
 
 def get_excerpt(filename):
