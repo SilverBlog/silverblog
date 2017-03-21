@@ -61,8 +61,8 @@ cd SmartBlog
 [
   {
     "name": "主页",(显示的名称)
-    "url": "index"(访问地址)
-    "absolute":true(绝对路径开关，如果此处为 true ，URL便为绝对路径)
+    "url": "index",(访问地址)
+    "absolute": true(绝对路径开关，如果此处为 true ，URL便为绝对路径)
   }
 ]
 ```
@@ -83,6 +83,7 @@ cd SmartBlog
 
 ```shell
 pm2 start start.json
+
 ```
 
 就可以实现在更新文件或者程序错误之后，自动重启 SmartBlog。
