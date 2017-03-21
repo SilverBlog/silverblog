@@ -30,7 +30,42 @@ cd SmartBlog
 
 然后您只需要执行目录内的 install.sh ，即可进行安装。
 
-本安装脚本默认使用 nginx+uwsgi 执行模式，如果您没有修改 uwsgi.json 文件中的端口号，那么请将 nginx_example 文件放到您的 nginx 软件包（默认位置在 /etc/nginx/sites-enabled )的网站配置目录下，并且将文件内的 {your SmartBlog location} 替换成您的 SmartBlog 存放目录。
+本安装脚本默认使用 nginx+uwsgi 执行模式，如果您没有修改 uwsgi.json 文件中的端口号，那么请将 nginx_example 文件放到您的 nginx 软件包(默认位置在 /etc/nginx/sites-enabled )的网站配置目录下，并且将文件内的 {your SmartBlog location} 替换成您的 SmartBlog 存放目录。
+
+## 配置您的 SmartBlog
+
+您需要修改处于 config 文件夹下的 system.json 。这是您的全局配置文件。以下是变量定义：(记得，Json 是不能支持注释的)
+
+```json
+{
+  "Project_Name": "",(网站名称)
+  "Project_Description":"",(网站简介，显示于副标题)
+  "Project_URL":"",网站访问地址)
+  "Author_Image":"",(作者头像)
+  "Author_Name":"",(作者姓名)
+  "Author_Introduction":"",(作者介绍)
+  "Cover_Image":"",(首页头图，可选)
+  "Paging": 10,(列表分页数)
+  "Cache": true,(是否采用缓存)
+  "Theme": "casper",(主题,这里为主题文件夹名称)
+  "Memcached_Connect":"127.0.0.1:11211",(memcache服务器地址)
+  "API_Password":"",(API的PSK密码，备用)
+  "Rss_Full_Content":true,(RSS全文输出开关)
+  "Restful_API":false,(Restful输出开关)
+  "Editor":"vim"(默认编辑器)
+}
+```
+您需要编辑 menu.json ，menu.json为导航栏的配置文件
+
+```json
+[
+  {
+    "name": "主页",(显示的名称)
+    "url": "index"(访问地址)
+    "absolute":true(绝对路径开关，如果此处为 true ，URL便为绝对路径)
+  }
+]
+```
 
 ## 开始运行
 
@@ -68,9 +103,9 @@ pm2 save
 
 以下是功能列举：
 
-- `./manage.py new` 增加一篇新文章（您可以通过指定一个 editor 或者一个 json 文件的方法来编辑和添加文章）
+- `./manage.py new` 增加一篇新文章(您可以通过指定一个 editor 或者一个 json 文件的方法来编辑和添加文章)
 
-示例:
+添加文章 json 示例:
 ```json
 {
 	"title":"您好,世界!"
@@ -81,7 +116,7 @@ pm2 save
 
 - `./manage.py update` 更新文章列表
 
-- `./manage.py build-rss` 生成RSS文件（每次添加文章或更新文章列表的时候，无需调用此命令）
+- `./manage.py build-rss` 生成RSS文件(每次添加文章或更新文章列表的时候，无需调用此命令)
 
 - `./manage.py build-gh-page` 在 ./static_page 文件夹下生成静态页面
 
