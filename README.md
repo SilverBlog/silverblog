@@ -83,7 +83,6 @@ cd SmartBlog
 
 ```shell
 pm2 start start.json
-
 ```
 
 就可以实现在更新文件或者程序错误之后，自动重启 SmartBlog。
