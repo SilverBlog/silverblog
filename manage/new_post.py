@@ -22,7 +22,7 @@ def get_name(nameinput):
 def new_post(name, title, filename, editor):
     if len(name) == 0:
         name = get_name(title)
-    if os.path.isfile(filename):
+    if os.path.exists(filename):
         shutil.copyfile(filename, "./document/{0}.md".format(name))
     else:
         if editor is not None:
@@ -37,7 +37,7 @@ def new_post(name, title, filename, editor):
     file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False))
 
 
-def new_post_init(config_file=None, editor="None"):
+def new_post_init(config_file=None, editor="vim"):
     if config_file is not None and os.path.exists(config_file):
         config = json.loads(file.read_file(config_file))
         title = config["title"]
@@ -47,11 +47,10 @@ def new_post_init(config_file=None, editor="None"):
         title = input("Please enter the title of the article:")
         name = input("Please enter the URL (Leave a blank use pinyin):")
         filename = input("Please enter the file path to copy (blank or Non-existent will be new):")
-    if editor=="None":
+    if editor is not None:
         system_info = json.loads(file.read_file("./config/system.json"))
         if "Editor" in system_info:
             editor=system_info["Editor"]
-        else:
-            editor=None
+
     new_post(name, title, filename, editor)
     print("Create a new article successfully!")
