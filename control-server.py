@@ -9,7 +9,7 @@ from manage import new_post
 app = Flask(__name__)
 
 
-@app.route('/control/newpost', methods=['POST'])
+@app.route('/control/new', methods=['POST'])
 def new():
     title = request.json["title"]
     content = request.json["content"]
