@@ -36,33 +36,33 @@ cd SmartBlog
 
 您需要修改处于 config 文件夹下的 system.json 。这是您的全局配置文件。以下是变量定义：(记得，Json 是不能支持注释的)
 
-```
+```json
 {
-  "Project_Name": "",(网站名称)
-  "Project_Description":"",(网站简介，显示于副标题)
-  "Project_URL":"",网站访问地址)
-  "Author_Image":"",(作者头像)
-  "Author_Name":"",(作者姓名)
-  "Author_Introduction":"",(作者介绍)
-  "Cover_Image":"",(首页头图，可选)
-  "Paging": 10,(列表分页数)
-  "Cache": true,(是否采用缓存)
-  "Theme": "casper",(主题,这里为主题文件夹名称)
-  "Memcached_Connect":"127.0.0.1:11211",(memcache服务器地址)
-  "API_Password":"",(API的PSK密码，备用)
-  "Rss_Full_Content":true,(RSS全文输出开关)
-  "Restful_API":false,(Restful输出开关)
-  "Editor":"vim"(默认编辑器)
+  "Project_Name": "", (网站名称)
+  "Project_Description":"", (网站简介，显示于副标题)
+  "Project_URL":"", (网站访问地址)
+  "Author_Image":"", (作者头像)
+  "Author_Name":"", (作者姓名)
+  "Author_Introduction":"", (作者介绍)
+  "Cover_Image":"", (首页头图，可选)
+  "Paging": 10, (列表分页数)
+  "Cache": true, (是否采用缓存)
+  "Theme": "casper", (主题,这里为主题文件夹名称)
+  "Memcached_Connect":"127.0.0.1:11211", (memcache服务器地址)
+  "API_Password":"", (API的PSK密码，备用)
+  "Rss_Full_Content":true, (RSS全文输出开关)
+  "Restful_API":false, (Restful输出开关)
+  "Editor":"vim" (默认编辑器)
 }
 ```
 您需要编辑 menu.json ，menu.json为导航栏的配置文件
 
-```
+```json
 [
   {
-    "name": "主页",(显示的名称)
-    "url": "index",(访问地址)
-    "absolute": true(绝对路径开关，如果此处为 true ，URL便为绝对路径)
+    "name": "主页", (显示的名称)
+    "url": "index", (访问地址)
+    "absolute": true (绝对路径开关，如果此处为 true ，URL 便为绝对路径)
   }
 ]
 ```
