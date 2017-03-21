@@ -37,7 +37,7 @@ def new_post(name, title, filename, editor):
     file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False))
 
 
-def new_post_init(config_file=None, editor="vim"):
+def new_post_init(config_file=None, editor="None"):
     if config_file is not None and os.path.exists(config_file):
         config = json.loads(file.read_file(config_file))
         title = config["title"]
@@ -47,5 +47,11 @@ def new_post_init(config_file=None, editor="vim"):
         title = input("Please enter the title of the article:")
         name = input("Please enter the URL (Leave a blank use pinyin):")
         filename = input("Please enter the file path to copy (blank or Non-existent will be new):")
+    if editor=="None":
+        system_info = json.loads(file.read_file("./config/system.json"))
+        if "Editor" in system_info:
+            editor=system_info["Editor"]
+        else:
+            editor=None
     new_post(name, title, filename, editor)
     print("Success!")
