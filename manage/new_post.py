@@ -54,4 +54,4 @@ def new_post_init(config_file=None, editor="None"):
         else:
             editor=None
     new_post(name, title, filename, editor)
-    print("Success!")
+    print("Create a new article successfully!")
