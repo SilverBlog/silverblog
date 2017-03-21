@@ -67,7 +67,7 @@ pm2 save
 
 以下是功能列举：
 
-`./manage.py new` 增加一篇新文章（您可以通过指定一个 editor 或者一个 json 文件的方法来编辑和添加文章）
+- `./manage.py new` 增加一篇新文章（您可以通过指定一个 editor 或者一个 json 文件的方法来编辑和添加文章）
 
 示例:
 ```json
@@ -78,11 +78,11 @@ pm2 save
 }
 ```
 
-`./manage.py update` 更新文章列表
+- `./manage.py update` 更新文章列表
 
-`./manage.py build-rss` 生成RSS文件（每次添加文章或更新文章列表的时候，无需调用此命令）
+- `./manage.py build-rss` 生成RSS文件（每次添加文章或更新文章列表的时候，无需调用此命令）
 
-`./manage.py build-gh-page` 在 ./static_page 文件夹下生成静态页面
+- `./manage.py build-gh-page` 在 ./static_page 文件夹下生成静态页面
 
 ## 参与开发
 
