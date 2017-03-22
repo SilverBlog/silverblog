@@ -3,24 +3,26 @@
 ***
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/qwe7002/SmartBlog/blob/master/LICENSE)
 
-SmartBlog是一个基于Python的轻量级博客。
+[中文文档](https://github.com/qwe7002/SmartBlog/blob/master/README-zh.md)
 
-## 为什么选择 SmartBlog
+SmartBlog is a Python-based lightweight blog.
 
-* 简单、小巧的博客系统
-* 易于安装部署
-* 完整的 Rss 支持
-* 模块化设计，方便自行添加，删除
-* 无数据库化设计，提供 Memcache 缓存加速
-* 拥有媲美 Hexo 的静态页面生成模块，只需一行命令，就可在 Github Page 上运行
-* 支持 Mac os 和 Linux
-* 拥有一个正在开发的Android客户端
+## Why SmartBlog is selected
 
-## 如何安装
+* Simple, compact blog system
+* Easy to install and deploy
+* Complete Rss support
+* Modular design
+* No database design
+* Has a static page generation module comparable to Hexo, just one line command that runs on Github Page
+* Supports Mac os and Linux
+* Have an Android client that is being developed
 
-目前，本程序只提供了 Ubuntu 的安装方法，我们在之后将陆续提供其他系统的安装脚本
+## how to install
 
-首先您需要 Clone 本项目仓库：
+At present, the program only provides Ubuntu installation method, we will continue to provide other systems after the installation script
+
+First you need Clone Project Warehouse:
 
 ```shell
 sudo apt install git
@@ -28,107 +30,107 @@ git clone https://github.com/qwe7002/SmartBlog.git
 cd SmartBlog
 ```
 
-然后您只需要执行目录内的 install.sh ，即可进行安装。
+Then you only need to execute the install.sh in the directory to install it.
 
-本安装脚本默认使用 nginx+uwsgi 执行模式，如果您没有修改 uwsgi.json 文件中的端口号，那么请将 nginx_example 文件放到您的 nginx 软件包(默认位置在 /etc/nginx/sites-enabled )的网站配置目录下，并且将文件内的 {your SmartBlog location} 替换成您的 SmartBlog 存放目录。
+This install script defaults to the nginx+uwsgi execution mode. If you did not modify the port number in the uwsgi.json file, place the nginx_example file in your nginx package (the default location is in /etc/nginx/sites-enabled) Site configuration directory, and replace the {your SmartBlog location} in your file with your SmartBlog storage directory.
 
-## 配置您的 SmartBlog
+## Configure your SmartBlog
 
-您需要修改处于 config 文件夹下的 system.json 。这是您的全局配置文件。以下是变量定义：(记得，Json 是不能支持注释的)
+You need to modify the system.json under the config folder. This is your global profile. The following is the variable definition: (remember, Json can not support the comment)
 
 ```
 {
-  "Project_Name": "", (网站名称)
-  "Project_Description":"", (网站简介，显示于副标题)
-  "Project_URL":"", (网站访问地址)
-  "Author_Image":"", (作者头像)
-  "Author_Name":"", (作者姓名)
-  "Author_Introduction":"", (作者介绍)
-  "Cover_Image":"", (首页头图，可选)
-  "Paging": 10, (列表分页数)
-  "Cache": true, (是否采用缓存)
-  "Theme": "casper", (主题,这里为主题文件夹名称)
-  "Memcached_Connect":"127.0.0.1:11211", (memcache服务器地址)
-  "API_Password":"", (API的PSK密码，备用)
-  "Rss_Full_Content":true, (RSS全文输出开关)
-  "Restful_API":false, (Restful输出开关)
-  "Editor":"vim" (默认编辑器)
+  "Project_Name": "", (website name)
+  "Project_Description": "", (website profile, shown in subtitle)
+  "Project_URL": "", (website access address)
+  "Author_Image": "", (author avatar)
+  "Author_Name": "", (author name)
+  "Author_Introduction": "", (by the author)
+  "Cover_Image": "", (Home header, optional)
+  "Paging": 10, (list of pages)
+  "Cache": true, (whether to use cache)
+  "Theme": "casper", (theme, here for the theme folder name)
+  "Memcached_Connect": "127.0.0.1: 11211", (memcache server address)
+  "API_Password": "", (API's PSK password, alternate)
+  "Rss_Full_Content": true, (RSS full text output switch)
+  "Restful_API": false, (Restful output switch)
+  "Editor": "vim" (default editor)
 }
 ```
-您需要编辑 menu.json ，menu.json为导航栏的配置文件
+You need to edit menu.json, menu.json for the navigation bar configuration file
 
 ```
 [
-  {
-    "name": "主页", (显示的名称)
-    "url": "index", (访问地址)
-    "absolute": true (绝对路径开关，如果此处为 true ，URL 便为绝对路径)
-  }
+  {
+    "name": "home page", (displayed name)
+    "url": "index", (access address)
+    "absolute": true (absolute path switch, if true here, the URL is the absolute path)
+  }
 ]
 ```
 
-## 开始运行
+## Start running
 
-您可以使用 Tmux 或者 Screen 等工具运行 SmartBlog 。您只需要执行 `./start.sh` 就可以打开您的博客。
+You can run SmartBlog using tools such as Tmux or Screen. You only need to execute `./Start.sh` to open your blog.
 
-由于缓存，每次添加文章，更新文章列表等操作时，您需要重新启动 SmartBlog 来重新读取数据。若要做到自动监控并且重启 SmartBlog ，请看下节
+Because of the cache, every time you add an article, update a list of articles, you need to restart SmartBlog to reread the data. To do automatic monitoring and restart SmartBlog, see the next section
 
-## 持续运行并监控您的博客
+## Keep running and monitor your blog
 
-为了避免每次更新，程序错误给您带来的困扰。 SmartBlog 强烈推荐您使用基于 NodeJS 的监控程序： PM2
+In order to avoid each update, the program error to bring you the trouble. SmartBlog strongly recommends that you use NodeJS-based monitoring programs: PM2
 
-有关PM2的安装请查看 [How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04) 和 [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
+For more information about PM2 installation, please see [How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16- 04) and [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
 
-然后，您只需要运行
+Then you just need to run
 
 ```shell
 pm2 start start.json
-
 ```
 
-就可以实现在更新文件或者程序错误之后，自动重启 SmartBlog。
+It can be achieved in the update file or program error, automatically restart SmartBlog.
 
-您还可以使用
+You can also use it
 
 ```shell
 pm2 startup
 pm2 save
 ```
 
-使得您的 SmartBlog 能够在系统开机的时候，自动启动
+So that your SmartBlog can start automatically when the system is powered on
 
-## 如何使用管理脚本
+## How to use administrative scripts
 
-您可以随时使用`./manage.py -h`来获取 SmartBlog 管理模块的帮助信息
+You can use `./manage.py -h` at any time to get help information for the SmartBlog management module
 
-以下是功能列举：
+The following is a list of features:
 
-- `./manage.py new` 增加一篇新文章(您可以通过指定一个 editor 或者一个 json 文件的方法来编辑和添加文章)
+- `./manage.py new` Add a new article (you can edit and add an article by specifying an editor or a json file)
 
-添加文章 json 示例:
+Add article json example:
+
 ```json
 {
-	"title":"您好,世界!"
+	"title":"hello world"
 	"name":"hello-world"
 	"file":"~/document/hello-world.md"
 }
 ```
 
-- `./manage.py update` 更新文章列表
+- `./manage.py update` update the list of articles
 
-- `./manage.py build-rss` 生成RSS文件(每次添加文章或更新文章列表的时候，无需调用此命令)
+- `./manage.py build-rss` Generate an RSS file (no need to call this command every time you add an article or update a list of articles)
 
-- `./manage.py build-gh-page` 在 ./static_page 文件夹下生成静态页面
+- `./manage.py build-gh-page` Generate static pages in the ./static_page folder
 
-## 参与开发
+## participate in development
 
-我们欢迎您在 SmartBlog 项目的 GitHub 上报告 issue 或者 pull request。
+We welcome you to report the issue or pull request on GitHub of the SmartBlog project.
 
-如果您还不熟悉GitHub的Fork and Pull开发模式，您可以阅读[GitHub的文档](https://help.github.com/articles/using-pull-requests)获得更多的信息。
+If you are not familiar with GitHub's Fork and Pull development mode, you can read [GitHub's documentation](https://help.github.com/articles/using-pull-requests) for more information.
 
-## 分发协议
+## Distribution protocol
 
-本软件采用 BSD 3-clause 协议分发
+This software is distributed using BSD 3-clause protocol
 
 Copyright (c) 2017, SmartBlog
 All rights reserved.
