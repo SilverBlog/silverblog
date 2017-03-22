@@ -83,7 +83,6 @@ cd SmartBlog
 
 ```shell
 pm2 start start.json
-
 ```
 
 就可以实现在更新文件或者程序错误之后，自动重启 SmartBlog。
@@ -108,8 +107,8 @@ pm2 save
 添加文章 json 示例:
 ```json
 {
-	"title":"您好,世界!"
-	"name":"hello-world"
+	"title":"您好,世界!",
+	"name":"hello-world",
 	"file":"~/document/hello-world.md"
 }
 ```
