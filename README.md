@@ -108,8 +108,8 @@ pm2 save
 添加文章 json 示例:
 ```json
 {
-	"title":"您好,世界!"
-	"name":"hello-world"
+	"title":"您好,世界!",
+	"name":"hello-world",
 	"file":"~/document/hello-world.md"
 }
 ```
