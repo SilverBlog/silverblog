@@ -79,7 +79,7 @@ Because of the cache, every time you add an article, update a list of articles, 
 
 In order to avoid each update, the program error to bring you the trouble. SmartBlog strongly recommends that you use NodeJS-based monitoring programs: PM2
 
-For more information about PM2 installation, please see [How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16- 04) and [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
+For more information about PM2 installation, please see [How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04) and [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
 
 Then you just need to run
 
