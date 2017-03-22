@@ -110,13 +110,8 @@ Add article json example:
 
 ```json
 {
-<<<<<<< HEAD
-	"title":"hello world"
-	"name":"hello-world"
-=======
-	"title":"您好,世界!",
+	"title":"hello world",
 	"name":"hello-world",
->>>>>>> 9d371494a564ceab58a7576b83bb394887dfb2da
 	"file":"~/document/hello-world.md"
 }
 ```
