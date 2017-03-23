@@ -1,15 +1,13 @@
 import re
 
-from common import file,markdown
+from common import file, markdown
 
 
 def get_excerpt(filename):
     content = file.read_file(filename)
-    filter_excerpt = filter_tags(markdown.markdown(content))
-    if len(filter_excerpt) > 140:
-        excerpt = filter_excerpt[0:140]
-    else:
-        excerpt = filter_excerpt
+    excerpt = filter_tags(markdown.markdown(content))
+    if len(excerpt) > 140:
+        excerpt = excerpt[0:140]
     return excerpt
 
 

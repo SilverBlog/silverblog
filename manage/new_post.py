@@ -9,6 +9,8 @@ from pypinyin import lazy_pinyin
 from common import file
 from manage import get_excerpt
 
+system_info = json.loads(file.read_file("./config/system.json"))
+
 
 def get_name(nameinput):
     name_raw = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", nameinput)
@@ -19,38 +21,34 @@ def get_name(nameinput):
     return name[1:len(name)]
 
 
-def new_post(name, title, filename, editor):
-    if len(name) == 0:
-        name = get_name(title)
-    if os.path.exists(filename):
-        shutil.copyfile(filename, "./document/{0}.md".format(name))
-    else:
-        if editor is not None:
-            os.system("{0} ./document/{1}.md".format(editor, name))
-    excerpt = get_excerpt.get_excerpt("./document/{0}.md".format(name))
-    post_info = {"name": name, "title": title, "excerpt": excerpt, "time": str(datetime.date.today())}
-    if os.path.isfile("./config/page.json"):
-        page_list = json.loads(file.read_file("./config/page.json"))
-    else:
-        page_list = list()
-    page_list.insert(0, post_info)
-    file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False))
-
-
-def new_post_init(config_file=None, editor="vim"):
-    if config_file is not None and os.path.exists(config_file):
-        config = json.loads(file.read_file(config_file))
+def new_post_init(config, editor):
+    if config is not None:
+        config = json.loads(file.read_file(config))
         title = config["title"]
         name = config["name"]
         filename = config["file"]
     else:
         title = input("Please enter the title of the article:")
         name = input("Please enter the URL (Leave a blank use pinyin):")
-        filename = input("Please enter the file path to copy (blank or Non-existent will be new):")
-    if editor is not None:
-        system_info = json.loads(file.read_file("./config/system.json"))
-        if "Editor" in system_info:
-            editor=system_info["Editor"]
+        filename = None
 
-    new_post(name, title, filename, editor)
+    if len(name) == 0:
+        name = get_name(title)
+
+    if os.path.exists(filename):
+        shutil.copyfile(filename, "./document/{0}.md".format(name))
+
+    if config is not None:
+        # Check if the editor configuration exists
+        if editor is None:
+            editor = "vim"
+            if "Editor" in system_info:
+                editor = system_info["Editor"]
+        os.system("{0} ./document/{1}.md".format(editor, name))
+    excerpt = get_excerpt.get_excerpt("./document/{0}.md".format(name))
+    post_info = {"name": name, "title": title, "excerpt": excerpt, "time": str(datetime.date.today())}
+    page_list = json.loads(file.read_file("./config/page.json"))
+    page_list.insert(0, post_info)
+    file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False))
+
     print("Create a new article successfully!")

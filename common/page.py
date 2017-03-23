@@ -33,16 +33,29 @@ def build_index(page, system_config, page_list, menu_list, static):
 
 def build_page(name, system_config, page_list, page_name_list, menu_list, static):
     content = file.read_file("document/{0}.md".format(name))
+    page_info = {"title": "undefined"}
     if name in page_name_list:
         page_info = page_list[page_name_list.index(name)]
-    else:
-        if os.path.exists("document/{0}.json".format(name)):
-            page_info = json.loads(file.read_file("document/{0}.json".format(name)))
-        else:
-            page_info = {"title": "undefined"}
+    if os.path.exists("document/{0}.json".format(name)):
+        page_info = json.loads(file.read_file("document/{0}.json".format(name)))
     document = markdown.markdown(content)
     template = env.get_template("./{0}/post.html".format(system_config["Theme"]))
     result = template.render(page_info=page_info, menu_list=menu_list, content=document,
                              system_config=system_config, static=static)
 
     return result
+
+def build_restful_result(name, system_config, page_list, page_name_list, menu_list):
+    content = None
+    page_info = None
+    if name != "index":
+        content = file.read_file("document/{0}.md".format(name))
+        page_info = {"title": "undefined"}
+        if name in page_name_list:
+            page_info = page_list[page_name_list.index(name)]
+        if os.path.exists("document/{0}.json".format(name)):
+            page_info = json.loads(file.read_file("document/{0}.json".format(name)))
+        content = markdown.markdown(content)
+    result = {"menu_list": menu_list, "page_list": page_list, "system_config": system_config, "page_info": page_info,
+              "content": content}
+    return json.dumps(result, ensure_ascii=False)

@@ -9,7 +9,7 @@ def update():
     page_list = json.loads(file.read_file("./config/page.json"))
     remove_list = list()
     for item in page_list:
-        if not os.path.isfile("./document/" + item["name"] + ".md"):
+        if not os.path.exists("./document/" + item["name"] + ".md"):
             remove_list.append(item["name"])
         else:
             item["excerpt"] = get_excerpt.get_excerpt("./document/" + item["name"] + ".md")

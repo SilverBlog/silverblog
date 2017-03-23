@@ -11,10 +11,7 @@ if __name__ == '__main__':
     parser.add_argument("--editor", help="Your favorite editor(e.g: vim,nano,gedit)")
     args = parser.parse_args()
     if args.command == "new":
-        if args.editor is not None:
-            new_post.new_post_init(args.config, args.editor)
-        else:
-            new_post.new_post_init(args.config)
+        new_post.new_post_init(args.config, args.editor)
         build_rss.build_rss()
     if args.command == "update":
         update_post.update()
