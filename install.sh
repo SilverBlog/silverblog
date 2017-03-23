@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-sudo apt-get install nginx uwsgi uwsgi-plugin-python3 python3-pip memcached python3-dev libffi-dev
+sudo apt-get install nginx uwsgi uwsgi-plugin-python3 python3-pip memcached
 sudo pip3 install -r ./python_package_list
 chmod +x manage.py
 chmod +x start.sh
