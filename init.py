@@ -52,16 +52,19 @@ def rss():
 @app.route('/<file_name>/p/<page_index>/')
 def route(file_name="index", page_index="1"):
     result=None
+
     if cache_switch:
         result = mc.get("{0}/p/{1}".format(file_name, str(page_index)))
+
+    if restful_switch and result is None:
+        result = page.build_restful_result(file_name, system_config, page_list, page_name_list, menu_list)
+
     if result is None:
-        if restful_switch:
-            result = page.build_restful_result(file_name,system_config, page_list, page_name_list, menu_list)
-        else:
-            if file_name == "index":
-                result, row = page.build_index(int(page_index), system_config, page_list, menu_list, False)
-            if os.path.exists("document/{0}.md".format(file_name)):
-                result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list, False)
+        if file_name == "index":
+            result, row = page.build_index(int(page_index), system_config, page_list, menu_list, False)
+        if os.path.exists("document/{0}.md".format(file_name)):
+            result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list, False)
+
     if result is not None:
         if cache_switch:
             mc.set("{0}/p/{1}".format(file_name, str(page_index)), result)
