@@ -22,7 +22,7 @@ mc = None
 app = Flask(__name__)
 
 
-@app.route('/managek/reload_config')
+@app.route('/manage/reload_config')
 def load_config():
     global system_config, menu_list, rss, restful_switch, page_name_list, template_config, cache_switch, mc, page_list
     system_config = json.loads(file.read_file("config/system.json"))
