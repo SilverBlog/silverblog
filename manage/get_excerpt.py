@@ -34,6 +34,4 @@ def filter_tags(html):
     s = blank_one.sub('', s)
     blank_two = re.compile('\r')
     s = blank_two.sub('', s)
-    blank_three = re.compile(' ')
-    s = blank_three.sub('', s)
     return s
