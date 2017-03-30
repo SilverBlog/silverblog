@@ -11,32 +11,46 @@ from common import file, page
 
 app = Flask(__name__)
 
-system_config = json.loads(file.read_file("config/system.json"))
-system_config["API_Password"] = None
+@@app.route('/managek/reload_config')
+def load_config():
+    global system_config,menu_list,rss,restful_switch,page_name_list,template_config,cache_switch
+    system_config = json.loads(file.read_file("config/system.json"))
+    system_config["API_Password"] = None
+    
+    page_list = json.loads(file.read_file("./config/page.json"))
+    
+    if os.path.exists("./config/menu.json"):
+        menu_list = json.loads(file.read_file("./config/menu.json"))
+    
 
-page_list = json.loads(file.read_file("./config/page.json"))
+    if os.path.exists("document/rss.xml"):
+        rss = file.read_file("document/rss.xml")
+    
 
-if os.path.exists("./config/menu.json"):
-    menu_list = json.loads(file.read_file("./config/menu.json"))
+    if "Restful_API" in system_config:
+        if system_config["Restful_API"]:
+            restful_switch = True
 
+    for item in page_list:
+        page_name_list.append(item["name"])
+    
+    cache_switch = system_config["Cache"]
+    if cache_switch:
+        mc = memcache.Client([system_config["Memcached_Connect"]], socket_timeout=500, debug=0)
+        mc.flush_all()
+
+    if os.path.exists("./{0}/config.json".format(system_config["Theme"])):
+        template_config = json.loads("./{0}/config.json".format(system_config["Theme"]))
+    return "success"
+
+system_config = None
+menu_list = None
 rss = None
-if os.path.exists("document/rss.xml"):
-    rss = file.read_file("document/rss.xml")
-
 restful_switch = False
-if "Restful_API" in system_config:
-    if system_config["Restful_API"]:
-        restful_switch = True
-
 page_name_list = list()
-for item in page_list:
-    page_name_list.append(item["name"])
-
-cache_switch = system_config["Cache"]
-if cache_switch:
-    mc = memcache.Client([system_config["Memcached_Connect"]], socket_timeout=500, debug=0)
-    mc.flush_all()
-
+template_config = None
+cache_switch=False
+load_config()
 
 # Subscribe
 @app.route("/rss")
@@ -61,9 +75,9 @@ def route(file_name="index", page_index="1"):
 
     if result is None:
         if file_name == "index":
-            result, row = page.build_index(int(page_index), system_config, page_list, menu_list, False)
+            result, row = page.build_index(int(page_index), system_config, page_list, menu_list, False,template_config)
         if os.path.exists("document/{0}.md".format(file_name)):
-            result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list, False)
+            result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list, False,template_config)
 
     if result is not None:
         if cache_switch:
