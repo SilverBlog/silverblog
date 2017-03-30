@@ -50,11 +50,9 @@ def load_config():
 
     if os.path.exists("./{0}/config.json".format(system_config["Theme"])):
         template_config = json.loads("./{0}/config.json".format(system_config["Theme"]))
-    return "success"
-
+    return "Reload the configuration file successfully"
 
 load_config()
-
 
 # Subscribe
 @app.route("/rss")
