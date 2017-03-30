@@ -1,7 +1,5 @@
-cffi>=1.10.0
 Flask>=0.12
 misaka>=2.1.0
 pypinyin>=0.16.0
 PyRSS2Gen>=1.1
 python-memcached>=1.58
-
