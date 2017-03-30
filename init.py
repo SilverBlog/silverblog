@@ -48,8 +48,8 @@ def load_config():
         mc = memcache.Client([system_config["Memcached_Connect"]], socket_timeout=500, debug=0)
         mc.flush_all()
 
-    if os.path.exists("./{0}/config.json".format(system_config["Theme"])):
-        template_config = json.loads("./{0}/config.json".format(system_config["Theme"]))
+    if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
+        template_config = json.loads("./templates/{0}/config.json".format(system_config["Theme"]))
     return "Reload the configuration file successfully"
 
 load_config()
