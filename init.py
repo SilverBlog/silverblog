@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 import json
 import os
 import os.path
@@ -50,6 +48,7 @@ def load_config():
 
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
         template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
+
     return "Reload the configuration file successfully"
 
 load_config()
