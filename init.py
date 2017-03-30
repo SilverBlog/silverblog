@@ -49,7 +49,7 @@ def load_config():
         mc.flush_all()
 
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
-        template_config = json.loads("./templates/{0}/config.json".format(system_config["Theme"]))
+        template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
     return "Reload the configuration file successfully"
 
 load_config()
