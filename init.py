@@ -9,6 +9,15 @@ from flask import Flask, abort
 
 from common import file, page
 
+#Global Var
+system_config = None
+menu_list = None
+rss = None
+restful_switch = False
+page_name_list = list()
+template_config = None
+cache_switch=False
+
 app = Flask(__name__)
 
 @@app.route('/managek/reload_config')
@@ -43,13 +52,6 @@ def load_config():
         template_config = json.loads("./{0}/config.json".format(system_config["Theme"]))
     return "success"
 
-system_config = None
-menu_list = None
-rss = None
-restful_switch = False
-page_name_list = list()
-template_config = None
-cache_switch=False
 load_config()
 
 # Subscribe
