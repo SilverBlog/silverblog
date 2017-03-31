@@ -56,7 +56,7 @@ load_config()
 # Subscribe
 @app.route("/rss")
 @app.route("/feed")
-def rss():
+def load_krss():
     return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
 
 
