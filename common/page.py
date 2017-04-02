@@ -3,12 +3,12 @@ import os.path
 
 from jinja2 import Environment, PackageLoader
 
-from common import file,markdown
+from common import file, markdown
 
 env = Environment(loader=PackageLoader('init', 'templates'))
 
 
-def build_index(page, system_config, page_list, menu_list, static):
+def build_index(page, system_config, page_list, menu_list, static,template_config):
     page_info = {"title": "index"}
     Start_num = -system_config["Paging"] + (int(page) * system_config["Paging"])
     page_row_mod = divmod(len(page_list), system_config["Paging"])
@@ -26,12 +26,13 @@ def build_index(page, system_config, page_list, menu_list, static):
                              page_list=index_list,
                              page_info=page_info,
                              system_config=system_config,
+                             template_config=template_config,
                              page_row=page_row,
                              now_page=page, last_page=page - 1, next_page=page + 1, static=static)
     return result, page_row
 
 
-def build_page(name, system_config, page_list, page_name_list, menu_list, static):
+def build_page(name, system_config, page_list, page_name_list, menu_list, static,template_config):
     content = file.read_file("document/{0}.md".format(name))
     page_info = {"title": "undefined"}
     if name in page_name_list:
@@ -41,9 +42,9 @@ def build_page(name, system_config, page_list, page_name_list, menu_list, static
     document = markdown.markdown(content)
     template = env.get_template("./{0}/post.html".format(system_config["Theme"]))
     result = template.render(page_info=page_info, menu_list=menu_list, content=document,
-                             system_config=system_config, static=static)
-
+                             system_config=system_config, static=static, template_config=template_config)
     return result
+
 
 def build_restful_result(name, system_config, page_list, page_name_list, menu_list):
     content = None
