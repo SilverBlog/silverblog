@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 import argparse
 
-from manage import build_rss,build_static_page,new_post,update_post
+from common import file
+from manage import build_rss, build_static_page, new_post, update_post
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -11,7 +12,10 @@ if __name__ == '__main__':
     parser.add_argument("--editor", help="Your favorite editor(e.g: vim,nano,gedit)")
     args = parser.parse_args()
     if args.command == "new":
-        new_post.new_post_init(args.config, args.editor)
+        config=None
+        if args.config is not None:
+            config=file.read_file(args.config)
+        new_post.new_post_init(config, args.editor)
         build_rss.build_rss()
     if args.command == "update":
         update_post.update()
