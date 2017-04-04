@@ -23,7 +23,7 @@ def get_name(nameinput):
 
 def new_post_init(config, editor):
     if config is not None:
-        config = json.loads(file.read_file(config))
+        config = json.loads(config)
         title = config["title"]
         name = config["name"]
         filename = config["file"]
@@ -38,7 +38,7 @@ def new_post_init(config, editor):
     if os.path.exists(filename):
         shutil.copyfile(filename, "./document/{0}.md".format(name))
 
-    if config is not None:
+    if config is None:
         # Check if the editor configuration exists
         if editor is None:
             editor = "vim"

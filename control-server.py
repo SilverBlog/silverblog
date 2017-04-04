@@ -19,7 +19,9 @@ def new():
     if encode == hash_md5 and len(content) != 0:
         name = new_post.get_name(str(title))
         file.write_file("./document/{0}.md".format(name), str(content))
-        new_post.new_post(None, str(title), None, None)
+        config_raw={"title":str(title),"name":name,"file":"./document/{0}.md".format(name)}
+        config=json.dumps(config_raw)
+        new_post.new_post_init(config, None)
         return '{"status":"ok"}'
     else:
         return '{"status":"no"}'

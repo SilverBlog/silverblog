@@ -1,5 +1,4 @@
 import json
-import os
 import os.path
 
 import memcache
@@ -51,7 +50,9 @@ def load_config():
 
     return "Reload the configuration file successfully"
 
+
 load_config()
+
 
 # Subscribe
 @app.route("/rss")
