@@ -119,6 +119,8 @@ pm2 save
 
 - `./manage.py build-gh-page` 在 ./static_page 文件夹下生成静态页面
 
+你可以使用--static_page参数使链接末尾带有扩展名，以便CDN能够正确访问页面
+
 ## 参与开发
 
 我们欢迎您在 SmartBlog 项目的 GitHub 上报告 issue 或者 pull request。
