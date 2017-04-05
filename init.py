@@ -4,7 +4,7 @@ import os.path
 import memcache
 from flask import Flask, abort
 
-from common import file, page,console
+from common import file, page, console
 
 # Global Var
 system_config = None
@@ -69,24 +69,25 @@ def load_krss():
 @app.route('/<file_name>/p/<page_index>/')
 def route(file_name="index", page_index="1"):
     result = None
-
+    get_from_cache = False
     if cache_switch:
+        get_from_cache = True
         console.log("info", "Trying to get cache: {0}/p/{1}".format(file_name, str(page_index)))
         result = mc.get("{0}/p/{1}".format(file_name, str(page_index)))
-
-    if restful_switch and result is None:
-        result = page.build_restful_result(file_name, system_config, page_list, page_name_list, menu_list)
-
     if result is None:
+        get_from_cache = False
         console.log("info", "Trying to build: {0}/p/{1}".format(file_name, str(page_index)))
-        if file_name == "index":
-            result, row = page.build_index(int(page_index), system_config, page_list, menu_list, False, template_config)
-        if os.path.exists("document/{0}.md".format(file_name)):
-            result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list, False,
-                                     template_config)
+        if restful_switch:
+            result = page.build_restful_result(file_name, system_config, page_list, page_name_list, menu_list)
+        else:
+            if file_name == "index":
+                result, row = page.build_index(int(page_index), system_config, page_list, menu_list, False, template_config)
+            if os.path.exists("document/{0}.md".format(file_name)):
+                result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list, False,
+                                         template_config)
 
     if result is not None:
-        if cache_switch:
+        if cache_switch and not get_from_cache:
             console.log("info", "Writing to cache: {0}/p/{1}".format(file_name, str(page_index)))
             mc.set("{0}/p/{1}".format(file_name, str(page_index)), result)
         console.log("Success", "Get success: {0}/p/{1}".format(file_name, str(page_index)))
