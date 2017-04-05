@@ -10,6 +10,4 @@ ISOTIMEFORMAT = "%Y/%m/%d %X"
 
 def log(state, message, color="none"):
     now_time = time.strftime(ISOTIMEFORMAT, time.localtime())
-    print("\033[{0}m".format(style[color]))
-    print("{0} [{1}] {2}".format(now_time, state, message))
-    print("\033[0m")
+    print("\033[{0}m{0} [{1}] {2}\033[0m".format(style[color],now_time, state, message))
