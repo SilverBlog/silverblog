@@ -19,7 +19,7 @@ def build_index(page, system_config, page_list, menu_list, static,template_confi
     if page_row == 0:
         page_row = 1
     if page <= 0 or page > page_row:
-        return None
+        return None,0
     index_list = page_list[Start_num:Start_num + system_config["Paging"]]
     template = env.get_template("./{0}/index.html".format(system_config["Theme"]))
     result = template.render(menu_list=menu_list,
