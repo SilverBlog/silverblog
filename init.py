@@ -4,7 +4,7 @@ import os.path
 import memcache
 from flask import Flask, abort
 
-from common import file, page
+from common import file, page,console
 
 # Global Var
 system_config = None
@@ -22,6 +22,7 @@ app = Flask(__name__)
 @app.route('/manage/reload_config')
 def load_config():
     global system_config, menu_list, rss, restful_switch, page_name_list, template_config, cache_switch, mc, page_list
+    console.log("info", "Loading configuration")
     system_config = json.loads(file.read_file("config/system.json"))
     system_config["API_Password"] = None
 
@@ -30,7 +31,7 @@ def load_config():
     if os.path.exists("./config/menu.json"):
         menu_list = json.loads(file.read_file("./config/menu.json"))
 
-    if os.path.exists("document/rss.xml"):
+    if os.path.exists("./document/rss.xml"):
         rss = file.read_file("document/rss.xml")
 
     if "Restful_API" in system_config:
@@ -47,7 +48,7 @@ def load_config():
 
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
         template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
-
+    console.log("Success","Reload the configuration file successfully","green")
     return "Reload the configuration file successfully"
 
 
@@ -70,12 +71,14 @@ def route(file_name="index", page_index="1"):
     result = None
 
     if cache_switch:
+        console.log("info", "Trying to get cache: {0}/p/{1}".format(file_name, str(page_index)))
         result = mc.get("{0}/p/{1}".format(file_name, str(page_index)))
 
     if restful_switch and result is None:
         result = page.build_restful_result(file_name, system_config, page_list, page_name_list, menu_list)
 
     if result is None:
+        console.log("info", "Trying to build: {0}/p/{1}".format(file_name, str(page_index)))
         if file_name == "index":
             result, row = page.build_index(int(page_index), system_config, page_list, menu_list, False, template_config)
         if os.path.exists("document/{0}.md".format(file_name)):
@@ -84,6 +87,9 @@ def route(file_name="index", page_index="1"):
 
     if result is not None:
         if cache_switch:
+            console.log("info", "Writing to cache: {0}/p/{1}".format(file_name, str(page_index)))
             mc.set("{0}/p/{1}".format(file_name, str(page_index)), result)
+        console.log("Success", "Get success: {0}/p/{1}".format(file_name, str(page_index)))
         return result
+    console.log("Error", "Can not build: {0}/p/{1}".format(file_name,str(page_index)), "red")
     abort(404)
