@@ -2,7 +2,7 @@ import json
 import os
 import shutil
 
-from common import file,page
+from common import file, page
 
 
 def build(github_mode):
@@ -22,13 +22,14 @@ def build(github_mode):
     page_name_list = list()
     for item in page_list:
         page_name_list.append(item["name"])
-    content, row = page.build_index(1, system_config, page_list, menu_list, html_static,template_config)
+    content, row = page.build_index(1, system_config, page_list, menu_list, html_static, template_config)
     file.write_file("./static_page/index.html", content)
     if row != 1:
+        os.mkdir("./static_page/index/")
         os.mkdir("./static_page/index/p")
         file.write_file("./static_page/index/p/1.html", "<meta http-equiv='refresh' content='0.1; url=/'>")
         for page_id in range(2, row + 1):
-            content, row = page.build_index(page_id, system_config, page_list, menu_list, html_static,template_config)
+            content, row = page.build_index(page_id, system_config, page_list, menu_list, html_static, template_config)
             file.write_file("./static_page/index/p/{0}.html".format(str(page_id)), content)
     for filename in os.listdir("./document/"):
         if filename.endswith(".md"):
