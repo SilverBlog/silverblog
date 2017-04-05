@@ -50,7 +50,7 @@ def load_config():
 
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
         template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
-    console.log("Success","Reload the configuration file successfully","green")
+    console.log("Success", "load the configuration file successfully", "green")
     return "Reload the configuration file successfully"
 
 

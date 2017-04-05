@@ -6,7 +6,7 @@ import shutil
 
 from pypinyin import lazy_pinyin
 
-from common import file,console
+from common import file, console
 from manage import get_excerpt
 
 system_info = json.loads(file.read_file("./config/system.json"))

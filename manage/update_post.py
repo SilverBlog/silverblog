@@ -1,7 +1,7 @@
 import json
 import os.path
 
-from common import file,console
+from common import file, console
 from manage import get_excerpt
 
 

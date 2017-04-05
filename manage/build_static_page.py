@@ -2,7 +2,7 @@ import json
 import os
 import shutil
 
-from common import file, page,console
+from common import file, page, console
 
 
 def build(github_mode):
