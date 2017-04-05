@@ -43,7 +43,9 @@ def load_config():
 
     cache_switch = system_config["Cache"]
     if cache_switch:
+        console.log("info", "Connect memcache...")
         mc = memcache.Client([system_config["Memcached_Connect"]], socket_timeout=500, debug=0)
+        console.log("info", "Clear the Memcache data")
         mc.flush_all()
 
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
@@ -90,7 +92,7 @@ def route(file_name="index", page_index="1"):
         if cache_switch and not get_from_cache:
             console.log("info", "Writing to cache: {0}/p/{1}".format(file_name, str(page_index)))
             mc.set("{0}/p/{1}".format(file_name, str(page_index)), result)
-        console.log("Success", "Get success: {0}/p/{1}".format(file_name, str(page_index)))
+        console.log("Success", "Get success: {0}/p/{1}".format(file_name, str(page_index)),"green")
         return result
     console.log("Error", "Can not build: {0}/p/{1}".format(file_name,str(page_index)), "red")
     abort(404)
