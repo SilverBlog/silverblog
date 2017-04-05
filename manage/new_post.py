@@ -6,7 +6,7 @@ import shutil
 
 from pypinyin import lazy_pinyin
 
-from common import file
+from common import file,console
 from manage import get_excerpt
 
 system_info = json.loads(file.read_file("./config/system.json"))
@@ -51,4 +51,4 @@ def new_post_init(config, editor):
     page_list.insert(0, post_info)
     file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False))
 
-    print("Create a new article successfully!")
+    console.log("Success","Create a new article successfully!","green")

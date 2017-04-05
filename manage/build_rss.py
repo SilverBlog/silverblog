@@ -3,7 +3,7 @@ import json
 
 import PyRSS2Gen
 
-from common import file,markdown
+from common import file,markdown,console
 
 class NoOutput:
     def __init__(self):
@@ -59,4 +59,5 @@ def build_rss():
     file.write_file("./document/rss.xml", make_rss(system_config["Project_Name"], system_config["Project_URL"],
                                                    system_config["Project_Description"],
                                                    page_list, full_content, system_config))
-    print("Build Rss Success!")
+    console.log("Success","Build Rss Success!","green")
+
