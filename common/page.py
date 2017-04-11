@@ -6,8 +6,9 @@ from jinja2 import Environment, PackageLoader
 from common import file, markdown
 
 env = Environment(loader=PackageLoader('init', 'templates'))
+
 def format_datatime(value, format='%Y-%m-%d %H:%M'):
-    return value.strftime(format)
+    return str(time.strftime(format, value))
 
 env.filters['datetimeformat'] = format_datatime
 
