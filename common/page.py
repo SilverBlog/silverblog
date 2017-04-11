@@ -6,7 +6,10 @@ from jinja2 import Environment, PackageLoader
 from common import file, markdown
 
 env = Environment(loader=PackageLoader('init', 'templates'))
+def format_datatime(value, format='%Y-%m-%d %H:%M'):
+    return value.strftime(format)
 
+env.filters['datetimeformat'] = format_datatime
 
 def build_index(page, system_config, page_list, menu_list, static,template_config):
     page_info = {"title": "index"}
