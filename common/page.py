@@ -1,6 +1,6 @@
 import json
 import os.path
-
+import time
 from jinja2 import Environment, PackageLoader
 
 from common import file, markdown
@@ -28,7 +28,7 @@ def build_index(page, system_config, page_list, menu_list, static,template_confi
                              system_config=system_config,
                              template_config=template_config,
                              page_row=page_row,
-                             now_page=page, last_page=page - 1, next_page=page + 1, static=static)
+                             now_page=page, last_page=page - 1, next_page=page + 1, static=static, now_time=time.localtime())
     return result, page_row
 
 
@@ -42,7 +42,7 @@ def build_page(name, system_config, page_list, page_name_list, menu_list, static
     document = markdown.markdown(content)
     template = env.get_template("./{0}/post.html".format(system_config["Theme"]))
     result = template.render(page_info=page_info, menu_list=menu_list, content=document,
-                             system_config=system_config, static=static, template_config=template_config)
+                             system_config=system_config, static=static, template_config=template_config,now_time=time.localtime())
     return result
 
 
