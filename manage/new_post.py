@@ -35,7 +35,7 @@ def new_post_init(config, editor):
     if len(name) == 0:
         name = get_name(title)
 
-    if os.path.exists(filename):
+    if filename is not None and os.path.exists(filename):
         shutil.copyfile(filename, "./document/{0}.md".format(name))
 
     if config is None:
