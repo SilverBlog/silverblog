@@ -2,10 +2,8 @@ import json
 import os
 import shutil
 
-from common import file, page, console
-
-
 def build(github_mode):
+    from common import file, page, console
     html_static=False
     if github_mode is not None:
         html_static=github_mode
