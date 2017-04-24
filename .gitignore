@@ -21,3 +21,4 @@ include
 LL_kotorileft.png
 uwsgi.json
 start.json
+start.sh
