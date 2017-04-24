@@ -3,7 +3,8 @@ sudo apt-get install nginx memcached uwsgi uwsgi-plugin-python3 python3-pip
 sudo pip3 install cffi
 sudo pip3 install -r ./python_package_list
 git submodule init
-ln -s ./templates/i-material/static ./templates/static/i-material
+cd ./templates/i-material
+ln -s $(pwd)/static ../static/i-material
 chmod +x manage.py
 chmod +x start.sh
 mkdir document
