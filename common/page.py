@@ -1,6 +1,7 @@
 import json
 import os.path
 import time
+
 from jinja2 import Environment, PackageLoader
 
 from common import file, markdown
@@ -45,9 +46,9 @@ def build_page(name, system_config, page_list, page_name_list, menu_list, static
         page_info = page_list[this_page_index]
         last_page_name=None
         next_page_name=None
-        if (this_page_index-1)>0:
-            last_page_name=page_list[this_page_index-1]
-        if (this_page_index+1)<len(page_name_list):
+        if (this_page_index-1) > 0:
+            last_page_name = page_list[this_page_index - 1]
+        if (this_page_index+1) < len(page_name_list):
             next_page_name = page_list[this_page_index + 1]
         page_nav = {"last_page":last_page_name,"next_page": next_page_name}
     if os.path.exists("document/{0}.json".format(name)):
