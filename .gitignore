@@ -19,3 +19,5 @@ page.json
 document
 include
 LL_kotorileft.png
+uwsgi.json
+start.json

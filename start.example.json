@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "name": "SmartBlog",
+      "script": "./start.sh",
+      "watch": true,
+      "merge_logs": true
+    }
+  ]
+}
+
