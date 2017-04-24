@@ -8,4 +8,7 @@ mkdir document
 cp ./config/menu.example.json ./config/menu.json
 cp ./config/page.example.json ./config/page.json
 cp ./config/system.example.json ./config/system.json
+cp ./start.example.json ./start.json
+cp ./start.example.sh ./start.sh
+cp ./uwsgi.example.json ./uwsgi.json
 vim ./config/system.json
