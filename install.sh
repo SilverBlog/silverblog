@@ -16,5 +16,5 @@ cp uwsgi.example.json uwsgi.json
 chmod +x manage.py
 chmod +x start.sh
 vim config/system.json
-cd templates/
-ln -s $(pwd)/i-material/static $(pwd)/static/i-material
+cd templates/i-material
+ln -s $(pwd)/static ../static/i-material
