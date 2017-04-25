@@ -23,7 +23,7 @@ app = Flask(__name__)
 def load_config():
     global system_config, menu_list, rss, restful_switch, page_name_list, template_config, cache_switch, mc, page_list
     console.log("info", "Loading configuration")
-    system_config = json.loads(file.read_file("config/system.json"))
+    system_config = json.loads(file.read_file("./config/system.json"))
     system_config["API_Password"] = None
 
     page_list = json.loads(file.read_file("./config/page.json"))
