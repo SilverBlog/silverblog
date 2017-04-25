@@ -22,3 +22,4 @@ user_file
 uwsgi.json
 start.json
 start.sh
+templates

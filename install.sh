@@ -5,6 +5,7 @@ sudo pip3 install -r python_package_list
 git submodule init
 git submodule update
 mkdir document
+mkdir templates
 mkdir templates/static
 cp config/menu.example.json config/menu.json
 cp config/page.example.json config/page.json
@@ -17,4 +18,3 @@ chmod +x start.sh
 vim config/system.json
 cd templates/
 ln -s $(pwd)/i-material/static $(pwd)/static/i-material
-
