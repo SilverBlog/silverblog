@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
-sudo apt-get install nginx memcached uwsgi uwsgi-plugin-python3 python3-pip 
+sudo apt-get install nginx memcached uwsgi uwsgi-plugin-python3 python3-pip
 sudo pip3 install cffi
-sudo pip3 install -r ./python_package_list
+sudo pip3 install -r python_package_list
 git submodule init
-cd ./templates/i-material
-ln -s $(pwd)/static ../static/i-material
+git submodule update
+mkdir document
+mkdir templates/static
+cp config/menu.example.json config/menu.json
+cp config/page.example.json config/page.json
+cp config/system.example.json config/system.json
+cp start.example.json start.json
+cp start.example.sh start.sh
+cp uwsgi.example.json uwsgi.json
 chmod +x manage.py
 chmod +x start.sh
-mkdir document
-cp ./config/menu.example.json ./config/menu.json
-cp ./config/page.example.json ./config/page.json
-cp ./config/system.example.json ./config/system.json
-cp ./start.example.json ./start.json
-cp ./start.example.sh ./start.sh
-cp ./uwsgi.example.json ./uwsgi.json
-vim ./config/system.json
+vim config/system.json
+cd templates/i-material
+ln -s $(pwd)/static ../static/i-material
+
