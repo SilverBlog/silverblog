@@ -22,4 +22,5 @@ user_file
 uwsgi.json
 start.json
 start.sh
-templates
+templates/*
+!templates/i-material
