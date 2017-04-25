@@ -45,14 +45,18 @@ def new_post_init(config, editor,independent=False):
             if "Editor" in system_info:
                 editor = system_info["Editor"]
         os.system("{0} ./document/{1}.md".format(editor, name))
-    excerpt = get_excerpt.get_excerpt("./document/{0}.md".format(name))
-    post_info = {"name": name, "title": title, "excerpt": excerpt, "time": str(datetime.date.today())}
-    write_json=post_info
-    page_config="./document/{0}.json".format(name)
+
+    post_info = {"name": name, "title": title, "time": str(datetime.date.today())}
+    if not independent:
+        excerpt = get_excerpt.get_excerpt("./document/{0}.md".format(name))
+        post_info["excerpt"] = excerpt
+
+    write_json = post_info
+    page_config = "./document/{0}.json".format(name)
     if not independent:
         write_json = json.loads(file.read_file("./config/page.json"))
         write_json.insert(0, post_info)
-        page_config="./config/page.json"
+        page_config = "./config/page.json"
 
-    file.write_file(page_config, json.dumps(write_json, ensure_ascii=False))
+    file.write_file(page_config, json.dumps(write_json, ensure_ascii = False))
     console.log("Success","Create a new article successfully!","green")
