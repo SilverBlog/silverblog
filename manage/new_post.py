@@ -21,7 +21,7 @@ def get_name(nameinput):
     return name[1:len(name)]
 
 
-def new_post_init(config, editor):
+def new_post_init(config, editor,independent=False):
     if config is not None:
         config = json.loads(config)
         title = config["title"]
@@ -47,8 +47,12 @@ def new_post_init(config, editor):
         os.system("{0} ./document/{1}.md".format(editor, name))
     excerpt = get_excerpt.get_excerpt("./document/{0}.md".format(name))
     post_info = {"name": name, "title": title, "excerpt": excerpt, "time": str(datetime.date.today())}
-    page_list = json.loads(file.read_file("./config/page.json"))
-    page_list.insert(0, post_info)
-    file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False))
+    write_json=post_info
+    page_config="./document/{0}.json".format(name)
+    if not independent:
+        write_json = json.loads(file.read_file("./config/page.json"))
+        write_json.insert(0, post_info)
+        page_config="./config/page.json"
 
+    file.write_file(page_config, json.dumps(write_json, ensure_ascii=False))
     console.log("Success","Create a new article successfully!","green")
