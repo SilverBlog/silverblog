@@ -44,13 +44,13 @@ def build_page(name, system_config, page_list, page_name_list, menu_list, static
     if name in page_name_list:
         this_page_index=page_name_list.index(name)
         page_info = page_list[this_page_index]
-        last_page_name=None
-        next_page_name=None
+        last_page=None
+        next_page=None
         if (this_page_index-1) > 0:
-            last_page_name = page_list[this_page_index - 1]
+            last_page = page_list[this_page_index - 1]
         if (this_page_index+1) < len(page_name_list):
-            next_page_name = page_list[this_page_index + 1]
-        page_nav = {"last_page":last_page_name,"next_page": next_page_name}
+            next_page = page_list[this_page_index + 1]
+        page_nav = {"last_page":last_page,"next_page": next_page}
     if os.path.exists("document/{0}.json".format(name)):
         page_info = json.loads(file.read_file("document/{0}.json".format(name)))
     document = markdown.markdown(content)
