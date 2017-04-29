@@ -72,7 +72,7 @@ def load_krss():
 def route(file_name="index", page_index="1"):
     result = None
     get_from_cache = False
-    page_index_url=None
+    page_index_url=""
     if file_name=="index":
         page_index_url = "/p/{0}".format(page_index)
     if cache_switch:
