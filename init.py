@@ -72,12 +72,15 @@ def load_krss():
 def route(file_name="index", page_index="1"):
     result = None
     get_from_cache = False
+    page_index_url=None
+    if file_name=="index":
+        page_index_url = "/p/{0}".format(page_index)
     if cache_switch:
         get_from_cache = True
-        console.log("info", "Trying to get cache: {0}/p/{1}".format(file_name, page_index))
-        result = mc.get("{0}/p/{1}".format(file_name, page_index))
-    if not get_from_cache:
-        console.log("info", "Trying to build: {0}/p/{1}".format(file_name, page_index))
+        console.log("info", "Trying to get cache: /{0}".format(file_name)+page_index_url)
+        result = mc.get("/{0}".format(file_name)+page_index_url)
+    if result is None:
+        console.log("info", "Trying to build: /{0}".format(file_name)+page_index_url)
         if restful_switch:
             result = page.build_restful_result(file_name, system_config, page_list, page_name_list, menu_list)
         else:
@@ -89,9 +92,9 @@ def route(file_name="index", page_index="1"):
 
     if result is not None:
         if cache_switch and not get_from_cache:
-            console.log("info", "Writing to cache: {0}/p/{1}".format(file_name, str(page_index)))
-            mc.set("{0}/p/{1}".format(file_name, str(page_index)), result)
-        console.log("Success", "Get success: {0}/p/{1}".format(file_name, str(page_index)))
+            console.log("info", "Writing to cache: /{0}".format(file_name)+page_index_url)
+            mc.set("/{0}".format(file_name)+page_index_url, result)
+        console.log("Success", "Get success: /{0}".format(file_name)+page_index_url)
         return result
-    console.log("Error", "Can not build: {0}/p/{1}".format(file_name,str(page_index)))
+    console.log("Error", "Can not build: /{0}".format(file_name)+page_index_url)
     abort(404)
