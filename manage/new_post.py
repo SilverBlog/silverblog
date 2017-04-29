@@ -35,7 +35,7 @@ def new_post_init(config, editor,independent=False):
     if len(name) == 0:
         name = get_name(title)
 
-    if filename is not None and os.path.exists(filename):
+    if filename is not None and not os.path.exists(filename):
         shutil.copyfile(filename, "./document/{0}.md".format(name))
 
     if config is None:
@@ -59,4 +59,4 @@ def new_post_init(config, editor,independent=False):
         page_config = "./config/page.json"
 
     file.write_file(page_config, json.dumps(write_json, ensure_ascii = False))
-    console.log("Success","Create a new article successfully!","green")
+    console.log("Success","Create a new article successfully!")

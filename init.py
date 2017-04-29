@@ -50,7 +50,7 @@ def load_config():
 
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
         template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
-    console.log("Success", "load the configuration file successfully", "green")
+    console.log("Success", "load the configuration file successfully")
     return "Reload the configuration file successfully"
 
 
@@ -67,18 +67,17 @@ def load_krss():
 @app.route("/")
 @app.route("/<file_name>")
 @app.route("/<file_name>/")
-@app.route('/<file_name>/p/<page_index>')
-@app.route('/<file_name>/p/<page_index>/')
+@app.route('/index/p/<page_index>')
+@app.route('/index/p/<page_index>/')
 def route(file_name="index", page_index="1"):
     result = None
     get_from_cache = False
     if cache_switch:
         get_from_cache = True
-        console.log("info", "Trying to get cache: {0}/p/{1}".format(file_name, str(page_index)))
-        result = mc.get("{0}/p/{1}".format(file_name, str(page_index)))
-    if result is None:
-        get_from_cache = False
-        console.log("info", "Trying to build: {0}/p/{1}".format(file_name, str(page_index)))
+        console.log("info", "Trying to get cache: {0}/p/{1}".format(file_name, page_index))
+        result = mc.get("{0}/p/{1}".format(file_name, page_index))
+    if not get_from_cache:
+        console.log("info", "Trying to build: {0}/p/{1}".format(file_name, page_index))
         if restful_switch:
             result = page.build_restful_result(file_name, system_config, page_list, page_name_list, menu_list)
         else:
@@ -92,7 +91,7 @@ def route(file_name="index", page_index="1"):
         if cache_switch and not get_from_cache:
             console.log("info", "Writing to cache: {0}/p/{1}".format(file_name, str(page_index)))
             mc.set("{0}/p/{1}".format(file_name, str(page_index)), result)
-        console.log("Success", "Get success: {0}/p/{1}".format(file_name, str(page_index)),"green")
+        console.log("Success", "Get success: {0}/p/{1}".format(file_name, str(page_index)))
         return result
-    console.log("Error", "Can not build: {0}/p/{1}".format(file_name,str(page_index)), "red")
+    console.log("Error", "Can not build: {0}/p/{1}".format(file_name,str(page_index)))
     abort(404)

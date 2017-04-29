@@ -43,4 +43,4 @@ def build(github_mode):
                     "./static_page/static/{0}/".format(system_config["Theme"]))
     shutil.copytree("./templates/static/user_file",
                     "./static_page/static/user_file")
-    console.log("Success","Create Github Page Success!","green")
+    console.log("Success","Create Github Page Success!")

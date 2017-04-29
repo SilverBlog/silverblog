@@ -1,10 +1,14 @@
 server {
-        listen 80;
-        location / {
-                include uwsgi_params;
-                uwsgi_pass  127.0.0.1:5000;#your uwsgi socks
-        }
-        location /static {
-        alias {your SmartBlog location}/templates/static;
-        }
+    listen 80;
+    location / {
+        include uwsgi_params;
+        uwsgi_pass 127.0.0.1:5000;
+    }
+    location /static {
+        #alias {your SmartBlog location}/templates/static;
+    }
+    location /control {
+        include uwsgi_params;
+        uwsgi_pass 127.0.0.1:5001;
+    }
 }

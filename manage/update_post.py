@@ -23,4 +23,4 @@ def update():
 
     file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False))
 
-    console.log("Success", "Update article metadata is successful!", "green")
+    console.log("Success", "Update article metadata is successful!")
