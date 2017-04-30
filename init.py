@@ -72,6 +72,8 @@ def load_krss():
 @app.route('/index/p/<int:page_index>/')
 def route(file_name="index", page_index=1):
     result = None
+    get_from_cache = False
+
     page_index_url=""
     if file_name=="index":
         page_index_url = "/p/{0}".format(str(page_index))
@@ -79,6 +81,7 @@ def route(file_name="index", page_index=1):
 
     if cache_switch and page_url in cache_list:
         console.log("info", "Trying to get cache: {0}".format(page_url))
+        get_from_cache = True
         result = mc.get(page_url)
 
     if result is None:
@@ -93,7 +96,7 @@ def route(file_name="index", page_index=1):
                                          template_config)
 
     if result is not None:
-        if cache_switch and page_url not in cache_list:
+        if cache_switch and not get_from_cache:
             console.log("info", "Writing to cache: {0}".format(page_url))
             cache_list.append(page_url)
             mc.set(page_url, result)
