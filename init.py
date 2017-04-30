@@ -67,25 +67,26 @@ def load_krss():
 @app.route("/")
 @app.route("/<file_name>")
 @app.route("/<file_name>/")
-@app.route('/index/p/<page_index>')
-@app.route('/index/p/<page_index>/')
+@app.route('/index/p/<int:page_index>')
+@app.route('/index/p/<int:page_index>/')
 def route(file_name="index", page_index="1"):
     result = None
     get_from_cache = False
     page_index_url=""
     if file_name=="index":
-        page_index_url = "/p/{0}".format(page_index)
+        page_index_url = "/p/{0}".format(str(page_index))
     if cache_switch:
         get_from_cache = True
         console.log("info", "Trying to get cache: /{0}".format(file_name)+page_index_url)
         result = mc.get("/{0}".format(file_name)+page_index_url)
     if result is None:
+        get_from_cache = False
         console.log("info", "Trying to build: /{0}".format(file_name)+page_index_url)
         if restful_switch:
             result = page.build_restful_result(file_name, system_config, page_list, page_name_list, menu_list)
         else:
             if file_name == "index":
-                result, row = page.build_index(int(page_index), system_config, page_list, menu_list, False, template_config)
+                result, row = page.build_index(page_index, system_config, page_list, menu_list, False, template_config)
             if os.path.exists("document/{0}.md".format(file_name)):
                 result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list, False,
                                          template_config)
