@@ -69,7 +69,7 @@ def load_krss():
 @app.route("/<file_name>/")
 @app.route('/index/p/<int:page_index>')
 @app.route('/index/p/<int:page_index>/')
-def route(file_name="index", page_index="1"):
+def route(file_name="index", page_index=1):
     result = None
     get_from_cache = False
     page_index_url=""
