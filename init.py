@@ -16,6 +16,7 @@ template_config = None
 cache_switch = False
 page_list = None
 mc = None
+cache_list = list()
 app = Flask(__name__)
 
 
@@ -72,16 +73,18 @@ def load_krss():
 def route(file_name="index", page_index=1):
     result = None
     get_from_cache = False
+
     page_index_url=""
     if file_name=="index":
         page_index_url = "/p/{0}".format(str(page_index))
-    if cache_switch:
-        get_from_cache = True
-        console.log("info", "Trying to get cache: /{0}".format(file_name)+page_index_url)
-        result = mc.get("/{0}".format(file_name)+page_index_url)
+    page_url = "/{0}{1}".format(file_name, page_index_url)
+
+    if cache_switch and page_url in cache_list:
+        console.log("info", "Trying to get cache: {0}".format(page_url))
+        result = mc.get(page_url)
+
     if result is None:
-        get_from_cache = False
-        console.log("info", "Trying to build: /{0}".format(file_name)+page_index_url)
+        console.log("info", "Trying to build: {0}".format(page_url))
         if restful_switch:
             result = page.build_restful_result(file_name, system_config, page_list, page_name_list, menu_list)
         else:
@@ -93,9 +96,10 @@ def route(file_name="index", page_index=1):
 
     if result is not None:
         if cache_switch and not get_from_cache:
-            console.log("info", "Writing to cache: /{0}".format(file_name)+page_index_url)
-            mc.set("/{0}".format(file_name)+page_index_url, result)
-        console.log("Success", "Get success: /{0}".format(file_name)+page_index_url)
+            console.log("info", "Writing to cache: {0}".format(page_url))
+            cache_list.append(page_url)
+            mc.set(page_url, result)
+        console.log("Success", "Get success: {0}".format(page_url))
         return result
-    console.log("Error", "Can not build: /{0}".format(file_name)+page_index_url)
+    console.log("Error", "Can not build: {0}".format(page_url))
     abort(404)
