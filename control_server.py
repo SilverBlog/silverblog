@@ -8,7 +8,7 @@ from manage import new_post
 
 app = Flask(__name__)
 
-system_config = json.loads(file.read_file("config/system.json"))
+system_config = json.loads(file.read_file("./config/system.json"))
 
 
 def check_password(title, encode):
@@ -29,4 +29,4 @@ def new():
         config = json.dumps({"title": str(title), "name": name, "file": "./document/{0}.md".format(name)})
         new_post.new_post_init(config, None)
         state = "ok"
-    return json.dumps({"state": state})
+    return json.dumps({"status": state})
