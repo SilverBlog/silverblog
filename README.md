@@ -1,13 +1,13 @@
-# SmartBlog
+# SilverBlog
 
 ***
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/qwe7002/SmartBlog/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/qwe7002/SilverBlog/blob/master/LICENSE)
 
-[中文文档](https://github.com/qwe7002/SmartBlog/blob/master/README-zh.md)
+[中文文档](https://github.com/qwe7002/SilverBlog/blob/master/README-zh.md)
 
-SmartBlog is a Python-based lightweight blog.
+SilverBlog is a Python-based lightweight blog.
 
-## Why SmartBlog is selected
+## Why SilverBlog is selected
 
 * Simple, compact blog system
 * Easy to install and deploy
@@ -26,15 +26,15 @@ First you need Clone Project Warehouse:
 
 ```shell
 sudo apt install git
-git clone https://github.com/qwe7002/SmartBlog.git
-cd SmartBlog
+git clone https://github.com/qwe7002/SilverBlog.git
+cd SilverBlog
 ```
 
 Then you only need to execute the install.sh in the directory to install it.
 
-This install script defaults to the nginx+uwsgi execution mode. If you did not modify the port number in the uwsgi.json file, place the nginx_example file in your nginx package (the default location is in /etc/nginx/sites-enabled) Site configuration directory, and replace the {your SmartBlog location} in your file with your SmartBlog storage directory.
+This install script defaults to the nginx+uwsgi execution mode. If you did not modify the port number in the uwsgi.json file, place the nginx_example file in your nginx package (the default location is in /etc/nginx/sites-enabled) Site configuration directory, and replace the {your SilverBlog location} in your file with your SilverBlog storage directory.
 
-## Configure your SmartBlog
+## Configure your SilverBlog
 
 You need to modify the system.json under the config folder. This is your global profile. The following is the variable definition: (remember, Json can not support the comment)
 
@@ -71,13 +71,13 @@ You need to edit menu.json, menu.json for the navigation bar configuration file
 
 ## Start running
 
-You can run SmartBlog using tools such as Tmux or Screen. You only need to execute `./Start.sh` to open your blog.
+You can run SilverBlog using tools such as Tmux or Screen. You only need to execute `./Start.sh` to open your blog.
 
-Because of the cache, every time you add an article, update a list of articles, you need to restart SmartBlog to reread the data. To do automatic monitoring and restart SmartBlog, see the next section
+Because of the cache, every time you add an article, update a list of articles, you need to restart SilverBlog to reread the data. To do automatic monitoring and restart SilverBlog, see the next section
 
 ## Keep running and monitor your blog
 
-In order to avoid each update, the program error to bring you the trouble. SmartBlog strongly recommends that you use NodeJS-based monitoring programs: PM2
+In order to avoid each update, the program error to bring you the trouble. SilverBlog strongly recommends that you use NodeJS-based monitoring programs: PM2
 
 For more information about PM2 installation, please see [How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04) and [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
 
@@ -87,7 +87,7 @@ Then you just need to run
 pm2 start start.json
 ```
 
-It can be achieved in the update file or program error, automatically restart SmartBlog.
+It can be achieved in the update file or program error, automatically restart SilverBlog.
 
 You can also use it
 
@@ -96,11 +96,11 @@ pm2 startup
 pm2 save
 ```
 
-So that your SmartBlog can start automatically when the system is powered on
+So that your SilverBlog can start automatically when the system is powered on
 
 ## How to use administrative scripts
 
-You can use `./manage.py -h` at any time to get help information for the SmartBlog management module
+You can use `./manage.py -h` at any time to get help information for the SilverBlog management module
 
 The following is a list of features:
 
@@ -126,7 +126,7 @@ You can use the --static_page parameter to have the extension at the end of the 
 
 ## participate in development
 
-We welcome you to report the issue or pull request on GitHub of the SmartBlog project.
+We welcome you to report the issue or pull request on GitHub of the SilverBlog project.
 
 If you are not familiar with GitHub's Fork and Pull development mode, you can read [GitHub's documentation](https://help.github.com/articles/using-pull-requests) for more information.
 
@@ -134,7 +134,7 @@ If you are not familiar with GitHub's Fork and Pull development mode, you can re
 
 This software is distributed using BSD 3-clause protocol
 
-Copyright (c) 2017, SmartBlog
+Copyright (c) 2017, SilverBlog
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -147,7 +147,7 @@ modification, are permitted provided that the following conditions are met:
   this list of conditions and the following disclaimer in the documentation
   and/or other materials provided with the distribution.
 
-* Neither the name of SmartBlog nor the names of its
+* Neither the name of SilverBlog nor the names of its
   contributors may be used to endorse or promote products derived from
   this software without specific prior written permission.
 

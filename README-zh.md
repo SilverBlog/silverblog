@@ -1,11 +1,11 @@
-# SmartBlog
+# SilverBlog
 
 ***
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/qwe7002/SmartBlog/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/qwe7002/SilverBlog/blob/master/LICENSE)
 
-SmartBlog是一个基于Python的轻量级博客。
+SilverBlog是一个基于Python的轻量级博客。
 
-## 为什么选择 SmartBlog
+## 为什么选择 SilverBlog
 
 * 简单、小巧的博客系统
 * 易于安装部署
@@ -24,15 +24,15 @@ SmartBlog是一个基于Python的轻量级博客。
 
 ```shell
 sudo apt install git
-git clone https://github.com/qwe7002/SmartBlog.git
-cd SmartBlog
+git clone https://github.com/qwe7002/SilverBlog.git
+cd SilverBlog
 ```
 
 然后您只需要执行目录内的 install.sh ，即可进行安装。
 
-本安装脚本默认使用 nginx+uwsgi 执行模式，如果您没有修改 uwsgi.json 文件中的端口号，那么请将 nginx_example 文件放到您的 nginx 软件包(默认位置在 /etc/nginx/sites-enabled )的网站配置目录下，并且将文件内的 {your SmartBlog location} 替换成您的 SmartBlog 存放目录。
+本安装脚本默认使用 nginx+uwsgi 执行模式，如果您没有修改 uwsgi.json 文件中的端口号，那么请将 nginx_example 文件放到您的 nginx 软件包(默认位置在 /etc/nginx/sites-enabled )的网站配置目录下，并且将文件内的 {your SilverBlog location} 替换成您的 SilverBlog 存放目录。
 
-## 配置您的 SmartBlog
+## 配置您的 SilverBlog
 
 您需要修改处于 config 文件夹下的 system.json 。这是您的全局配置文件。以下是变量定义：(记得，Json 是不能支持注释的)
 
@@ -69,13 +69,13 @@ cd SmartBlog
 
 ## 开始运行
 
-您可以使用 Tmux 或者 Screen 等工具运行 SmartBlog 。您只需要执行 `./start.sh` 就可以打开您的博客。
+您可以使用 Tmux 或者 Screen 等工具运行 SilverBlog 。您只需要执行 `./start.sh` 就可以打开您的博客。
 
-由于缓存，每次添加文章，更新文章列表等操作时，您需要重新启动 SmartBlog 来重新读取数据。若要做到自动监控并且重启 SmartBlog ，请看下节
+由于缓存，每次添加文章，更新文章列表等操作时，您需要重新启动 SilverBlog 来重新读取数据。若要做到自动监控并且重启 SilverBlog ，请看下节
 
 ## 持续运行并监控您的博客
 
-为了避免每次更新，程序错误给您带来的困扰。 SmartBlog 强烈推荐您使用基于 NodeJS 的监控程序： PM2
+为了避免每次更新，程序错误给您带来的困扰。 SilverBlog 强烈推荐您使用基于 NodeJS 的监控程序： PM2
 
 有关PM2的安装请查看 [How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04) 和 [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
 
@@ -85,7 +85,7 @@ cd SmartBlog
 pm2 start start.json
 ```
 
-就可以实现在更新文件或者程序错误之后，自动重启 SmartBlog。
+就可以实现在更新文件或者程序错误之后，自动重启 SilverBlog。
 
 您还可以使用
 
@@ -94,11 +94,11 @@ pm2 startup
 pm2 save
 ```
 
-使得您的 SmartBlog 能够在系统开机的时候，自动启动
+使得您的 SilverBlog 能够在系统开机的时候，自动启动
 
 ## 如何使用管理脚本
 
-您可以随时使用`./manage.py -h`来获取 SmartBlog 管理模块的帮助信息
+您可以随时使用`./manage.py -h`来获取 SilverBlog 管理模块的帮助信息
 
 以下是功能列举：
 
@@ -123,7 +123,7 @@ pm2 save
 
 ## 参与开发
 
-我们欢迎您在 SmartBlog 项目的 GitHub 上报告 issue 或者 pull request。
+我们欢迎您在 SilverBlog 项目的 GitHub 上报告 issue 或者 pull request。
 
 如果您还不熟悉GitHub的Fork and Pull开发模式，您可以阅读[GitHub的文档](https://help.github.com/articles/using-pull-requests)获得更多的信息。
 
@@ -131,7 +131,7 @@ pm2 save
 
 本软件采用 BSD 3-clause 协议分发
 
-Copyright (c) 2017, SmartBlog
+Copyright (c) 2017, SilverBlog
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -144,7 +144,7 @@ modification, are permitted provided that the following conditions are met:
   this list of conditions and the following disclaimer in the documentation
   and/or other materials provided with the distribution.
 
-* Neither the name of SmartBlog nor the names of its
+* Neither the name of SilverBlog nor the names of its
   contributors may be used to endorse or promote products derived from
   this software without specific prior written permission.
 
