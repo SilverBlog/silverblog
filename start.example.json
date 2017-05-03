@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "SmartBlog",
+      "name": "SilverBlog",
       "script": "./start.sh",
       "watch": true,
       "merge_logs": true
