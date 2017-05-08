@@ -15,8 +15,8 @@ page_name_list = list()
 template_config = None
 cache_switch = False
 page_list = None
-mc = None
 cache_list = list()
+cache_page = dict()
 app = Flask(__name__)
 
 
@@ -42,13 +42,6 @@ def load_config():
     for item in page_list:
         page_name_list.append(item["name"])
 
-    cache_switch = system_config["Cache"]
-    if cache_switch:
-        console.log("info", "Connect memcache...")
-        mc = memcache.Client([system_config["Memcached_Connect"]], socket_timeout=500, debug=0)
-        console.log("info", "Clear the Memcache data")
-        mc.flush_all()
-
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
         template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
     console.log("Success", "load the configuration file successfully")
@@ -61,7 +54,7 @@ load_config()
 # Subscribe
 @app.route("/rss")
 @app.route("/feed")
-def load_krss():
+def load_rss():
     return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
 
 
@@ -79,10 +72,10 @@ def route(file_name="index", page_index=1):
         page_index_url = "/p/{0}".format(str(page_index))
     page_url = "/{0}{1}".format(file_name, page_index_url)
 
-    if cache_switch and page_url in cache_list:
+    if page_url in cache_list:
         console.log("info", "Trying to get cache: {0}".format(page_url))
         get_from_cache = True
-        result = mc.get(page_url)
+        result=cache_page[page_url]
 
     if result is None:
         console.log("info", "Trying to build: {0}".format(page_url))
@@ -96,10 +89,10 @@ def route(file_name="index", page_index=1):
                                          template_config)
 
     if result is not None:
-        if cache_switch and not get_from_cache:
+        if not get_from_cache:
             console.log("info", "Writing to cache: {0}".format(page_url))
             cache_list.append(page_url)
-            mc.set(page_url, result)
+            cache_page[page_url]=result
         console.log("Success", "Get success: {0}".format(page_url))
         return result
     console.log("Error", "Can not build: {0}".format(page_url))
