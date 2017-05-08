@@ -6,49 +6,40 @@ from flask import Flask, abort
 
 from common import file, page, console
 
-# Global Var
-system_config = None
-menu_list = None
 rss = None
+menu_list = None
 restful_switch = False
 page_name_list = list()
 template_config = None
 cache_switch = False
-page_list = None
 cache_list = list()
 cache_page = dict()
 app = Flask(__name__)
 
 
-@app.route('/manage/reload_config')
-def load_config():
-    global system_config, menu_list, rss, restful_switch, page_name_list, template_config, cache_switch, mc, page_list
-    console.log("info", "Loading configuration")
-    system_config = json.loads(file.read_file("./config/system.json"))
-    system_config["API_Password"] = None
+console.log("info", "Loading configuration")
+system_config = json.loads(file.read_file("./config/system.json"))
+system_config["API_Password"] = None
 
-    page_list = json.loads(file.read_file("./config/page.json"))
+page_list = json.loads(file.read_file("./config/page.json"))
 
-    if os.path.exists("./config/menu.json"):
-        menu_list = json.loads(file.read_file("./config/menu.json"))
+if os.path.exists("./config/menu.json"):
+    menu_list = json.loads(file.read_file("./config/menu.json"))
 
-    if os.path.exists("./document/rss.xml"):
-        rss = file.read_file("document/rss.xml")
+if "Restful_API" in system_config:
+    if system_config["Restful_API"]:
+        restful_switch = True
 
-    if "Restful_API" in system_config:
-        if system_config["Restful_API"]:
-            restful_switch = True
+for item in page_list:
+    page_name_list.append(item["name"])
 
-    for item in page_list:
-        page_name_list.append(item["name"])
+if os.path.exists("./document/rss.xml"):
+    rss = file.read_file("document/rss.xml")
 
-    if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
-        template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
-    console.log("Success", "load the configuration file successfully")
-    return "Reload the configuration file successfully"
+if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
+    template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
+console.log("Success", "load the configuration file successfully")
 
-
-load_config()
 
 
 # Subscribe
