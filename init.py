@@ -52,14 +52,14 @@ def load_rss():
 @app.route("/")
 @app.route("/<file_name>")
 @app.route("/<file_name>/")
-@app.route('/index/p/<int:page_index>')
-@app.route('/index/p/<int:page_index>/')
-def route(file_name="index", page_index=1):
+@app.route('/<file_name>/p/<int:page_index>')
+@app.route('/<file_name>x/p/<int:page_index>/')
+def route(file_name = "index", page_index = 1):
     result = None
     get_from_cache = False
 
-    page_index_url=""
-    if file_name=="index":
+    page_index_url = ""
+    if file_name == "index":
         page_index_url = "/p/{0}".format(str(page_index))
     page_url = "/{0}{1}".format(file_name, page_index_url)
 
