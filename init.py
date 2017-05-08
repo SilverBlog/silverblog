@@ -10,7 +10,6 @@ menu_list = None
 page_name_list = list()
 cache_page = dict()
 template_config = None
-cache_switch = False
 app = Flask(__name__)
 
 
