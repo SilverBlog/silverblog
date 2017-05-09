@@ -11,7 +11,7 @@ SilverBlog是一个基于Python的轻量级博客。
 * 易于安装部署
 * 完整的 Rss 支持
 * 模块化设计，方便自行添加，删除
-* 无数据库化设计，提供 Memcache 缓存加速
+* 无数据库化设计
 * 拥有媲美 Hexo 的静态页面生成模块，只需一行命令，就可在 Github Page 上运行
 * 支持 Mac os 和 Linux
 * 拥有一个正在开发的Android客户端
@@ -28,7 +28,7 @@ git clone https://github.com/qwe7002/SilverBlog.git
 cd SilverBlog
 ```
 
-然后您只需要执行目录内的 install.sh ，即可进行安装。
+然后您只需要执行目录内的 `install.sh` ，即可进行安装。
 
 本安装脚本默认使用 nginx+uwsgi 执行模式，如果您没有修改 uwsgi.json 文件中的端口号，那么请将 nginx_example 文件放到您的 nginx 软件包(默认位置在 /etc/nginx/sites-enabled )的网站配置目录下，并且将文件内的 {your SilverBlog location} 替换成您的 SilverBlog 存放目录。
 
@@ -46,9 +46,7 @@ cd SilverBlog
   "Author_Introduction":"", (作者介绍)
   "Cover_Image":"", (首页头图，可选)
   "Paging": 10, (列表分页数)
-  "Cache": true, (是否采用缓存)
   "Theme": "casper", (主题,这里为主题文件夹名称)
-  "Memcached_Connect":"127.0.0.1:11211", (memcache服务器地址)
   "API_Password":"", (API的PSK密码，备用)
   "Rss_Full_Content":true, (RSS全文输出开关)
   "Restful_API":false, (Restful输出开关)

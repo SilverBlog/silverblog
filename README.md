@@ -30,7 +30,7 @@ git clone https://github.com/qwe7002/SilverBlog.git
 cd SilverBlog
 ```
 
-Then you only need to execute the install.sh in the directory to install it.
+Then you only need to execute the `install.sh` in the directory to install it.
 
 This install script defaults to the nginx+uwsgi execution mode. If you did not modify the port number in the uwsgi.json file, place the nginx_example file in your nginx package (the default location is in /etc/nginx/sites-enabled) Site configuration directory, and replace the {your SilverBlog location} in your file with your SilverBlog storage directory.
 
@@ -48,9 +48,7 @@ You need to modify the system.json under the config folder. This is your global 
   "Author_Introduction": "", (by the author)
   "Cover_Image": "", (Home header, optional)
   "Paging": 10, (list of pages)
-  "Cache": true, (whether to use cache)
   "Theme": "casper", (theme, here for the theme folder name)
-  "Memcached_Connect": "127.0.0.1: 11211", (memcache server address)
   "API_Password": "", (API's PSK password, alternate)
   "Rss_Full_Content": true, (RSS full text output switch)
   "Restful_API": false, (Restful output switch)
@@ -62,7 +60,7 @@ You need to edit menu.json, menu.json for the navigation bar configuration file
 ```
 [
   {
-    "name": "home page", (displayed name)
+    "name": "Home", (displayed name)
     "url": "index", (access address)
     "absolute": true (absolute path switch, if true here, the URL is the absolute path)
   }
