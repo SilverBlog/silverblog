@@ -24,12 +24,12 @@ git submodule init
 git submodule update
 mkdir document
 mkdir templates/static
-cp config/menu.example.json config/menu.json
-cp config/page.example.json config/page.json
-cp config/system.example.json config/system.json
-cp example/start.example.json start.json
-cp example/start.example.sh start.sh
-cp example/uwsgi.example.json uwsgi.json
+cp -i config/menu.example.json config/menu.json
+cp -i config/page.example.json config/page.json
+cp -i config/system.example.json config/system.json
+cp -i example/start.example.json start.json
+cp -i example/start.example.sh start.sh
+cp -i example/uwsgi.example.json uwsgi.json
 chmod +x manage.py
 vim config/system.json
 cd templates/i-material
