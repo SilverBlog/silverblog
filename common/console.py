@@ -1,7 +1,7 @@
 import time
 
 style = {
-    'Success': 31, 'Error': 32
+    'Success': 32, 'Error': 31
 }
 ISOTIMEFORMAT = "%Y/%m/%d %X"
 
