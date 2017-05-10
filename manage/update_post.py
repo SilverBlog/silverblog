@@ -18,7 +18,7 @@ def update():
 
     for item in range(len(page_list) - 1, -1, -1):
         if page_list[item]["name"] in remove_list:
-            console.log("Remove", "Removing from list: {0}".format(item))
+            console.log("Remove", "Removing from list: {0}".format(page_list[item]["name"]))
             page_list.pop(item)
 
     file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False))
