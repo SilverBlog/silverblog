@@ -23,7 +23,6 @@ sudo pip3 install flask misaka pypinyin pyrss2gen
 git submodule init
 git submodule update
 mkdir document
-mkdir templates
 mkdir templates/static
 cp config/menu.example.json config/menu.json
 cp config/page.example.json config/page.json
