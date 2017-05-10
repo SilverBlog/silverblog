@@ -27,6 +27,6 @@ def new():
         name = new_post.get_name(str(title))
         file.write_file("./document/{0}.md".format(name), str(content))
         config = json.dumps({"title": str(title), "name": name, "file": "./document/{0}.md".format(name)})
-        new_post.new_post_init(config, None)
+        new_post.new_post_init(config)
         state = "ok"
     return json.dumps({"status": state})
