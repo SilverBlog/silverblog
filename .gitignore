@@ -24,3 +24,4 @@ start.json
 start.sh
 templates/*
 !templates/i-material
+control-start.sh

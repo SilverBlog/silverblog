@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-uwsgi --json ./uwsgi.json ./uwsgi.json:control
+uwsgi --json ./uwsgi.json
