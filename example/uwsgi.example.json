@@ -1,0 +1,22 @@
+{
+  "uwsgi": {
+    "socket": "127.0.0.1:5000",
+    "processes": 4,
+    "threads": 2,
+    "plugins": "python3",
+    "master": true,
+    "module": "init",
+    "callable": "app",
+    "memory-report": true
+  },
+  "control": {
+    "socket": "127.0.0.1:5001",
+    "processes": 1,
+    "threads": 2,
+    "plugins": "python3",
+    "master": true,
+    "module": "control_server",
+    "callable": "app",
+    "memory-report": true
+  }
+}

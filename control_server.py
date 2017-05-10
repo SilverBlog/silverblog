@@ -22,11 +22,12 @@ def new():
     title = request.json["title"]
     content = request.json["content"]
     encode = request.json["encode"]
-    state = "error"
+    state = False
+    name = None
     if check_password(title, encode):
         name = new_post.get_name(str(title))
         file.write_file("./document/{0}.md".format(name), str(content))
         config = json.dumps({"title": str(title), "name": name, "file": "./document/{0}.md".format(name)})
-        new_post.new_post_init(config, None)
-        state = "ok"
-    return json.dumps({"status": state})
+        new_post.new_post_init(config)
+        state = True
+    return json.dumps({"status": state, "name": name})
