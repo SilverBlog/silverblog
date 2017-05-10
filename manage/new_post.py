@@ -28,8 +28,10 @@ def new_post_init(config, editor,independent=False):
         name = config["name"]
         filename = config["file"]
     else:
-        title = input("Please enter the title of the article:")
-        name = input("Please enter the URL (Leave a blank use pinyin):")
+        print("Please enter the title of the article:")
+        title = input()
+        print("Please enter the URL (Leave a blank use pinyin):")
+        name = input()
         filename = None
 
     if len(name) == 0:
