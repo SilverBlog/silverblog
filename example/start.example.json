@@ -5,6 +5,12 @@
       "script": "./start.sh",
       "watch": true,
       "merge_logs": true
+    },
+    {
+      "name": "SilverBlog_Control",
+      "script": "./control-start.sh",
+      "watch": true,
+      "merge_logs": true
     }
   ]
 }
