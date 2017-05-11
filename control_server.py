@@ -4,7 +4,7 @@ import json
 from flask import Flask, request
 
 from common import file
-from manage import new_post
+from manage import new_post, build_rss
 
 app = Flask(__name__)
 
@@ -30,4 +30,5 @@ def new():
         config = {"title": title, "name": name}
         new_post.new_post_init(config)
         state = True
+        build_rss.build_rss()
     return json.dumps({"status": state, "name": name})
