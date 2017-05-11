@@ -1,7 +1,6 @@
 import json
 import os.path
 import re
-import shutil
 import time
 
 from pypinyin import lazy_pinyin
@@ -12,33 +11,27 @@ from manage import get_excerpt
 system_info = json.loads(file.read_file("./config/system.json"))
 
 
-def get_name(nameinput):
-    name_raw = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", nameinput)
-    namelist = lazy_pinyin(name_raw)
+def get_name(name_input):
+    name_raw = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", name_input)
+    name_list = lazy_pinyin(name_raw)
     name = ""
-    for item in namelist:
+    for item in name_list:
         name = name + "-" + item
     return name[1:len(name)]
 
 
 def new_post_init(config, independent=False):
     if config is not None:
-        config = json.loads(config)
         title = config["title"]
         name = config["name"]
-        filename = config["file"]
     else:
         print("Please enter the title of the article:")
         title = input()
         print("Please enter the URL (Leave a blank use pinyin):")
         name = input()
-        filename = None
 
     if len(name) == 0:
         name = get_name(title)
-
-    if filename is not None and not os.path.exists(filename):
-        shutil.copyfile(filename, "./document/{0}.md".format(name))
 
     if config is None:
         editor = system_info["Editor"]
