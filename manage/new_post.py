@@ -11,11 +11,11 @@ from manage import get_excerpt
 system_info = json.loads(file.read_file("./config/system.json"))
 
 
-def get_name(nameinput):
-    name_raw = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", nameinput)
-    namelist = lazy_pinyin(name_raw)
+def get_name(name_input):
+    name_raw = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", name_input)
+    name_list = lazy_pinyin(name_raw)
     name = ""
-    for item in namelist:
+    for item in name_list:
         name = name + "-" + item
     return name[1:len(name)]
 
