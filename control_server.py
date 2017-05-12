@@ -12,7 +12,7 @@ system_config = json.loads(file.read_file("./config/system.json"))
 
 
 def check_password(title, encode):
-    hash_md5 = hashlib.md5(title + system_config["API_Password"].encode('utf-8')).hexdigest()
+    hash_md5 = hashlib.md5(str(title + system_config["API_Password"]).encode('utf-8')).hexdigest()
     if encode == hash_md5:
         return True
     return False
