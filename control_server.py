@@ -1,16 +1,17 @@
 # coding=utf-8
 import hashlib
 import json
+import os
+
 from flask import Flask, request
 
 from common import file
-from manage import new_post, build_rss
+from manage import new_post, build_rss, update_post
 
 app = Flask(__name__)
 
 system_config = json.loads(file.read_file("./config/system.json"))
 
-page_list = json.loads(file.read_file("./config/page.json"))
 
 def check_password(title, encode):
     hash_md5 = hashlib.md5(str(title + system_config["API_Password"]).encode('utf-8')).hexdigest()
@@ -21,24 +22,56 @@ def check_password(title, encode):
 
 @app.route('/control/get_post_list', methods=['POST'])
 def post_list():
-    encode = str(request.json["encode"])
-    if check_password("get_post_list", encode):
-        for item in page_list:
-            page_name_list.append(item["title"])
-    return json.dumps(page_name_list)
+    page_list = json.loads(file.read_file("./config/page.json"))
+    page_title_list = list()
+    for item in page_list:
+        page_title_list.append(item["title"])
+    return json.dumps(page_title_list)
+
+
+@app.route('/control/get_post_content', methods=['POST'])
+def get_post_content():
+    page_list = json.loads(file.read_file("./config/page.json"))
+    post_id = int(request.json["post_id"])
+    result = dict()
+    result["title"] = page_list[post_id]["title"]
+    result["content"] = file.read_file("./document/{0}.md".format(page_list[post_id]["name"]))
+    result["status"] = True
+    return json.dumps(result)
 
 
 @app.route('/control/edit', methods=['POST'])
 def edit_post():
+    page_list = json.loads(file.read_file("./config/page.json"))
     post_id = int(request.json["post_id"])
     title = int(request.json["title"])
     content = str(request.json["content"])
     encode = str(request.json["encode"])
+    state = False
+    name = None
     if check_password(post_id, encode):
+        state = False
+        name = page_list[post_id]["name"]
+        page_list[post_id]["title"] = title
+        file.write_file("./config/page.json", json.dumps(page_list))
+        file.write_file("./document/{0}.md".format(name), content)
+        update_post.update()
+        build_rss.build_rss()
+    return json.dumps({"status": state, "name": name})
 
 
-# todo edit设计
-# return json.dumps()
+@app.route('/control/delete', methods=['POST'])
+def delete_post():
+    page_list = json.loads(file.read_file("./config/page.json"))
+    post_id = int(request.json["post_id"])
+    encode = str(request.json["encode"])
+    state = False
+    if check_password(post_id, encode):
+        state = False
+        name = page_list[post_id]["name"]
+        os.remove("./document/{0}.md".format(name))
+    return json.dumps({"status": state})
+
 @app.route('/control/new', methods=['POST'])
 def new():
     title = str(request.json["title"])
