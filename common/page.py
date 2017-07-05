@@ -15,7 +15,8 @@ env.filters['datetimeformat'] = format_datatime
 
 def build_index(page, system_config, page_list, menu_list, static,template_config):
     page_info = {"title": "index"}
-    Start_num = -system_config["Paging"] + (int(page) * system_config["Paging"])
+    paging = system_config["Paging"]
+    start_num = -paging + (int(page) * paging)
     page_row_mod = divmod(len(page_list), system_config["Paging"])
     if page_row_mod[1] != 0 and len(page_list) > system_config["Paging"]:
         page_row = page_row_mod[0] + 1
@@ -25,7 +26,7 @@ def build_index(page, system_config, page_list, menu_list, static,template_confi
         page_row = 1
     if page <= 0 or page > page_row:
         return None,0
-    index_list = page_list[Start_num:Start_num + system_config["Paging"]]
+    index_list = page_list[start_num:start_num + paging]
     template = env.get_template("./{0}/index.html".format(system_config["Theme"]))
     result = template.render(menu_list=menu_list,
                              page_list=index_list,
