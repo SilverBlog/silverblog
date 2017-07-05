@@ -11,10 +11,10 @@ from manage import new_post, build_rss, update_post
 app = Flask(__name__)
 
 system_config = json.loads(file.read_file("./config/system.json"))
-
+password_md5 = hashlib.md5(str(system_config["API_Password"]).encode('utf-8')).hexdigest()
 
 def check_password(title, encode):
-    hash_md5 = hashlib.md5(str(title + system_config["API_Password"]).encode('utf-8')).hexdigest()
+    hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
     if encode == hash_md5:
         return True
     return False
@@ -43,8 +43,8 @@ def get_post_content():
 @app.route('/control/edit', methods=['POST'])
 def edit_post():
     page_list = json.loads(file.read_file("./config/page.json"))
-    post_id = int(request.json["post_id"])
-    title = int(request.json["title"])
+    post_id = str(request.json["post_id"])
+    title = str(request.json["title"])
     content = str(request.json["content"])
     encode = str(request.json["encode"])
     state = False
@@ -63,7 +63,7 @@ def edit_post():
 @app.route('/control/delete', methods=['POST'])
 def delete_post():
     page_list = json.loads(file.read_file("./config/page.json"))
-    post_id = int(request.json["post_id"])
+    post_id = str(request.json["post_id"])
     encode = str(request.json["encode"])
     state = False
     if check_password(post_id, encode):
