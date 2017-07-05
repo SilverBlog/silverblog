@@ -43,13 +43,13 @@ def get_post_content():
 @app.route('/control/edit', methods=['POST'])
 def edit_post():
     page_list = json.loads(file.read_file("./config/page.json"))
-    post_id = str(request.json["post_id"])
+    post_id = int(request.json["post_id"])
     title = str(request.json["title"])
     content = str(request.json["content"])
     encode = str(request.json["encode"])
     state = False
     name = None
-    if check_password(post_id, encode):
+    if check_password(str(post_id), encode):
         state = False
         name = page_list[post_id]["name"]
         page_list[post_id]["title"] = title
@@ -63,10 +63,10 @@ def edit_post():
 @app.route('/control/delete', methods=['POST'])
 def delete_post():
     page_list = json.loads(file.read_file("./config/page.json"))
-    post_id = str(request.json["post_id"])
+    post_id = int(request.json["post_id"])
     encode = str(request.json["encode"])
     state = False
-    if check_password(post_id, encode):
+    if check_password(str(post_id), encode):
         state = False
         name = page_list[post_id]["name"]
         os.remove("./document/{0}.md".format(name))
