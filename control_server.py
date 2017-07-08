@@ -84,6 +84,8 @@ def new():
     encode = str(request.json["encode"])
     state = False
     if check_password(title, encode):
+        if len(name) == 0:
+            name = new_post.get_name(title)
         file.write_file("./document/{0}.md".format(name), content)
         config = {"title": title, "name": name}
         new_post.new_post_init(config)

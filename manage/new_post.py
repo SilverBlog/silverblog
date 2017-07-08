@@ -23,8 +23,6 @@ def get_name(name_input):
 def new_post_init(config, independent=False):
     title = config["title"]
     name = config["name"]
-    if len(name) == 0:
-        name = get_name(title)
 
     if config is None:
         editor = system_info["Editor"]

@@ -22,6 +22,8 @@ if __name__ == '__main__':
             title = input()
             print("Please enter the URL (Leave a blank use pinyin):")
             name = input()
+            if len(name) == 0:
+                name = new_post.get_name(title)
             config = {"title": title, "name": name}
         new_post.new_post_init(config, args.independent)
         build_rss.build_rss()
