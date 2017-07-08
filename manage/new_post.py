@@ -24,7 +24,7 @@ def new_post_init(config, independent=False):
     title = config["title"]
     name = config["name"]
 
-    if config is None:
+    if not os.path.exists("./document/{0}.md".format(name)):
         editor = system_info["Editor"]
         os.system("{0} ./document/{1}.md".format(editor, name))
     post_info = {"name": name, "title": title, "time": str(time.strftime(system_info["Time_Format"], time.localtime()))}
