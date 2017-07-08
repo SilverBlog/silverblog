@@ -35,6 +35,7 @@ def get_post_content():
     post_id = int(request.json["post_id"])
     result = dict()
     result["title"] = page_list[post_id]["title"]
+    result["name"] = page_list[post_id]["name"]
     result["content"] = file.read_file("./document/{0}.md".format(page_list[post_id]["name"]))
     result["status"] = True
     return json.dumps(result)
@@ -44,14 +45,13 @@ def get_post_content():
 def edit_post():
     page_list = json.loads(file.read_file("./config/page.json"))
     post_id = str(request.json["post_id"])
+    name = str(request.json["name"])
     title = str(request.json["title"])
     content = str(request.json["content"])
     encode = str(request.json["encode"])
     state = False
-    name = None
     if check_password(title, encode):
         state = True
-        name = page_list[int(post_id)]["name"]
         page_list[int(post_id)]["title"] = title
         file.write_file("./config/page.json", json.dumps(page_list))
         file.write_file("./document/{0}.md".format(name), content)
@@ -72,17 +72,17 @@ def delete_post():
         del page_list[int(post_id)]
         file.write_file("./config/page.json", json.dumps(page_list))
         os.remove("./document/{0}.md".format(name))
+        build_rss.build_rss()
     return json.dumps({"status": state})
 
 @app.route('/control/new', methods=['POST'])
 def new():
     title = str(request.json["title"])
+    name = str(request.json["name"])
     content = str(request.json["content"])
     encode = str(request.json["encode"])
     state = False
-    name = None
     if check_password(title, encode):
-        name = new_post.get_name(title)
         file.write_file("./document/{0}.md".format(name), content)
         config = {"title": title, "name": name}
         new_post.new_post_init(config)

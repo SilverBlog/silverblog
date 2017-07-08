@@ -21,15 +21,8 @@ def get_name(name_input):
 
 
 def new_post_init(config, independent=False):
-    if config is not None:
-        title = config["title"]
-        name = config["name"]
-    else:
-        print("Please enter the title of the article:")
-        title = input()
-        print("Please enter the URL (Leave a blank use pinyin):")
-        name = input()
-
+    title = config["title"]
+    name = config["name"]
     if len(name) == 0:
         name = get_name(title)
 
