@@ -2,11 +2,12 @@ import json
 import os
 import shutil
 
+
 def build(github_mode):
     from common import file, page, console
-    html_static=False
+    html_static = False
     if github_mode is not None:
-        html_static=github_mode
+        html_static = github_mode
     page_list = json.loads(file.read_file("./config/page.json"))
     menu_list = json.loads(file.read_file("./config/menu.json"))
     system_config = json.loads(file.read_file("./config/system.json"))
@@ -43,4 +44,4 @@ def build(github_mode):
                     "./static_page/static/{0}/".format(system_config["Theme"]))
     shutil.copytree("./templates/static/user_file",
                     "./static_page/static/user_file")
-    console.log("Success","Create Github Page Success!")
+    console.log("Success", "Create Github Page Success!")

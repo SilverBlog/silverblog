@@ -8,12 +8,15 @@ from common import file, markdown
 
 env = Environment(loader=PackageLoader('init', 'templates'))
 
+
 def format_datatime(value, format='%Y-%m-%d %H:%M'):
     return str(time.strftime(format, value))
 
+
 env.filters['datetimeformat'] = format_datatime
 
-def build_index(page, system_config, page_list, menu_list, static,template_config):
+
+def build_index(page, system_config, page_list, menu_list, static, template_config):
     page_info = {"title": "index"}
     paging = system_config["Paging"]
     start_num = -paging + (int(page) * paging)
@@ -25,7 +28,7 @@ def build_index(page, system_config, page_list, menu_list, static,template_confi
     if page_row == 0:
         page_row = 1
     if page <= 0 or page > page_row:
-        return None,0
+        return None, 0
     index_list = page_list[start_num:start_num + paging]
     template = env.get_template("./{0}/index.html".format(system_config["Theme"]))
     result = template.render(menu_list=menu_list,
@@ -38,26 +41,27 @@ def build_index(page, system_config, page_list, menu_list, static,template_confi
     return result, page_row
 
 
-def build_page(name, system_config, page_list, page_name_list, menu_list, static,template_config):
+def build_page(name, system_config, page_list, page_name_list, menu_list, static, template_config):
     content = file.read_file("document/{0}.md".format(name))
     page_info = {"title": "undefined"}
-    page_nav=None
+    page_nav = None
     if name in page_name_list:
-        this_page_index=page_name_list.index(name)
+        this_page_index = page_name_list.index(name)
         page_info = page_list[this_page_index]
-        last_page=None
-        next_page=None
-        if (this_page_index-1) > 0:
+        last_page = None
+        next_page = None
+        if (this_page_index - 1) > 0:
             last_page = page_list[this_page_index - 1]
-        if (this_page_index+1) < len(page_name_list):
+        if (this_page_index + 1) < len(page_name_list):
             next_page = page_list[this_page_index + 1]
-        page_nav = {"last_page":last_page,"next_page": next_page}
+        page_nav = {"last_page": last_page, "next_page": next_page}
     if os.path.exists("document/{0}.json".format(name)):
         page_info = json.loads(file.read_file("document/{0}.json".format(name)))
     document = markdown.markdown(content)
     template = env.get_template("./{0}/post.html".format(system_config["Theme"]))
-    result = template.render(page_info=page_info,page_nav=page_nav, menu_list=menu_list, content=document,
-                             system_config=system_config, static=static, template_config=template_config,now_time=time.localtime())
+    result = template.render(page_info=page_info, page_nav=page_nav, menu_list=menu_list, content=document,
+                             system_config=system_config, static=static, template_config=template_config,
+                             now_time=time.localtime())
     return result
 
 

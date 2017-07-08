@@ -21,17 +21,8 @@ def get_name(name_input):
 
 
 def new_post_init(config, independent=False):
-    if config is not None:
-        title = config["title"]
-        name = config["name"]
-    else:
-        print("Please enter the title of the article:")
-        title = input()
-        print("Please enter the URL (Leave a blank use pinyin):")
-        name = input()
-
-    if len(name) == 0:
-        name = get_name(title)
+    title = config["title"]
+    name = config["name"]
 
     if config is None:
         editor = system_info["Editor"]
@@ -50,6 +41,6 @@ def new_post_init(config, independent=False):
         write_json.insert(0, post_info)
         page_config = "./config/page.json"
 
-    file.write_file(page_config, json.dumps(write_json, ensure_ascii = False))
+    file.write_file(page_config, json.dumps(write_json, ensure_ascii=False))
 
-    console.log("Success","Create a new article successfully!")
+    console.log("Success", "Create a new article successfully!")
