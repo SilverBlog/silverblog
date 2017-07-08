@@ -9,7 +9,7 @@ def update():
     page_list = json.loads(file.read_file("./config/page.json"))
     remove_list = list()
     for item in page_list:
-        processing_file="./document/{0}.md".format(item["name"])
+        processing_file = "./document/{0}.md".format(item["name"])
         if not os.path.exists(processing_file):
             remove_list.append(item["name"])
         else:

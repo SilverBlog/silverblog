@@ -1,5 +1,6 @@
 from common import console
 
+
 def read_file(filename):
     f = open(filename, newline=None)
     content = f.read()

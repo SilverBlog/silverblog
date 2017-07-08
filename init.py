@@ -12,7 +12,6 @@ cache_page = dict()
 template_config = None
 app = Flask(__name__)
 
-
 console.log("info", "Loading configuration")
 
 system_config = json.loads(file.read_file("./config/system.json"))
@@ -36,7 +35,6 @@ system_config["API_Password"] = None
 console.log("Success", "load the configuration file successfully")
 
 
-
 # Subscribe
 @app.route("/rss")
 @app.route("/feed")
@@ -51,7 +49,7 @@ def load_rss():
 @app.route("/<file_name>/")
 @app.route('/<file_name>/p/<int:page_index>')
 @app.route('/<file_name>/p/<int:page_index>/')
-def route(file_name = "index", page_index = 1):
+def route(file_name="index", page_index=1):
     result = None
 
     page_index_url = ""
@@ -76,7 +74,7 @@ def route(file_name = "index", page_index = 1):
 
     if result is not None:
         console.log("info", "Writing to cache: {0}".format(page_url))
-        cache_page[page_url]=result
+        cache_page[page_url] = result
         console.log("Success", "Get success: {0}".format(page_url))
 
         return result

@@ -13,6 +13,7 @@ app = Flask(__name__)
 system_config = json.loads(file.read_file("./config/system.json"))
 password_md5 = hashlib.md5(str(system_config["API_Password"]).encode('utf-8')).hexdigest()
 
+
 def check_password(title, encode):
     hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
     if encode == hash_md5:
@@ -77,6 +78,7 @@ def delete_post():
         os.remove("./document/{0}.md".format(name))
         build_rss.build_rss()
     return json.dumps({"status": state})
+
 
 @app.route('/control/new', methods=['POST'])
 def new():
