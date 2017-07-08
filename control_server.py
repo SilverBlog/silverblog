@@ -53,6 +53,7 @@ def edit_post():
     if check_password(title, encode):
         state = True
         page_list[int(post_id)]["title"] = title
+        page_list[int(post_id)]["name"] = name
         file.write_file("./config/page.json", json.dumps(page_list))
         file.write_file("./document/{0}.md".format(name), content)
         update_post.update()

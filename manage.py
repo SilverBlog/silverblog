@@ -18,11 +18,11 @@ if __name__ == '__main__':
         if args.config is not None:
             config = json.loads(file.read_file(args.config))
         if config is None:
-            config = dict()
             print("Please enter the title of the article:")
-            config["title"] = input()
+            title = input()
             print("Please enter the URL (Leave a blank use pinyin):")
-            config["name"] = input()
+            name = input()
+            config = {"title": title, "name": name}
         new_post.new_post_init(config, args.independent)
         build_rss.build_rss()
     if args.command == "update":
