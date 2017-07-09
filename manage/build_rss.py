@@ -31,10 +31,10 @@ def make_rss(project_name, project_url, project_description, page_list, full_con
     page_rss_list = list()
     for item in page_list:
         location = "{0}/{1}".format(system_config["Project_URL"], item["name"])
+        desc = item["excerpt"]
         if full_content:
             desc = str(markdown.markdown(file.read_file("./document/{0}.md".format(item["name"]))))
-        else:
-            desc = item["excerpt"]
+
         page_rss_list.append(rss_item(
             title=item["title"],
             link=location,
@@ -47,7 +47,7 @@ def make_rss(project_name, project_url, project_description, page_list, full_con
         link=project_url,
         description=project_description,
         lastBuildDate=datetime.datetime.now(),
-        items=page_rss_list)
+        items=page_rss_list, generator="SilverBlog", docs="https://github.com/SilverBlogTeam")
     return rss.to_xml(encoding='utf-8')
 
 
