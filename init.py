@@ -40,9 +40,13 @@ console.log("Success", "load the configuration file successfully")
 @app.route("/feed")
 def load_rss():
     if rss is None:
-        abort(400)
+        abort(404)
     return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
 
+
+@app.route("/static/")
+def static_file():
+    abort(400)
 
 @app.route("/")
 @app.route("/<file_name>")
