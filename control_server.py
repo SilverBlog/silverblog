@@ -26,9 +26,10 @@ if __name__ == '__main__':
     exit()
 
 def check_password(title, encode):
-    hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
-    if encode == hash_md5:
-        return True
+    if len(system_config["API_Password"]) != 0:
+        hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
+        if encode == hash_md5:
+            return True
     return False
 
 
