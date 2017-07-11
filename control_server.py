@@ -16,7 +16,6 @@ password_md5 = hashlib.md5(str(system_config["API_Password"]).encode('utf-8')).h
 
 if __name__ == '__main__':
     import qrcode_terminal
-
     print("Please use the client to scan the following QR Code")
     config_json = json.dumps({"url": system_config["Project_URL"], "password": password_md5})
     qrcode_terminal.draw(config_json)
