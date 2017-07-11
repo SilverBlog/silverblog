@@ -1,4 +1,5 @@
 # coding=utf-8
+
 import hashlib
 import json
 import os
@@ -13,6 +14,13 @@ app = Flask(__name__)
 system_config = json.loads(file.read_file("./config/system.json"))
 password_md5 = hashlib.md5(str(system_config["API_Password"]).encode('utf-8')).hexdigest()
 
+if __name__ == '__main__':
+    import qrcode_terminal
+
+    print("Please use the client to scan the following QR Code")
+    config_json = json.dumps({"url": system_config["Project_URL"], "password": password_md5})
+    qrcode_terminal.draw(config_json)
+    exit()
 
 def check_password(title, encode):
     hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
