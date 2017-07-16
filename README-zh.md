@@ -14,11 +14,11 @@ SilverBlog是一个基于Python的轻量级博客。
 * 无数据库化设计
 * 拥有媲美 Hexo 的静态页面生成模块，只需一行命令，就可在 Github Page 上运行
 * 支持 Mac os 和 Linux
-* 拥有一个正在开发的Android客户端
+* 拥有一个Android客户端
 
 ## 如何安装
 
-目前，本程序只提供了 Ubuntu 的安装方法，我们在之后将陆续提供其他系统的安装脚本
+目前本程序安装脚本只针对基于 Debian 开发的操作系统支持，其他系统请查看脚本自行安装环境，我们在之后将陆续提供其他系统的安装脚本。
 
 首先您需要 Clone 本项目仓库：
 
@@ -28,9 +28,9 @@ git clone https://github.com/qwe7002/SilverBlog.git
 cd SilverBlog
 ```
 
-然后您只需要执行目录内的 `install.sh` ，即可进行安装。
+然后您只需要执行 install 目录内的 `debian_install.sh` ，即可进行安装。
 
-本安装脚本默认使用 nginx+uwsgi 执行模式，如果您没有修改 uwsgi.json 文件中的端口号，那么请将 nginx_example 文件放到您的 nginx 软件包(默认位置在 /etc/nginx/sites-enabled )的网站配置目录下，并且将文件内的 {your SilverBlog location} 替换成您的 SilverBlog 存放目录。
+本安装脚本默认使用 nginx + uwsgi 执行模式，您可以将程序自动生成的 nginx_config 文件放到您的 nginx 软件包(默认位置在 /etc/nginx/sites-enabled )的网站配置目录下。
 
 ## 配置您的 SilverBlog
 
@@ -39,18 +39,18 @@ cd SilverBlog
 ```
 {
   "Project_Name": "", (网站名称)
-  "Project_Description":"", (网站简介，显示于副标题)
-  "Project_URL":"", (网站访问地址)
-  "Author_Image":"", (作者头像)
-  "Author_Name":"", (作者姓名)
-  "Author_Introduction":"", (作者介绍)
-  "Cover_Image":"", (首页头图，可选)
+  "Project_Description": "", (网站简介，显示于副标题)
+  "Project_URL": "", (网站访问地址)
+  "Author_Image": "", (作者头像)
+  "Author_Name": "", (作者姓名)
+  "Author_Introduction": "", (作者介绍)
   "Paging": 10, (列表分页数)
-  "Theme": "casper", (主题,这里为主题文件夹名称)
-  "API_Password":"", (API的PSK密码，备用)
-  "Rss_Full_Content":true, (RSS全文输出开关)
-  "Restful_API":false, (Restful输出开关)
-  "Editor":"vim" (默认编辑器)
+  "Time_Format": "%Y-%m-%d",(时间格式)
+  "Theme": "i-material", (主题,这里为主题文件夹名称)
+  "API_Password": "", (API的PSK密码)
+  "Rss_Full_Content": true, (RSS全文输出)
+  "Restful_API": false, (Restful输出开关)
+  "Editor": "vim" (默认编辑器)
 }
 ```
 您需要编辑 menu.json ，menu.json为导航栏的配置文件
@@ -60,7 +60,7 @@ cd SilverBlog
   {
     "name": "主页", (显示的名称)
     "url": "index", (访问地址)
-    "absolute": true (绝对路径开关，如果此处为 true ，URL 便为绝对路径)
+    "absolute": true (可选，绝对路径开关，如果此处为 true ，URL 便为绝对路径)
   }
 ]
 ```
@@ -102,22 +102,25 @@ pm2 save
 
 - `./manage.py new` 增加一篇新文章(您可以通过指定一个 editor 或者一个 json 文件的方法来编辑和添加文章)
 
-添加文章 json 示例:
+添加文章 json 示例(注意，您需要先将文件放到Document目录下。这里的name应与Document目录下的md文件名相同。):
 ```json
 {
 	"title":"您好,世界!",
 	"name":"hello-world",
-	"file":"~/document/hello-world.md"
 }
 ```
 
-- `./manage.py update` 更新文章列表
-
-- `./manage.py build-rss` 生成RSS文件(每次添加文章或更新文章列表的时候，无需调用此命令)
+- `./manage.py update` 更新文章列表 / 更新RSS
 
 - `./manage.py build-gh-page` 在 ./static_page 文件夹下生成静态页面
 
 你可以使用--static_page参数使链接末尾带有扩展名，以便CDN能够正确访问页面
+
+## 使用手机客户端
+
+您可以访问 https://github.com/SilverBlogTeam/SilverBlog_Android/releases 下载最新android客户端，网页版后台正在开发中。
+
+您可以使用 pip 安装 [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) 依赖，之后执行 `python3 control_server.py` 生成自动化配置二维码。
 
 ## 参与开发
 
