@@ -34,6 +34,6 @@ cp -i example/control-start.example.sh control-start.sh
 cp -i example/uwsgi.example.json uwsgi.json
 
 chmod +x manage.py
-vim config/system.json
 cd templates/i-material
 ln -s $(pwd)/static ../static/i-material
+vim config/system.json

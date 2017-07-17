@@ -16,11 +16,11 @@ SilverBlog is a Python-based lightweight blog.
 * No database design
 * Has a static page generation module comparable to Hexo, just one line command that runs on Github Page
 * Supports Mac os and Linux
-* Have an Android client that is being developed
+* Have an Android client
 
 ## how to install
 
-At present, the program only provides Ubuntu installation method, we will continue to provide other systems after the installation script
+At present, the installation script is only for the development of operating systems based on Debian support, other systems please see the script to install the environment, we will continue to provide other system installation script.
 
 First you need Clone Project Warehouse:
 
@@ -30,9 +30,9 @@ git clone https://github.com/qwe7002/SilverBlog.git
 cd SilverBlog
 ```
 
-Then you only need to execute the `install.sh` in the directory to install it.
+Then you only need to execute the install directory of `debian_install.sh`, you can install.
 
-This install script defaults to the nginx+uwsgi execution mode. If you did not modify the port number in the uwsgi.json file, place the nginx_example file in your nginx package (the default location is in /etc/nginx/sites-enabled) Site configuration directory, and replace the {your SilverBlog location} in your file with your SilverBlog storage directory.
+This install script defaults to the nginx + uwsgi execution mode. If you did not modify the port number in the uwsgi.json file, place the nginx_example file in your nginx package (the default location is in /etc/nginx/sites-enabled) Site configuration directory, and replace the {your SilverBlog location} in your file with your SilverBlog storage directory.
 
 ## Configure your SilverBlog
 
@@ -40,19 +40,19 @@ You need to modify the system.json under the config folder. This is your global 
 
 ```
 {
-  "Project_Name": "", (website name)
-  "Project_Description": "", (website profile, shown in subtitle)
-  "Project_URL": "", (website access address)
-  "Author_Image": "", (author avatar)
-  "Author_Name": "", (author name)
-  "Author_Introduction": "", (by the author)
-  "Cover_Image": "", (Home header, optional)
-  "Paging": 10, (list of pages)
-  "Theme": "casper", (theme, here for the theme folder name)
-  "API_Password": "", (API's PSK password, alternate)
-  "Rss_Full_Content": true, (RSS full text output switch)
-  "Restful_API": false, (Restful output switch)
-  "Editor": "vim" (default editor)
+  "Project_Name": "", (website name)
+  "Project_Description": "", (website profile)
+  "Project_URL": "", (website access address)
+  "Author_Image": "", (author avatar)
+  "Author_Name": "", (author name)
+  "Author_Introduction": "", (author introduction)
+  "Paging": 10, (list of pages)
+  "Time_Format": "%Y-%m-%d",(time format)
+  "Theme": "i-material", (theme, here for the theme folder name)
+  "API_Password": "", (API's PSK password)
+  "Rss_Full_Content": true, (RSS full text output switch)
+  "Restful_API": false, (Restful output switch)
+  "Editor": "vim" (default editor)
 }
 ```
 You need to edit menu.json, menu.json for the navigation bar configuration file
@@ -104,23 +104,26 @@ The following is a list of features:
 
 - `./manage.py new` Add a new article (you can edit and add an article by specifying an editor or a json file)
 
-Add article json example:
+Add article json example(You need to put the file in the Document directory. The name here should be the same as the md file name in the Document directory.):
 
 ```json
 {
 	"title":"hello world",
 	"name":"hello-world",
-	"file":"~/document/hello-world.md"
 }
 ```
 
-- `./manage.py update` update the list of articles
-
-- `./manage.py build-rss` Generate an RSS file (no need to call this command every time you add an article or update a list of articles)
+- `./manage.py update` update the list of articles / update RSS
 
 - `./manage.py build-gh-page` Generate static pages in the ./static_page folder
 
 You can use the --static_page parameter to have the extension at the end of the link so that CDN can access the page correctly
+
+## Use the phone client
+
+You can visit https://github.com/SilverBlogTeam/SilverBlog_Android/releases download the latest android client(Only Chinese version), web version background is under development.
+
+You can use pip to install [qrcode_terminal] (https://github.com/alishtory/qrcode-terminal) dependencies, and then execute `python3 control_server.py` to generate the automated configuration of the QR code.
 
 ## participate in development
 
