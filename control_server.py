@@ -108,3 +108,10 @@ def new():
         state = True
         build_rss.build_rss()
     return json.dumps({"status": state, "name": name})
+
+
+@app.route("/control/git_page_publish")
+def git_publish():
+    from manage import git_publish
+    status = git_publish.git_publish(True)
+    return json.dumps({"status": status})
