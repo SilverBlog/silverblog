@@ -35,4 +35,5 @@ if __name__ == '__main__':
     if args.command == "build-gh-page":
         if args.push_git:
             git_publish.git_publish(args.static_page)
+            exit(0)
         build_static_page.build(args.static_page)
