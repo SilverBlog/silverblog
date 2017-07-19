@@ -113,5 +113,5 @@ def new():
 @app.route("/control/git_page_publish")
 def git_publish():
     from manage import git_publish
-    status = git_publish.git_publish(True)
+    status = git_publish.git_publish(False)
     return json.dumps({"status": status})

@@ -22,7 +22,7 @@ def git_publish(static):
     repo = git.Repo("./static_page")
     repo.git.add("--all")
     try:
-        repo.git.commit("-m 'Publish Time：{0}'".format(localtime))
+        repo.git.commit("-m \"Publish Time：{0}\"".format(localtime))
     except git.exc.GitCommandError as e:
         console.log("Error", e.args)
         return False
