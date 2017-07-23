@@ -110,7 +110,7 @@ def new():
     return json.dumps({"status": state, "name": name})
 
 
-@app.route("/control/git_page_publish")
+@app.route("/control/git_page_publish", methods=['POST'])
 def git_publish():
     from manage import git_publish
     status = git_publish.git_publish(False)
