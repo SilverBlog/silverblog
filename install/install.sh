@@ -20,20 +20,22 @@ EOF
 
 git submodule init
 git submodule update
-mkdir document
-mkdir templates/static
-mkdir config
+mkdir ./document
+mkdir ./templates/static
+mkdir ./config
 
-cp -i example/menu.example.json config/menu.json
-cp -i example/page.example.json config/page.json
-cp -i example/system.example.json config/system.json
+cp -i ./example/menu.example.json ./config/menu.json
+cp -i ./example/page.example.json ./config/page.json
+cp -i ./example/system.example.json ./config/system.json
 
-cp -i example/start.example.json start.json
-cp -i example/start.example.sh start.sh
-cp -i example/control-start.example.sh control-start.sh
-cp -i example/uwsgi.example.json uwsgi.json
+cp -i ./example/start.example.json ./start.json
+cp -i ./example/start.example.sh ./start.sh
+cp -i ./example/control-start.example.sh ./control-start.sh
+cp -i ./example/uwsgi.example.json ./uwsgi.json
+
+vim ./config/system.json
 
 chmod +x manage.py
-cd templates/i-material
+cd ./templates/i-material
 ln -s $(pwd)/static ../static/i-material
-vim config/system.json
+

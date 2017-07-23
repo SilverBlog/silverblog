@@ -25,3 +25,4 @@ start.sh
 templates/*
 !templates/i-material
 control-start.sh
+test.py

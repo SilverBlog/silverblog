@@ -13,6 +13,7 @@ if __name__ == '__main__':
     parser.add_argument("--independent", help="Generate an article that does not appear in the article list",
                         action="store_true")
     parser.add_argument("--static_page", help="Create page that is available to static server", action="store_true")
+    parser.add_argument("--push_git", help="Automatically submitted to Git", action="store_true")
     args = parser.parse_args()
     if args.command == "new":
         config = None
@@ -32,4 +33,8 @@ if __name__ == '__main__':
         update_post.update()
         build_rss.build_rss()
     if args.command == "build-gh-page":
+        if args.push_git:
+            from manage import git_publish
+            git_publish.git_publish(args.static_page)
+            exit(0)
         build_static_page.build(args.static_page)
