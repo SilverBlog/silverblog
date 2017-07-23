@@ -12,6 +12,7 @@ from common import console
 
 def git_publish(static):
     if not os.path.exists("./static_page/.git"):
+        console.log("Error", "[./static_page/] Not a git repository.")
         return False
     if not os.path.exists("./.temp"):
         os.mkdir("./.temp")
