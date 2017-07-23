@@ -4,7 +4,7 @@ import argparse
 import json
 
 from common import file
-from manage import build_rss, build_static_page, new_post, update_post, git_publish
+from manage import build_rss, build_static_page, new_post, update_post
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -34,6 +34,7 @@ if __name__ == '__main__':
         build_rss.build_rss()
     if args.command == "build-gh-page":
         if args.push_git:
+            from manage import git_publish
             git_publish.git_publish(args.static_page)
             exit(0)
         build_static_page.build(args.static_page)
