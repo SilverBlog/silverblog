@@ -6,7 +6,7 @@ import os
 
 from flask import Flask, request
 
-from common import file
+from common import file, console
 from manage import new_post, build_rss, update_post
 
 app = Flask(__name__)
@@ -15,7 +15,11 @@ system_config = json.loads(file.read_file("./config/system.json"))
 password_md5 = hashlib.md5(str(system_config["API_Password"]).encode('utf-8')).hexdigest()
 
 if __name__ == '__main__':
-    import qrcode_terminal
+    try:
+        import qrcode_terminal
+    except ImportError:
+        console.log("Error", "Please install the qrcode-terminal package to support this feature")
+        exit(1)
 
     if len(system_config["API_Password"]) == 0 or len(system_config["Project_URL"]) == 0:
         print("Check the API_Password and Project_URL configuration items")
@@ -82,7 +86,7 @@ def delete_post():
     post_id = str(request.json["post_id"])
     encode = str(request.json["encode"])
     state = False
-    if check_password(post_id, encode):
+    if check_password(post_id + page_list[int(post_id)]["title"], encode):
         state = True
         name = page_list[int(post_id)]["name"]
         del page_list[int(post_id)]

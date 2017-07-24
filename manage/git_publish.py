@@ -4,11 +4,10 @@ import time
 
 import git
 
-localtime = time.asctime(time.localtime(time.time()))
-
-from manage import build_static_page
 from common import console
+from manage import build_static_page
 
+localtime = time.asctime(time.localtime(time.time()))
 
 def git_publish(static):
     if not os.path.exists("./static_page/.git"):
