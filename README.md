@@ -100,7 +100,7 @@ The following is a list of features:
 
 - `./manage.py new` Add a new article (you can edit and add an article by specifying an editor or a json file)
 
-Add article json example(You need to put the file in the Document directory. The name here should be the same as the md file name in the Document directory.):
+Add article json example:(You need to put the file in the Document directory. The name here should be the same as the md file name in the Document directory.)
 
 ```json
 {

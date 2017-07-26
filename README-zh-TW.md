@@ -97,7 +97,7 @@ pm2 save
 
 - `./manage.py new` 增加一篇新文章(您可以通過指定一個 editor 或者一個 json 文件的方法來編輯和添加文章)
 
-添加文章 json 示例(注意，您需要先將文件放到Document目錄下。這裡的name應與Document目錄下的md文件名相同。):
+添加文章 json 示例:(注意，您需要先將文件放到Document目錄下。這裡的name應與Document目錄下的md文件名相同。)
 ```json
 {
 "title":"您好,世界!",
