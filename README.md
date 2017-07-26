@@ -32,6 +32,8 @@ cd SilverBlog
 
 Then you only need to execute the install directory of `debian_install.sh`, you can install.
 
+You need to select a theme in [SilverBlogTeam] (https://github.com/SilverBlogTeam), store it in the `templates` directory, run `install.sh` in the theme folder, and in the following configuration file Configure it correctly
+
 This install script defaults to the nginx + uwsgi execution mode. If you did not modify the port number in the uwsgi.json file, place the nginx_example file in your nginx package (the default location is in /etc/nginx/sites-enabled) Site configuration directory, and replace the {your SilverBlog location} in your file with your SilverBlog storage directory.
 
 ## Configure your SilverBlog
@@ -48,7 +50,7 @@ You need to modify the system.json under the config folder. This is your global 
   "Author_Introduction": "", (author introduction)
   "Paging": 10, (list of pages)
   "Time_Format": "%Y-%m-%d",(time format)
-  "Theme": "i-material", (theme, here for the theme folder name)
+  "Theme": "", (theme, here for the theme folder name)
   "API_Password": "", (API's PSK password)
   "Rss_Full_Content": true, (RSS full text output switch)
   "Restful_API": false, (Restful output switch)

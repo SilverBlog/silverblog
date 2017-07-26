@@ -30,6 +30,8 @@ cd SilverBlog
 
 然后您只需要执行 install 目录内的 `debian_install.sh` ，即可进行安装。
 
+您需要自行在 [SilverBlogTeam](https://github.com/SilverBlogTeam) 中选择一个主题，存放到 `templates` 目录中，运行主题文件夹中的 `install.sh` ，并在下面的配置文件中正确配置它
+
 本安装脚本默认使用 nginx + uwsgi 执行模式，您可以将程序自动生成的 nginx_config 文件放到您的 nginx 软件包(默认位置在 /etc/nginx/sites-enabled )的网站配置目录下。
 
 ## 配置您的 SilverBlog
@@ -46,7 +48,7 @@ cd SilverBlog
   "Author_Introduction": "", (作者介绍)
   "Paging": 10, (列表分页数)
   "Time_Format": "%Y-%m-%d",(时间格式)
-  "Theme": "i-material", (主题,这里为主题文件夹名称)
+  "Theme": "", (主题,这里为主题文件夹名称)
   "API_Password": "", (API的PSK密码)
   "Rss_Full_Content": true, (RSS全文输出)
   "Restful_API": false, (Restful输出开关)
