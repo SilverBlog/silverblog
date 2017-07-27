@@ -20,11 +20,13 @@ SilverBlog is a Python-based lightweight blog.
 
 ## how to install
 
-At present, the installation script is only for the development of operating systems based on Debian support, other systems please see the script to install the environment, we will continue to provide other system installation script.
+At present, the installation script for the Debian-based operating system and Arch Linux support, other systems please see the script to install the environment, we will continue to provide other system installation script.
 
 You can install SilverBlog directly using the installation script
 
-`curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh | bash`
+Debian: `curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh | bash`
+
+Arch Linux: `curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | bash`
 
 You need to select a theme in [SilverBlogTeam](https://github.com/SilverBlogTeam), store it in the `templates` directory, run `install.sh` in the theme folder, and in the following configuration file Configure it correctly
 
