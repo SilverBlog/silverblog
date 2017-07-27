@@ -37,16 +37,23 @@ def check_password(title, encode):
     return False
 
 
-@app.route('/control/get_post_list', methods=['POST'])
+@app.route('/control/system_info', methods=['POST', 'GET'])
+def system_info():
+    result = dict()
+    result["project_name"] = system_config["Project_Name"]
+    result["project_description"] = system_config["Project_Description"]
+    result["author_image"] = system_config["Author_Image"]
+    result["author_name"] = system_config["Author_Name"]
+    result["author_introduction"] = system_config["Author_Introduction"]
+    return json.dumps(result)
+
+
+@app.route('/control/get_post_list', methods=['POST', 'GET'])
 def post_list():
-    page_list = json.loads(file.read_file("./config/page.json"))
-    page_title_list = list()
-    for item in page_list:
-        page_title_list.append(item["title"])
-    return json.dumps(page_title_list)
+    return file.read_file("./config/page.json")
 
 
-@app.route('/control/get_post_content', methods=['POST'])
+@app.route('/control/get_post_content', methods=['POST', 'GET'])
 def get_post_content():
     page_list = json.loads(file.read_file("./config/page.json"))
     post_id = int(request.json["post_id"])

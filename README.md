@@ -1,9 +1,9 @@
 # SilverBlog
 
-***
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/qwe7002/SilverBlog/blob/master/LICENSE)
 
-[中文文档](https://github.com/SilverBlogTeam/SilverBlog/blob/master/README-zh.md)
+[中文文档(简体中文)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/README-zh-CN.md)
+[中文文档(繁体中文)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/README-zh-TW.md)
 
 SilverBlog is a Python-based lightweight blog.
 
@@ -22,19 +22,13 @@ SilverBlog is a Python-based lightweight blog.
 
 At present, the installation script is only for the development of operating systems based on Debian support, other systems please see the script to install the environment, we will continue to provide other system installation script.
 
-First you need Clone Project Warehouse:
+You can install SilverBlog directly using the installation script
 
-```shell
-sudo apt install git
-git clone https://github.com/qwe7002/SilverBlog.git
-cd SilverBlog
-```
+`curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh | bash`
 
-Then you only need to execute the install directory of `debian_install.sh`, you can install.
+You need to select a theme in [SilverBlogTeam](https://github.com/SilverBlogTeam), store it in the `templates` directory, run `install.sh` in the theme folder, and in the following configuration file Configure it correctly
 
-You need to select a theme in [SilverBlogTeam] (https://github.com/SilverBlogTeam), store it in the `templates` directory, run `install.sh` in the theme folder, and in the following configuration file Configure it correctly
-
-This install script defaults to the nginx + uwsgi execution mode. If you did not modify the port number in the uwsgi.json file, place the nginx_example file in your nginx package (the default location is in /etc/nginx/sites-enabled) Site configuration directory, and replace the {your SilverBlog location} in your file with your SilverBlog storage directory.
+This install script defaults to the nginx + uwsgi execution mode. If you did not modify the port number in the `uwsgi.json` file, place the `nginx_config` file in your nginx package (the default location is in /etc/nginx/sites-enabled) Site configuration directory, and replace the {your SilverBlog location} in your file with your SilverBlog storage directory.
 
 ## Configure your SilverBlog
 
@@ -89,7 +83,7 @@ pm2 start start.json
 
 It can be achieved in the update file or program error, automatically restart SilverBlog.
 
-You can also use it
+You can also use it.
 
 ```shell
 pm2 startup
@@ -106,7 +100,7 @@ The following is a list of features:
 
 - `./manage.py new` Add a new article (you can edit and add an article by specifying an editor or a json file)
 
-Add article json example(You need to put the file in the Document directory. The name here should be the same as the md file name in the Document directory.):
+Add article json example:(You need to put the file in the Document directory. The name here should be the same as the md file name in the Document directory.)
 
 ```json
 {
