@@ -121,7 +121,7 @@ You can use the --static_page parameter to have the extension at the end of the 
 
 You can visit https://github.com/SilverBlogTeam/SilverBlog_Android/releases download the latest android client(Only Chinese version), web version background is under development.
 
-You can use pip to install [qrcode_terminal] (https://github.com/alishtory/qrcode-terminal) dependencies, and then execute `python3 control_server.py` to generate the automated configuration of the QR code.
+You can use pip to install [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) dependencies, and then execute `python3 control_server.py` to generate the automated configuration of the QR code.
 
 ## participate in development
 
@@ -131,9 +131,7 @@ If you are not familiar with GitHub's Fork and Pull development mode, you can re
 
 ## Distribution protocol
 
-This software is distributed using BSD 3-clause protocol
-
-Copyright (c) 2017, SilverBlog
+Copyright (c) 2017, SilverBlogTeam
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -146,7 +144,7 @@ modification, are permitted provided that the following conditions are met:
   this list of conditions and the following disclaimer in the documentation
   and/or other materials provided with the distribution.
 
-* Neither the name of SilverBlog nor the names of its
+* Neither the name of SilverBlogTeam nor the names of its
   contributors may be used to endorse or promote products derived from
   this software without specific prior written permission.
 
