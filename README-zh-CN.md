@@ -21,9 +21,17 @@ SilverBlog是一个基于Python的轻量级博客。
 
 您可以直接使用安装脚本安装SilverBlog
 
-Debian: `curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh | bash`
+Debian:
 
-Arch Linux: `curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | bash`
+```shell
+curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh | bash
+```
+
+Arch Linux:
+
+```shell
+curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | bash
+```
 
 您需要自行在 [SilverBlogTeam](https://github.com/SilverBlogTeam) 中选择一个主题，存放到 `templates` 目录中，运行主题文件夹中的 `install.sh` ，并在下面的配置文件中正确配置它
 

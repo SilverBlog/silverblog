@@ -24,9 +24,17 @@ At present, the installation script for the Debian-based operating system and Ar
 
 You can install SilverBlog directly using the installation script
 
-Debian: `curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh | bash`
+Debian:
 
-Arch Linux: `curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | bash`
+```shell
+curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh | bash
+```
+
+Arch Linux:
+
+```shell
+curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | bash
+```
 
 You need to select a theme in [SilverBlogTeam](https://github.com/SilverBlogTeam), store it in the `templates` directory, run `install.sh` in the theme folder, and in the following configuration file Configure it correctly
 
