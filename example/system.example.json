@@ -5,10 +5,10 @@
   "Author_Image": "",
   "Author_Name": "",
   "Author_Introduction": "",
+  "Theme": "",
+  "API_Password": "",
   "Paging": 10,
   "Time_Format": "%Y-%m-%d",
-  "Theme": "i-material",
-  "API_Password": "",
   "Rss_Full_Content": true,
   "Restful_API": false,
   "Editor": "vim"
