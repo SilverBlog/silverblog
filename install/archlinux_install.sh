@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#NextMoe-icecat modified 20170806 03:16(Aisa/Shanghai)
+#NextMoe-icecat modified 20170806 03:16(Asia/Shanghai)
 sudo pacman -S nginx uwsgi uwsgi-plugin-python python-pip python-wheel sudo git gcc vim
 
 sudo pip install cffi
