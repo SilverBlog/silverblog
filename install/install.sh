@@ -33,8 +33,6 @@ cp -i ./example/start.example.sh ./start.sh
 cp -i ./example/control-start.example.sh ./control-start.sh
 cp -i ./example/uwsgi.example.json ./uwsgi.json
 
-vim ./config/system.json
-
 chmod +x manage.py
 
 
