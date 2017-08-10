@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-echo Updating software source
+echo "Updating software source..."
+
 sudo apt-get update
 
-echo Installing Dependency
+echo "Installing Dependency..."
+
 sudo apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git vim
 sudo pip3 install cffi
 sudo pip3 install flask misaka pypinyin pyrss2gen gitpython

@@ -61,6 +61,7 @@ You need to modify the system.json under the config folder. This is your global 
   "Editor": "vim" (default editor)
 }
 ```
+
 You need to edit menu.json, menu.json for the navigation bar configuration file
 
 ```
@@ -131,7 +132,7 @@ You can visit https://github.com/SilverBlogTeam/SilverBlog_Android/releases down
 
 You can use pip to install [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) dependencies, and then execute `python3 control_server.py` to generate the automated configuration of the QR code.
 
-## participate in development
+## Participate in development
 
 We welcome you to report the issue or pull request on GitHub of the SilverBlog project.
 
