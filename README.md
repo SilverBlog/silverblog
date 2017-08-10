@@ -61,6 +61,7 @@ You need to modify the system.json under the config folder. This is your global 
   "Editor": "vim" (default editor)
 }
 ```
+
 You need to edit menu.json, menu.json for the navigation bar configuration file
 
 ```
@@ -123,7 +124,7 @@ Add article json example:(You need to put the file in the Document directory. Th
 
 - `./manage.py build-gh-page` Generate static pages in the ./static_page folder
 
-You can use the --static_page parameter to have the extension at the end of the link so that CDN can access the page correctly
+You can use the `--static_page` parameter to have the extension at the end of the link so that CDN can access the page correctly
 
 ## Use the phone client
 
@@ -131,7 +132,7 @@ You can visit https://github.com/SilverBlogTeam/SilverBlog_Android/releases down
 
 You can use pip to install [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) dependencies, and then execute `python3 control_server.py` to generate the automated configuration of the QR code.
 
-## participate in development
+## Participate in development
 
 We welcome you to report the issue or pull request on GitHub of the SilverBlog project.
 

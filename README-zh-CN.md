@@ -58,6 +58,7 @@ wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/ins
   "Editor": "vim" (默认编辑器)
 }
 ```
+
 您需要编辑 menu.json ，menu.json为导航栏的配置文件
 
 ```
@@ -119,7 +120,7 @@ pm2 save
 
 - `./manage.py build-gh-page` 在 ./static_page 文件夹下生成静态页面
 
-你可以使用--static_page参数使链接末尾带有扩展名，以便CDN能够正确访问页面
+你可以使用 `--static_page` 参数使链接末尾带有扩展名，以便CDN能够正确访问页面
 
 ## 使用手机客户端
 
@@ -131,7 +132,9 @@ pm2 save
 
 我们欢迎您在 SilverBlog 项目的 GitHub 上报告 issue 或者 pull request。
 
-如果您还不熟悉GitHub的Fork and Pull开发模式，您可以阅读[GitHub的文档](https://help.github.com/articles/using-pull-requests)获得更多的信息。
+如果您还不熟悉 GitHub 的 Fork and Pull 开发模式，您可以阅读 [GitHub的文档](https://help.github.com/articles/using-pull-requests) 获得更多的信息。
+
+我们建议您在使用中文提出issue的同时，在下方附上英语翻译版本，以便非中文母语地区开发者的阅读和理解。
 
 ## 分发协议
 
