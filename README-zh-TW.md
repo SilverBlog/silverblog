@@ -120,7 +120,7 @@ pm2 save
 
 - `./manage.py build-gh-page` 在 ./static_page 文件夾下生成靜態頁面
 
-您可以使用--static_page參數使鏈接末尾帶有擴展名，以便CDN能夠正確訪問頁面
+您可以使用 `--static_page` 參數使鏈接末尾帶有擴展名，以便CDN能夠正確訪問頁面
 
 ## 使用手機客戶端
 

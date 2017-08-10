@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 cd ..
 
+echo "Generate a Nginx configuration file..."
+
 cat << EOF >nginx_config
 server {
     listen 80;
@@ -19,10 +21,14 @@ server {
 }
 EOF
 
+echo "Create directory..."
+
 mkdir ./document
 mkdir ./templates
 mkdir ./templates/static
 mkdir ./config
+
+echo "Create configuration file..."
 
 cp -i ./example/menu.example.json ./config/menu.json
 cp -i ./example/page.example.json ./config/page.json
@@ -35,4 +41,5 @@ cp -i ./example/uwsgi.example.json ./uwsgi.json
 
 chmod +x manage.py
 
-
+x=$(pwd)
+echo "The installation is complete! Please edit $x/config/system.json file."

@@ -124,7 +124,7 @@ Add article json example:(You need to put the file in the Document directory. Th
 
 - `./manage.py build-gh-page` Generate static pages in the ./static_page folder
 
-You can use the --static_page parameter to have the extension at the end of the link so that CDN can access the page correctly
+You can use the `--static_page` parameter to have the extension at the end of the link so that CDN can access the page correctly
 
 ## Use the phone client
 
