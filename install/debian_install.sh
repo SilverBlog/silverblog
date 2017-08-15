@@ -6,7 +6,7 @@ apt-get update
 
 echo "Installing Dependency..."
 
-apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git vim
+apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git
 pip3 install cffi
 pip3 install flask misaka pypinyin pyrss2gen gitpython
 

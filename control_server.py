@@ -48,6 +48,28 @@ def system_info():
     return json.dumps(result)
 
 
+@app.route('/control/get_menu_list', methods=['POST', 'GET'])
+def post_menu_list():
+    menu_list = json.loads(file.read_file("./config/menu.json"))
+    output_list = list()
+    for menu_item in menu_list:
+        menu_item["title"] = menu_item["name"]
+        del menu_item["name"]
+        output_list.append(menu_item)
+    return json.dumps(output_list)
+
+
+@app.route('/control/get_menu_content', methods=['POST', 'GET'])
+def get_menu_content():
+    page_list = json.loads(file.read_file("./config/menu.json"))
+    post_id = int(request.json["post_id"])
+    result = dict()
+    result["title"] = page_list[post_id]["name"]
+    result["name"] = page_list[post_id]["url"]
+    result["content"] = file.read_file("./document/{0}.md".format(page_list[post_id]["url"]))
+    result["status"] = True
+    return json.dumps(result)
+
 @app.route('/control/get_post_list', methods=['POST', 'GET'])
 def post_list():
     return file.read_file("./config/page.json")
