@@ -27,13 +27,13 @@ You can install SilverBlog directly using the installation script
 Debian:
 
 ```shell
-wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh | bash
+wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh | sudo bash
 ```
 
 Arch Linux:
 
 ```shell
-wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | bash
+wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | sudo bash
 ```
 
 You need to select a theme in [SilverBlogTeam](https://github.com/SilverBlogTeam), store it in the `templates` directory, run `install.sh` in the theme folder, and in the following configuration file Configure it correctly
