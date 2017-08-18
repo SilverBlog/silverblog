@@ -50,7 +50,7 @@ def system_info():
 
 @app.route('/control/get_post_list', methods=['POST', 'GET'])
 def post_list():
-    if "menu" in request.json and requst.json["menu"]:
+    if "menu" in request.json and request.json["menu"]:
         return file.read_file("./config/menu.json")
     return file.read_file("./config/page.json")
 
