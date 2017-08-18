@@ -58,7 +58,7 @@ def post_list():
 @app.route('/control/get_post_content', methods=['POST', 'GET'])
 def get_post_content():
     file_url = "./config/page.json"
-    if "menu" in request.json and requst.json["menu"]:
+    if "menu" in request.json and request.json["menu"]:
         file_url = "./config/menu.json"
     page_list = json.loads(file.read_file(file_url))
     post_id = int(request.json["post_id"])
@@ -73,7 +73,7 @@ def get_post_content():
 @app.route('/control/edit', methods=['POST'])
 def edit_post():
     file_url = "./config/page.json"
-    if "menu" in request.json and requst.json["menu"]:
+    if "menu" in request.json and request.json["menu"]:
         file_url = "./config/menu.json"
     page_list = json.loads(file.read_file(file_url))
     post_id = str(request.json["post_id"])
