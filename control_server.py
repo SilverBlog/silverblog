@@ -48,36 +48,19 @@ def system_info():
     return json.dumps(result)
 
 
-@app.route('/control/get_menu_list', methods=['POST', 'GET'])
-def post_menu_list():
-    menu_list = json.loads(file.read_file("./config/menu.json"))
-    output_list = list()
-    for menu_item in menu_list:
-        menu_item["title"] = menu_item["name"]
-        del menu_item["name"]
-        output_list.append(menu_item)
-    return json.dumps(output_list)
-
-
-@app.route('/control/get_menu_content', methods=['POST', 'GET'])
-def get_menu_content():
-    page_list = json.loads(file.read_file("./config/menu.json"))
-    post_id = int(request.json["post_id"])
-    result = dict()
-    result["title"] = page_list[post_id]["name"]
-    result["name"] = page_list[post_id]["url"]
-    result["content"] = file.read_file("./document/{0}.md".format(page_list[post_id]["url"]))
-    result["status"] = True
-    return json.dumps(result)
-
 @app.route('/control/get_post_list', methods=['POST', 'GET'])
 def post_list():
+    if "menu" in request.json and requst.json["menu"]:
+        return file.read_file("./config/menu.json")
     return file.read_file("./config/page.json")
 
 
 @app.route('/control/get_post_content', methods=['POST', 'GET'])
 def get_post_content():
-    page_list = json.loads(file.read_file("./config/page.json"))
+    file_url = "./config/page.json"
+    if "menu" in request.json and requst.json["menu"]:
+        file_url = "./config/menu.json"
+    page_list = json.loads(file.read_file(file_url))
     post_id = int(request.json["post_id"])
     result = dict()
     result["title"] = page_list[post_id]["title"]
@@ -89,7 +72,10 @@ def get_post_content():
 
 @app.route('/control/edit', methods=['POST'])
 def edit_post():
-    page_list = json.loads(file.read_file("./config/page.json"))
+    file_url = "./config/page.json"
+    if "menu" in request.json and requst.json["menu"]:
+        file_url = "./config/menu.json"
+    page_list = json.loads(file.read_file(file_url))
     post_id = str(request.json["post_id"])
     name = str(request.json["name"])
     title = str(request.json["title"])
@@ -102,10 +88,11 @@ def edit_post():
         if page_list[int(post_id)]["name"] is not name:
             os.remove("./document/{0}.md".format(page_list[int(post_id)]["name"]))
             page_list[int(post_id)]["name"] = name
-        file.write_file("./config/page.json", json.dumps(page_list))
+        file.write_file(file_url, json.dumps(page_list))
         file.write_file("./document/{0}.md".format(name), content)
-        update_post.update()
-        build_rss.build_rss()
+        if not "menu" in request.json or not requst.json["menu"]:
+            update_post.update()
+            build_rss.build_rss()
     return json.dumps({"status": state, "name": name})
 
 
