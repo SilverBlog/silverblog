@@ -90,7 +90,7 @@ def edit_post():
             page_list[int(post_id)]["name"] = name
         file.write_file(file_url, json.dumps(page_list))
         file.write_file("./document/{0}.md".format(name), content)
-        if not "menu" in request.json or not requst.json["menu"]:
+        if not "menu" in request.json or not request.json["menu"]:
             update_post.update()
             build_rss.build_rss()
     return json.dumps({"status": state, "name": name})
