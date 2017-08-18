@@ -50,7 +50,7 @@ def system_info():
 
 @app.route('/control/get_post_list', methods=['POST', 'GET'])
 def post_list():
-    if "menu" in request.json and requst.json["menu"]:
+    if "menu" in request.json and request.json["menu"]:
         return file.read_file("./config/menu.json")
     return file.read_file("./config/page.json")
 
@@ -58,7 +58,7 @@ def post_list():
 @app.route('/control/get_post_content', methods=['POST', 'GET'])
 def get_post_content():
     file_url = "./config/page.json"
-    if "menu" in request.json and requst.json["menu"]:
+    if "menu" in request.json and request.json["menu"]:
         file_url = "./config/menu.json"
     page_list = json.loads(file.read_file(file_url))
     post_id = int(request.json["post_id"])
@@ -73,7 +73,7 @@ def get_post_content():
 @app.route('/control/edit', methods=['POST'])
 def edit_post():
     file_url = "./config/page.json"
-    if "menu" in request.json and requst.json["menu"]:
+    if "menu" in request.json and request.json["menu"]:
         file_url = "./config/menu.json"
     page_list = json.loads(file.read_file(file_url))
     post_id = str(request.json["post_id"])
@@ -90,7 +90,7 @@ def edit_post():
             page_list[int(post_id)]["name"] = name
         file.write_file(file_url, json.dumps(page_list))
         file.write_file("./document/{0}.md".format(name), content)
-        if not "menu" in request.json or not requst.json["menu"]:
+        if not "menu" in request.json or not request.json["menu"]:
             update_post.update()
             build_rss.build_rss()
     return json.dumps({"status": state, "name": name})
