@@ -20,5 +20,7 @@ for item in menu:
     new_item = dict()
     new_item["title"] = item["name"]
     new_item["name"] = item["url"]
+    if "absolute" in item:
+        new_item["absolute"] = item["absolute"]
     new_menu.append(new_item)
 write_file("../config/menu.json", json.dumps(new_menu))
