@@ -6,5 +6,5 @@ RUN pip3 install cffi
 RUN pip3 install flask misaka pypinyin pyrss2gen gitpython
 WORKDIR /home/
 RUN git clone https://github.com/SilverBlogTeam/SilverBlog.git
-WORKDIR/home/SilverBlog/install
+WORKDIR /home/SilverBlog/install
 RUN bash install.sh
