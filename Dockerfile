@@ -1,8 +1,10 @@
-FROM node:8.4
+FROM ubuntu:16.04
 
 RUN apt-get update \
   && apt-get install -y python3-pip python3-dev uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git
-
-RUN npm install -g pm2
-
-ENTRYPOINT ["pm2 start start.json"]
+RUN pip3 install cffi
+RUN pip3 install flask misaka pypinyin pyrss2gen gitpython
+WORKDIR /home/
+RUN git clone https://github.com/SilverBlogTeam/SilverBlog.git
+WORKDIR/home/SilverBlog/install
+RUN bash install.sh
