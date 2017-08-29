@@ -88,7 +88,7 @@ def route(file_name="index", page_index=1):
 
     if result is not None:
         console.log("info", "Writing to cache: {0}".format(page_url))
-        if len(cache_page) >= 2:
+        if len(cache_page) >= 100:
             page_keys = sorted(cache_page.keys())
             console.log("info", "Delete cache: {0}".format(page_keys[0]))
             del cache_page[page_keys[0]]
