@@ -18,7 +18,6 @@ system_config = json.loads(file.read_file("./config/system.json"))
 
 if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
     import request
-
     r = request.get("https://en.gravatar.com/{0}.json".formart(system_config["Author_Name"]))
     if r.status_code == 200:
         req = r.json()
@@ -75,16 +74,17 @@ def route(file_name="index", page_index=1):
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_page[page_url]
 
+    console.log("info", "Trying to build: {0}".format(page_url))
+
+    if system_config["Restful_API"]:
+        result = page.build_restful_result(file_name, system_config, page_list, page_name_list, menu_list)
+
     if result is None:
-        console.log("info", "Trying to build: {0}".format(page_url))
-        if system_config["Restful_API"]:
-            result = page.build_restful_result(file_name, system_config, page_list, page_name_list, menu_list)
-        else:
-            if file_name == "index":
-                result, row = page.build_index(page_index, system_config, page_list, menu_list, False, template_config)
-            if os.path.exists("document/{0}.md".format(file_name)):
-                result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list, False,
-                                         template_config)
+        if file_name == "index":
+            result, row = page.build_index(page_index, system_config, page_list, menu_list, False, template_config)
+        if os.path.exists("document/{0}.md".format(file_name)):
+            result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list, False,
+                                     template_config)
 
     if result is not None:
         console.log("info", "Writing to cache: {0}".format(page_url))
