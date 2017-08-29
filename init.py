@@ -89,6 +89,7 @@ def route(file_name="index", page_index=1):
     if result is not None:
         console.log("info", "Writing to cache: {0}".format(page_url))
         if len(cache_page) >= 2:
+            console.log("info", "Delete cache: {0}".format(cache_page.keys()[0]))
             del cache_page[cache_page.keys()[0]]
         cache_page[page_url] = result
         console.log("Success", "Get success: {0}".format(page_url))
