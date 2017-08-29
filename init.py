@@ -16,6 +16,16 @@ console.log("info", "Loading configuration")
 
 system_config = json.loads(file.read_file("./config/system.json"))
 
+if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
+    import request
+
+    r = request.get("https://en.gravatar.com/{0}.json".formart(system_config["Author_Name"]))
+    if r.status_code == 200:
+        req = r.json()
+        gravatar_hash = req["entry"]["hash"]
+        system_config["Author_Image"] = "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
+        file.write_file("./config/system.json", json.dumps(system_config))
+
 page_list = json.loads(file.read_file("./config/page.json"))
 
 if os.path.exists("./config/menu.json"):
