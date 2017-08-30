@@ -2,10 +2,12 @@
 
 echo "Installing Dependency..."
 
+
 if [ ! -f "../Dockerfile" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git
     cd SilverBlog
 fi
+
 docker build -t silverblog .
 
 echo "Generate a Nginx configuration file..."
@@ -29,7 +31,7 @@ server {
     }
 }
 EOF
-fi
+
 echo "Create directory..."
 
 mkdir ./document
@@ -49,11 +51,11 @@ sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
 
 cat << EOF >./start.sh
 #!/usr/bin/env bash
-docker run -t -i -v $(pwd):/home/SilverBlog -p 5000:5000 silverblog uwsgi --json /home/SilverBlog/uwsgi.json
+docker run -t -i -v $x/home/SilverBlog -p 5000:5000 silverblog uwsgi --json /home/SilverBlog/uwsgi.json
 EOF
 cat << EOF >./control-start.sh
 #!/usr/bin/env bash
-docker run -t -i -v $(pwd):/home/SilverBlog -p 5001:5001 silverblog uwsgi --json /home/SilverBlog/uwsgi.json:control
+docker run -t -i -v $x:/home/SilverBlog -p 5001:5001 silverblog uwsgi --json /home/SilverBlog/uwsgi.json:control
 EOF
 
 
