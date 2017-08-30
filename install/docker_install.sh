@@ -2,7 +2,7 @@
 
 echo "Installing Dependency..."
 
-if [ ! -f "Dockerfile" ]; then
+if [ ! -f "../Dockerfile" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git
     cd SilverBlog
 fi
