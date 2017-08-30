@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
-cd ..
+
+echo "Installing Dependency..."
+
+if [ ! -f "Dockerfile" ]; then
+    git clone https://github.com/SilverBlogTeam/SilverBlog.git
+    cd SilverBlog
+fi
+docker build -t silverblog .
 
 echo "Generate a Nginx configuration file..."
 
@@ -22,7 +29,7 @@ server {
     }
 }
 EOF
-
+fi
 echo "Create directory..."
 
 mkdir ./document
