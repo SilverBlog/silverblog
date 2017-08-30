@@ -39,6 +39,7 @@ cp -i ./example/system.example.json ./config/system.json
 cp -i ./example/start.example.json ./start.json
 cp -i ./example/uwsgi.example.json ./uwsgi.json
 sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
+
 cat << EOF >./start.sh
 #!/usr/bin/env bash
 docker run -t -i -v $(pwd):/home/SilverBlog -p 5000:5000 silverblog uwsgi --json /home/SilverBlog/uwsgi.json
