@@ -5,3 +5,5 @@ RUN apt-get update \
 RUN pip3 install cffi \
   && pip3 install flask misaka pypinyin pyrss2gen gitpython
 WORKDIR /home/SilverBlog
+EXPOSE 5000
+EXPOSE 5001
