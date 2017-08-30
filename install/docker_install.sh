@@ -10,6 +10,7 @@ fi
 if [ ! -f "Dockerfile" ]; then
     cd ..
 fi
+
 docker build -t silverblog .
 echo "Generate a Nginx configuration file..."
 
