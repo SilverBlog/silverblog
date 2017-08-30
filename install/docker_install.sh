@@ -2,13 +2,14 @@
 
 echo "Installing Dependency..."
 
-
-if [ ! -f "../Dockerfile" ]; then
+if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git
     cd SilverBlog
 fi
 
-docker build -t silverblog .
+if [ ! -f "Dockerfile" ]; then
+    docker build -t silverblog .
+fi
 
 echo "Generate a Nginx configuration file..."
 
