@@ -8,9 +8,9 @@ if [ ! -f "install.sh" ]; then
 fi
 
 if [ ! -f "Dockerfile" ]; then
-    docker build -t silverblog .
+    cd ..
 fi
-
+docker build -t silverblog .
 echo "Generate a Nginx configuration file..."
 
 x=$(pwd)
