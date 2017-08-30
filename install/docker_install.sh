@@ -41,11 +41,11 @@ cp -i ./example/uwsgi.example.json ./uwsgi.json
 
 cat << EOF >./start.sh
 #!/usr/bin/env bash
-uwsgi --json ./uwsgi.json
+docker run -t -i -v $(pwd):/home/SilverBlog -p 5000:5000 silverblog uwsgi --json /home/SilverBlog/uwsgi.json
 EOF
 cat << EOF >./control-start.sh
 #!/usr/bin/env bash
-uwsgi --json ./uwsgi.json:control
+docker run -t -i -v $(pwd):/home/SilverBlog -p 5000:5000 silverblog uwsgi --json /home/SilverBlog/uwsgi.json:control
 EOF
 
 chmod +x manage.py
