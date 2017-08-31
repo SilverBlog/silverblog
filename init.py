@@ -22,7 +22,8 @@ if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
     r = {"entry": {"hash": ""}}
     console.log("info", "Get the Gravatar URL")
     try:
-        r = urllib.request.urlopen("https://en.gravatar.com/{0}.json".format(system_config["Author_Name"])).read()
+        r = urllib.request.urlopen(
+            "https://en.gravatar.com/{0}.json".format(system_config["Author_Name"])).read().decode('utf-8')
     except urllib2.HTTPError:
         console.log("Error", "Get the error")
         pass
