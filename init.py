@@ -19,7 +19,7 @@ system_config = json.loads(file.read_file("./config/system.json"))
 if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
     import urllib.request
 
-    r = {"entry": {"hash": ""}}
+    r = {"entry": [{"hash": ""}]}
     console.log("info", "Get the Gravatar URL")
     try:
         r = urllib.request.urlopen(
@@ -28,7 +28,7 @@ if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
         console.log("Error", "Get the error")
         pass
     req = json.loads(r)
-    gravatar_hash = req["entry"]["hash"]
+    gravatar_hash = req["entry"][0]["hash"]
     system_config["Author_Image"] = "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
     file.write_file("./config/system.json", json.dumps(system_config))
 
