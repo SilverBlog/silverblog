@@ -11,6 +11,6 @@ if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git
     cd SilverBlog/install
 fi
-chmod +x install.sh
+
 ./install.sh
  

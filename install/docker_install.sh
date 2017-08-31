@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
-cd ..
 
+echo "Installing Dependency..."
+
+if [ ! -f "install.sh" ]; then
+    git clone https://github.com/SilverBlogTeam/SilverBlog.git
+    cd SilverBlog
+fi
+
+if [ ! -f "Dockerfile" ]; then
+    cd ..
+fi
+
+docker build -t silverblog .
 echo "Generate a Nginx configuration file..."
 
 x=$(pwd)
@@ -38,15 +49,17 @@ cp -i ./example/system.example.json ./config/system.json
 
 cp -i ./example/start.example.json ./start.json
 cp -i ./example/uwsgi.example.json ./uwsgi.json
+sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
 
 cat << EOF >./start.sh
 #!/usr/bin/env bash
-uwsgi --json ./uwsgi.json
+docker run -t -i -v $x:/home/SilverBlog -p 5000:5000 silverblog uwsgi --json /home/SilverBlog/uwsgi.json --chdir /home/SilverBlog
 EOF
 cat << EOF >./control-start.sh
 #!/usr/bin/env bash
-uwsgi --json ./uwsgi.json:control
+docker run -t -i -v $x:/home/SilverBlog -p 5001:5001 silverblog uwsgi --json /home/SilverBlog/uwsgi.json:control --chdir /home/SilverBlog
 EOF
+
 
 chmod +x manage.py
 

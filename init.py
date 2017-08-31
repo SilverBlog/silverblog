@@ -16,6 +16,22 @@ console.log("info", "Loading configuration")
 
 system_config = json.loads(file.read_file("./config/system.json"))
 
+if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
+    import urllib.request
+
+    r = {"entry": [{"hash": ""}]}
+    console.log("info", "Get the Gravatar URL")
+    try:
+        r = urllib.request.urlopen(
+            "https://en.gravatar.com/{0}.json".format(system_config["Author_Name"])).read().decode('utf-8')
+    except urllib2.HTTPError:
+        console.log("Error", "Get the error")
+        pass
+    req = json.loads(r)
+    gravatar_hash = req["entry"][0]["hash"]
+    system_config["Author_Image"] = "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
+    file.write_file("./config/system.json", json.dumps(system_config))
+
 page_list = json.loads(file.read_file("./config/page.json"))
 
 if os.path.exists("./config/menu.json"):
@@ -65,19 +81,24 @@ def route(file_name="index", page_index=1):
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_page[page_url]
 
+    console.log("info", "Trying to build: {0}".format(page_url))
+
+    if system_config["Restful_API"]:
+        result = page.build_restful_result(file_name, system_config, page_list, page_name_list, menu_list)
+
     if result is None:
-        console.log("info", "Trying to build: {0}".format(page_url))
-        if system_config["Restful_API"]:
-            result = page.build_restful_result(file_name, system_config, page_list, page_name_list, menu_list)
-        else:
-            if file_name == "index":
-                result, row = page.build_index(page_index, system_config, page_list, menu_list, False, template_config)
-            if os.path.exists("document/{0}.md".format(file_name)):
-                result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list, False,
-                                         template_config)
+        if file_name == "index":
+            result, row = page.build_index(page_index, system_config, page_list, menu_list, False, template_config)
+        if os.path.exists("document/{0}.md".format(file_name)):
+            result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list, False,
+                                     template_config)
 
     if result is not None:
         console.log("info", "Writing to cache: {0}".format(page_url))
+        if len(cache_page) >= 100:
+            page_keys = sorted(cache_page.keys())
+            console.log("info", "Delete cache: {0}".format(page_keys[0]))
+            del cache_page[page_keys[0]]
         cache_page[page_url] = result
         console.log("Success", "Get success: {0}".format(page_url))
 
