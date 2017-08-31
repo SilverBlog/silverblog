@@ -17,7 +17,7 @@ console.log("info", "Loading configuration")
 system_config = json.loads(file.read_file("./config/system.json"))
 
 if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
-    import urllib.requestv
+    import urllib.request
 
     r = {"entry": {"hash": ""}}
     console.log("info", "Get the Gravatar URL")
