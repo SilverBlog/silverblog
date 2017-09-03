@@ -48,20 +48,18 @@ def system_info():
     return json.dumps(result)
 
 
-@app.route('/control/get_post_list', methods=['POST', 'GET'])
-def post_list():
-    if request.json is not None:
-        if request.json["menu"]:
-            return file.read_file("./config/menu.json")
+@app.route('/control/get_<request_type>_list', methods=['POST', 'GET'])
+def post_list(request_type):
+    if request_type == "menu":
+        return file.read_file("./config/menu.json")
     return file.read_file("./config/page.json")
 
 
-@app.route('/control/get_post_content', methods=['POST', 'GET'])
-def get_post_content():
+@app.route('/control/get_<request_type>_content', methods=['POST', 'GET'])
+def get_post_content(request_type):
     file_url = "./config/page.json"
-    if request.json is not None:
-        if request.json["menu"]:
-            file_url = "./config/menu.json"
+    if request_type == "menu":
+        file_url = "./config/menu.json"
     page_list = json.loads(file.read_file(file_url))
     post_id = int(request.json["post_id"])
     result = dict()
