@@ -4,7 +4,7 @@ import hashlib
 import json
 import os
 
-from flask import Flask, request
+from flask import Flask, request, abort
 
 from common import file, console
 from manage import new_post, build_rss, update_post
@@ -48,20 +48,26 @@ def system_info():
     return json.dumps(result)
 
 
-@app.route('/control/get_post_list', methods=['POST', 'GET'])
-def post_list():
-    if request.json is not None:
-        if request.json["menu"]:
-            return file.read_file("./config/menu.json")
-    return file.read_file("./config/page.json")
+def select_type(request_type):
+    file_url = None
+    if request_type == "post":
+        file_url = "./config/page.json"
+    if request_type == "menu":
+        file_url = "./config/menu.json"
+    return file_url
+@app.route('/control/get_<request_type>_list', methods=['POST', 'GET'])
+def post_list(request_type):
+    file_url = select_type(request_type)
+    if file_url is None:
+        abort(404)
+    return file.read_file(file_url)
 
 
-@app.route('/control/get_post_content', methods=['POST', 'GET'])
-def get_post_content():
-    file_url = "./config/page.json"
-    if request.json is not None:
-        if request.json["menu"]:
-            file_url = "./config/menu.json"
+@app.route('/control/get_<request_type>_content', methods=['POST', 'GET'])
+def get_post_content(request_type):
+    file_url = select_type(request_type)
+    if file_url is None:
+        abort(404)
     page_list = json.loads(file.read_file(file_url))
     post_id = int(request.json["post_id"])
     result = dict()
@@ -72,11 +78,11 @@ def get_post_content():
     return json.dumps(result)
 
 
-@app.route('/control/edit', methods=['POST'])
-def edit_post():
-    file_url = "./config/page.json"
-    if "menu" in request.json and request.json["menu"]:
-        file_url = "./config/menu.json"
+@app.route('/control/edit_<request_type>', methods=['POST'])
+def edit_post(request_type):
+    file_url = select_type(request_type)
+    if file_url is None:
+        abort(404)
     page_list = json.loads(file.read_file(file_url))
     post_id = str(request.json["post_id"])
     name = str(request.json["name"])
