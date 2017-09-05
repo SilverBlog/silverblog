@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-echo "Installing Dependency..."
-
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git
-    cd SilverBlog
+    cd SilverBlog/install
 fi
 
 cat << EOF >./start.sh
