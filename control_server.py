@@ -28,11 +28,11 @@ if __name__ == '__main__':
 
     if len(system_config["API_Password"]) == 0 or len(system_config["Project_URL"]) == 0:
         print("Check the API_Password and Project_URL configuration items")
-        exit()
+        exit(1)
     print("Please use the client to scan the following QR Code")
     config_json = json.dumps({"url": system_config["Project_URL"], "password": password_md5})
     qrcode_terminal.draw(config_json)
-    exit()
+    exit(0)
 
 def check_password(title, encode):
     if len(system_config["API_Password"]) != 0:
