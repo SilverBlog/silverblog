@@ -28,11 +28,11 @@ if __name__ == '__main__':
 
     if len(system_config["API_Password"]) == 0 or len(system_config["Project_URL"]) == 0:
         print("Check the API_Password and Project_URL configuration items")
-        exit()
+        exit(1)
     print("Please use the client to scan the following QR Code")
     config_json = json.dumps({"url": system_config["Project_URL"], "password": password_md5})
     qrcode_terminal.draw(config_json)
-    exit()
+    exit(0)
 
 def check_password(title, encode):
     if len(system_config["API_Password"]) != 0:
@@ -60,6 +60,7 @@ def select_type(request_type):
     if request_type == "menu":
         file_url = "./config/menu.json"
     return file_url
+
 @app.route('/control/get_<request_type>_list', methods=['POST', 'GET'])
 def post_list(request_type):
     file_url = select_type(request_type)
@@ -69,10 +70,12 @@ def post_list(request_type):
 
 
 @app.route('/control/get_<request_type>_content', methods=['POST', 'GET'])
-def get_post_content(request_type):
+def get_content(request_type):
     file_url = select_type(request_type)
     if file_url is None:
         abort(404)
+    if request.json is None:
+        abort(400)
     page_list = json.loads(file.read_file(file_url))
     post_id = int(request.json["post_id"])
     result = dict()
@@ -88,6 +91,8 @@ def edit_post(request_type):
     file_url = select_type(request_type)
     if file_url is None:
         abort(404)
+    if request.json is None:
+        abort(400)
     page_list = json.loads(file.read_file(file_url))
     post_id = str(request.json["post_id"])
     name = str(request.json["name"])
@@ -111,6 +116,8 @@ def edit_post(request_type):
 
 @app.route('/control/delete', methods=['POST'])
 def delete_post():
+    if request.json is None:
+        abort(400)
     page_list = json.loads(file.read_file("./config/page.json"))
     post_id = str(request.json["post_id"])
     encode = str(request.json["encode"])
@@ -127,6 +134,8 @@ def delete_post():
 
 @app.route('/control/new', methods=['POST'])
 def new():
+    if request.json is None:
+        abort(400)
     title = str(request.json["title"])
     name = str(request.json["name"])
     content = str(request.json["content"])
