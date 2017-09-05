@@ -36,6 +36,13 @@ Arch Linux:
 wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | sudo bash
 ```
 
+Docker(testing):
+
+```shell
+docker pull qwe7002/silverblog
+wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh | bash
+```
+
 You need to select a theme in [SilverBlogTeam](https://github.com/SilverBlogTeam), store it in the `templates` directory, run `install.sh` in the theme folder, and in the following configuration file Configure it correctly
 
 This install script defaults to the nginx + uwsgi execution mode. If you did not modify the port number in the `uwsgi.json` file, place the `nginx_config` file in your nginx package (the default location is in /etc/nginx/sites-enabled) Site configuration directory, and replace the {your SilverBlog location} in your file with your SilverBlog storage directory.
