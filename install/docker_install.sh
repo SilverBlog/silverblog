@@ -19,7 +19,8 @@ server {
         uwsgi_pass 127.0.0.1:5000;
     }
     location /control {
-        include uwsgi_params;        uwsgi_pass 127.0.0.1:5001;
+        include uwsgi_params;
+        uwsgi_pass 127.0.0.1:5001;
         add_header 'Access-Control-Allow-Origin' "https://c.silverblog.org";
 	    add_header 'Access-Control-Allow-Credentials' "true";
         if (\$request_method = "OPTIONS") {
