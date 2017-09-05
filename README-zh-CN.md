@@ -33,6 +33,13 @@ Arch Linux:
 wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | bash
 ```
 
+Docker(testing):
+
+```shell
+docker pull qwe7002/silverblog
+wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh | bash
+```
+
 您需要自行在 [SilverBlogTeam](https://github.com/SilverBlogTeam) 中选择一个主题，存放到 `templates` 目录中，运行主题文件夹中的 `install.sh` ，并在下面的配置文件中正确配置它
 
 本安装脚本默认使用 nginx + uwsgi 执行模式，您可以将程序自动生成的 `nginx_config` 文件放到您的 nginx 软件包(默认位置在 /etc/nginx/sites-enabled )的网站配置目录下。

@@ -49,15 +49,6 @@ cp -i ./example/system.example.json ./config/system.json
 cp -i ./example/start.example.json ./start.json
 cp -i ./example/uwsgi.example.json ./uwsgi.json
 
-cat << EOF >./start.sh
-#!/usr/bin/env bash
-uwsgi --json ./uwsgi.json
-EOF
-cat << EOF >./control-start.sh
-#!/usr/bin/env bash
-uwsgi --json ./uwsgi.json:control
-EOF
-
 chmod +x manage.py
 
 echo "The installation is complete! Please edit $x/config/system.json file."
