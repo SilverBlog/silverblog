@@ -2,7 +2,7 @@
 
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git
-    cd SilverBlog/installcd
+    cd SilverBlog/install
 fi
 
 cat << EOF >../control-start.sh
