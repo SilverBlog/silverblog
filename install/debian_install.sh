@@ -15,6 +15,8 @@ if [ ! -f "install.sh" ]; then
     cd SilverBlog/install
 fi
 
+cd ..
+
 cat << EOF >../start.sh
 #!/usr/bin/env bash
 uwsgi --json ./uwsgi.json
