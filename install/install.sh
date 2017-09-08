@@ -3,8 +3,6 @@ cd ..
 
 echo "Generate a Nginx configuration file..."
 
-x=$(pwd)
-
 cat << EOF >nginx_config
 server {
     listen 80;
@@ -28,7 +26,7 @@ server {
         }
     }
     location /static {
-        alias $x/templates/static;
+        alias $(pwd)/templates/static;
     }
 }
 EOF
@@ -51,4 +49,4 @@ cp -i ./example/uwsgi.example.json ./uwsgi.json
 
 chmod +x manage.py
 
-echo "The installation is complete! Please edit $x/config/system.json file."
+echo "The installation is complete! Please edit $(pwd)/config/system.json file."
