@@ -121,6 +121,6 @@ def post_route(file_name=None):
     return result
 
 
-def add_post_header(item):
-    item["name"] = "post/{0}".format(item["name"])
-    return item
+def add_post_header(list_item):
+    list_item["name"] = "post/{0}".format(list_item["name"])
+    return list_item
