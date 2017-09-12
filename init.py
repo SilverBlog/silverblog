@@ -70,7 +70,9 @@ def static_file():
     abort(400)
 
 @app.route("/")
+@app.route("/index")
 @app.route("/index/")
+@app.route('/index/p/<int:page_index>')
 @app.route('/index/p/<int:page_index>/')
 def index_route(page_index=1):
     result = None
@@ -95,6 +97,7 @@ def index_route(page_index=1):
     return result
 
 
+@app.route("/post/<file_name>")
 @app.route("/post/<file_name>/")
 def index_route(file_name=None):
     result = None
