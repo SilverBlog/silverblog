@@ -32,9 +32,10 @@ def build(github_mode):
             console.log("Build", "Processing file: ./static_page/index/p/{0}.html".format(str(page_id)))
             content, row = page.build_index(page_id, system_config, page_list, menu_list, html_static, template_config)
             file.write_file("./static_page/index/p/{0}.html".format(str(page_id)), content)
+    os.mkdir("./static_page/post/")
     for filename in os.listdir("./document/"):
         if filename.endswith(".md"):
-            console.log("Build", "Processing file: ./static_page/{0}.html".format(filename.replace(".md", "")))
+            console.log("Build", "Processing file: ./static_page/post/{0}.html".format(filename.replace(".md", "")))
             content = page.build_page(filename.replace(".md", ""), system_config, page_list, page_name_list, menu_list,
                                       html_static, template_config)
             if content is not None:

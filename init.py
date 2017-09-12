@@ -1,11 +1,7 @@
 import io
-import sys
-
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-
 import json
 import os.path
-
+import sys
 from flask import Flask, abort
 
 from common import file, page, console
