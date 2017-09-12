@@ -76,7 +76,7 @@ def static_file():
 @app.route('/index/p/<int:page_index>/')
 def index_route(page_index=1):
     result = None
-    page_url = "/index/p/{0}".format(page_index)
+    page_url = "/index/p/{0}/".format(page_index)
     if page_url in cache_page:
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_page[page_url]
@@ -104,6 +104,7 @@ def post_route(file_name=None):
     result = None
     if file_name is None or not os.path.exists("document/{0}.md".format(file_name)):
         abort(404)
+    page_url = "/post/{0}/".format(file_name)
     if page_url in cache_page:
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_page[page_url]
