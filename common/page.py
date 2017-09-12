@@ -1,7 +1,6 @@
 import json
 import os.path
 import time
-
 from jinja2 import Environment, PackageLoader
 
 from common import file, markdown
@@ -63,19 +62,3 @@ def build_page(name, system_config, page_list, page_name_list, menu_list, static
                              system_config=system_config, static=static, template_config=template_config,
                              now_time=time.localtime())
     return result
-
-
-def build_restful_result(name, system_config, page_list, page_name_list, menu_list):
-    content = None
-    page_info = None
-    if name != "index":
-        content = file.read_file("document/{0}.md".format(name))
-        page_info = {"title": "undefined"}
-        if name in page_name_list:
-            page_info = page_list[page_name_list.index(name)]
-        if os.path.exists("document/{0}.json".format(name)):
-            page_info = json.loads(file.read_file("document/{0}.json".format(name)))
-        content = markdown.markdown(content)
-    result = {"menu_list": menu_list, "page_list": page_list, "system_config": system_config, "page_info": page_info,
-              "content": content}
-    return json.dumps(result, ensure_ascii=False)

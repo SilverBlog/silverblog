@@ -42,7 +42,7 @@ def check_password(title, encode):
     return False
 
 
-@app.route('/control/system_info', methods=['POST', 'GET'])
+@app.route('/control/system_info', methods=['POST'])
 def system_info():
     result = dict()
     result["project_name"] = system_config["Project_Name"]
@@ -61,7 +61,8 @@ def select_type(request_type):
         file_url = "./config/menu.json"
     return file_url
 
-@app.route('/control/get_<request_type>_list', methods=['POST', 'GET'])
+
+@app.route('/control/get_<request_type>_list', methods=['POST'])
 def post_list(request_type):
     file_url = select_type(request_type)
     if file_url is None:
@@ -69,7 +70,7 @@ def post_list(request_type):
     return file.read_file(file_url)
 
 
-@app.route('/control/get_<request_type>_content', methods=['POST', 'GET'])
+@app.route('/control/get_<request_type>_content', methods=['POST'])
 def get_content(request_type):
     file_url = select_type(request_type)
     if file_url is None:
