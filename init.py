@@ -84,7 +84,8 @@ def index_route(page_index=1):
     console.log("info", "Trying to build: {0}".format(page_url))
 
     if result is None:
-        result, row = page.build_index(page_index, system_config, page_list, menu_list, False, template_config)
+        result, row = page.build_index(page_index, system_config, list(map(add_post_header, page_list)), menu_list,
+                                       False, template_config)
 
     console.log("info", "Writing to cache: {0}".format(page_url))
     if len(cache_page) >= 100:
@@ -107,8 +108,7 @@ def post_route(file_name=None):
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_page[page_url]
     if result is None:
-        add_head_list = list(map(add_post_header, page_list))
-        result = page.build_page(file_name, system_config, add_head_list, page_name_list, menu_list,
+        result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list,
                                  False,
                                  template_config)
     console.log("info", "Writing to cache: {0}".format(page_url))
