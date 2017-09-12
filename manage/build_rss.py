@@ -1,7 +1,6 @@
+import PyRSS2Gen
 import datetime
 import json
-
-import PyRSS2Gen
 
 from common import file, markdown, console
 
@@ -30,7 +29,7 @@ class rss_item(PyRSS2Gen.RSSItem):
 def make_rss(project_name, project_url, project_description, page_list, full_content, system_config):
     page_rss_list = list()
     for item in page_list:
-        location = "{0}/{1}".format(system_config["Project_URL"], item["name"])
+        location = "{0}/post/{1}".format(system_config["Project_URL"], item["name"])
         desc = item["excerpt"]
         if full_content:
             desc = str(markdown.markdown(file.read_file("./document/{0}.md".format(item["name"]))))

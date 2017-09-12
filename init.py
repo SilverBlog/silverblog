@@ -1,11 +1,7 @@
 import io
-import sys
-
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-
 import json
 import os.path
-
+import sys
 from flask import Flask, abort
 
 from common import file, page, console
@@ -18,6 +14,7 @@ template_config = None
 app = Flask(__name__)
 
 console.log("info", "Loading configuration")
+
 
 system_config = json.loads(file.read_file("./config/system.json"))
 
@@ -70,18 +67,13 @@ def static_file():
     abort(400)
 
 @app.route("/")
-@app.route("/<file_name>")
-@app.route("/<file_name>/")
-@app.route('/<file_name>/p/<int:page_index>')
-@app.route('/<file_name>/p/<int:page_index>/')
-def route(file_name="index", page_index=1):
+@app.route("/index")
+@app.route("/index/")
+@app.route('/index/p/<int:page_index>')
+@app.route('/index/p/<int:page_index>/')
+def index_route(page_index=1):
     result = None
-
-    page_index_url = ""
-    if file_name == "index":
-        page_index_url = "/p/{0}".format(str(page_index))
-    page_url = "/{0}{1}".format(file_name, page_index_url)
-
+    page_url = "/index/p/{0}/".format(page_index)
     if page_url in cache_page:
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_page[page_url]
@@ -89,23 +81,42 @@ def route(file_name="index", page_index=1):
     console.log("info", "Trying to build: {0}".format(page_url))
 
     if result is None:
-        if file_name == "index":
-            result, row = page.build_index(page_index, system_config, page_list, menu_list, False, template_config)
+        result, row = page.build_index(page_index, system_config, page_list, menu_list,
+                                       False, template_config)
+
+    console.log("info", "Writing to cache: {0}".format(page_url))
+    if len(cache_page) >= 100:
+        page_keys = sorted(cache_page.keys())
+        console.log("info", "Delete cache: {0}".format(page_keys[0]))
+        del cache_page[page_keys[0]]
+    cache_page[page_url] = result
+    console.log("Success", "Get success: {0}".format(page_url))
+
+    return result
+
+
+@app.route("/post/<file_name>")
+@app.route("/post/<file_name>/")
+def post_route(file_name=None):
+    result = None
+    if file_name is None or not os.path.exists("document/{0}.md".format(file_name)):
+        abort(404)
+    page_url = "/post/{0}/".format(file_name)
+    if page_url in cache_page:
+        console.log("info", "Get cache Success: {0}".format(page_url))
+        return cache_page[page_url]
     if result is None:
-        if os.path.exists("document/{0}.md".format(file_name)):
-            result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list, False,
-                                     template_config)
+        result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list,
+                                 False,
+                                 template_config)
+    console.log("info", "Writing to cache: {0}".format(page_url))
+    if len(cache_page) >= 100:
+        page_keys = sorted(cache_page.keys())
+        console.log("info", "Delete cache: {0}".format(page_keys[0]))
+        del cache_page[page_keys[0]]
+    cache_page[page_url] = result
+    console.log("Success", "Get success: {0}".format(page_url))
 
-    if result is not None:
-        console.log("info", "Writing to cache: {0}".format(page_url))
-        if len(cache_page) >= 100:
-            page_keys = sorted(cache_page.keys())
-            console.log("info", "Delete cache: {0}".format(page_keys[0]))
-            del cache_page[page_keys[0]]
-        cache_page[page_url] = result
-        console.log("Success", "Get success: {0}".format(page_url))
+    return result
 
-        return result
 
-    console.log("Error", "Can not build: {0}".format(page_url))
-    abort(404)

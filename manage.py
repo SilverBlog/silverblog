@@ -1,13 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import io
-import sys
-
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-
 import argparse
+import io
 import json
+import sys
 
 from common import file
 from manage import build_rss, build_static_page, new_post, update_post
