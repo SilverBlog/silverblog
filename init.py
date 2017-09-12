@@ -19,6 +19,11 @@ app = Flask(__name__)
 
 console.log("info", "Loading configuration")
 
+
+def add_post_header(list_item):
+    list_item["name"] = "post/{0}".format(list_item["name"])
+    return list_item
+
 system_config = json.loads(file.read_file("./config/system.json"))
 
 if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
@@ -37,7 +42,7 @@ if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
     system_config["Author_Image"] = "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
     file.write_file("./config/system.json", json.dumps(system_config))
 
-page_list = json.loads(file.read_file("./config/page.json"))
+page_list = list(map(add_post_header, json.loads(file.read_file("./config/page.json"))))
 
 if os.path.exists("./config/menu.json"):
     menu_list = json.loads(file.read_file("./config/menu.json"))
@@ -84,7 +89,7 @@ def index_route(page_index=1):
     console.log("info", "Trying to build: {0}".format(page_url))
 
     if result is None:
-        result, row = page.build_index(page_index, system_config, list(map(add_post_header, page_list)), menu_list,
+        result, row = page.build_index(page_index, system_config, page_list, menu_list,
                                        False, template_config)
 
     console.log("info", "Writing to cache: {0}".format(page_url))
@@ -98,8 +103,6 @@ def index_route(page_index=1):
     return result
 
 
-@app.route("/<file_name>")
-@app.route("/<file_name>")
 @app.route("/post/<file_name>")
 @app.route("/post/<file_name>/")
 def post_route(file_name=None):
@@ -125,6 +128,3 @@ def post_route(file_name=None):
     return result
 
 
-def add_post_header(list_item):
-    list_item["name"] = "post/{0}".format(list_item["name"])
-    return list_item
