@@ -15,7 +15,12 @@ def format_datatime(value, format='%Y-%m-%d %H:%M'):
 env.filters['datetimeformat'] = format_datatime
 
 
+def add_post_header(list_item):
+    list_item["name"] = "post/{0}".format(list_item["name"])
+    return list_item
+
 def build_index(page, system_config, page_list, menu_list, static, template_config):
+    page_list = list(map(add_post_header, page_list))
     page_info = {"title": "index"}
     paging = system_config["Paging"]
     start_num = -paging + (int(page) * paging)

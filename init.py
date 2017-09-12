@@ -20,10 +20,6 @@ app = Flask(__name__)
 console.log("info", "Loading configuration")
 
 
-def add_post_header(list_item):
-    list_item["name"] = "post/{0}".format(list_item["name"])
-    return list_item
-
 system_config = json.loads(file.read_file("./config/system.json"))
 
 if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
@@ -42,7 +38,7 @@ if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
     system_config["Author_Image"] = "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
     file.write_file("./config/system.json", json.dumps(system_config))
 
-page_list = list(map(add_post_header, json.loads(file.read_file("./config/page.json"))))
+page_list = json.loads(file.read_file("./config/page.json"))
 
 if os.path.exists("./config/menu.json"):
     menu_list = json.loads(file.read_file("./config/menu.json"))
