@@ -99,7 +99,7 @@ def index_route(page_index=1):
 
 @app.route("/post/<file_name>")
 @app.route("/post/<file_name>/")
-def index_route(file_name=None):
+def post_route(file_name=None):
     result = None
     if file_name is None or not os.path.exists("document/{0}.md".format(file_name)):
         abort(404)
