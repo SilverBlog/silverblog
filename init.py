@@ -1,7 +1,7 @@
 import json
 import os.path
 
-from flask import Flask, abort
+from flask import Flask, abort, redirect
 
 from common import file, page, console
 
