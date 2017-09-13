@@ -94,6 +94,12 @@ def index_route(page_index=1):
     return result
 
 
+@app.route("/<file_name>")
+def post_301(file_name):
+    if file_name in page_name_list:
+        return redirect("/post/{0}".format(file_name), code=301)
+    abort(404)
+
 @app.route("/post/<file_name>")
 @app.route("/post/<file_name>/")
 def post_route(file_name=None):
