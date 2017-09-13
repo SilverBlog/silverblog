@@ -38,14 +38,15 @@ page_list = json.loads(file.read_file("./config/page.json"))
 if os.path.exists("./config/menu.json"):
     menu_list = json.loads(file.read_file("./config/menu.json"))
 
+for item in page_list:
+    page_name_list.append(item["name"])
+
 if os.path.exists("./document/rss.xml"):
     rss = file.read_file("document/rss.xml")
 
 if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
     template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
-if system_config["Theme"] is "":
-    console.log("Error", "Please install the theme before starting the program.")
-    exit(1)
+
 system_config["API_Password"] = None
 
 console.log("Success", "load the configuration file successfully")
@@ -79,7 +80,8 @@ def index_route(page_index=1):
     console.log("info", "Trying to build: {0}".format(page_url))
 
     if result is None:
-        result, row = page.build_index(page_index, system_config, page_list, menu_list, False, template_config)
+        result, row = page.build_index(page_index, system_config, page_list, menu_list,
+                                       False, template_config)
 
     console.log("info", "Writing to cache: {0}".format(page_url))
     if len(cache_page) >= 100:
@@ -103,7 +105,9 @@ def post_route(file_name=None):
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_page[page_url]
     if result is None:
-        result = page.build_page(file_name, system_config, menu_list, False, template_config)
+        result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list,
+                                 False,
+                                 template_config)
     console.log("info", "Writing to cache: {0}".format(page_url))
     if len(cache_page) >= 100:
         page_keys = sorted(cache_page.keys())
