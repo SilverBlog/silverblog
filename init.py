@@ -71,17 +71,14 @@ def static_file():
 @app.route('/index/p/<int:page_index>')
 @app.route('/index/p/<int:page_index>/')
 def index_route(page_index=1):
-    result = None
     page_url = "/index/p/{0}/".format(page_index)
     if page_url in cache_page:
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_page[page_url]
 
     console.log("info", "Trying to build: {0}".format(page_url))
-
-    if result is None:
-        result, row = page.build_index(page_index, system_config, page_list, menu_list,
-                                       False, template_config)
+    result, row = page.build_index(page_index, system_config, page_list, menu_list,
+                                   False, template_config)
 
     console.log("info", "Writing to cache: {0}".format(page_url))
     if len(cache_page) >= 100:
@@ -103,17 +100,15 @@ def post_301(file_name):
 @app.route("/post/<file_name>")
 @app.route("/post/<file_name>/")
 def post_route(file_name=None):
-    result = None
     if file_name is None or not os.path.exists("document/{0}.md".format(file_name)):
         abort(404)
     page_url = "/post/{0}/".format(file_name)
     if page_url in cache_page:
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_page[page_url]
-    if result is None:
-        result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list,
-                                 False,
-                                 template_config)
+    result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list,
+                             False,
+                             template_config)
     console.log("info", "Writing to cache: {0}".format(page_url))
     if len(cache_page) >= 100:
         page_keys = sorted(cache_page.keys())
