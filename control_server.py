@@ -1,17 +1,16 @@
 # coding=utf-8
 
 import hashlib
-import io
 import json
 import os
-import sys
+
 from flask import Flask, request, abort
 
 from common import file, console
 from manage import new_post, build_rss, update_post
 
 app = Flask(__name__)
-
+api_version = 1
 system_config = json.loads(file.read_file("./config/system.json"))
 password_md5 = hashlib.md5(str(system_config["API_Password"]).encode('utf-8')).hexdigest()
 
@@ -46,6 +45,7 @@ def system_info():
     result["author_image"] = system_config["Author_Image"]
     result["author_name"] = system_config["Author_Name"]
     result["author_introduction"] = system_config["Author_Introduction"]
+    result["api_version"] = api_version
     return json.dumps(result)
 
 
