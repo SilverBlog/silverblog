@@ -21,9 +21,10 @@ def add_post_header(list_item):
         list_item["name"] = "post/{0}".format(list_item["name"])
     return list_item
 
-def build_index(page, system_config, page_list, menu_list, static, template_config):
-    page_list = list(map(add_post_header, page_list))
-    menu_list = list(map(add_post_header, menu_list))
+
+def build_index(page, system_config, page_list_raw, menu_list_raw, static, template_config):
+    page_list = list(map(add_post_header, page_list_raw))
+    menu_list = list(map(add_post_header, menu_list_raw))
     page_info = {"title": "index"}
     paging = system_config["Paging"]
     start_num = -paging + (int(page) * paging)
@@ -48,8 +49,8 @@ def build_index(page, system_config, page_list, menu_list, static, template_conf
     return result, page_row
 
 
-def build_page(name, system_config, page_info, menu_list, static, template_config):
-    menu_list = list(map(add_post_header, menu_list))
+def build_page(name, system_config, page_info, menu_list_raw, static, template_config):
+    menu_list = list(map(add_post_header, menu_list_raw))
     content = file.read_file("document/{0}.md".format(name))
     if page_info is None:
         page_info = {"title": "undefined"}
