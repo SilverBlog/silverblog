@@ -111,7 +111,7 @@ def post_route(file_name=None):
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_post[page_url]
     page_info = None
-    if name in page_name_list:
+    if file_name in page_name_list:
         this_page_index = page_name_list.index(name)
         page_info = page_list[this_page_index]
     result = page.build_page(file_name, system_config, page_info, menu_list,
