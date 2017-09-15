@@ -9,6 +9,7 @@ rss = None
 menu_list = None
 page_name_list = list()
 cache_page = dict()
+cache_index = dict()
 template_config = None
 app = Flask(__name__)
 
@@ -19,7 +20,6 @@ system_config = json.loads(file.read_file("./config/system.json"))
 
 if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
     import urllib.request
-
     r = {"entry": [{"hash": ""}]}
     console.log("info", "Get the Gravatar URL")
     try:
@@ -72,20 +72,20 @@ def static_file():
 @app.route('/index/p/<int:page_index>/')
 def index_route(page_index=1):
     page_url = "/index/p/{0}/".format(page_index)
-    if page_url in cache_page:
+    if page_url in cache_index:
         console.log("info", "Get cache Success: {0}".format(page_url))
-        return cache_page[page_url]
+        return cache_index[page_url]
 
     console.log("info", "Trying to build: {0}".format(page_url))
     result, row = page.build_index(page_index, system_config, page_list, menu_list,
                                    False, template_config)
 
     console.log("info", "Writing to cache: {0}".format(page_url))
-    if len(cache_page) >= 100:
-        page_keys = sorted(cache_page.keys())
+    if len(cache_index) >= 100:
+        page_keys = sorted(cache_index.keys())
         console.log("info", "Delete cache: {0}".format(page_keys[0]))
-        del cache_page[page_keys[0]]
-    cache_page[page_url] = result
+        del cache_index[page_keys[0]]
+    cache_index[page_url] = result
     console.log("Success", "Get success: {0}".format(page_url))
 
     return result
@@ -119,5 +119,4 @@ def post_route(file_name=None):
     console.log("Success", "Get success: {0}".format(page_url))
 
     return result
-
 
