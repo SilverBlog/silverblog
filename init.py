@@ -55,7 +55,9 @@ console.log("Success", "load the configuration file successfully")
 
 # Subscribe
 @app.route("/rss")
+@app.route("/rss/")
 @app.route("/feed")
+@app.route("/feed/")
 def load_rss():
     if rss is None:
         abort(404)
@@ -94,7 +96,7 @@ def index_route(page_index=1):
 
 @app.route("/<file_name>/")
 @app.route("/<file_name>")
-def post_301(file_name):
+def redirect_301(file_name):
     if file_name in page_name_list or os.path.exists("document/{0}.md".format(file_name)):
         return redirect("/post/{0}".format(file_name), code=301)
     abort(404)
@@ -108,7 +110,11 @@ def post_route(file_name=None):
     if page_url in cache_post:
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_post[page_url]
-    result = page.build_page(file_name, system_config, page_list, page_name_list, menu_list,
+    page_info = None
+    if name in page_name_list:
+        this_page_index = page_name_list.index(name)
+        page_info = page_list[this_page_index]
+    result = page.build_page(file_name, system_config, page_info, menu_list,
                              False,
                              template_config)
     console.log("info", "Writing to cache: {0}".format(page_url))

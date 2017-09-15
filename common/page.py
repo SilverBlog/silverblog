@@ -48,13 +48,11 @@ def build_index(page, system_config, page_list, menu_list, static, template_conf
     return result, page_row
 
 
-def build_page(name, system_config, page_list, page_name_list, menu_list, static, template_config):
+def build_page(name, system_config, page_info, menu_list, static, template_config):
+    menu_list = list(map(add_post_header, menu_list))
     content = file.read_file("document/{0}.md".format(name))
-    page_info = {"title": "undefined"}
-    page_nav = None
-    if name in page_name_list:
-        this_page_index = page_name_list.index(name)
-        page_info = page_list[this_page_index]
+    if page_info is None:
+        page_info = {"title": "undefined"}
     if os.path.exists("document/{0}.json".format(name)):
         page_info = json.loads(file.read_file("document/{0}.json".format(name)))
     document = markdown.markdown(content)
