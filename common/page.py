@@ -57,7 +57,7 @@ def build_page(name, system_config, page_info, menu_list, static, template_confi
         page_info = json.loads(file.read_file("document/{0}.json".format(name)))
     document = markdown.markdown(content)
     template = env.get_template("./{0}/post.html".format(system_config["Theme"]))
-    result = template.render(page_info=page_info, page_nav=page_nav, menu_list=menu_list, content=document,
+    result = template.render(page_info=page_info, menu_list=menu_list, content=document,
                              system_config=system_config, static=static, template_config=template_config,
                              now_time=time.localtime())
     return result
