@@ -37,12 +37,13 @@ def build(github_mode):
     os.mkdir("./static_page/post/")
     for filename in os.listdir("./document/"):
         if filename.endswith(".md"):
-            console.log("Build", "Processing file: ./static_page/post/{0}.html".format(filename.replace(".md", "")))
+            file_name = filename.replace(".md", "")
+            console.log("Build", "Processing file: ./static_page/post/{0}.html".format(file_name))
             page_info = None
             if file_name in page_name_list:
                 this_page_index = page_name_list.index(file_name)
                 page_info = page_list[this_page_index]
-            content = page.build_page(filename.replace(".md", ""), system_config, page_info, menu_list,
+            content = page.build_page(file_name, system_config, page_info, menu_list,
                                       html_static, template_config)
             if content is not None:
                 file.write_file("./static_page/post/{0}.html".format(filename.replace(".md", "")), content)
