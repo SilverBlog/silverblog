@@ -10,6 +10,9 @@ def build(github_mode):
         html_static = github_mode
     page_list = json.loads(file.read_file("./config/page.json"))
     menu_list = json.loads(file.read_file("./config/menu.json"))
+    page_name_list = list()
+    for item in page_list:
+        page_name_list.append(item["name"])
     page_list = list(map(post_header.add_post_header, page_list))
     menu_list = list(map(post_header.add_post_header, menu_list))
     system_config = json.loads(file.read_file("./config/system.json"))
@@ -20,9 +23,6 @@ def build(github_mode):
     if os.path.isdir("./static_page"):
         shutil.rmtree("./static_page")
     os.mkdir("./static_page")
-    page_name_list = list()
-    for item in page_list:
-        page_name_list.append(item["name"])
     console.log("Build", "Processing file: ./static_page/index.html")
     content, row = page.build_index(1, system_config, page_list, menu_list, html_static, template_config)
     file.write_file("./static_page/index.html", content)
