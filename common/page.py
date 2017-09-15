@@ -15,16 +15,7 @@ def format_datatime(value, format='%Y-%m-%d %H:%M'):
 
 env.filters['datetimeformat'] = format_datatime
 
-
-def add_post_header(list_item):
-    if "name" in list_item:
-        list_item["name"] = "post/{0}".format(list_item["name"])
-    return list_item
-
-
 def build_index(page, system_config, page_list, menu_list, static, template_config):
-    page_list_map = list(map(add_post_header, page_list))
-    menu_list_map = list(map(add_post_header, menu_list))
     page_info = {"title": "index"}
     paging = system_config["Paging"]
     start_num = -paging + (int(page) * paging)
@@ -37,9 +28,9 @@ def build_index(page, system_config, page_list, menu_list, static, template_conf
         page_row = 1
     if page <= 0 or page > page_row:
         return None, 0
-    index_list = page_list_map[start_num:start_num + paging]
+    index_list = page_list[start_num:start_num + paging]
     template = env.get_template("./{0}/index.html".format(system_config["Theme"]))
-    result = template.render(menu_list=menu_list_map,
+    result = template.render(menu_list=menu_list,
                              page_list=index_list,
                              page_info=page_info,
                              system_config=system_config,
@@ -49,8 +40,7 @@ def build_index(page, system_config, page_list, menu_list, static, template_conf
     return result, page_row
 
 
-def build_page(name, system_config, page_info, menu_list_raw, static, template_config):
-    menu_list_map = list(map(add_post_header, menu_list_raw))
+def build_page(name, system_config, page_info, menu_list, static, template_config):
     content = file.read_file("document/{0}.md".format(name))
     if page_info is None:
         page_info = {"title": "undefined"}
@@ -58,7 +48,7 @@ def build_page(name, system_config, page_info, menu_list_raw, static, template_c
         page_info = json.loads(file.read_file("document/{0}.json".format(name)))
     document = markdown.markdown(content)
     template = env.get_template("./{0}/post.html".format(system_config["Theme"]))
-    result = template.render(page_info=page_info, menu_list=menu_list_map, content=document,
+    result = template.render(page_info=page_info, menu_list=menu_list, content=document,
                              system_config=system_config, static=static, template_config=template_config,
                              now_time=time.localtime())
     return result

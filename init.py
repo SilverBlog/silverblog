@@ -14,6 +14,13 @@ cache_post = dict()
 
 app = Flask(__name__)
 
+
+def add_post_header(list_item):
+    if "name" in list_item:
+        list_item["name"] = "post/{0}".format(list_item["name"])
+    return list_item
+
+
 console.log("info", "Loading configuration")
 
 
@@ -49,7 +56,8 @@ if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
     template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
 
 system_config["API_Password"] = None
-
+page_list = list(map(add_post_header, page_list))
+menu_list = list(map(add_post_header, menu_list))
 console.log("Success", "load the configuration file successfully")
 
 
