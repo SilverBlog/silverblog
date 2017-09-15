@@ -112,7 +112,7 @@ def post_route(file_name=None):
         return cache_post[page_url]
     page_info = None
     if file_name in page_name_list:
-        this_page_index = page_name_list.index(name)
+        this_page_index = page_name_list.index(file_name)
         page_info = page_list[this_page_index]
     result = page.build_page(file_name, system_config, page_info, menu_list,
                              False,
