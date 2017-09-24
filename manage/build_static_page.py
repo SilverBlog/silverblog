@@ -1,7 +1,7 @@
 import json
 import os
 import shutil
-
+import time
 
 def build(github_mode):
     from common import file, page, console, post_header
@@ -55,8 +55,6 @@ def build(github_mode):
     console.log("Success", "Create Github Page Success!")
 
 
-localtime = time.asctime(time.localtime(time.time()))
-
 
 def publish(push, static):
     if not os.path.exists("./static_page/.git"):
@@ -72,6 +70,7 @@ def publish(push, static):
     if push:
         repo = git.Repo("./static_page")
         repo.git.add("--all")
+        localtime = time.asctime(time.localtime(time.time()))
         try:
             repo.git.commit("-m Publish Time：{0}".format(localtime))
         except git.exc.GitCommandError as e:
