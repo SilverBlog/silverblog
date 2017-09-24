@@ -14,4 +14,7 @@ def get_theme_list():
         exit(1)
     req = json.loads(r)
     for item in req:
-        print("Name:{0} Description:{1} Star{2}".format(item["name"], item["description"], item["stargazers_count"]))
+        print("Name:{0}\n Description:{1}\n Star:{2}\n------------------------------\n".format(item["name"],
+                                                                                               item["description"],
+                                                                                               item[
+                                                                                                   "stargazers_count"]))
