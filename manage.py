@@ -30,10 +30,14 @@ if __name__ == '__main__':
             config = {"title": title, "name": name}
         new_post.new_post_init(config, args.independent)
         build_rss.build_rss()
+        exit(0)
     if args.command == "update":
         update_post.update()
         build_rss.build_rss()
+        exit(0)
     if args.command == "get-theme-list":
         theme.get_theme_list()
+        exit(0)
     if args.command == "build-gh-page":
         build_static_page.publish(args.push_git, args.static_page)
+        exit(0)
