@@ -1,5 +1,8 @@
 import urllib.request
 
+from common import console
+
+
 def get_theme_list():
     console.log("info", "Get Theme List")
     r = "[]"
