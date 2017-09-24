@@ -53,3 +53,32 @@ def build(github_mode):
     if os.path.exists("./templates/static/user_file"):
         shutil.copytree("./templates/static/user_file", "./static_page/static/user_file")
     console.log("Success", "Create Github Page Success!")
+
+
+localtime = time.asctime(time.localtime(time.time()))
+
+
+def publish(push, static):
+    if not os.path.exists("./static_page/.git"):
+        console.log("Error", "[./static_page/] Not a git repository.")
+        if push:
+            return False
+    if not os.path.exists("./.temp"):
+        os.mkdir("./.temp")
+    shutil.copytree("./static_page/.git", "./.temp/.git")
+    build(static)
+    shutil.copytree("./.temp/.git", "./static_page/.git")
+    shutil.rmtree("./.temp/.git")
+    if push:
+        repo = git.Repo("./static_page")
+        repo.git.add("--all")
+        try:
+            repo.git.commit("-m Publish Time：{0}".format(localtime))
+        except git.exc.GitCommandError as e:
+            console.log("Error", e.args)
+            return False
+        console.log("Info", "Submitted to the remote")
+        remote = repo.remote()
+        remote.push()
+        console.log("Success", "Done")
+        return True
