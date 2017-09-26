@@ -44,4 +44,5 @@ def install_theme(theme_name):
     except urllib2.HTTPError:
         console.log("Error", "Get the topic list error.")
         exit(1)
-    os.system(r)
+
+    os.system("cd templates \n" + r)
