@@ -18,12 +18,10 @@ def get_orgs_list():
 def get_theme_list():
     req = get_orgs_list()
     for item in req:
+        print("-" * 50)
         print(
-            "------------------------------\n Name:{0}\n Description:{1}\n Star:{2}\n------------------------------\n".format(
-                item["name"],
-                item["description"],
-                item[
-                                                                                                   "stargazers_count"]))
+            "Name:{0}\n Description:{1}\n Star:{2}".format(item["name"], item["description"], item["stargazers_count"]))
+        print("-" * 50)
 
 
 def install_theme(theme_name):

@@ -34,9 +34,9 @@ EOF
 echo "Create directory..."
 
 mkdir ./document
+mkdir ./config
 mkdir ./templates
 mkdir ./templates/static
-mkdir ./config
 
 echo "Create configuration file..."
 if [ ! -f "./config/menu.json" ]; then
