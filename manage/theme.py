@@ -49,7 +49,7 @@ def install_theme(theme_name):
         exit(1)
     os.system("cd templates \n" + r)
     enable_theme = input('Do you want to enable this theme now? [y/N]')
-    if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y' or enable_theme.lower() == '':
+    if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
         system_info = json.loads(file.read_file("./config/system.json"))
         system_info["Theme"] = name
         file.write_file("./config/system.json", json.dumps(system_info))
