@@ -38,11 +38,13 @@ def install_theme(theme_name):
         console.log("Error", "Can not find this theme.")
         return
     r = ""
+    console.log("info", "Getting the theme installation script...")
     try:
         r = urllib.request.urlopen(
             "https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).read().decode('utf-8')
     except urllib2.HTTPError:
-        console.log("Error", "Get the topic list error.")
+        console.log("Error", "Get the theme installation script error.")
         exit(1)
 
     os.system("cd templates \n" + r)
+    console.log("Success", "The theme is installed successfully!")

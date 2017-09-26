@@ -76,7 +76,7 @@ def publish(push, static):
         except git.exc.GitCommandError as e:
             console.log("Error", e.args)
             return False
-        console.log("Info", "Submitted to the remote")
+        console.log("Info", "Submitted to the remote.")
         remote = repo.remote()
         remote.push()
         console.log("Success", "Done")

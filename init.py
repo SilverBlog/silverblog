@@ -14,11 +14,7 @@ cache_post = dict()
 
 app = Flask(__name__)
 
-
-
-
-
-console.log("info", "Loading configuration")
+console.log("info", "Loading configuration...")
 
 
 system_config = json.loads(file.read_file("./config/system.json"))
@@ -26,12 +22,12 @@ system_config = json.loads(file.read_file("./config/system.json"))
 if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
     import urllib.request
     r = {"entry": [{"hash": ""}]}
-    console.log("info", "Get Gravatar URL")
+    console.log("info", "Get Gravatar URL...")
     try:
         r = urllib.request.urlopen(
             "https://en.gravatar.com/{0}.json".format(system_config["Author_Name"])).read().decode('utf-8')
     except urllib2.HTTPError:
-        console.log("Error", "Get Gravatar URL error")
+        console.log("Error", "Get Gravatar URL error.")
         pass
     req = json.loads(r)
     gravatar_hash = req["entry"][0]["hash"]
@@ -55,7 +51,7 @@ if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
 system_config["API_Password"] = None
 page_list = list(map(post_header.add_post_header, page_list))
 menu_list = list(map(post_header.add_post_header, menu_list))
-console.log("Success", "load the configuration file successfully")
+console.log("Success", "load the configuration file successfully!")
 
 
 # Subscribe
