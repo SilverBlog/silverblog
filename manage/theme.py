@@ -20,7 +20,8 @@ def get_theme_list():
     for item in req:
         print("-" * 50)
         print(
-            "Name:{0}\n Description:{1}\n Star:{2}".format(item["name"], item["description"], item["stargazers_count"]))
+            " Name:{0}\n Description:{1}\n Star:{2}".format(item["name"], item["description"],
+                                                            item["stargazers_count"]))
         print("-" * 50)
 
 
