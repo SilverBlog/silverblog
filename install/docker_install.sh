@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+docker pull qwe7002/silverblog
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git
     cd SilverBlog/install
