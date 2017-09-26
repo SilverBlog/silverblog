@@ -9,7 +9,8 @@ from manage import build_rss, build_static_page, new_post, update_post, theme
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", help="The name of the function to execute.(e.g: new,update,build-gh-page,get-theme)")
+    parser.add_argument("command",
+                        help="The name of the function to execute.(e.g: new,update,build-gh-page,get-theme-list,install-theme)")
     parser.add_argument("--config", help="The configuration file location you want to load.")
     parser.add_argument("--independent", help="Generate an article that does not appear in the article list",
                         action="store_true")
@@ -38,6 +39,10 @@ if __name__ == '__main__':
     if args.command == "get-theme-list":
         theme.get_theme_list()
         exit(0)
+    if args.command == "install-theme":
+        print("Please enter the name of the theme you want to install:")
+        theme_name = input()
+        theme.install_theme(theme_name)
     if args.command == "build-gh-page":
         build_static_page.publish(args.push_git, args.static_page)
         exit(0)
