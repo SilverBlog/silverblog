@@ -37,7 +37,7 @@ def install_theme(theme_name):
             name = item["name"]
     if not has_theme:
         console.log("Error", "Can not find this theme.")
-        return
+        exit(1)
     r = None
     r_license = None
     console.log("info", "Getting project license...")
@@ -46,6 +46,7 @@ def install_theme(theme_name):
             "https://raw.githubusercontent.com/{}/master/LICENSE".format(full_name)).read().decode('utf-8')
     except urllib.error.HTTPError:
         console.log("Error", "Get the project license error.")
+        exit(1)
     print("\n{}\n".format(r_license))
     enable_theme = input('I agree to the terms and conditions. [y/N]')
     if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
@@ -55,8 +56,7 @@ def install_theme(theme_name):
                 "https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).read().decode('utf-8')
         except urllib.error.HTTPError as e:
             console.log("Error", "Get the theme installation script error.")
-            if e.code == 404:
-                r = "git clone https://github.com/{}.git".format(full_name)
+            exit(1)
         os.system("cd templates \n" + r)
         enable_theme = input('Do you want to enable this theme now? [y/N]')
         if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
