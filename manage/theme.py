@@ -10,7 +10,7 @@ def get_orgs_list():
     r = "[]"
     try:
         r = urllib.request.urlopen("https://api.github.com/orgs/silverblogtheme/repos").read().decode('utf-8')
-    except urllib2.HTTPError:
+    except urllib.error.HTTPError:
         console.log("Error", "Get the topic list error.")
         exit(1)
     return json.loads(r)
@@ -38,14 +38,23 @@ def install_theme(theme_name):
     if not has_theme:
         console.log("Error", "Can not find this theme.")
         return
-    r = ""
+    r = None
+    r_license = None
+    console.log("info", "Getting project license...")
+    try:
+        r_license = urllib.request.urlopen(
+            "https://raw.githubusercontent.com/{}/master/LICENSE".format(full_name)).read().decode('utf-8')
+    except urllib.error.HTTPError:
+        console.log("Error", "Get the project license error.")
+    print(r_license)
     console.log("info", "Getting the theme installation script...")
     try:
         r = urllib.request.urlopen(
             "https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).read().decode('utf-8')
-    except urllib2.HTTPError:
+    except urllib.error.HTTPError as e:
         console.log("Error", "Get the theme installation script error.")
-        exit(1)
+        if e.code == 404:
+            r = "git clone https://github.com/{}.git".format(full_name)
     os.system("cd templates \n" + r)
     enable_theme = input('Do you want to enable this theme now? [y/N]')
     if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':

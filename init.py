@@ -26,7 +26,7 @@ if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
     try:
         r = urllib.request.urlopen(
             "https://en.gravatar.com/{0}.json".format(system_config["Author_Name"])).read().decode('utf-8')
-    except urllib2.HTTPError:
+    except urllib.error.HTTPError:
         console.log("Error", "Get Gravatar URL error.")
         pass
     req = json.loads(r)
