@@ -7,13 +7,13 @@ from common import console, file
 
 def get_orgs_list():
     console.log("info", "Getting the list of theme...")
-    r = "[]"
     try:
-        r = urllib.request.urlopen("https://api.github.com/orgs/silverblogtheme/repos").read().decode('utf-8')
+        return json.loads(
+            urllib.request.urlopen("https://api.github.com/orgs/silverblogtheme/repos").read().decode('utf-8'))
     except urllib.error:
         console.log("Error", "Get the topic list error.")
         exit(1)
-    return json.loads(r)
+
 
 def get_theme_list():
     req = get_orgs_list()
