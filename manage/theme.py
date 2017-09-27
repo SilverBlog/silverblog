@@ -46,7 +46,7 @@ def install_theme(theme_name):
             "https://raw.githubusercontent.com/{}/master/LICENSE".format(full_name)).read().decode('utf-8')
     except urllib.error.HTTPError:
         console.log("Error", "Get the project license error.")
-    print(r_license)
+    print("\n{}\n".format(r_license))
     enable_theme = input('I agree to the terms and conditions. [y/N]')
     if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
         console.log("info", "Getting the theme installation script...")
