@@ -62,6 +62,6 @@ def install_theme(theme_name):
         if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
             system_info = json.loads(file.read_file("./config/system.json"))
             system_info["Theme"] = name
-            file.write_file("./config/system.json", json.dumps(system_info))
+            file.write_file("./config/system.json", json.dumps(system_info, ensure_ascii=False))
             console.log("Success", "The theme has been enabled!")
         console.log("Success", "The theme is installed successfully!")
