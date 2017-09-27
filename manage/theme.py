@@ -10,7 +10,7 @@ def get_orgs_list():
     r = "[]"
     try:
         r = urllib.request.urlopen("https://api.github.com/orgs/silverblogtheme/repos").read().decode('utf-8')
-    except urllib.error.HTTPError:
+    except urllib.error:
         console.log("Error", "Get the topic list error.")
         exit(1)
     return json.loads(r)
@@ -44,7 +44,7 @@ def install_theme(theme_name):
     try:
         r_license = urllib.request.urlopen(
             "https://raw.githubusercontent.com/{}/master/LICENSE".format(full_name)).read().decode('utf-8')
-    except urllib.error.HTTPError:
+    except urllib.error:
         console.log("Error", "Get the project license error.")
         exit(1)
     print("\n{}\n".format(r_license))
@@ -54,7 +54,7 @@ def install_theme(theme_name):
         try:
             r = urllib.request.urlopen(
                 "https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).read().decode('utf-8')
-        except urllib.error.HTTPError as e:
+        except urllib.error:
             console.log("Error", "Get the theme installation script error.")
             exit(1)
         os.system("cd templates \n" + r)
