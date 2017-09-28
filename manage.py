@@ -11,11 +11,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("command",
                         help="The name of the function to execute.(e.g: new,update,build-gh-page,get-theme-list,install-theme)")
-    parser.add_argument("--config", help="The configuration file location you want to load.")
-    parser.add_argument("--independent", help="Generate an article that does not appear in the article list",
-                        action="store_true")
-    parser.add_argument("--static_page", help="Create page that is available to static server", action="store_true")
-    parser.add_argument("--push_git", help="Automatically submitted to Git", action="store_true")
+    group_new = parser.add_argument_group('new')
+    group_new.add_argument("--config", help="The configuration file location you want to load.")
+    group_new.add_argument("--independent", help="Generate an article that does not appear in the article list",
+                           action="store_true")
+    group_build_gh_page = parser.add_argument_group("build-gh-page")
+    group_build_gh_page.add_argument("--static_page", help="Create page that is available to static server",
+                                     action="store_true")
+    group_build_gh_page.add_argument("--push_git", help="Automatically submitted to Git", action="store_true")
     args = parser.parse_args()
     if args.command == "new":
         config = None
