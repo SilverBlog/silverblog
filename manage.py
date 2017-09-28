@@ -8,13 +8,19 @@ from common import file
 from manage import build_rss, build_static_page, new_post, update_post, theme
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser("SilverBlog command line management tool.")
     parser.add_argument("command",
-                        help="The name of the function to execute.(e.g: new,update,build-gh-page,get-theme-list,install-theme)")
+                        help="The name of the function to execute.(e.g: new,update,build-gh-page,theme,tools)")
+    #new
     group_new = parser.add_argument_group('new')
     group_new.add_argument("--config", help="The configuration file location you want to load.")
     group_new.add_argument("--independent", help="Generate an article that does not appear in the article list",
                            action="store_true")
+    #theme
+    group_theme = parser.add_argument_group('theme')
+    group_theme.add_argument("--list",action="store_true")
+    group_theme.add_argument("--install",action="store_true")
+    #build-gh-page
     group_build_gh_page = parser.add_argument_group("build-gh-page")
     group_build_gh_page.add_argument("--static_page", help="Create page that is available to static server",
                                      action="store_true")
@@ -39,13 +45,17 @@ if __name__ == '__main__':
         update_post.update()
         build_rss.build_rss()
         exit(0)
-    if args.command == "get-theme-list":
-        theme.get_theme_list()
+    if args.command =="tools":
+        from tools import upgrade
+        upgrade.upgrade()
+    if args.command == "theme":
+        if args.list:
+            theme.get_theme_list()
+        if args.install:
+            print("Please enter the name of the theme you want to install:")
+            theme_name = input()
+            theme.install_theme(theme_name)
         exit(0)
-    if args.command == "install-theme":
-        print("Please enter the name of the theme you want to install:")
-        theme_name = input()
-        theme.install_theme(theme_name)
     if args.command == "build-gh-page":
         build_static_page.publish(args.push_git, args.static_page)
         exit(0)
