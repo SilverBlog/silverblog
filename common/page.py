@@ -15,15 +15,7 @@ def format_datatime(value, format='%Y-%m-%d %H:%M'):
 
 env.filters['datetimeformat'] = format_datatime
 
-
-def add_post_header(list_item):
-    if "name" in list_item:
-        list_item["name"] = "post/{0}".format(list_item["name"])
-    return list_item
-
 def build_index(page, system_config, page_list, menu_list, static, template_config):
-    page_list = list(map(add_post_header, page_list))
-    menu_list = list(map(add_post_header, menu_list))
     page_info = {"title": "index"}
     paging = system_config["Paging"]
     start_num = -paging + (int(page) * paging)
@@ -48,18 +40,15 @@ def build_index(page, system_config, page_list, menu_list, static, template_conf
     return result, page_row
 
 
-def build_page(name, system_config, page_list, page_name_list, menu_list, static, template_config):
+def build_page(name, system_config, page_info, menu_list, static, template_config):
     content = file.read_file("document/{0}.md".format(name))
-    page_info = {"title": "undefined"}
-    page_nav = None
-    if name in page_name_list:
-        this_page_index = page_name_list.index(name)
-        page_info = page_list[this_page_index]
+    if page_info is None:
+        page_info = {"title": "undefined"}
     if os.path.exists("document/{0}.json".format(name)):
         page_info = json.loads(file.read_file("document/{0}.json".format(name)))
     document = markdown.markdown(content)
     template = env.get_template("./{0}/post.html".format(system_config["Theme"]))
-    result = template.render(page_info=page_info, page_nav=page_nav, menu_list=menu_list, content=document,
+    result = template.render(page_info=page_info, menu_list=menu_list, content=document,
                              system_config=system_config, static=static, template_config=template_config,
                              now_time=time.localtime())
     return result
