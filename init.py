@@ -55,8 +55,8 @@ console.log("Success", "load the configuration file successfully!")
 
 
 # Subscribe
-@app.route("/rss", strict_slashes=False)
-@app.route("/feed", strict_slashes=False)
+@app.route("/rss/", strict_slashes=False)
+@app.route("/feed/", strict_slashes=False)
 def load_rss():
     if rss is None:
         abort(404)
@@ -68,8 +68,8 @@ def static_file():
     abort(400)
 
 @app.route("/")
-@app.route("/index", strict_slashes=False)
-@app.route('/index/p/<int:page_index>', strict_slashes=False)
+@app.route("/index/", strict_slashes=False)
+@app.route('/index/p/<int:page_index>/', strict_slashes=False)
 def index_route(page_index=1):
     page_url = "/index/p/{0}/".format(page_index)
     if page_url in cache_index:
