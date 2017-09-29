@@ -59,10 +59,8 @@ console.log("Success", "load the configuration file successfully")
 
 
 # Subscribe
-@app.route("/rss")
-@app.route("/rss/")
-@app.route("/feed")
-@app.route("/feed/")
+@app.route("/rss", strict_slashes=False)
+@app.route("/feed", strict_slashes=False)
 def load_rss():
     if rss is None:
         abort(404)
@@ -74,10 +72,8 @@ def static_file():
     abort(400)
 
 @app.route("/")
-@app.route("/index")
-@app.route("/index/")
-@app.route('/index/p/<int:page_index>')
-@app.route('/index/p/<int:page_index>/')
+@app.route("/index", strict_slashes=False)
+@app.route('/index/p/<int:page_index>', strict_slashes=False)
 def index_route(page_index=1):
     page_url = "/index/p/{0}/".format(page_index)
     if page_url in cache_index:
@@ -99,15 +95,14 @@ def index_route(page_index=1):
     return result
 
 
-@app.route("/<file_name>/")
-@app.route("/<file_name>")
+@app.route("/<file_name>", strict_slashes=False)
 def redirect_301(file_name):
     if file_name in page_name_list or os.path.exists("document/{0}.md".format(file_name)):
         return redirect("/post/{0}".format(file_name), code=301)
     abort(404)
 
-@app.route("/post/<file_name>")
-@app.route("/post/<file_name>/")
+
+@app.route("/post/<file_name>", strict_slashes=False)
 def post_route(file_name=None):
     if file_name is None or not os.path.exists("document/{0}.md".format(file_name)):
         abort(404)
