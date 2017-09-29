@@ -61,7 +61,6 @@ console.log("Success", "load the configuration file successfully")
 # Subscribe
 @app.route("/rss", strict_slashes=False)
 @app.route("/feed", strict_slashes=False)
-
 def load_rss():
     if rss is None:
         abort(404)
