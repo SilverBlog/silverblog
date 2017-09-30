@@ -95,11 +95,10 @@ def index_route(page_index=1):
     return result
 
 
-@app.route("/<file_name>/")
-@app.route("/<file_name>")
+@app.route("/<file_name>", strict_slashes=False)
 def redirect_301(file_name):
     if file_name in page_name_list or os.path.exists("document/{0}.md".format(file_name)):
-        return redirect("/post/{0}".format(file_name), code=301)
+        return redirect("/post/{0}/".format(file_name), code=301)
     abort(404)
 
 
