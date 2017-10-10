@@ -32,9 +32,9 @@ if __name__ == '__main__':
             config = json.loads(file.read_file(args.config))
         if config is None:
             print("Please enter the title of the article:")
-            title = input()
+            title = raw_input()
             print("Please enter the URL (Leave a blank use pinyin):")
-            name = input()
+            name = raw_input()
             if len(name) == 0:
                 name = new_post.get_name(title)
             config = {"title": title, "name": name}
@@ -45,15 +45,12 @@ if __name__ == '__main__':
         update_post.update()
         build_rss.build_rss()
         exit(0)
-    if args.command =="tools":
-        from tools import upgrade
-        upgrade.upgrade()
     if args.command == "theme":
         if args.list:
             theme.get_theme_list()
         if args.install:
             print("Please enter the name of the theme you want to install:")
-            theme_name = input()
+            theme_name = raw_input()
             theme.install_theme(theme_name)
         exit(0)
     if args.command == "build-gh-page":
