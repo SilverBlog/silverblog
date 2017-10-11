@@ -1,3 +1,4 @@
+image: hedaqing/docker-alpine-git
 push_to_github:
   script:
   - apk --update add git openssl
