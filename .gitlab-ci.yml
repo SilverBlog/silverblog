@@ -1,4 +1,6 @@
 image: hedaqing/docker-alpine-git
 push_to_github:
   script:
-  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git master:master
+  - git checkout master
+  - git pull
+  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git
