@@ -1,3 +1,4 @@
 push_to_github:
   script:
+  - apk --update add git openssl
   - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
