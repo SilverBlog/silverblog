@@ -1,0 +1,6 @@
+push_to_github:
+  only:
+  - tags
+  stage: deploy
+  script:
+  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
