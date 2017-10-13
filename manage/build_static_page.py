@@ -2,12 +2,9 @@ import json
 import os
 import shutil
 import time
-<<<<<<< HEAD
 
 from common import console
 
-=======
->>>>>>> master
 
 def build(github_mode):
     from common import file, page, post_header
