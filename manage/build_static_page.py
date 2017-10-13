@@ -3,8 +3,11 @@ import os
 import shutil
 import time
 
+from common import console
+
+
 def build(github_mode):
-    from common import file, page, console, post_header
+    from common import file, page, post_header
     html_static = False
     if github_mode is not None:
         html_static = github_mode
@@ -57,17 +60,17 @@ def build(github_mode):
 
 
 def publish(push, static):
-    if not os.path.exists("./static_page/.git"):
-        console.log("Error", "[./static_page/] Not a git repository.")
-        if push:
-            return False
-    if not os.path.exists("./.temp"):
-        os.mkdir("./.temp")
-    shutil.copytree("./static_page/.git", "./.temp/.git")
-    build(static)
-    shutil.copytree("./.temp/.git", "./static_page/.git")
-    shutil.rmtree("./.temp/.git")
     if push:
+        if not os.path.exists("./static_page/.git"):
+            console.log("Error", "[./static_page/] Not a git repository.")
+            return False
+        if not os.path.exists("./.temp"):
+            os.mkdir("./.temp")
+        shutil.copytree("./static_page/.git", "./.temp/.git")
+    build(static)
+    if push:
+        shutil.copytree("./.temp/.git", "./static_page/.git")
+        shutil.rmtree("./.temp/.git")
         repo = git.Repo("./static_page")
         repo.git.add("--all")
         localtime = time.asctime(time.localtime(time.time()))

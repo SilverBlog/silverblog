@@ -10,18 +10,20 @@ from manage import build_rss, build_static_page, new_post, update_post, theme
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("SilverBlog command line management tool.")
     parser.add_argument("command",
-                        help="The name of the function to execute.(e.g: new,update,build-gh-page,theme,tools)")
+                        help="The name of the function to execute.")
+
     #new
-    group_new = parser.add_argument_group('new')
+    group_new = parser.add_argument_group('new', "Create a new article.")
     group_new.add_argument("--config", help="The configuration file location you want to load.")
     group_new.add_argument("--independent", help="Generate an article that does not appear in the article list",
                            action="store_true")
+    group_new = parser.add_argument_group('update', "Update article metadata.")
     #theme
-    group_theme = parser.add_argument_group('theme')
+    group_theme = parser.add_argument_group('theme', "Theme pack installation management.")
     group_theme.add_argument("--list",action="store_true")
     group_theme.add_argument("--install",action="store_true")
     #build-gh-page
-    group_build_gh_page = parser.add_argument_group("build-gh-page")
+    group_build_gh_page = parser.add_argument_group("build-gh-page", "Generate static pages.")
     group_build_gh_page.add_argument("--static_page", help="Create page that is available to static server",
                                      action="store_true")
     group_build_gh_page.add_argument("--push_git", help="Automatically submitted to Git", action="store_true")
@@ -32,9 +34,9 @@ if __name__ == '__main__':
             config = json.loads(file.read_file(args.config))
         if config is None:
             print("Please enter the title of the article:")
-            title = raw_input()
+            title = input()
             print("Please enter the URL (Leave a blank use pinyin):")
-            name = raw_input()
+            name = input()
             if len(name) == 0:
                 name = new_post.get_name(title)
             config = {"title": title, "name": name}
@@ -47,10 +49,16 @@ if __name__ == '__main__':
         exit(0)
     if args.command == "theme":
         if args.list:
-            theme.get_theme_list()
+            req = theme.get_orgs_list()
+            for item in req:
+                print("-" * 100)
+                print(
+                    " Name:{0}\n Description:{1}\n Star:{2}".format(item["name"], item["description"],
+                                                                    item["stargazers_count"]))
+                print("-" * 100)
         if args.install:
             print("Please enter the name of the theme you want to install:")
-            theme_name = raw_input()
+            theme_name = input()
             theme.install_theme(theme_name)
         exit(0)
     if args.command == "build-gh-page":

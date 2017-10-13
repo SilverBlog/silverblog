@@ -14,17 +14,6 @@ def get_orgs_list():
         console.log("Error", "Get the topic list error.")
         exit(1)
 
-
-def get_theme_list():
-    req = get_orgs_list()
-    for item in req:
-        print("-" * 100)
-        print(
-            " Name:{0}\n Description:{1}\n Star:{2}".format(item["name"], item["description"],
-                                                            item["stargazers_count"]))
-        print("-" * 100)
-
-
 def install_theme(theme_name):
     req = get_orgs_list()
     has_theme = False
