@@ -7,7 +7,7 @@ from manage import build_rss, build_static_page, new_post, update_post, theme
 dialog = whiptail.Whiptail()
 dialog.height = 15
 dialog.title = "SilverBlog command line management tool"
-menu_list = ["New Post", "Update Post", "Theme", "Build Static Page"]
+menu_list = ["New post", "Update post", "Theme package manager", "Build static page"]
 result = dialog.menu("Please select an action", menu_list)
 if result == "New Post":
     title = dialog.prompt("Please enter the title of the article:")
@@ -25,10 +25,11 @@ if result == "Update Post":
     update_post.update()
     build_rss.build_rss()
     exit(0)
-if result == "Theme":
+if result == "Theme package manager":
     menu_list = ["View List", "Enter the theme package name"]
     result = dialog.menu("Please select an action", menu_list)
     theme_name = ""
+    orgs_list = None
     if result == "View List":
         orgs_list = theme.get_orgs_list()
         item_list = list()
@@ -38,7 +39,7 @@ if result == "Theme":
     if result == "Enter the theme package name":
         theme_name = dialog.prompt("Please enter the theme package name:")
     if len(theme_name) != 0:
-        theme.install_theme(theme_name)
+        theme.install_theme(theme_name, orgs_list)
     exit(0)
 if result == "Build Static Page":
     build_static_page.publish(dialog.confirm("Push to git?", "no"),

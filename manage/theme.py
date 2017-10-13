@@ -14,12 +14,14 @@ def get_orgs_list():
         console.log("Error", "Get the topic list error.")
         exit(1)
 
-def install_theme(theme_name):
-    req = get_orgs_list()
+
+def install_theme(theme_name, orgs_list=None):
+    if orgs_list is None:
+        orgs_list = get_orgs_list()
     has_theme = False
     full_name = None
     name = None
-    for item in req:
+    for item in orgs_list:
         if item["name"].lower() == theme_name.lower():
             has_theme = True
             full_name = item["full_name"]

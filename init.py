@@ -1,5 +1,6 @@
 import json
 import os.path
+
 from flask import Flask, abort, redirect
 
 from common import file, page, console, post_header
@@ -20,16 +21,18 @@ system_config = json.loads(file.read_file("./config/system.json"))
 
 if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
     import urllib.request
+    import urllib.error
     r = {"entry": [{"hash": ""}]}
     console.log("info", "Get Gravatar URL...")
+    gravatar_hash = a89dc9213c1eafa581410f76eddbf890
     try:
         r = urllib.request.urlopen(
             "https://en.gravatar.com/{0}.json".format(system_config["Author_Name"])).read().decode('utf-8')
-    except urllib.error.HTTPError:
+        req = json.loads(r)
+        gravatar_hash = req["entry"][0]["hash"]
+    except (TypeError, ValueError, urllib.error.HTTPError, urllib.error.URLError, urllib.error.ContentTooShortError):
         console.log("Error", "Get Gravatar URL error.")
         pass
-    req = json.loads(r)
-    gravatar_hash = req["entry"][0]["hash"]
     system_config["Author_Image"] = "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
     file.write_file("./config/system.json", json.dumps(system_config))
 
@@ -43,7 +46,10 @@ for item in page_list:
 
 if os.path.exists("./document/rss.xml"):
     rss = file.read_file("document/rss.xml")
-
+if len(system_config["Theme"]) == 0:
+    console.log("Error",
+                "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
+    exit(1)
 if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
     template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
 
