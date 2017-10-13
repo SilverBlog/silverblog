@@ -27,3 +27,4 @@ templates/*
 control-start.sh
 test.py
 nginx_config
+manage.sh

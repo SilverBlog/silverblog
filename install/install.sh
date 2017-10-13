@@ -48,9 +48,16 @@ fi
 if [ ! -f "./config/system.json" ]; then
     cp -i ./example/system.example.json ./config/system.json
 fi
+if [ ! -f "./config/version.json" ]; then
+    cp -i ./example/version.example.json ./config/version.json
+fi
 if [ ! -f "./uwsgi.json" ]; then
     cp -i ./example/uwsgi.example.json ./uwsgi.json
 fi
+if [ ! -f "./start.json" ]; then
+    cp -i ./example/start.example.json ./start.json
+fi
+
 
 chmod +x manage.py
 echo "The installation is complete! Please edit $(pwd)/config/system.json file."

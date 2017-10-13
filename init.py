@@ -1,6 +1,5 @@
 import json
 import os.path
-
 from flask import Flask, abort, redirect
 
 from common import file, page, console, post_header
@@ -53,8 +52,6 @@ page_list = list(map(post_header.add_post_header, page_list))
 menu_list = list(map(post_header.add_post_header, menu_list))
 console.log("Success", "load the configuration file successfully!")
 
-
-# Subscribe
 @app.route("/rss/", strict_slashes=False)
 @app.route("/feed/", strict_slashes=False)
 def load_rss():
