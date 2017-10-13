@@ -23,4 +23,8 @@ cat << EOF >../control-start.sh
 uwsgi --json ./uwsgi.json:control
 EOF
 
+if [ ! -f "./start.json" ]; then
+    cp -i ./example/start.example.json ./start.json
+fi
+
 ./install.sh

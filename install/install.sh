@@ -48,9 +48,6 @@ fi
 if [ ! -f "./config/system.json" ]; then
     cp -i ./example/system.example.json ./config/system.json
 fi
-if [ ! -f "./start.json" ]; then
-    cp -i ./example/start.example.json ./start.json
-fi
 if [ ! -f "./uwsgi.json" ]; then
     cp -i ./example/uwsgi.example.json ./uwsgi.json
 fi
