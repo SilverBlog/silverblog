@@ -1,5 +1,7 @@
 image: hedaqing/docker-alpine-git
 push_to_github:
+  only:
+  - master
   script:
   - git checkout master
   - git pull
