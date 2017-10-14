@@ -9,7 +9,7 @@ dialog.height = 15
 dialog.title = "SilverBlog command line management tool"
 menu_list = ["New post", "Update post", "Theme package manager", "Build static page"]
 result = dialog.menu("Please select an action", menu_list)
-if result == "New Post":
+if result == "New post":
     title = dialog.prompt("Please enter the title of the article:")
     if len(title) == 0:
         dialog.alert("The title can not be blank.")
@@ -21,7 +21,7 @@ if result == "New Post":
     new_post.new_post_init(config, dialog.confirm("Is this an independent page?", "no"))
     build_rss.build_rss()
     exit(0)
-if result == "Update Post":
+if result == "Update post":
     update_post.update()
     build_rss.build_rss()
     exit(0)
