@@ -3,8 +3,8 @@ push_to_github:
   only:
   - master
   script:
-  - git checkout origin/master
-  - git pull
+  - git checkout master
+  - git pull origin master
   - git config --global http.proxy "http://192.168.3.1:1080"
   - git config --global https.proxy "http://192.168.3.1:1080"
   - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git
