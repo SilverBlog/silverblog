@@ -5,7 +5,6 @@ push_to_github:
   script:
   - git checkout master
   - git fetch origin --tags
-  - git ls-remote --tags
   - git pull origin master
   - git config --global http.proxy "http://192.168.3.1:1080"
   - git config --global https.proxy "http://192.168.3.1:1080"
