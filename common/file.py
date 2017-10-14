@@ -1,3 +1,5 @@
+import os
+
 from common import console
 
 
@@ -13,3 +15,7 @@ def write_file(filename, content):
     f.write(content)
     f.close()
     return True
+
+
+def list_dirs(folder):
+    return [d for d in os.listdir(folder) if os.path.isdir(os.path.join(folder, d))]
