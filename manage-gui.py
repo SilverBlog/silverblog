@@ -10,6 +10,7 @@ dialog.title = "SilverBlog command line management tool"
 menu_list = ["New post", "Update post", "Theme package manager", "Build static page"]
 result = dialog.menu("Please select an action", menu_list)
 if result == "New post":
+    dialog.title = "New post"
     title = dialog.prompt("Please enter the title of the article:")
     if len(title) == 0:
         dialog.alert("The title can not be blank.")
@@ -26,6 +27,7 @@ if result == "Update post":
     build_rss.build_rss()
     exit(0)
 if result == "Theme package manager":
+    dialog.title = "Theme package manager"
     menu_list = ["View list", "Enter the theme package name"]
     result = dialog.menu("Please select an action", menu_list)
     theme_name = ""
@@ -42,6 +44,7 @@ if result == "Theme package manager":
         theme.install_theme(theme_name, orgs_list)
     exit(0)
 if result == "Build static page":
+    dialog.title = "Build static page"
     build_static_page.publish(dialog.confirm("Push to git?", "no"),
                               dialog.confirm("Generate a hyperlink with a file extension?", "no"))
     exit(0)
