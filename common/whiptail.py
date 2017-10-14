@@ -18,7 +18,7 @@ def flatten(data):
 
 
 class Whiptail(object):
-    def __init__(self, title='', backtitle='', height=10, width=50,
+    def __init__(self, title='', backtitle='', height=0, width=0,
                  auto_exit=True):
         self.title = title
         self.backtitle = backtitle
