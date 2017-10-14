@@ -15,6 +15,12 @@ def get_orgs_list():
         exit(1)
 
 
+def get_local_theme_list():
+    from common import file
+    directories = file.list_dirs("./templates")
+    if "static" in directories:
+        directories.remove("static")
+    return directories
 def install_theme(theme_name, orgs_list=None):
     if orgs_list is None:
         orgs_list = get_orgs_list()
@@ -57,3 +63,19 @@ def install_theme(theme_name, orgs_list=None):
                             json.dumps(system_info, indent=4, sort_keys=False, ensure_ascii=False))
             console.log("Success", "The theme has been enabled!")
         console.log("Success", "The theme is installed successfully!")
+
+
+def remove_theme(theme_name):
+    import shutil
+    shutil.rmtree("./templates/" + theme_name)
+    if os.path.exists("./templates/static/" + theme_name):
+        shutil.rmtree("./templates/static/" + theme_name)
+    console.log("Success", "The theme is uninstalled successfully!")
+
+
+def upgrade_theme(theme_name):
+    import git
+    repo = git.Repo("./templates/" + theme_name)
+    remote = repo.remote()
+    remote.pull()
+    console.log("Success", "The theme is upgrade successfully!")

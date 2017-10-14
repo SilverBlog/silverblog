@@ -28,7 +28,7 @@ if result == "Update post":
     exit(0)
 if result == "Theme package manager":
     dialog.title = "Theme package manager"
-    menu_list = ["View list", "Enter the theme package name"]
+    menu_list = ["View list", "Enter the theme package name", "Upgrade existing Theme", "Uninstall existing Theme"]
     result = dialog.menu("Please select an action", menu_list)
     theme_name = ""
     orgs_list = None
@@ -42,6 +42,12 @@ if result == "Theme package manager":
         theme_name = dialog.prompt("Please enter the theme package name:")
     if len(theme_name) != 0:
         theme.install_theme(theme_name, orgs_list)
+    directories = theme.get_local_theme_list()
+    theme_name = dialog.menu("Please select the theme you want to uninstall:", directories)
+    if result == "Upgrade existing Theme":
+        theme.upgrade_theme(theme_name)
+    if result == "Uninstall existing Theme":
+        theme.remove_theme(theme_name)
     exit(0)
 if result == "Build static page":
     dialog.title = "Build static page"

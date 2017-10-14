@@ -61,6 +61,7 @@ def build(github_mode):
 
 def publish(push, static):
     if push:
+        import git
         if not os.path.exists("./static_page/.git"):
             console.log("Error", "[./static_page/] Not a git repository.")
             return False
