@@ -4,7 +4,7 @@
 import argparse
 import json
 
-from common import file
+from common import file, console
 from manage import build_rss, build_static_page, new_post, update_post, theme
 
 if __name__ == '__main__':
@@ -47,6 +47,15 @@ if __name__ == '__main__':
         update_post.update()
         build_rss.build_rss()
         exit(0)
+    if args.command == "Upgrade":
+        from manage import upgrade
+
+        if upgrade.upgrade_check():
+            start_to_pull = input('Find new version, do you want to upgrade? [y/N]')
+            if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y':
+                upgrade.upgrade_pull()
+                exit(0)
+        console.log("No upgrade found")
     if args.command == "theme":
         if args.list:
             req = theme.get_orgs_list()
