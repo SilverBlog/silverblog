@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+docker pull qwe7002/silverblog
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git
     cd SilverBlog/install
@@ -9,13 +9,18 @@ fi
 
 cd ..
 
+sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
+
 cat << EOF >start.sh
 #!/usr/bin/env bash
-docker run -v $(pwd):/home/SilverBlog -p 5000:5000 qwe7002/silverblog uwsgi --json /home/SilverBlog/uwsgi.json --chdir /home/SilverBlog
+docker run -v $(pwd):/home/SilverBlog -p 5000:5000 qwe7002/silverblog uwsgi --json uwsgi.json
 EOF
 cat << EOF >control-start.sh
 #!/usr/bin/env bash
-docker run -v $(pwd):/home/SilverBlog -p 5001:5001 qwe7002/silverblog uwsgi --json /home/SilverBlog/uwsgi.json:control --chdir /home/SilverBlog
+docker run -v $(pwd):/home/SilverBlog -p 5001:5001 qwe7002/silverblog uwsgi --json uwsgi.json:control
 EOF
-
-sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
+cat << EOF >manage.sh
+#!/usr/bin/env bash
+docker run -it -v $(pwd):/home/SilverBlog qwe7002/silverblog python3 manage.py \$*
+EOF
+chmod +x manage.sh

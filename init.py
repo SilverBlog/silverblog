@@ -14,27 +14,25 @@ cache_post = dict()
 
 app = Flask(__name__)
 
-
-
-
-
-console.log("info", "Loading configuration")
+console.log("info", "Loading configuration...")
 
 
 system_config = json.loads(file.read_file("./config/system.json"))
 
 if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
     import urllib.request
+    import urllib.error
     r = {"entry": [{"hash": ""}]}
-    console.log("info", "Get Gravatar URL")
+    console.log("info", "Get Gravatar URL...")
+    gravatar_hash = a89dc9213c1eafa581410f76eddbf890
     try:
         r = urllib.request.urlopen(
             "https://en.gravatar.com/{0}.json".format(system_config["Author_Name"])).read().decode('utf-8')
-    except urllib2.HTTPError:
-        console.log("Error", "Get Gravatar URL error")
+        req = json.loads(r)
+        gravatar_hash = req["entry"][0]["hash"]
+    except (TypeError, ValueError, urllib.error.HTTPError, urllib.error.URLError, urllib.error.ContentTooShortError):
+        console.log("Error", "Get Gravatar URL error.")
         pass
-    req = json.loads(r)
-    gravatar_hash = req["entry"][0]["hash"]
     system_config["Author_Image"] = "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
     file.write_file("./config/system.json", json.dumps(system_config))
 
@@ -48,17 +46,18 @@ for item in page_list:
 
 if os.path.exists("./document/rss.xml"):
     rss = file.read_file("document/rss.xml")
-
+if len(system_config["Theme"]) == 0:
+    console.log("Error",
+                "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
+    exit(1)
 if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
     template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
 
 system_config["API_Password"] = None
 page_list = list(map(post_header.add_post_header, page_list))
 menu_list = list(map(post_header.add_post_header, menu_list))
-console.log("Success", "load the configuration file successfully")
+console.log("Success", "load the configuration file successfully!")
 
-
-# Subscribe
 @app.route("/rss/", strict_slashes=False)
 @app.route("/feed/", strict_slashes=False)
 def load_rss():
@@ -72,8 +71,10 @@ def static_file():
     abort(400)
 
 @app.route("/")
-@app.route("/index/", strict_slashes=False)
-@app.route('/index/p/<int:page_index>/', strict_slashes=False)
+@app.route("/index")
+@app.route("/index/")
+@app.route('/index/p/<int:page_index>')
+@app.route('/index/p/<int:page_index>/')
 def index_route(page_index=1):
     page_url = "/index/p/{0}/".format(page_index)
     if page_url in cache_index:

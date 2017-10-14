@@ -34,19 +34,30 @@ EOF
 echo "Create directory..."
 
 mkdir ./document
+mkdir ./config
 mkdir ./templates
 mkdir ./templates/static
-mkdir ./config
 
 echo "Create configuration file..."
+if [ ! -f "./config/menu.json" ]; then
+    cp -i ./example/menu.example.json ./config/menu.json
+fi
+if [ ! -f "./config/page.json" ]; then
+    cp -i ./example/page.example.json ./config/page.json
+fi
+if [ ! -f "./config/system.json" ]; then
+    cp -i ./example/system.example.json ./config/system.json
+fi
+if [ ! -f "./config/version.json" ]; then
+    cp -i ./example/version.example.json ./config/version.json
+fi
+if [ ! -f "./uwsgi.json" ]; then
+    cp -i ./example/uwsgi.example.json ./uwsgi.json
+fi
+if [ ! -f "./start.json" ]; then
+    cp -i ./example/start.example.json ./start.json
+fi
 
-cp -i ./example/menu.example.json ./config/menu.json
-cp -i ./example/page.example.json ./config/page.json
-cp -i ./example/system.example.json ./config/system.json
-
-cp -i ./example/start.example.json ./start.json
-cp -i ./example/uwsgi.example.json ./uwsgi.json
 
 chmod +x manage.py
-
 echo "The installation is complete! Please edit $(pwd)/config/system.json file."
