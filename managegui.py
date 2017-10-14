@@ -26,11 +26,11 @@ if result == "Update post":
     build_rss.build_rss()
     exit(0)
 if result == "Theme package manager":
-    menu_list = ["View List", "Enter the theme package name"]
+    menu_list = ["View list", "Enter the theme package name"]
     result = dialog.menu("Please select an action", menu_list)
     theme_name = ""
     orgs_list = None
-    if result == "View List":
+    if result == "View list":
         orgs_list = theme.get_orgs_list()
         item_list = list()
         for item in orgs_list:
@@ -41,7 +41,7 @@ if result == "Theme package manager":
     if len(theme_name) != 0:
         theme.install_theme(theme_name, orgs_list)
     exit(0)
-if result == "Build Static Page":
+if result == "Build static page":
     build_static_page.publish(dialog.confirm("Push to git?", "no"),
                               dialog.confirm("Generate a hyperlink with a file extension?", "no"))
     exit(0)
