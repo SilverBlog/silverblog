@@ -4,7 +4,8 @@ push_to_github:
   - master
   script:
   - git checkout master
+  - git ls-remote --tags
   - git pull origin master
   - git config --global http.proxy "http://192.168.3.1:1080"
   - git config --global https.proxy "http://192.168.3.1:1080"
-  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git
+  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git --tags
