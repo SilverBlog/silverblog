@@ -25,8 +25,7 @@ def upgrade_check():
 def upgrade_pull():
     console.log("Info", "Current Version is V" + current_version)
     remote.pull()
-    console.log("Info", "Now Version is V" + max(fetch_tag()))
     from common import console
-    if os.path.exists("./upgrade/upgrade_from_{}.py".format(current_version)):
+    if not repo.is_dirty() and os.path.exists("./upgrade/upgrade_from_{}.py".format(current_version)):
         eval(file.read_file("./upgrade/upgrade_from_{}.py".format(current_version)))
-    console.log("Success", "Upgrade Successful.")
+    console.log("Success", "Upgrade Successful.Now Version is V"+max(fetch_tag())))
