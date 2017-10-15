@@ -4,7 +4,7 @@ import git
 
 from common import file
 
-current_version = 1.0
+current_version = json.loads(file.read_file("./upgrade/current_version.json"))["current_version"]
 repo = git.Repo("./")
 remote = repo.remote()
 def fetch_tag():
