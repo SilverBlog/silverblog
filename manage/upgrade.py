@@ -1,9 +1,13 @@
+import os
+
 import git
+
+from common import file
 
 current_version = 1.0
 repo = git.Repo("./")
 remote = repo.remote()
-def upgrade_check():
+def fetch_tag():
     remote.fetch("--tags")
     if len(repo.tags) == 0:
         return False
@@ -13,8 +17,16 @@ def upgrade_check():
             tags_num.append(float(str(item)))
         except ValueError:
             pass
-    if current_version < max(tags_num):
+    return tags_num
+def upgrade_check():
+    if current_version < max(fetch_tag()):
         return True
     return False
 def upgrade_pull():
+    console.log("Info", "Current Version is V" + current_version)
     remote.pull()
+    console.log("Info", "Now Version is V" + max(fetch_tag()))
+    from common import console
+    if os.path.exists("./upgrade/upgrade_from_{}.py".format(current_version)):
+        eval(file.read_file("./upgrade/upgrade_from_{}.py".format(current_version)))
+    console.log("Success", "Upgrade Successful.")
