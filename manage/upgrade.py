@@ -4,7 +4,8 @@ import git
 
 from common import file
 
-current_version = json.loads(file.read_file("./upgrade/current_version.json"))["current_version"]
+current_version = 1.0
+current_data_version = json.loads(file.read_file("./upgrade/current_version.json"))["current_version"]
 repo = git.Repo("./")
 remote = repo.remote()
 def fetch_tag():
@@ -26,6 +27,6 @@ def upgrade_pull():
     console.log("Info", "Current Version is V" + current_version)
     remote.pull()
     from common import console
-    if not repo.is_dirty() and os.path.exists("./upgrade/upgrade_from_{}.py".format(current_version)):
-        eval(file.read_file("./upgrade/upgrade_from_{}.py".format(current_version)))
-    console.log("Success", "Upgrade Successful.Now Version is V"+max(fetch_tag())))
+    if not repo.is_dirty() and os.path.exists("./upgrade/upgrade_from_{}.py".format(current_data_version)):
+        eval(file.read_file("./upgrade/upgrade_from_{}.py".format(current_data_version)))
+    console.log("Success", "Upgrade Successful.Now Version is V" + max(fetch_tag()))
