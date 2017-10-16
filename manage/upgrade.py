@@ -4,7 +4,7 @@ import git
 
 from common import file, console
 
-current_version = 1.0
+current_version = 1.1
 current_data_version = 1.0
 if os.path.exists("./upgrade/current_version.json"):
     current_data_version = json.loads(file.read_file("./upgrade/current_version.json"))["current_version"]
