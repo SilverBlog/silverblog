@@ -7,7 +7,7 @@ from manage import build_rss, build_static_page, new_post, update_post, theme
 dialog = whiptail.Whiptail()
 dialog.height = 15
 dialog.title = "SilverBlog command line management tool"
-menu_list = ["New post", "Update post", "Theme package manager", "Build static page"]
+menu_list = ["New post", "Update post", "Upgrade", "Theme package manager", "Build static page"]
 result = dialog.menu("Please select an action", menu_list)
 if result == "New post":
     dialog.title = "New post"
@@ -21,6 +21,15 @@ if result == "New post":
     config = {"title": title, "name": name}
     new_post.new_post_init(config, dialog.confirm("Is this an independent page?", "no"))
     build_rss.build_rss()
+    exit(0)
+if result == "Upgrade":
+    from manage import upgrade
+
+    if upgrade.upgrade_check():
+        if dialog.confirm("Find new version, do you want to upgrade?", "no"):
+            upgrade.upgrade_pull()
+            exit(0)
+    dialog.alert("No upgrade found")
     exit(0)
 if result == "Update post":
     update_post.update()
