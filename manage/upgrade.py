@@ -2,7 +2,7 @@ import os
 
 import git
 
-from common import file
+from common import file, console
 
 current_version = 1.0
 current_data_version = 1.0
@@ -26,9 +26,8 @@ def upgrade_check():
         return True
     return False
 def upgrade_pull():
-    console.log("Info", "Current Version is V" + current_version)
+    console.log("Info", "Current Version is V{}.".format(current_version))
     remote.pull()
-    from common import console
     if not repo.is_dirty() and os.path.exists("./upgrade/upgrade_from_{}.py".format(current_data_version)):
         eval(file.read_file("./upgrade/upgrade_from_{}.py".format(current_data_version)))
-    console.log("Success", "Upgrade Successful.Now Version is V" + max(fetch_tag()))
+    console.log("Success", "Upgrade Successful,Now Version is V{}.".format(max(fetch_tag())))
