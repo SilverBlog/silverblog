@@ -5,7 +5,7 @@ import git
 from common import file, console
 
 current_version = 1.1
-current_data_version = 1.0
+current_data_version = 1
 if os.path.exists("./upgrade/current_version.json"):
     current_data_version = json.loads(file.read_file("./upgrade/current_version.json"))["current_version"]
 repo = git.Repo("./")
@@ -27,6 +27,9 @@ def upgrade_check():
     return False
 def upgrade_pull():
     console.log("Info", "Current Version is V{}.".format(current_version))
+    if repo.is_dirty():
+        console.log("Error","The current warehouse is modified and can not be upgraded automatically. Please re-store the warehouse and try again.")
+        exit(1)
     remote.pull()
     if not repo.is_dirty() and os.path.exists("./upgrade/upgrade_from_{}.py".format(current_data_version)):
         eval(file.read_file("./upgrade/upgrade_from_{}.py".format(current_data_version)))
