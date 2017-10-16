@@ -51,6 +51,7 @@ if result == "Theme package manager":
         theme_name = dialog.prompt("Please enter the theme package name:")
     if len(theme_name) != 0:
         theme.install_theme(theme_name, orgs_list)
+        exit(0)
     directories = theme.get_local_theme_list()
     theme_name = dialog.menu("Please select the theme you want to uninstall:", directories)
     if result == "Upgrade existing Theme":
