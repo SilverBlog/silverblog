@@ -4,7 +4,6 @@ import urllib.request
 
 from common import console, file
 
-
 def get_orgs_list():
     console.log("info", "Getting the list of theme...")
     try:
@@ -57,13 +56,14 @@ def install_theme(theme_name, orgs_list=None):
         os.system("cd templates \n" + r)
         enable_theme = input('Do you want to enable this theme now? [y/N]')
         if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
-            system_info = json.loads(file.read_file("./config/system.json"))
-            system_info["Theme"] = name
-            file.write_file("./config/system.json",
-                            json.dumps(system_info, indent=4, sort_keys=False, ensure_ascii=False))
-            console.log("Success", "The theme has been enabled!")
+            set_theme(name)
         console.log("Success", "The theme is installed successfully!")
 
+def set_theme(theme_name):
+    system_info = json.loads(file.read_file("./config/system.json"))
+    system_info["Theme"] = theme_name
+    file.write_file("./config/system.json", json.dumps(system_info, indent=4, sort_keys=False, ensure_ascii=False))
+    console.log("Success", "The theme has been enabled!")
 
 def remove_theme(theme_name):
     import shutil

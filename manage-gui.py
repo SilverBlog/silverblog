@@ -37,23 +37,27 @@ if result == "Update post":
     exit(0)
 if result == "Theme package manager":
     dialog.title = "Theme package manager"
-    menu_list = ["View list", "Enter the theme package name", "Upgrade existing Theme", "Uninstall existing Theme"]
+    menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing Theme", "Uninstall existing Theme"]
     result = dialog.menu("Please select an action", menu_list)
     theme_name = ""
     orgs_list = None
-    if result == "View list":
-        orgs_list = theme.get_orgs_list()
-        item_list = list()
-        for item in orgs_list:
-            item_list.append(item["name"])
-        theme_name = dialog.menu("Please select the theme you want to install:", item_list)
-    if result == "Enter the theme package name":
-        theme_name = dialog.prompt("Please enter the theme package name:")
-    if len(theme_name) != 0:
-        theme.install_theme(theme_name, orgs_list)
-        exit(0)
+    if result == "Install the theme":
+        install_menu = ["View list", "Enter the theme package name"]
+        if result == "View list":
+            orgs_list = theme.get_orgs_list()
+            item_list = list()
+            for item in orgs_list:
+                item_list.append(item["name"])
+            theme_name = dialog.menu("Please select the theme you want to install:", item_list)
+        if result == "Enter the theme package name":
+            theme_name = dialog.prompt("Please enter the theme package name:")
+        if len(theme_name) != 0:
+            theme.install_theme(theme_name, orgs_list)
+            exit(0)
     directories = theme.get_local_theme_list()
-    theme_name = dialog.menu("Please select the theme you want to uninstall:", directories)
+    theme_name = dialog.menu("Please select the theme to be operated:", directories)
+    if result == "Use the existing theme":
+        theme.set_theme(theme_name)
     if result == "Upgrade existing Theme":
         theme.upgrade_theme(theme_name)
     if result == "Uninstall existing Theme":
