@@ -54,10 +54,8 @@ def install_theme(theme_name, orgs_list=None):
             console.log("Error", "Get the theme installation script error.")
             exit(1)
         os.system("cd templates \n" + r)
-        enable_theme = input('Do you want to enable this theme now? [y/N]')
-        if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
-            set_theme(name)
         console.log("Success", "The theme is installed successfully!")
+    return name
 
 def set_theme(theme_name):
     system_info = json.loads(file.read_file("./config/system.json"))

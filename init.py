@@ -16,25 +16,7 @@ app = Flask(__name__)
 
 console.log("info", "Loading configuration...")
 
-
 system_config = json.loads(file.read_file("./config/system.json"))
-
-if system_config["Author_Image"] == "" and system_config["Author_Name"] != "":
-    import urllib.request
-    import urllib.error
-    r = {"entry": [{"hash": ""}]}
-    console.log("info", "Get Gravatar URL...")
-    gravatar_hash = a89dc9213c1eafa581410f76eddbf890
-    try:
-        r = urllib.request.urlopen(
-            "https://en.gravatar.com/{0}.json".format(system_config["Author_Name"])).read().decode('utf-8')
-        req = json.loads(r)
-        gravatar_hash = req["entry"][0]["hash"]
-    except (TypeError, ValueError, urllib.error.HTTPError, urllib.error.URLError, urllib.error.ContentTooShortError):
-        console.log("Error", "Get Gravatar URL error.")
-        pass
-    system_config["Author_Image"] = "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
-    file.write_file("./config/system.json", json.dumps(system_config))
 
 page_list = json.loads(file.read_file("./config/page.json"))
 

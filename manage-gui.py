@@ -7,7 +7,7 @@ from common import whiptail
 from manage import build_rss, build_static_page, new_post, update_post, theme
 
 dialog = whiptail.Whiptail()
-dialog.height = 15
+
 dialog.title = "SilverBlog command line management tool"
 
 def loop_ui():
@@ -60,7 +60,9 @@ def loop_ui():
             if result == "Enter the theme package name":
                 theme_name = dialog.prompt("Please enter the theme package name:")
             if len(theme_name) != 0:
-                theme.install_theme(theme_name, orgs_list)
+                theme_name = theme.install_theme(theme_name)
+                if dialog.prompt("Do you want to enable this theme now?", "no"):
+                    theme.set_theme(theme_name)
             return
         directories = theme.get_local_theme_list()
         theme_name = dialog.menu("Please select the theme to be operated:", directories)
