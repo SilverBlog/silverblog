@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+import json
 import os
 
 from common import whiptail, file
 
 dialog = whiptail.Whiptail()
+dialog.height = 15
 dialog.title = "SilverBlog settings management tool"
 system_config = {
     "Project_Name": "",
@@ -23,6 +25,7 @@ system_config = {
 }
 if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
+
 def loop():
     menu_list = ["Use the Setup Wizard", "Set up basic information", "Set up author information", "Other settings",
                  "Exit"]
@@ -86,5 +89,5 @@ def outher_info():
     system_config["Rss_Full_Content"] = dialog.confirm("Output full text Rss?", "yes")
 if __name__ == '__main__':
     while True:
-        loop_ui()
+        loop()
         time.sleep(0.5)

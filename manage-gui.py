@@ -6,15 +6,15 @@ import time
 from common import whiptail, file
 
 dialog = whiptail.Whiptail()
-
+dialog.height = 15
 dialog.title = "SilverBlog command line management tool"
 def loop():
-    menu_list = ["Post manager", "Upgrade", "Theme package manager", "Build static page", "Exit"]
+    menu_list = ["Article manager", "Upgrade", "Theme package manager", "Build static page", "Exit"]
     result = dialog.menu("Please select an action", menu_list)
     if result == "Exit":
         exit(0)
-    if result == "Post manager":
-        post_manager()
+    if result == "Article manager":
+        article_manager()
     if result == "Upgrade":
         upgrade()
     if result == "Theme package manager":
@@ -25,8 +25,8 @@ def loop():
         build_static_page.publish(dialog.confirm("Push to git?", "no"),
                                   dialog.confirm("Generate a hyperlink with a file extension?", "no"))
 
-def post_manager():
-    dialog.title = "Post manager"
+def article_manager():
+    dialog.title = "Article manager"
     from manage import build_rss, update_post
     menu_list = ["New", "Update", "Edit", "Delete"]
     result = dialog.menu("Please select an action", menu_list)
