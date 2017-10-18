@@ -4,7 +4,6 @@ import os.path
 from common import file, console
 from manage import get_excerpt
 
-
 def update():
     page_list = json.loads(file.read_file("./config/page.json"))
     remove_list = list()
@@ -21,6 +20,6 @@ def update():
             console.log("Remove", "Removing from list: {0}".format(page_list[item]["name"]))
             page_list.pop(item)
 
-    file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False))
+    file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False, indent=4, sort_keys=False))
 
     console.log("Success", "Update article metadata is successful!")
