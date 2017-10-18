@@ -3,7 +3,7 @@
 
 import os
 
-from common import whiptail
+from common import whiptail, file
 
 dialog = whiptail.Whiptail()
 dialog.title = "SilverBlog settings management tool"
@@ -22,25 +22,25 @@ system_config = {
     "Editor": "vim"
 }
 if os.path.exists("./config/system.json"):
-
+    system_config = json.loads(file.read_file("./config/system.json"))
 def loop():
     menu_list = ["Use the Setup Wizard", "Set up basic information", "Set up author information", "Other settings",
                  "Exit"]
     result = dialog.menu("Please select an action", menu_list)
-    if result == "Use the Setup Wizard":
-        setup_wizard()
-        return
-    if result == "Set up basic information":
-        project_info()
-        return
-    if result == "Set up author information":
-        author_info()
-        return
-    if result == "Other settings":
-        outher_info()
-        return
     if result == "Exit":
         exit(0)
+    if result == "Use the Setup Wizard":
+        setup_wizard()
+    if result == "Set up basic information":
+        project_info()
+    if result == "Set up author information":
+        author_info()
+    if result == "Other settings":
+        outher_info()
+    save_config()
+    return
+def save_config():
+    file.write_file("./config/system.json", json.dumps(system_info, indent=4, sort_keys=False, ensure_ascii=False))
 
 def setup_wizard():
     project_info()
