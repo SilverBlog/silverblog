@@ -35,7 +35,7 @@ if __name__ == '__main__':
         if config is None:
             print("Please enter the title of the article:")
             title = input()
-            print("Please enter the URL (Leave a blank use pinyin):")
+            print("Please enter the slug (Leave a blank use pinyin):")
             name = input()
             if len(name) == 0:
                 name = new_post.get_name(title)

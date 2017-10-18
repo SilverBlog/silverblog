@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from common import console
+from common import console, file
 
 def edit(page_list, post_index, config, editor=None):
     if page_list[post_index]["name"] is not config["name"]:

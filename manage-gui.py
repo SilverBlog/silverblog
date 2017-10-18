@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+import json
 import time
 
 from common import whiptail, file
@@ -53,7 +54,7 @@ def edit_post():
     from manage import edit_post
     dialog.title = "Edit post"
     page_list, post_name, post_index = select_post()
-    config = get_post_info(post_name, page_list[post_index])
+    config = get_post_info(post_name, page_list[post_index]["name"])
     system_info = json.loads(file.read_file("./config/system.json"))
     edit_post.edit(page_list, post_index, config, system_info["Editor"])
 
@@ -74,6 +75,7 @@ def select_post():
     return page_list, post_name, page_name_list.index(post_name)
 
 def get_post_info(title_input="", name_input=""):
+    from manage import new_post
     title = dialog.prompt("Please enter the title of the article:", title_input)
     if len(title) == 0:
         dialog.alert("The title can not be blank.")
