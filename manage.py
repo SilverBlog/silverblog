@@ -35,7 +35,7 @@ if __name__ == '__main__':
         if config is None:
             print("Please enter the title of the article:")
             title = input()
-            print("Please enter the URL (Leave a blank use pinyin):")
+            print("Please enter the slug (Leave a blank use pinyin):")
             name = input()
             if len(name) == 0:
                 name = new_post.get_name(title)
@@ -68,7 +68,10 @@ if __name__ == '__main__':
         if args.install:
             print("Please enter the name of the theme you want to install:")
             theme_name = input()
-            theme.install_theme(theme_name)
+            theme_name = theme.install_theme(theme_name)
+            enable_theme = input('Do you want to enable this theme now? [y/N]')
+            if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
+                theme.set_theme(theme_name)
         exit(0)
     if args.command == "build-gh-page":
         build_static_page.publish(args.push_git, args.static_page)

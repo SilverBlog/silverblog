@@ -2,12 +2,11 @@
 
 import hashlib
 import json
-import os
 
 from flask import Flask, request, abort
 
 from common import file, console
-from manage import new_post, build_rss, update_post, build_static_page
+from manage import new_post, build_rss, update_post, build_static_page, delete_post, edit_post
 
 app = Flask(__name__)
 api_version = 1
@@ -84,7 +83,7 @@ def get_content(request_type):
 
 
 @app.route('/control/edit_<request_type>', methods=['POST'])
-def edit_post(request_type):
+def edit(request_type):
     file_url = select_type(request_type)
     if file_url is None:
         abort(404)
@@ -99,11 +98,15 @@ def edit_post(request_type):
     state = False
     if check_password(title, encode):
         state = True
-        page_list[int(post_id)]["title"] = title
-        if page_list[int(post_id)]["name"] is not name:
-            os.remove("./document/{0}.md".format(page_list[int(post_id)]["name"]))
-            page_list[int(post_id)]["name"] = name
-        file.write_file(file_url, json.dumps(page_list))
+
+        #page_list[int(post_id)]["title"] = title
+        #if page_list[int(post_id)]["name"] is not name:
+        #    os.remove("./document/{0}.md".format(page_list[int(post_id)]["name"]))
+        #    page_list[int(post_id)]["name"] = name
+        #file.write_file(file_url, json.dumps(page_list, indent=4, sort_keys=False, ensure_ascii=False))
+
+        config = {"name": name, "title": title}
+        edit_post.edit(page_list, post_index, config)
         file.write_file("./document/{0}.md".format(name), content)
         update_post.update()
         build_rss.build_rss()
@@ -111,7 +114,7 @@ def edit_post(request_type):
 
 
 @app.route('/control/delete', methods=['POST'])
-def delete_post():
+def delete():
     if request.json is None:
         abort(400)
     page_list = json.loads(file.read_file("./config/page.json"))
@@ -120,10 +123,12 @@ def delete_post():
     state = False
     if check_password(post_id + page_list[int(post_id)]["title"], encode):
         state = True
-        name = page_list[int(post_id)]["name"]
-        del page_list[int(post_id)]
-        file.write_file("./config/page.json", json.dumps(page_list))
-        os.remove("./document/{0}.md".format(name))
+        delete_post.delete(page_list, int(post_id))
+
+        #os.remove("./document/{0}.md".format(page_list[int(post_id)]["name"]))
+        #del page_list[int(post_id)]
+        #file.write_file("./config/page.json", json.dumps(page_list, indent=4, sort_keys=False, ensure_ascii=False))
+
         build_rss.build_rss()
     return json.dumps({"status": state})
 
