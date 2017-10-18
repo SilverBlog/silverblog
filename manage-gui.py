@@ -53,26 +53,28 @@ def upgrade():
 def edit_post():
     from manage import edit_post
     dialog.title = "Edit post"
-    page_list, post_name, post_index = select_post()
-    config = get_post_info(post_name, page_list[post_index]["name"])
+    page_list, post_index = select_post()
+    config = get_post_info(page_list[post_index]["title"], page_list[post_index]["name"])
     system_info = json.loads(file.read_file("./config/system.json"))
     edit_post.edit(page_list, post_index, config, system_info["Editor"])
 
 def delete_post():
     from manage import delete_post
-    page_list, post_name, post_index = select_post()
+    page_list, post_index = select_post()
     if dialog.confirm(
             "Are you sure you want to delete this article? (Warning! This operation is irreversible, please be careful!)",
             "no"):
         delete_post.delete(page_list, post_index)
 
 def select_post():
-    page_name_list = list()
+    page_title_list = list()
     page_list = json.loads(file.read_file("./config/page.json"))
+    i = 1
     for item in page_list:
-        page_name_list.append(item["name"])
-    post_name = dialog.menu("Please select the post to be operated:", page_name_list)
-    return page_list, post_name, page_name_list.index(post_name)
+        page_title_list.append("{}. {}".format(i, item["title"]))
+        i += 1
+    post_title = dialog.menu("Please select the post to be operated:", page_title_list)
+    return page_list, page_title_list.index(post_title)
 
 def get_post_info(title_input="", name_input=""):
     from manage import new_post
@@ -86,6 +88,7 @@ def get_post_info(title_input="", name_input=""):
     return {"title": title, "name": name}
 
 def new_post():
+    from manage import new_post
     dialog.title = "New post"
     new_post.new_post_init(get_post_info(), dialog.confirm("Is this an independent page?", "no"))
 

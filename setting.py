@@ -3,6 +3,7 @@
 
 import json
 import os
+import time
 
 from common import whiptail, file
 
@@ -43,11 +44,12 @@ def loop():
     save_config()
 
 def save_config():
-    file.write_file("./config/system.json", json.dumps(system_info, indent=4, sort_keys=False, ensure_ascii=False))
+    file.write_file("./config/system.json", json.dumps(system_config, indent=4, sort_keys=False, ensure_ascii=False))
 
 def setup_wizard():
     project_info()
     author_info()
+    outher_info()
     if system_config["Theme"] == "":
         from manage import theme
         local_theme_list = theme.get_local_theme_list()
@@ -83,7 +85,8 @@ def author_info():
         return
     system_config["Author_Image"] = dialog.prompt("Please enter the author image:", system_config["Author_Image"])
 def outher_info():
-    items = [{"name": "Paging", "info": "paging"}, {"name": "Time_Format", "info": "time format"},
+    system_config["Paging"] = int(dialog.prompt("Please enter the paging:", str(system_config["Paging"])))
+    items = [{"name": "Time_Format", "info": "time format"},
              {"name": "Editor", "info": "editor"}]
     show_prompt(items)
     system_config["Rss_Full_Content"] = dialog.confirm("Output full text Rss?", "yes")
