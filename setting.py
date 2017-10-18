@@ -38,7 +38,7 @@ def loop():
     if result == "Other settings":
         outher_info()
     save_config()
-    return
+
 def save_config():
     file.write_file("./config/system.json", json.dumps(system_info, indent=4, sort_keys=False, ensure_ascii=False))
 
@@ -84,7 +84,7 @@ def outher_info():
              {"name": "Editor", "info": "editor"}]
     show_prompt(items)
     system_config["Rss_Full_Content"] = dialog.confirm("Output full text Rss?", "yes")
-
-while True:
-    loop_ui()
-    time.sleep(0.5)
+if __name__ == '__main__':
+    while True:
+        loop_ui()
+        time.sleep(0.5)
