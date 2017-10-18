@@ -27,6 +27,20 @@ def loop():
     menu_list = ["Use the Setup Wizard", "Set up basic information", "Set up author information", "Other settings",
                  "Exit"]
     result = dialog.menu("Please select an action", menu_list)
+    if result == "Use the Setup Wizard":
+        setup_wizard()
+        return
+    if result == "Set up basic information":
+        project_info()
+        return
+    if result == "Set up author information":
+        author_info()
+        return
+    if result == "Other settings":
+        outher_info()
+        return
+    if result == "Exit":
+        exit(0)
 
 def setup_wizard():
     project_info()
@@ -49,9 +63,6 @@ def show_prompt(items):
         system_config[item["name"]] = dialog.prompt("Please enter the {}:".format(item["info"]),
                                                     system_config[item["name"]])
 
-def select_item(item_name):
-    pass
-
 def project_info():
     items = [{"name": "Project_Name", "info": "blog name"}, {"name": "Project_Description", "info": "blog description"},
              {"name": "Project_URL", "info": "blog access URL"}]
@@ -73,6 +84,7 @@ def outher_info():
              {"name": "Editor", "info": "editor"}]
     show_prompt(items)
     system_config["Rss_Full_Content"] = dialog.confirm("Output full text Rss?", "yes")
+
 while True:
     loop_ui()
     time.sleep(0.5)
