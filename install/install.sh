@@ -60,4 +60,5 @@ fi
 
 
 chmod +x manage.py
+chmod +x manage-gui.py
 echo "The installation is complete! Please edit $(pwd)/config/system.json file."
