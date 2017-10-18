@@ -124,9 +124,11 @@ def delete():
     if check_password(post_id + page_list[int(post_id)]["title"], encode):
         state = True
         delete_post.delete(page_list, int(post_id))
+
         #os.remove("./document/{0}.md".format(page_list[int(post_id)]["name"]))
         #del page_list[int(post_id)]
         #file.write_file("./config/page.json", json.dumps(page_list, indent=4, sort_keys=False, ensure_ascii=False))
+
         build_rss.build_rss()
     return json.dumps({"status": state})
 
