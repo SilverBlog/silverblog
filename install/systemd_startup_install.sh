@@ -9,7 +9,7 @@ Description=SilverBlog server daemon
 WorkingDirectory=$(pwd)
 ExecStart=/usr/bin/python3 watch.py
 ExecReload=/bin/kill -HUP $MAINPID
-ExecReload=/bin/kill $MAINPID
+ExecStop=/bin/kill $MAINPID
 Restart=always
 
 [Install]
@@ -17,4 +17,4 @@ WantedBy=multi-user.target
 EOF
 
 systemctl daemon-reload
-systemctl enabled silverblog
+systemctl enable silverblog

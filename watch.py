@@ -12,10 +12,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--docker", action="store_true")
 args = parser.parse_args()
 if args.docker:
-    cmd.append("--worker-reload-mercy")
-    cmd.append("1")
-    cmd.append("--reload-mercy")
-    cmd.append("4")
+    cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "4"])
 p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 return_code = p.poll()
 
