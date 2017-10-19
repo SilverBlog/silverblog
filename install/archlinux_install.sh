@@ -25,3 +25,4 @@ if [ ! -f "../start.json" ]; then
 fi
 ./install.sh
  
+python ../setting.py

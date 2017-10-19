@@ -1,4 +1,5 @@
 import argparse
+import os
 import subprocess
 import time
 
@@ -15,20 +16,20 @@ if args.docker:
     cmd.append("1")
     cmd.append("--reload-mercy")
     cmd.append("4")
-p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
 return_code = p.poll()
 
 
-class MyHandler(FileSystemEventHandler):
+class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
-        if event.src_path != ".":
-            p.send_signal(1)
+        if not event.src_path.endswith((".", ".swp", ".sh")):
+            p.send_signal(1)  #SIGHUP
 
 
 if __name__ == "__main__":
-    event_handler = MyHandler()
+    event_handler = when_file_chanage()
     observer = Observer()
-    observer.schedule(event_handler, path='.', recursive=False)
+    observer.schedule(event_handler, path=os.getcwd(), recursive=True)
     observer.start()
     try:
         while return_code is None:
@@ -37,7 +38,7 @@ if __name__ == "__main__":
             line = line.strip().decode("utf-8")
             if len(line) != 0:
                 print(line)
-            time.sleep(0.1)
+            time.sleep(0.05)
     except KeyboardInterrupt:
         observer.stop()
     observer.join()

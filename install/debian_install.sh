@@ -29,3 +29,4 @@ if [ ! -f "../start.json" ]; then
 fi
 
 ./install.sh
+../setting.py
