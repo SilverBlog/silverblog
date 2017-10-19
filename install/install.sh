@@ -37,6 +37,11 @@ mkdir ./document
 mkdir ./config
 mkdir ./templates
 mkdir ./templates/static
+mkdir ./templates/include
+touch ./templates/include/comment.html
+touch ./templates/include/head.html
+touch ./templates/include/head.html
+touch ./templates/include/foot.html
 
 echo "Create configuration file..."
 if [ ! -f "./config/menu.json" ]; then
@@ -47,9 +52,6 @@ if [ ! -f "./config/page.json" ]; then
 fi
 if [ ! -f "./config/system.json" ]; then
     cp -i ./example/system.example.json ./config/system.json
-fi
-if [ ! -f "./config/version.json" ]; then
-    cp -i ./example/version.example.json ./config/version.json
 fi
 if [ ! -f "./uwsgi.json" ]; then
     cp -i ./example/uwsgi.example.json ./uwsgi.json
