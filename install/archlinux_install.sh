@@ -6,7 +6,7 @@ pacman -S nginx uwsgi uwsgi-plugin-python python-pip python-wheel git
 pip install flask hoedown pypinyin pyrss2gen gitpython
 
 if [ ! -f "install.sh" ]; then
-    git clone https://github.com/SilverBlogTeam/SilverBlog.git
+    git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1
     cd SilverBlog/install
 fi
 
@@ -19,5 +19,9 @@ cat << EOF >../control-start.sh
 uwsgi --json ./uwsgi.json:control
 EOF
 
+if [ ! -f "../start.json" ]; then
+    cp -i ../example/start.example.json ../start.json
+
+fi
 ./install.sh
  

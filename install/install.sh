@@ -54,10 +54,6 @@ fi
 if [ ! -f "./uwsgi.json" ]; then
     cp -i ./example/uwsgi.example.json ./uwsgi.json
 fi
-if [ ! -f "./start.json" ]; then
-    cp -i ./example/start.example.json ./start.json
-fi
-
 
 chmod +x manage.py
 chmod +x manage-gui.py
