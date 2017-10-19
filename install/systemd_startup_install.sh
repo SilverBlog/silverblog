@@ -8,8 +8,8 @@ Description=SilverBlog server daemon
 [Service]
 WorkingDirectory=$(pwd)
 ExecStart=/usr/bin/python3 watch.py
-ExecReload=/bin/kill -HUP $MAINPID
-ExecStop=/bin/kill $MAINPID
+ExecReload=/bin/kill -HUP \$MAINPID
+ExecStop=/bin/kill -INT \$MAINPID
 Restart=always
 
 [Install]
