@@ -5,7 +5,6 @@ import time
 
 from common import console
 
-
 def build(github_mode):
     from common import file, page, post_header
     html_static = False
@@ -60,11 +59,11 @@ def build(github_mode):
 
 
 def publish(push, static):
-    if push:
-        import git
-        if not os.path.exists("./static_page/.git"):
+    if not os.path.exists("./static_page/.git"):
+        if push:
             console.log("Error", "[./static_page/] Not a git repository.")
             return False
+    if os.path.exists("./static_page/.git"):
         if not os.path.exists("./.temp"):
             os.mkdir("./.temp")
         shutil.copytree("./static_page/.git", "./.temp/.git")
@@ -72,6 +71,7 @@ def publish(push, static):
     if push:
         shutil.copytree("./.temp/.git", "./static_page/.git")
         shutil.rmtree("./.temp/.git")
+        import git
         repo = git.Repo("./static_page")
         repo.git.add("--all")
         localtime = time.asctime(time.localtime(time.time()))
