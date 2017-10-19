@@ -28,3 +28,4 @@ control-start.sh
 test.py
 nginx_config
 manage.sh
+current_version.json

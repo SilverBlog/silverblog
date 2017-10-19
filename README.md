@@ -36,7 +36,7 @@ Arch Linux:
 wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | sudo bash
 ```
 
-Docker(testing):
+ Docker(testing):
 
 ```shell
 docker pull qwe7002/silverblog

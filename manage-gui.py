@@ -42,7 +42,7 @@ def article_manager():
     build_rss.build_rss()
 
 def upgrade():
-    dealog.title = "Upgrade"
+    dialog.title = "Upgrade"
     from manage import upgrade
     if upgrade.upgrade_check():
         if dialog.confirm("Find new version, do you want to upgrade?", "no"):
