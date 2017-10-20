@@ -39,7 +39,6 @@ wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/ins
  Docker(testing):
 
 ```shell
-docker pull qwe7002/silverblog
 wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh | bash
 ```
 

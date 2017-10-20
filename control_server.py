@@ -106,7 +106,7 @@ def edit(request_type):
         #file.write_file(file_url, json.dumps(page_list, indent=4, sort_keys=False, ensure_ascii=False))
 
         config = {"name": name, "title": title}
-        edit_post.edit(page_list, post_index, config)
+        edit_post.edit(page_list, int(post_id), config)
         file.write_file("./document/{0}.md".format(name), content)
         update_post.update()
         build_rss.build_rss()
