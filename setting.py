@@ -84,12 +84,14 @@ def author_info():
         system_config["Author_Image"] = get_gavatar.get_gavatar(system_config["Author_Name"])
         return
     system_config["Author_Image"] = dialog.prompt("Please enter the author image:", system_config["Author_Image"])
+
 def outher_info():
     system_config["Paging"] = int(dialog.prompt("Please enter the paging:", str(system_config["Paging"])))
     items = [{"name": "Time_Format", "info": "time format"},
              {"name": "Editor", "info": "editor"}]
     show_prompt(items)
     system_config["Rss_Full_Content"] = dialog.confirm("Output full text Rss?", "yes")
+
 if __name__ == '__main__':
     while True:
         loop()
