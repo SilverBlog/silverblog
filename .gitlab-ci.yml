@@ -1,7 +1,7 @@
 image: hedaqing/docker-alpine-git
 push_to_github:
   only:
-  - tags
+  - master
   script:
   - git config --global http.proxy "http://192.168.3.1:1080"
   - git config --global https.proxy "http://192.168.3.1:1080"
