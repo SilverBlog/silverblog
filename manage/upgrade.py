@@ -12,7 +12,6 @@ repo = git.Repo("./")
 remote = repo.remote()
 def upgrade_check():
     info = remote.fetch()[0]
-    print(info.ref)
     return False
 def upgrade_pull():
     if repo.is_dirty():
