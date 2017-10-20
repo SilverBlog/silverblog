@@ -98,13 +98,6 @@ def edit(request_type):
     state = False
     if check_password(title, encode):
         state = True
-
-        #page_list[int(post_id)]["title"] = title
-        #if page_list[int(post_id)]["name"] is not name:
-        #    os.remove("./document/{0}.md".format(page_list[int(post_id)]["name"]))
-        #    page_list[int(post_id)]["name"] = name
-        #file.write_file(file_url, json.dumps(page_list, indent=4, sort_keys=False, ensure_ascii=False))
-
         config = {"name": name, "title": title}
         edit_post.edit(page_list, int(post_id), config)
         file.write_file("./document/{0}.md".format(name), content)
@@ -124,11 +117,6 @@ def delete():
     if check_password(post_id + page_list[int(post_id)]["title"], encode):
         state = True
         delete_post.delete(page_list, int(post_id))
-
-        #os.remove("./document/{0}.md".format(page_list[int(post_id)]["name"]))
-        #del page_list[int(post_id)]
-        #file.write_file("./config/page.json", json.dumps(page_list, indent=4, sort_keys=False, ensure_ascii=False))
-
         build_rss.build_rss()
     return json.dumps({"status": state})
 
