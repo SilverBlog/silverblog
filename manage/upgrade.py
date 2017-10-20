@@ -35,3 +35,5 @@ def upgrade_pull():
     if not repo.is_dirty() and os.path.exists("./upgrade/upgrade_from_{}.py".format(current_data_version)):
         eval(file.read_file("./upgrade/upgrade_from_{}.py".format(current_data_version)))
     console.log("Success", "Upgrade Successful,Now Version is V{}.".format(max(fetch_tag())))
+    console.log("Info", "Please restart your service process to ensure that the program is up and running.")
+    exit(0)
