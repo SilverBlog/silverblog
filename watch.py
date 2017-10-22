@@ -11,6 +11,7 @@ cmd = ["uwsgi", "--json", "uwsgi.json"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--docker", action="store_true")
+parser.add_argument("--control_server", action="store_true")
 args = parser.parse_args()
 if args.docker:
     cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "4"])
