@@ -11,8 +11,7 @@ if os.path.exists("./upgrade/current_version.json"):
 repo = git.Repo("./")
 remote = repo.remote()
 def upgrade_check():
-    info = remote.fetch("master")
-    if info[0] == "FETCH_HEAD":
+    if remote.fetch("master")[0] == "FETCH_HEAD":
         return True
     return False
 def upgrade_pull():
