@@ -16,7 +16,7 @@ def upgrade_check():
         return True
     if current_data_version != new_data_version:
         return True
-    return True
+    return False
 def upgrade_pull():
     if repo.is_dirty():
         console.log("Error","The current warehouse is modified and can not be upgraded automatically. Please re-store the warehouse and try again.")
