@@ -27,7 +27,7 @@ def new_post_init(config, independent=False):
     if not os.path.exists("./document/{0}.md".format(name)):
         editor = system_info["Editor"]
         os.system("{0} ./document/{1}.md".format(editor, name))
-    post_info = {"name": name, "title": title, "time": str(time.strftime(system_info["Time_Format"], time.localtime()))}
+    post_info = {"name": name, "title": title, "time": time.localtime()}
 
     if not independent:
         excerpt = get_excerpt.get_excerpt("./document/{0}.md".format(name))
