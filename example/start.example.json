@@ -2,14 +2,24 @@
   "apps": [
     {
       "name": "SilverBlog",
-      "script": "./start.sh",
+      "script": "/usr/bin/uwsgi",
+      "args": [
+        "--json",
+        "./uwsgi.json"
+      ],
+      "merge_logs": true,
       "watch": true,
-      "merge_logs": true
+      "cwd": "./"
     },
     {
       "name": "SilverBlog_Control",
-      "script": "./control-start.sh",
-      "merge_logs": true
+      "script": "/usr/bin/uwsgi",
+      "args": [
+        "--json",
+        "./uwsgi.json:control"
+      ],
+      "merge_logs": true,
+      "cwd": "./"
     }
   ]
 }
