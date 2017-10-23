@@ -17,6 +17,6 @@ file.write_file("./config/page.json", json.dumps(write_json, indent=4, sort_keys
 
 for filename in os.listdir("./document/"):
     if filename.endswith(".json"):
-        write_json = json.loads(file.read_file(filename))
+        write_json = json.loads(file.read_file("./document/" + filename))
         write_json = change_time_fomart(write_json)
-        file.write_file(filename, json.dumps(write_json, indent=4, sort_keys=False, ensure_ascii=False))
+        file.write_file("./document/" + filename, json.dumps(write_json, indent=4, sort_keys=False, ensure_ascii=False))
