@@ -7,18 +7,6 @@ import time
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
-cmd = ["uwsgi", "--json", "uwsgi.json"]
-
-parser = argparse.ArgumentParser()
-parser.add_argument("--docker",
-                    help="When running in the docker, please add this command to speed up the restart of the program",
-                    action="store_true")
-args = parser.parse_args()
-if args.docker:
-    cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "4"])
-p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-return_code = p.poll()
-
 
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
@@ -35,6 +23,16 @@ def INT_handler(signum, frame):
 
 
 if __name__ == "__main__":
+    cmd = ["uwsgi", "--json", "uwsgi.json"]
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--docker",
+                        help="When running in the docker, please add this command to speed up the restart of the program",
+                        action="store_true")
+    args = parser.parse_args()
+    if args.docker:
+        cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "4"])
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+    return_code = p.poll()
     signal.signal(signal.SIGINT, INT_handler)
     signal.signal(signal.SIGHUP, HUP_handler)
     event_handler = when_file_chanage()
