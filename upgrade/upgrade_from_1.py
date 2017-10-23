@@ -7,7 +7,7 @@ from common import file
 def change_time_fomart(list_item):
     import time
     system_info = json.loads(file.read_file("./config/system.json"))
-    if isinstance(list_item["time"], str):
+    if "time" in list_item and isinstance(list_item["time"], str):
         list_item["time"] = time.mktime(time.strptime(list_item["time"], system_info["Time_Format"]))
     return list_item
 
