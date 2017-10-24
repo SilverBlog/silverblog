@@ -4,7 +4,7 @@ import shutil
 
 from common import console, file
 
-def edit(page_list, post_index, config, editor=None):
+def edit(page_list, post_index, config, editor=None, is_menu=False):
     if page_list[post_index]["name"] is not config["name"]:
         shutil.move("./document/{0}.md".format(page_list[post_index]["name"]),
                     "./document/{0}.md".format(config["name"]))
