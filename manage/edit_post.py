@@ -12,5 +12,8 @@ def edit(page_list, post_index, config, editor=None, is_menu=False):
     if editor is not None:
         os.system("{0} ./document/{1}.md".format(editor, config["name"]))
     page_list[post_index]["title"] = config["title"]
-    file.write_file("./config/page.json", json.dumps(page_list, indent=4, sort_keys=False, ensure_ascii=False))
+    file_url = "./config/page.json"
+    if is_menu:
+        file_url = "./config/menu.json"
+    file.write_file(file_url, json.dumps(page_list, indent=4, sort_keys=False, ensure_ascii=False))
     console.log("Success", "Edit a new article successfully!")
