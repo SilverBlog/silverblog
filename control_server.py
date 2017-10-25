@@ -85,6 +85,9 @@ def get_content(request_type):
 @app.route('/control/edit_<request_type>', methods=['POST'])
 def edit(request_type):
     file_url = select_type(request_type)
+    is_menu = False
+    if request_type == "menu":
+        is_menu = True
     if file_url is None:
         abort(404)
     if request.json is None:
@@ -99,7 +102,7 @@ def edit(request_type):
     if check_password(title, encode):
         state = True
         config = {"name": name, "title": title}
-        edit_post.edit(page_list, int(post_id), config)
+        edit_post.edit(page_list, int(post_id), config, None, is_menu)
         file.write_file("./document/{0}.md".format(name), content)
         update_post.update()
         build_rss.build_rss()

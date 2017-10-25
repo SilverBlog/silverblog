@@ -1,6 +1,7 @@
-import PyRSS2Gen
 import datetime
 import json
+
+import PyRSS2Gen
 
 from common import file, markdown, console
 
@@ -39,7 +40,7 @@ def make_rss(project_name, project_url, project_description, page_list, full_con
             link=location,
             description=desc,
             guid=PyRSS2Gen.Guid(location),
-            pubDate=item["time"]
+            pubDate=datetime.datetime.fromtimestamp(item["time"])
         ))
     rss = PyRSS2Gen.RSS2(
         title=project_name,

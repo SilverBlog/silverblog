@@ -4,7 +4,7 @@ import time
 
 from jinja2 import Environment, PackageLoader
 
-from common import file, markdown
+from common import file, markdown, post_map
 
 env = Environment(loader=PackageLoader('init', 'templates'))
 
@@ -46,6 +46,8 @@ def build_page(name, system_config, page_info, menu_list, static, template_confi
         page_info = {"title": "undefined"}
     if os.path.exists("document/{0}.json".format(name)):
         page_info = json.loads(file.read_file("document/{0}.json".format(name)))
+        if "time" in page_info:
+            page_info["time"] = str(post_map.build_time(page_info["time"], system_config))
     document = markdown.markdown(content)
     template = env.get_template("./{0}/post.html".format(system_config["Theme"]))
     result = template.render(page_info=page_info, menu_list=menu_list, content=document,

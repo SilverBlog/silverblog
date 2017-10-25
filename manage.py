@@ -17,11 +17,10 @@ if __name__ == '__main__':
     group_new.add_argument("--config", help="The configuration file location you want to load.")
     group_new.add_argument("--independent", help="Generate an article that does not appear in the article list",
                            action="store_true")
-    group_new = parser.add_argument_group('update', "Update article metadata.")
+    parser.add_argument_group('update', "Update article metadata.")
+    parser.add_argument_group('theme-install', "Theme pack installation management.")
     #theme
-    group_theme = parser.add_argument_group('theme', "Theme pack installation management.")
-    group_theme.add_argument("--list",action="store_true")
-    group_theme.add_argument("--install",action="store_true")
+    parser.add_argument_group('upgrade', "Upgrade program")
     #build-gh-page
     group_build_gh_page = parser.add_argument_group("build-gh-page", "Generate static pages.")
     group_build_gh_page.add_argument("--static_page", help="Create page that is available to static server",
@@ -35,37 +34,28 @@ if __name__ == '__main__':
         if config is None:
             print("Please enter the title of the article:")
             title = input()
-            print("Please enter the slug (Leave a blank use pinyin):")
-            name = input()
-            if len(name) == 0:
+            if len(title) != 0:
                 name = new_post.get_name(title)
+            print("Please enter the slug [{}]:".format(name))
+            name = input()
+        if len(name) != 0 and len(title) != 0:
             config = {"title": title, "name": name}
-        new_post.new_post_init(config, args.independent)
-        build_rss.build_rss()
+            new_post.new_post_init(config, args.independent)
+            build_rss.build_rss()
         exit(0)
     if args.command == "update":
         update_post.update()
         build_rss.build_rss()
         exit(0)
-    if args.command == "Upgrade":
+    if args.command == "upgrade":
         from manage import upgrade
-
         if upgrade.upgrade_check():
             start_to_pull = input('Find new version, do you want to upgrade? [y/N]')
             if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y':
                 upgrade.upgrade_pull()
                 exit(0)
         console.log("No upgrade found")
-    if args.command == "theme":
-        if args.list:
-            req = theme.get_orgs_list()
-            for item in req:
-                print("-" * 100)
-                print(
-                    " Name:{0}\n Description:{1}\n Star:{2}".format(item["name"], item["description"],
-                                                                    item["stargazers_count"]))
-                print("-" * 100)
-        if args.install:
+    if args.command == "theme-install":
             print("Please enter the name of the theme you want to install:")
             theme_name = input()
             theme_name = theme.install_theme(theme_name)

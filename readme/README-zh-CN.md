@@ -14,6 +14,7 @@ SilverBlog是一个基于Python的轻量级博客。
 * 拥有媲美 Hexo 的静态页面生成模块，只需一行命令，就可在 Github Page 上运行
 * 支持 Mac os 和 Linux
 * 拥有一个Android客户端
+* 拥有一个web版管理器。
 
 ## 如何安装
 
@@ -36,7 +37,6 @@ wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/ins
 Docker(testing):
 
 ```shell
-docker pull qwe7002/silverblog
 wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh | bash
 ```
 
@@ -61,7 +61,6 @@ wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/ins
   "Theme": "", (主题,这里为主题文件夹名称)
   "API_Password": "", (API的PSK密码)
   "Rss_Full_Content": true, (RSS全文输出)
-  "Restful_API": false, (Restful输出开关)
   "Editor": "vim" (默认编辑器)
 }
 ```
@@ -71,9 +70,9 @@ wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/ins
 ```
 [
   {
-    "name": "主页", (显示的名称)
-    "url": "index", (访问地址)
-    "absolute": true (可选，绝对路径开关，如果此处为 true ，URL 便为绝对路径)
+    "title": "主页", (显示的名称)
+    "name": "hello-world", (可选，文章名称，不可与absolute同时存在。)
+    "absolute": “https://demo.silverblog.org” (可选，绝对路径地址，不可与name同时存在。)
   }
 ]
 ```
@@ -107,31 +106,26 @@ pm2 save
 
 使得您的 SilverBlog 能够在系统开机的时候，自动启动。
 
+您也可以使用
+
 ## 如何使用管理脚本
 
 您可以随时使用`./manage.py -h`来获取 SilverBlog 管理模块的帮助信息
 
-以下是功能列举：
-
-- `./manage.py new` 增加一篇新文章(您可以通过指定一个 editor 或者一个 json 文件的方法来编辑和添加文章)
-
-添加文章 json 示例:(注意，您需要先将文件放到Document目录下。这里的name应与Document目录下的md文件名相同。)
+添加文章config json 示例:(注意，您需要先将文件放到Document目录下。这里的name应与Document目录下的md文件名相同。)
 ```json
 {
 	"title":"您好,世界!",
 	"name":"hello-world",
+	"time":1508747668.0
 }
 ```
 
-- `./manage.py update` 更新文章列表 / 更新RSS
-
-- `./manage.py build-gh-page` 在 ./static_page 文件夹下生成静态页面
-
-你可以使用 `--static_page` 参数使链接末尾带有扩展名，以便CDN能够正确访问页面
-
 ## 使用手机客户端
 
-您可以访问 https://github.com/SilverBlogTeam/SilverBlog_Android/releases 下载最新android客户端，网页版后台正在开发中。
+您可以访问 https://github.com/SilverBlogTeam/SilverBlog_Android/releases 下载最新android客户端。
+
+您可以使用 SilverCreate (https://c.silverblog.org) 来管理你的博客。
 
 您可以使用 pip 安装 [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) 依赖，之后执行 `python3 control_server.py` 生成自动化配置二维码。
 

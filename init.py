@@ -3,7 +3,7 @@ import os.path
 
 from flask import Flask, abort, redirect
 
-from common import file, page, console, post_header
+from common import file, page, console, post_map
 
 rss = None
 menu_list = None
@@ -36,8 +36,10 @@ if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
     template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
 
 system_config["API_Password"] = None
-page_list = list(map(post_header.add_post_header, page_list))
-menu_list = list(map(post_header.add_post_header, menu_list))
+page_list = list(map(post_map.add_post_header, page_list))
+menu_list = list(map(post_map.add_post_header, menu_list))
+for item in page_list:
+    page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
 console.log("Success", "load the configuration file successfully!")
 
 @app.route("/rss/", strict_slashes=False)

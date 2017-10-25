@@ -6,7 +6,7 @@ import time
 from common import console
 
 def build(github_mode):
-    from common import file, page, post_header
+    from common import file, page, post_map
     html_static = False
     if github_mode is not None:
         html_static = github_mode
@@ -15,8 +15,10 @@ def build(github_mode):
     page_name_list = list()
     for item in page_list:
         page_name_list.append(item["name"])
-    page_list = list(map(post_header.add_post_header, page_list))
-    menu_list = list(map(post_header.add_post_header, menu_list))
+    page_list = list(map(post_map.add_post_header, page_list))
+    menu_list = list(map(post_map.add_post_header, menu_list))
+    for item in page_list:
+        page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
     system_config = json.loads(file.read_file("./config/system.json"))
     template_config = None
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):

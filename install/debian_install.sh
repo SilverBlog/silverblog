@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [ $UID -ne 0 ]; then
+    echo "Superuser privileges are required to run this script."
+    echo "e.g. \"sudo ./$0\""
+    exit 1
+fi
+
 echo "Updating software source..."
 
 apt-get update
@@ -14,17 +20,8 @@ if [ ! -f "install.sh" ]; then
     cd SilverBlog/install
 fi
 
-cat << EOF >../start.sh
-#!/usr/bin/env bash
-uwsgi --json ./uwsgi.json
-EOF
-cat << EOF >../control-start.sh
-#!/usr/bin/env bash
-uwsgi --json ./uwsgi.json:control
-EOF
-
 if [ ! -f "../start.json" ]; then
-    cp -i ../example/start.example.json ../start.json
+    cp -i ../example/start.json ../start.json
 
 fi
 

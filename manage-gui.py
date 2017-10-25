@@ -108,7 +108,7 @@ def theme_manage():
             item_list = list()
             for item in orgs_list:
                 item_list.append(item["name"])
-            theme_name = dialog.menu("Please select the theme you want to install:", item_list)
+            theme_name = dialog.menu("Please select the theme you want to install:", orgs_list)
         if result == "Enter the theme package name":
             theme_name = dialog.prompt("Please enter the theme package name:")
         if len(theme_name) != 0:

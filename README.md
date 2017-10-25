@@ -17,6 +17,7 @@ SilverBlog is a Python-based lightweight blog.
 * Has a static page generation module comparable to Hexo, just one line command that runs on Github Page
 * Supports Mac os and Linux
 * Have an Android client
+* Have a web version manager
 
 ## how to install
 
@@ -62,7 +63,6 @@ You need to modify the system.json under the config folder. This is your global 
   "Time_Format": "%Y-%m-%d",(time format)
   "Theme": "", (theme, here for the theme folder name)
   "API_Password": "", (API's PSK password)
-  "Rss_Full_Content": true, (RSS full text output switch)
   "Restful_API": false, (Restful output switch)
   "Editor": "vim" (default editor)
 }
@@ -70,13 +70,14 @@ You need to modify the system.json under the config folder. This is your global 
 
 You need to edit menu.json, menu.json for the navigation bar configuration file
 
+
 ```
 [
-  {
-    "name": "Home", (displayed name)
-    "url": "index", (access address)
-    "absolute": true (absolute path switch, if true here, the URL is the absolute path)
-  }
+  {
+    "title": "home page", (displayed name)
+    "name": "hello-world", (optional, article name, can not exist with absolute.)
+    "absolute": "https://demo.silverblog.org" (optional, absolute path address, can not exist with name.)
+  }
 ]
 ```
 
@@ -115,26 +116,21 @@ You can use `./manage.py -h` at any time to get help information for the SilverB
 
 The following is a list of features:
 
-- `./manage.py new` Add a new article (you can edit and add an article by specifying an editor or a json file)
-
 Add article json example:(You need to put the file in the Document directory. The name here should be the same as the md file name in the Document directory.)
 
 ```json
 {
 	"title":"hello world",
 	"name":"hello-world",
+	"time":1508747668.0
 }
 ```
 
-- `./manage.py update` update the list of articles / update RSS
-
-- `./manage.py build-gh-page` Generate static pages in the ./static_page folder
-
-You can use the `--static_page` parameter to have the extension at the end of the link so that CDN can access the page correctly
-
 ## Use the phone client
 
-You can visit https://github.com/SilverBlogTeam/SilverBlog_Android/releases download the latest android client(Only Chinese version), web version background is under development.
+You can visit https://github.com/SilverBlogTeam/SilverBlog_Android/releases download the latest android client(Only Chinese version).
+
+You can use SilverCreate (https://c.silverblog.org) to manage your blog.
 
 You can use pip to install [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) dependencies, and then execute `python3 control_server.py` to generate the automated configuration of the QR code.
 

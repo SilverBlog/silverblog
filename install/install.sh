@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-cd ..
+if [ $(basename `pwd`) != "install" ];then
+    cd ..
+fi
 
 echo "Generate a Nginx configuration file..."
 
@@ -38,6 +40,7 @@ mkdir ./config
 mkdir ./templates
 mkdir ./templates/static
 mkdir ./templates/include
+
 touch ./templates/include/comment.html
 touch ./templates/include/head.html
 touch ./templates/include/head.html
@@ -45,10 +48,10 @@ touch ./templates/include/foot.html
 
 echo "Create configuration file..."
 if [ ! -f "./config/menu.json" ]; then
-    cp -i ./example/menu.example.json ./config/menu.json
+    echo "[]" > ./config/menu.json
 fi
 if [ ! -f "./config/page.json" ]; then
-    cp -i ./example/page.example.json ./config/page.json
+    echo "[]" > ./config/page.json
 fi
 if [ ! -f "./config/system.json" ]; then
     cp -i ./example/system.example.json ./config/system.json
