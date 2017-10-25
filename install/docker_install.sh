@@ -21,7 +21,6 @@ EOF
 cat << EOF >attach-docker.sh
 #!/usr/bin/env bash
 docker run -it -v $(pwd):/home/SilverBlog qwe7002/silverblog bash
-
 EOF
 
 chmod +x manage.sh
