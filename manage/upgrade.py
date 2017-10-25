@@ -12,6 +12,7 @@ if os.path.exists("./upgrade/current_version.json"):
 repo = git.Repo("./")
 remote = repo.remote()
 def upgrade_check():
+    # print(remote.fetch(str(repo.active_branch))[0])
     if remote.fetch(str(repo.active_branch))[0] != "FETCH_HEAD":
         return True
     if current_data_version != new_data_version:
