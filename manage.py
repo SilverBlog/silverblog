@@ -11,7 +11,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser("SilverBlog command line management tool.")
     parser.add_argument("command",
                         help="The name of the function to execute.")
-
     #new
     group_new = parser.add_argument_group('new', "Create a new article.")
     group_new.add_argument("--config", help="The configuration file location you want to load.")
@@ -56,12 +55,12 @@ if __name__ == '__main__':
                 exit(0)
         console.log("No upgrade found")
     if args.command == "theme-install":
-            print("Please enter the name of the theme you want to install:")
-            theme_name = input()
-            theme_name = theme.install_theme(theme_name)
-            enable_theme = input('Do you want to enable this theme now? [y/N]')
-            if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
-                theme.set_theme(theme_name)
+        print("Please enter the name of the theme you want to install:")
+        theme_name = input()
+        theme_name = theme.install_theme(theme_name)
+        enable_theme = input('Do you want to enable this theme now? [y/N]')
+        if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
+            theme.set_theme(theme_name)
         exit(0)
     if args.command == "build-gh-page":
         build_static_page.publish(args.push_git, args.static_page)
