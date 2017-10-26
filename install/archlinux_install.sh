@@ -8,7 +8,7 @@ if [ $UID -ne 0 ]; then
 fi
 
 echo "Installing Dependency..."
-pacman -S nginx uwsgi uwsgi-plugin-python python-pip python-wheel git
+pacman -S nginx uwsgi python libnewt uwsgi-plugin-python python-pip python-wheel git
 pip install flask hoedown pypinyin pyrss2gen gitpython
 
 if [ ! -f "install.sh" ]; then
@@ -22,4 +22,4 @@ if [ ! -f "../start.json" ]; then
 fi
 ./install.sh
  
-python ../setting.py
+../setting.py
