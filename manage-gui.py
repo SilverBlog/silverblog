@@ -48,7 +48,7 @@ def upgrade():
         if dialog.confirm("Find new version, do you want to upgrade?", "no"):
             upgrade.upgrade_pull()
         return
-    dialog.alert("No upgrade found")
+    dialog.alert("No upgrade found.")
 
 def edit_post():
     from manage import edit_post
