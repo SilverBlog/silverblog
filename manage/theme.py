@@ -75,5 +75,9 @@ def upgrade_theme(theme_name):
     import git
     repo = git.Repo("./templates/" + theme_name)
     remote = repo.remote()
-    remote.pull()
-    console.log("Success", "The theme is upgrade successfully!")
+    remote.fetch("master")
+    if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
+        remote.pull()
+        console.log("Success", "The theme is upgrade successfully!")
+        exit()
+    console.log("Info", "No upgrade found.")

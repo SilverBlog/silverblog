@@ -47,8 +47,8 @@ def upgrade():
     if upgrade.upgrade_check():
         if dialog.confirm("Find new version, do you want to upgrade?", "no"):
             upgrade.upgrade_pull()
-            return
-    dialog.alert("No upgrade found")
+        return
+    dialog.alert("No upgrade found.")
 
 def edit_post():
     from manage import edit_post
@@ -99,16 +99,16 @@ def theme_manage():
                  "Uninstall existing Theme"]
     result = dialog.menu("Please select an action", menu_list)
     theme_name = ""
-    orgs_list = None
+    org_list = None
     if result == "Install the theme":
         install_menu = ["View list", "Enter the theme package name"]
         result = dialog.menu("Please select an action", install_menu)
         if result == "View list":
-            orgs_list = theme.get_orgs_list()
+            org_list = theme.get_orgs_list()
             item_list = list()
-            for item in orgs_list:
+            for item in org_list:
                 item_list.append(item["name"])
-            theme_name = dialog.menu("Please select the theme you want to install:", orgs_list)
+            theme_name = dialog.menu("Please select the theme you want to install:", org_list)
         if result == "Enter the theme package name":
             theme_name = dialog.prompt("Please enter the theme package name:")
         if len(theme_name) != 0:

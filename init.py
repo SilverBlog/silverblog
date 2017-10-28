@@ -55,10 +55,8 @@ def static_file():
     abort(400)
 
 @app.route("/")
-@app.route("/index")
-@app.route("/index/")
-@app.route('/index/p/<int:page_index>')
-@app.route('/index/p/<int:page_index>/')
+@app.route("/index", strict_slashes=False)
+@app.route('/index/p/<int:page_index>', strict_slashes=False)
 def index_route(page_index=1):
     page_url = "/index/p/{0}/".format(page_index)
     if page_url in cache_index:
