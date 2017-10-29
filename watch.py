@@ -11,7 +11,7 @@ from watchdog.observers import Observer
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
         if not event.src_path.endswith((".", ".swp", ".sh")):
-            p.send_signal(1)  #SIGHUP
+            p.send_signal(1)
 
 
 def HUP_handler(signum, frame):
