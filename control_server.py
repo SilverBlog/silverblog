@@ -94,7 +94,7 @@ def edit(request_type):
         abort(400)
     page_list = json.loads(file.read_file(file_url))
     post_id = str(request.json["post_id"])
-    name = str(request.json["name"]).replace("/")
+    name = str(request.json["name"]).replace('/', "")
     title = str(request.json["title"])
     content = str(request.json["content"])
     encode = str(request.json["encode"])
@@ -129,7 +129,7 @@ def new():
     if request.json is None:
         abort(400)
     title = str(request.json["title"])
-    name = str(request.json["name"]).replace("/")
+    name = str(request.json["name"]).replace('/', "")
     content = str(request.json["content"])
     encode = str(request.json["encode"])
     state = False
