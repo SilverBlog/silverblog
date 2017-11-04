@@ -18,7 +18,6 @@ uwsgi.json
 start.json
 start.sh
 templates
-templates/*
 nginx_config
 attach-docker.sh
 /upgrade/current_version.json
