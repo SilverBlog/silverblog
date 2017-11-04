@@ -9,7 +9,13 @@ fi
 
 echo "Installing Dependency..."
 pacman -S nginx uwsgi python libnewt uwsgi-plugin-python python-pip python-wheel git
-pip install flask hoedown pypinyin pyrss2gen gitpython
+pip install -r python_dependency.txt
+
+read -p "Is qrcode support component installed? (Y/N): " yn
+
+if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
+    pip3 install qrcode-terminal
+fi
 
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1

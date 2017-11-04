@@ -13,7 +13,13 @@ apt-get update
 echo "Installing Dependency..."
 
 apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git
-pip3 install flask hoedown pypinyin pyrss2gen gitpython
+pip3 install -r python_dependency.txt
+
+read -p "Is qrcode support component installed? (Y/N): " yn
+
+if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
+    pip3 install qrcode-terminal
+fi
 
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1
