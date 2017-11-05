@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
-pip3 install watchdog
+if [ $UID -ne 0 ]; then
+    echo "Superuser privileges are required to run this script."
+    use_superuser="sudo"
+fi
+$use_superuser pip3 install watchdog
 cd ..
-cat << EOF >/etc/systemd/system/silverblog.service
+$use_superuser cat << EOF >/etc/systemd/system/silverblog.service
 [Unit]
 Description=SilverBlog server daemon
 
@@ -16,7 +20,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-cat << EOF >/etc/systemd/system/silverblog_control.service
+$use_superuser cat << EOF >/etc/systemd/system/silverblog_control.service
 [Unit]
 Description=SilverBlog server daemon
 
@@ -31,6 +35,6 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-systemctl daemon-reload
-systemctl enable silverblog
-systemctl enable silverblog_control
+$use_superuser systemctl daemon-reload
+$use_superuser systemctl enable silverblog
+$use_superuser systemctl enable silverblog_control
