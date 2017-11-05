@@ -21,4 +21,3 @@ templates
 nginx_config
 attach-docker.sh
 /upgrade/current_version.json
-dockerfile
