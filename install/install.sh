@@ -37,16 +37,15 @@ echo "Create directory..."
 
 mkdir ./document
 mkdir ./config
-mkdir ./templates
-mkdir ./templates/static
+mkdir -p ./templates/static
 mkdir ./templates/include
 
 touch ./templates/include/comment.html
 touch ./templates/include/head.html
-touch ./templates/include/head.html
 touch ./templates/include/foot.html
 
 echo "Create configuration file..."
+
 if [ ! -f "./config/menu.json" ]; then
     echo "[]" > ./config/menu.json
 fi
