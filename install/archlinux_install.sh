@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 #NextMoe-icecat modified 20170806 03:16(Asia/Shanghai)
 #Reall Computer modified 20170810 16:16(Asia/Shanghai)
+use_superuser=""
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
-    echo "e.g. \"sudo ./$0\""
-    exit 1
+    use_superuser="sudo"
 fi
 
 echo "Installing Dependency..."
-pacman -S nginx uwsgi python libnewt uwsgi-plugin-python python-pip python-wheel git
-pip install -r python_dependency.txt
+$use_superuser pacman -Sy nginx uwsgi python libnewt uwsgi-plugin-python python-pip python-wheel git
+$use_superuser pip install -r python_dependency.txt
 
 read -p "Is qrcode support component installed? (Y/N): " yn
 
 if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
-    pip3 install qrcode-terminal
+    $use_superuser pip install qrcode-terminal
 fi
 
 if [ ! -f "install.sh" ]; then

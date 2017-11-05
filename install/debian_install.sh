@@ -2,23 +2,22 @@
 
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
-    echo "e.g. \"sudo ./$0\""
-    exit 1
+    use_superuser="sudo"
 fi
 
 echo "Updating software source..."
 
-apt-get update
+$use_superuser apt-get update
 
 echo "Installing Dependency..."
 
-apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git
-pip3 install -r python_dependency.txt
+$use_superuser apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git
+$use_superuser pip3 install -r python_dependency.txt
 
 read -p "Is qrcode support component installed? (Y/N): " yn
 
 if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
-    pip3 install qrcode-terminal
+    $use_superuser pip3 install qrcode-terminal
 fi
 
 if [ ! -f "install.sh" ]; then
