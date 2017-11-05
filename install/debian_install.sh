@@ -33,4 +33,3 @@ if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
 fi
 
 ./install.sh
-../setting.py
