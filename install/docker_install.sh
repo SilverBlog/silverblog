@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 command -v docker >/dev/null 2>&1 || { echo >&2 "This installation method relies on Docker, but does not find Docker. Please install Docker and try again."; exit 1; }
-docker pull qwe7002/silverblog
+docker pull silverblog/silverblog
 
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1
