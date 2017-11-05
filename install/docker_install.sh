@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 command -v docker >/dev/null 2>&1 || { echo >&2 "This installation method relies on Docker, but does not find Docker. Please install Docker and try again."; exit 1; }
-docker pull silverblog/silverblog
+
+result=$(groups | grep "docker")
+use_superuser=""
+if [[ "$result" == "" ]]
+then
+    echo "The current user is not in the docker group, will use sudo to operate."
+    use_superuser="sudo"
+fi
+
+$use_superuser docker pull silverblog/silverblog
 
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1
