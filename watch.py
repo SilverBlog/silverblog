@@ -8,7 +8,7 @@ from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
 control_p = None
-
+p = None
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
         if not event.src_path.endswith((".", ".swp", ".sh")):
