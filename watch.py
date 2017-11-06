@@ -21,6 +21,7 @@ def HUP_handler(signum, frame):
     p.send_signal(1)
     if control_p is not None:
         control_p.send_signal(1)
+
 def INT_handler(signum, frame):
     p.kill()
     if control_p is not None:
@@ -30,18 +31,22 @@ def INT_handler(signum, frame):
 
 
 if __name__ == "__main__":
-    cmd = ["uwsgi", "--json", "uwsgi.json"]
     parser = argparse.ArgumentParser()
     parser.add_argument("--docker",
                         help="When running in the docker, please add this command to speed up the restart of the program",
                         action="store_true")
     parser.add_argument("--control", action="store_true")
     args = parser.parse_args()
-    if args.docker:
-        cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "4"])
+
     if args.control:
         control_cmd = ["uwsgi", "--json", "uwsgi.json:control"]
+        if args.docker:
+            control_cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "4"])
         control_p = subprocess.Popen(control_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+
+    cmd = ["uwsgi", "--json", "uwsgi.json"]
+    if args.docker:
+        cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "4"])
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
     return_code = p.poll()
     signal.signal(signal.SIGINT, INT_handler)
