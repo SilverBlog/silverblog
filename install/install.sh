@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if [ $(basename `pwd`) != "install" ];then
+if [ $(basename `pwd`) == "install" ];then
     cd ..
 fi
 
