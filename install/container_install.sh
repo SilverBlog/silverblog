@@ -2,9 +2,10 @@
 
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1
+    cd SilverBlog/install
 fi
 
-install/install.sh
+./install.sh
 
 
 
