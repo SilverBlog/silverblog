@@ -6,7 +6,7 @@ import time
 
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
-
+control_p =None
 
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
@@ -16,8 +16,12 @@ class when_file_chanage(FileSystemEventHandler):
 
 def HUP_handler(signum, frame):
     p.send_signal(1)
+    if control_p is not None:
+        control_p.send_signal(1)
 def INT_handler(signum, frame):
     p.kill()
+    if control_p is not None:
+        control_p.kill()
     exit(0)
 
 
@@ -28,9 +32,13 @@ if __name__ == "__main__":
     parser.add_argument("--docker",
                         help="When running in the docker, please add this command to speed up the restart of the program",
                         action="store_true")
+    parser.add_argument("--control", action="store_true")
     args = parser.parse_args()
     if args.docker:
         cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "4"])
+    if args.control:
+        control_cmd = ["uwsgi", "--json", "uwsgi.json:control"]
+        control_p = subprocess.Popen(control_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
     return_code = p.poll()
     signal.signal(signal.SIGINT, INT_handler)
