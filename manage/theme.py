@@ -19,6 +19,8 @@ def get_local_theme_list():
     directories = file.list_dirs("./templates")
     if "static" in directories:
         directories.remove("static")
+    if "include" in directories:
+        directories.remove("include")
     return directories
 def install_theme(theme_name, orgs_list=None):
     if orgs_list is None:
