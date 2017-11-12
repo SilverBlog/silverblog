@@ -3,7 +3,7 @@ if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
     use_superuser="sudo"
 fi
-$use_superuser pip3 install watchdog
+${use_superuser} pip3 install watchdog
 if [ $(basename `pwd`) == "install" ];then
     cd ..
 fi
@@ -37,6 +37,6 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-$use_superuser systemctl daemon-reload
-$use_superuser systemctl enable silverblog
-$use_superuser systemctl enable silverblog_control
+${use_superuser} systemctl daemon-reload
+${use_superuser} systemctl enable silverblog
+${use_superuser} systemctl enable silverblog_control

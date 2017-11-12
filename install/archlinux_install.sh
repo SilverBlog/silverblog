@@ -8,8 +8,8 @@ if [ $UID -ne 0 ]; then
 fi
 
 echo "Installing Dependency..."
-$use_superuser pacman -Sy nginx uwsgi python libnewt uwsgi-plugin-python python-pip python-wheel git
-$use_superuser pip install -r python_dependency.txt
+${use_superuser} pacman -Sy nginx uwsgi python libnewt uwsgi-plugin-python python-pip python-wheel git
+${use_superuser} pip install -r python_dependency.txt
 
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1
@@ -24,7 +24,7 @@ fi
 read -p "Is qrcode support component installed? (Y/N): " yn
 
 if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
-    $use_superuser pip install qrcode-terminal
+    ${use_superuser} pip install qrcode-terminal
 fi
 
 ./install.sh
