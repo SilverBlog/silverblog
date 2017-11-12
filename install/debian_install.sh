@@ -17,8 +17,8 @@ ${use_superuser} pip3 install -r python_dependency.txt
 
 
 if [ ! -f "install.sh" ]; then
-    git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1
-    cd SilverBlog/install
+    git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
+    cd silverblog/install
 fi
 
 if [ ! -f "../start.json" ]; then
