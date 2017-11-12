@@ -41,12 +41,12 @@ if __name__ == "__main__":
     if args.control:
         control_cmd = ["uwsgi", "--json", "uwsgi.json:control"]
         if args.docker:
-            control_cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "4"])
+            control_cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "1"])
         control_p = subprocess.Popen(control_cmd, stderr=subprocess.PIPE)
 
     cmd = ["uwsgi", "--json", "uwsgi.json"]
     if args.docker:
-        cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "4"])
+        cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "1"])
     p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
     return_code = p.poll()
     signal.signal(signal.SIGINT, INT_handler)
