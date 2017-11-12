@@ -28,8 +28,6 @@ def INT_handler(signum, frame):
         control_p.kill()
     exit(0)
 
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--docker",
