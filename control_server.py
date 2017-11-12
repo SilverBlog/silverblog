@@ -5,7 +5,7 @@ import json
 
 from flask import Flask, request, abort
 
-from common import file, console
+from common import file, console, post_map
 from manage import new_post, build_rss, update_post, build_static_page, delete_post, edit_post
 
 app = Flask(__name__)
@@ -62,7 +62,10 @@ def post_list(request_type):
     file_url = select_type(request_type)
     if file_url is None:
         abort(404)
-    return file.read_file(file_url)
+    page_list = json.loads(file.read_file(file_url))
+    for item in page_list:
+        page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
+    return json_dumps(page_list)
 
 
 @app.route('/control/get_<request_type>_content', methods=['POST'])
