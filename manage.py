@@ -32,4 +32,7 @@ if __name__ == '__main__':
     group_build_gh_page.add_argument("--push_git", help="Automatically submitted to Git", action="store_true")
 
     args = parser.parse_args()
-    menu.use_text_mode(args)
+    try:
+        menu.use_text_mode(args)
+    except KeyboardInterrupt:
+        print("User cancelled operation.")
