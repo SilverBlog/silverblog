@@ -9,6 +9,7 @@ from manage import menu
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         menu.use_whiptail_mode()
+        exit(0)
     parser = argparse.ArgumentParser("SilverBlog command line management tool.")
     parser.add_argument("command", default=None,
                         help="The name of the function to execute.")
