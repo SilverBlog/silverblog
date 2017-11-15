@@ -158,7 +158,7 @@ def use_text_mode(args):
             if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y':
                 upgrade.upgrade_pull()
                 exit(0)
-        console.log("No upgrade found")
+        console.log("info", "No upgrade found")
     if args.command == "theme-install":
         print("Please enter the name of the theme you want to install:")
         theme_name = input()
