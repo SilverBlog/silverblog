@@ -2,10 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import sys
 
 from manage import menu
 
 if __name__ == '__main__':
+    if len(sys.argv) == 1:
+        menu.use_whiptail_mode()
     parser = argparse.ArgumentParser("SilverBlog command line management tool.")
     parser.add_argument("command", default=None,
                         help="The name of the function to execute.")
@@ -28,7 +31,4 @@ if __name__ == '__main__':
     group_build_gh_page.add_argument("--push_git", help="Automatically submitted to Git", action="store_true")
 
     args = parser.parse_args()
-    if args.command is not None:
-        menu.use_text_mode(args)
-        exit(0)
-    menu.use_whiptail_mode()
+    menu.use_text_mode(args)
