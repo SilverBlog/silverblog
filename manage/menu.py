@@ -9,22 +9,24 @@ from common import whiptail, file
 dialog = whiptail.Whiptail()
 dialog.height = 15
 dialog.title = "SilverBlog command line management tool"
-def loop():
-    menu_list = ["Article manager", "Upgrade", "Theme package manager", "Build static page", "Exit"]
-    result = dialog.menu("Please select an action", menu_list)
-    if result == "Exit":
-        exit(0)
-    if result == "Article manager":
-        article_manager()
-    if result == "Upgrade":
-        upgrade()
-    if result == "Theme package manager":
-        theme_manage()
-    if result == "Build static page":
-        from manage import build_static_page
-        dialog.title = "Build static page"
-        build_static_page.publish(dialog.confirm("Push to git?", "no"),
-                                  dialog.confirm("Generate a hyperlink with a file extension?", "no"))
+def use_whiptail_mode():
+    while True:
+        menu_list = ["Article manager", "Upgrade", "Theme package manager", "Build static page", "Exit"]
+        result = dialog.menu("Please select an action", menu_list)
+        if result == "Exit":
+            exit(0)
+        if result == "Article manager":
+            article_manager()
+        if result == "Upgrade":
+            upgrade()
+        if result == "Theme package manager":
+            theme_manage()
+        if result == "Build static page":
+            from manage import build_static_page
+            dialog.title = "Build static page"
+            build_static_page.publish(dialog.confirm("Push to git?", "no"),
+                                      dialog.confirm("Generate a hyperlink with a file extension?", "no"))
+        time.sleep(0.5)
 
 def article_manager():
     dialog.title = "Article manager"
@@ -125,7 +127,46 @@ def theme_manage():
     if result == "Uninstall existing Theme":
         theme.remove_theme(theme_name)
 
-if __name__ == '__main__':
-    while True:
-        loop()
-        time.sleep(0.5)
+def use_text_mode(args):
+    import json
+    from common import file, console
+    from manage import build_rss, build_static_page, new_post, update_post, theme
+    if args.command == "new":
+        config = None
+        if args.config is not None:
+            config = json.loads(file.read_file(args.config))
+        if config is None:
+            print("Please enter the title of the article:")
+            title = input()
+            if len(title) != 0:
+                name = new_post.get_name(title)
+            print("Please enter the slug [{}]:".format(name))
+            name = input()
+        if len(name) != 0 and len(title) != 0:
+            config = {"title": title, "name": name}
+            new_post.new_post_init(config, args.independent)
+            build_rss.build_rss()
+        exit(0)
+    if args.command == "update":
+        update_post.update()
+        build_rss.build_rss()
+        exit(0)
+    if args.command == "upgrade":
+        from manage import upgrade
+        if upgrade.upgrade_check():
+            start_to_pull = input('Find new version, do you want to upgrade? [y/N]')
+            if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y':
+                upgrade.upgrade_pull()
+                exit(0)
+        console.log("No upgrade found")
+    if args.command == "theme-install":
+        print("Please enter the name of the theme you want to install:")
+        theme_name = input()
+        theme_name = theme.install_theme(theme_name)
+        enable_theme = input('Do you want to enable this theme now? [y/N]')
+        if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
+            theme.set_theme(theme_name)
+        exit(0)
+    if args.command == "build-gh-page":
+        build_static_page.publish(args.push_git, args.static_page)
+        exit(0)
