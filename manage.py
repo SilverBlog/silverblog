@@ -8,8 +8,7 @@ from manage import menu
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("SilverBlog command line management tool.")
     parser.add_argument("command", required=False,
-                        help="The name of the function to execute.",
-                        choices=["new", "update", "theme-install", "upgrade", "build-gh-page"])
+                        help="The name of the function to execute.")
     #new
     group_new = parser.add_argument_group('new', "Create a new article.")
     group_new.add_argument("--config", help="The configuration file location you want to load.")
@@ -29,7 +28,6 @@ if __name__ == '__main__':
     group_build_gh_page.add_argument("--push_git", help="Automatically submitted to Git", action="store_true")
 
     args = parser.parse_args()
-    #todo
     if args.command is not None:
         menu.use_text_mode(args)
         exit(0)
