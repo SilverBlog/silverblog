@@ -7,7 +7,7 @@ from manage import menu
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("SilverBlog command line management tool.")
-    parser.add_argument("command", required=False,
+    parser.add_argument("command", default=None,
                         help="The name of the function to execute.")
     #new
     group_new = parser.add_argument_group('new', "Create a new article.")
