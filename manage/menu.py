@@ -115,7 +115,7 @@ def theme_manage():
             theme_name = dialog.prompt("Please enter the theme package name:")
         if len(theme_name) != 0:
             theme_name = theme.install_theme(theme_name, org_list)
-            if dialog.prompt("Do you want to enable this theme now?", "no"):
+            if dialog.confirm("Do you want to enable this theme now?", "no"):
                 theme.set_theme(theme_name)
         return
     directories = theme.get_local_theme_list()
