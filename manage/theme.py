@@ -37,26 +37,17 @@ def install_theme(theme_name, orgs_list=None):
         console.log("Error", "Can not find this theme.")
         exit(1)
     r = None
-    r_license = None
-    console.log("info", "Getting project license...")
+    console.log("info", "Getting the theme installation script...")
     try:
-        r_license = urllib.request.urlopen(
-            "https://raw.githubusercontent.com/{}/master/LICENSE".format(full_name)).read().decode('utf-8')
+        r = urllib.request.urlopen(
+            "https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).read().decode('utf-8')
     except urllib.error:
-        console.log("Error", "Get the project license error.")
+        console.log("Error", "Get the theme installation script error.")
         exit(1)
-    print("\n{}\n".format(r_license))
-    enable_theme = input('I agree to the terms and conditions. [y/N]')
-    if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
-        console.log("info", "Getting the theme installation script...")
-        try:
-            r = urllib.request.urlopen(
-                "https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).read().decode('utf-8')
-        except urllib.error:
-            console.log("Error", "Get the theme installation script error.")
-            exit(1)
-        os.system("cd templates \n" + r)
-        console.log("Success", "The theme is installed successfully!")
+    if os.path.exists("./templates"):
+        os.chdir("./templates")
+    os.system(r)
+    console.log("Success", "The theme is installed successfully!")
     return name
 
 def set_theme(theme_name):
