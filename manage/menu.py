@@ -39,7 +39,7 @@ def article_manager():
         edit_post()
     if result == "Delete":
         delete_post()
-    if result != "Delete":
+    if result == "Update":
         update_post.update()
     build_rss.build_rss()
 
@@ -148,8 +148,8 @@ def use_text_mode(args):
             build_rss.build_rss()
         exit(0)
     if args.command == "update":
-        update_post.update()
-        build_rss.build_rss()
+        if update_post.update():
+            build_rss.build_rss()
         exit(0)
     if args.command == "upgrade":
         from manage import upgrade
