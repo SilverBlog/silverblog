@@ -33,6 +33,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     try:
         menu.use_text_mode(args)
+        # After hitting will exit
     except KeyboardInterrupt:
         print("User cancelled operation.")
     parser.print_help()
