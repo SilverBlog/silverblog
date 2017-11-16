@@ -18,7 +18,7 @@ def get_name(name_input):
         for item in name_list:
             name = name + "-" + item
         return name[1:len(name)]
-    return re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", name_input)
+    return re.sub("[\s+\.\!\/_,$%^*()+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", name_input)
 
 
 def new_post_init(config, independent=False):
