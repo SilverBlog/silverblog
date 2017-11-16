@@ -17,7 +17,7 @@ def get_name(name_input):
         name = ""
         for item in name_list:
             name = name + item
-            if name_list.index(item) != len(name_list):
+            if name_list.index(item) != (len(name_list) - 1):
                 name = name + "-"
         return name
     return re.sub("[\s+\.\!\/_,$%^*()+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", name_input)
