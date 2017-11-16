@@ -10,7 +10,7 @@ if __name__ == '__main__':
     if len(sys.argv) == 1:
         menu.use_whiptail_mode()
         exit(0)
-    parser = argparse.ArgumentParser("SilverBlog command line management tool.")
+    parser = argparse.ArgumentParser("SilverBlog CLI tool.")
     parser.add_argument("command", help="The name of the function to execute.")
     #new
     group_new = parser.add_argument_group('new', "Create a new article.")
