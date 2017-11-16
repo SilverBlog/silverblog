@@ -1,6 +1,5 @@
 import json
 import os.path
-import re
 import time
 
 from pypinyin import lazy_pinyin
@@ -12,8 +11,8 @@ system_info = json.loads(file.read_file("./config/system.json"))
 
 
 def get_name(name_input):
-    name_raw = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", name_input)
-    name_list = lazy_pinyin(name_raw, errors='ignore')
+    # name_raw = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", name_input)
+    name_list = lazy_pinyin(name_input, errors='ignore')
     if len(name_list) != 1:
         name = ""
         for item in name_list:
