@@ -1,5 +1,6 @@
 import json
 import os.path
+import re
 import time
 
 from pypinyin import lazy_pinyin
