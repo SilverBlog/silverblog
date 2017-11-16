@@ -63,9 +63,10 @@ def post_list(request_type):
     if file_url is None:
         abort(404)
     page_list = json.loads(file.read_file(file_url))
-    for item in page_list:
-        page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
-    return json_dumps(page_list)
+    if request_type == "post":
+        for item in page_list:
+            page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
+    return json.dumps(page_list)
 
 
 @app.route('/control/get_<request_type>_content', methods=['POST'])
