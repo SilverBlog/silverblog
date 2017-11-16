@@ -9,4 +9,4 @@ RUN apk add --no-cache python3 git nano vim bash uwsgi uwsgi-python3 newt \
 && pip3 install flask hoedown pypinyin pyrss2gen gitpython watchdog \
 && apk del --purge .build-deps
 
-CMD ["python3","watch.py"]
+CMD ["python3","watch.py","--docker"]
