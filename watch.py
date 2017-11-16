@@ -32,7 +32,8 @@ if __name__ == "__main__":
     parser.add_argument("--docker",
                         help="When running in the docker, please add this command to speed up the restart of the program",
                         action="store_true")
-    parser.add_argument("--control", action="store_true")
+    parser.add_argument("--control", action="store_true",
+                        help="If you need to monitor the control server, add this option")
     args = parser.parse_args()
 
     if args.control:
