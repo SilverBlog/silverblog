@@ -11,8 +11,7 @@ if __name__ == '__main__':
         menu.use_whiptail_mode()
         exit(0)
     parser = argparse.ArgumentParser("SilverBlog command line management tool.")
-    parser.add_argument("command", default=None,
-                        help="The name of the function to execute.")
+    parser.add_argument("command", help="The name of the function to execute.")
     #new
     group_new = parser.add_argument_group('new', "Create a new article.")
     group_new.add_argument("--config", help="The configuration file location you want to load.")
@@ -36,3 +35,4 @@ if __name__ == '__main__':
         menu.use_text_mode(args)
     except KeyboardInterrupt:
         print("User cancelled operation.")
+    parser.print_help()
