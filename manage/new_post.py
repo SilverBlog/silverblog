@@ -13,7 +13,7 @@ system_info = json.loads(file.read_file("./config/system.json"))
 def get_name(name_input):
     # name_raw = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", name_input)
     name_list = lazy_pinyin(name_input, errors='ignore')
-    if len(name_list) != 1:
+    if len(name_list) != 0:
         name = ""
         for item in name_list:
             name = name + "-" + item
