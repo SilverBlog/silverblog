@@ -12,12 +12,15 @@ system_info = json.loads(file.read_file("./config/system.json"))
 
 
 def get_name(name_input):
-    name_raw = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", name_input)
-    name_list = lazy_pinyin(name_raw)
-    name = ""
-    for item in name_list:
-        name = name + "-" + item
-    return name[1:len(name)]
+    name_list = lazy_pinyin(name_input, errors='ignore')
+    if len(name_list) != 0:
+        name = ""
+        for item in name_list:
+            name = name + item
+            if name_list.index(item) != (len(name_list) - 1):
+                name = name + "-"
+        return name
+    return re.sub("[\s+\.\!\/_,$%^*()+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", name_input)
 
 
 def new_post_init(config, independent=False):

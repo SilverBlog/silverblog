@@ -83,7 +83,7 @@ You need to edit menu.json, menu.json for the navigation bar configuration file
 
 ## Start running
 
-You can run SilverBlog using tools such as Tmux or Screen. You only need to execute `./Start.sh` to open your blog.
+You can run SilverBlog using tools such as Tmux or Screen. You only need to execute `` to open your blog.
 
 Because of the cache, every time you add an article, update a list of articles, you need to restart SilverBlog to reread the data. To do automatic monitoring and restart SilverBlog, see the next section
 

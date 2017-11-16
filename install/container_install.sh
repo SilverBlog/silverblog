@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+if [ ! -f "install.sh" ]; then
+    git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
+    cd silverblog/install
+fi
+
+./install.sh
+
+
+
+sed -i '''s/127.0.0.1/0.0.0.0/g' ../uwsgi.json

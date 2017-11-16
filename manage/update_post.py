@@ -5,7 +5,8 @@ from common import file, console
 from manage import get_excerpt
 
 def update():
-    page_list = json.loads(file.read_file("./config/page.json"))
+    page_list_file = json.loads(file.read_file("./config/page.json"))
+    page_list = page_list_file
     remove_list = list()
     for item in page_list:
         processing_file = "./document/{0}.md".format(item["name"])
@@ -19,7 +20,8 @@ def update():
         if page_list[item]["name"] in remove_list:
             console.log("Remove", "Removing from list: {0}".format(page_list[item]["name"]))
             page_list.pop(item)
-
-    file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False, indent=4, sort_keys=False))
-
-    console.log("Success", "Update article metadata is successful!")
+    if page_list_file != page_list:
+        file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False, indent=4, sort_keys=False))
+        console.log("Success", "Update article metadata is successful!")
+        return True
+    return False

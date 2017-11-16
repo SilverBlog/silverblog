@@ -1,0 +1,5 @@
+flask
+hoedown
+pypinyin
+pyrss2gen
+gitpython

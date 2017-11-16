@@ -79,7 +79,7 @@ wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/ins
 
 ## 開始運行
 
-您可以使用 Tmux 或者 Screen 等工具運行 SilverBlog 。您只需要執行 `./start.sh` 就可以打開您的博客。
+您可以使用 Tmux 或者 Screen 等工具運行 SilverBlog 。您只需要執行 `python3 watch.py` 就可以打開您的博客。
 
 由於緩存，每次添加文章，更新文章列表等操作時，您需要重新啟動 SilverBlog 來重新讀取數據。若要做到自動監控並且重啟 SilverBlog ，請看下節
 
@@ -105,8 +105,6 @@ pm2 save
 ```
 
 使得您的 SilverBlog 能夠在系統開機的時候，自動啟動。
-
-您也可以使用
 
 ## 如何使用管理腳本
 
