@@ -60,7 +60,7 @@ if __name__ == "__main__":
             line = line.strip().decode("utf-8")
             if len(line) != 0:
                 print(line)
-            time.sleep(0.05)
+            time.sleep(0.01)
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
