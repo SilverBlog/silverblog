@@ -4,7 +4,7 @@
 import json
 import time
 
-from common import whiptail, file
+from common import whiptail, file, console
 
 dialog = whiptail.Whiptail()
 dialog.height = 15
@@ -128,8 +128,6 @@ def theme_manage():
         theme.remove_theme(theme_name)
 
 def use_text_mode(args):
-    import json
-    from common import file, console
     from manage import build_rss, build_static_page, new_post, update_post, theme
     if args.command == "new":
         config = None
