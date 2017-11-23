@@ -11,9 +11,10 @@ from manage import new_post, build_rss, update_post, build_static_page, delete_p
 app = Flask(__name__)
 api_version = 1
 system_config = json.loads(file.read_file("./config/system.json"))
+
 try:
     password_md5 = json.loads(system_config["API_Password"])["hash_password"]
-except (ValueError, KeyError):
+except (ValueError, KeyError, TypeError):
     if len(system_config["API_Password"]) == 0:
         exit(1)
     password_md5 = hashlib.md5(str(system_config["API_Password"]).encode('utf-8')).hexdigest()
