@@ -6,11 +6,11 @@ from flask import Flask, abort, redirect
 
 from common import file, page, console, post_map
 
-system_config = None
-page_list = None
+system_config = dict()
+page_list = list()
 rss = None
-menu_list = None
-template_config = None
+menu_list = list()
+template_config = dict()
 page_name_list = list()
 cache_index = dict()
 cache_post = dict()
