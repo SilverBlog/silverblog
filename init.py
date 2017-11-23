@@ -21,29 +21,29 @@ console.log("info", "Loading configuration...")
 @asyncio.coroutine
 def get_system_config():
     global system_config
-    system_config = yield from json.loads(file.read_file("./config/system.json"))
+    system_config = json.loads(file.read_file("./config/system.json"))
     system_config["API_Password"] = None
     if len(system_config["Theme"]) == 0:
         console.log("Error",
                 "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
     exit(1)
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
-        template_config = yield from json.loads(
+        template_config = json.loads(
             file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
 
 @asyncio.coroutine
 def get_menu_list():
     global menu_list
-    menu_list = yield from json.loads(file.read_file("./config/menu.json"))
-    menu_list = yield from list(map(post_map.add_post_header, menu_list))
+    menu_list = json.loads(file.read_file("./config/menu.json"))
+    menu_list = list(map(post_map.add_post_header, menu_list))
 
 @asyncio.coroutine
 def get_page_list():
     global page_list
-    page_list = yield from json.loads(file.read_file("./config/page.json"))
+    page_list = json.loads(file.read_file("./config/page.json"))
     for item in page_list:
         page_name_list.append(item["name"])
-    page_list = yield from list(map(post_map.add_post_header, page_list))
+    page_list = list(map(post_map.add_post_header, page_list))
 
 @asyncio.coroutine
 def get_rss():
