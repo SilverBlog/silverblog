@@ -35,13 +35,12 @@ def get_system_config():
 def get_menu_list():
     global menu_list
     menu_list = json.loads(file.read_file("./config/menu.json"))
-    menu_list = list(map(post_map.add_post_header, menu_list))
+
 
 @asyncio.coroutine
 def get_page_list():
     global page_list
     page_list = json.loads(file.read_file("./config/page.json"))
-    page_list = list(map(post_map.add_post_header, page_list))
 @asyncio.coroutine
 def get_rss():
     global rss
@@ -55,7 +54,8 @@ loop.run_until_complete(asyncio.gather(*tasks))
 for item in page_list:
     page_name_list.append(item["name"])
     page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
-
+menu_list = list(map(post_map.add_post_header, menu_list))
+page_list = list(map(post_map.add_post_header, page_list))
 console.log("Success", "load the configuration file successfully!")
 loop.close()
 @app.route("/rss/", strict_slashes=False)
