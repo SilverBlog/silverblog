@@ -44,9 +44,7 @@ def install_theme(theme_name, orgs_list=None):
     except urllib.error:
         console.log("Error", "Get the theme installation script error.")
         exit(1)
-    if os.path.exists("./templates"):
-        os.chdir("./templates")
-    os.system(r)
+    os.system("cd ./templates \n" + r)
     console.log("Success", "The theme is installed successfully!")
     return name
 
