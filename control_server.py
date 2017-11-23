@@ -37,11 +37,9 @@ if __name__ == '__main__':
     exit(0)
 
 def check_password(title, encode):
-    if len(system_config["API_Password"]) != 0:
         hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
         if encode == hash_md5:
             return True
-    return False
 
 
 @app.route('/control/system_info', methods=['POST'])
