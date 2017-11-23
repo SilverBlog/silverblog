@@ -56,7 +56,6 @@ for item in page_list:
 loop = asyncio.get_event_loop()
 tasks = [get_system_config(), get_page_list(), get_rss()]
 loop.run_until_complete(asyncio.gather(*tasks))
-loop.close()
 console.log("Success", "load the configuration file successfully!")
 
 @app.route("/rss/", strict_slashes=False)
