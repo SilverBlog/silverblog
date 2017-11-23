@@ -26,7 +26,7 @@ def get_system_config():
     if len(system_config["Theme"]) == 0:
         console.log("Error",
                 "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
-    exit(1)
+        exit(1)
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
         template_config = json.loads(
             file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
