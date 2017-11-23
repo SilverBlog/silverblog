@@ -10,8 +10,8 @@ if __name__ == '__main__':
     if len(sys.argv) == 1:
         menu.use_whiptail_mode()
         exit(0)
-    parser = argparse.ArgumentParser("SilverBlog CLI tool.")
-    parser.add_argument("command", help="The name of the function to execute.")
+    parser = argparse.ArgumentParser("SilverBlog CLI management tool")
+    parser.add_argument("command", help="The name of the function to execute.", )
 
     #new
     group_new = parser.add_argument_group('new', "Create a new article.")
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     group_build_gh_page.add_argument("-p", "--push_git", help="Automatically submitted to Git", action="store_true")
 
     args = parser.parse_args()
-    
+
     try:
         menu.use_text_mode(args)
         # After hitting will exit

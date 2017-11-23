@@ -8,7 +8,7 @@ from common import whiptail, file, console
 
 dialog = whiptail.Whiptail()
 dialog.height = 15
-dialog.title = "SilverBlog command line management tool"
+dialog.title = "SilverBlog CLI management tool"
 def use_whiptail_mode():
     while True:
         menu_list = ["Article manager", "Upgrade", "Theme package manager", "Build static page", "Exit"]
