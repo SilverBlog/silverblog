@@ -37,6 +37,7 @@ def article_manager():
         new_post()
     if result == "Edit":
         edit_post()
+        update_post.update()
     if result == "Delete":
         delete_post()
     if result == "Update":
