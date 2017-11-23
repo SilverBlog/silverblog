@@ -5,167 +5,123 @@
 [中文文档(简体中文)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/readme/README-zh-CN.md)
 [中文文档(繁体中文)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/readme/README-zh-TW.md)
 
-SilverBlog is a Python-based lightweight blog.
+# SilverBlog
 
-## Why SilverBlog is selected
+[!] [License] (https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)] (https://github.com/qwe7002/SilverBlog/blob/master/LICENSE )
 
-* Simple, compact blog system
+SilverBlog is a lightweight Python3-based blog.
+
+## Why SilverBlog
+
+* Simple, small blog system
 * Easy to install and deploy
-* Complete Rss support
-* Modular design
+* Full Rss support
+* Modular design, easy to add, delete
 * No database design
-* Has a static page generation module comparable to Hexo, just one line command that runs on Github Page
-* Supports Mac os and Linux
+* Equivalent Hexo static page generation module, just a line of commands, you can run on Github Page
+* Mac OS and Linux support
 * Have an Android client
-* Have a web version manager
+* Have a web manager.
 
 ## how to install
 
-At present, the installation script for the Debian-based operating system and Arch Linux support, other systems please see the script to install the environment, we will continue to provide other system installation script.
-
 You can install SilverBlog directly using the installation script
+
+Docker:
+
+```
+curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh | bash
+```
 
 Debian:
 
-```shell
-wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh | sudo bash
+```
+curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh | bash
 ```
 
 Arch Linux:
 
-```shell
-wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | sudo bash
+```
+curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | bash
 ```
 
- Docker(testing):
+You will need to select a theme in [SilverBlogTeam] (https://github.com/SilverBlogTeam) and put it in the templates directory. Run `install.sh` in the theme folder and in the following config file Configure it correctly
 
-```shell
-wget -qO- https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh | bash
-```
-
-You need to select a theme in [SilverBlogTeam](https://github.com/SilverBlogTeam), store it in the `templates` directory, run `install.sh` in the theme folder, and in the following configuration file Configure it correctly
-
-This install script defaults to the nginx + uwsgi execution mode. If you did not modify the port number in the `uwsgi.json` file, place the `nginx_config` file in your nginx package (the default location is in /etc/nginx/sites-enabled) Site configuration directory, and replace the {your SilverBlog location} in your file with your SilverBlog storage directory.
+By default, this installation script uses the nginx + uwsgi execution mode, and you can place the `nginx_config` file generated automatically by the program into the site configuration directory of your nginx package.
 
 ## Configure your SilverBlog
 
-You need to modify the system.json under the config folder. This is your global profile. The following is the variable definition: (remember, Json can not support the comment)
+You need to use `setting.py` to configure your system information.
 
-```
-{
-  "Project_Name": "", (website name)
-  "Project_Description": "", (website profile)
-  "Project_URL": "", (website access address)
-  "Author_Image": "", (author avatar)
-  "Author_Name": "", (author name)
-  "Author_Introduction": "", (author introduction)
-  "Paging": 10, (list of pages)
-  "Time_Format": "%Y-%m-%d",(time format)
-  "Theme": "", (theme, here for the theme folder name)
-  "API_Password": "", (API's PSK password)
-  "Restful_API": false, (Restful output switch)
-  "Editor": "vim" (default editor)
-}
-```
-
-You need to edit menu.json, menu.json for the navigation bar configuration file
-
+You need to edit `menu.json` and `menu.json` as the navigation bar's configuration file
 
 ```
 [
   {
-    "title": "home page", (displayed name)
+    "title": "Home", (the name of the display)
     "name": "hello-world", (optional, article name, can not exist with absolute.)
-    "absolute": "https://demo.silverblog.org" (optional, absolute path address, can not exist with name.)
+    "absolute": "https://demo.silverblog.org" (optional, absolute path address, not with name.)
   }
 ]
 ```
 
-## Start running
+## start operation
 
-You can run SilverBlog using tools such as Tmux or Screen. You only need to execute `` to open your blog.
+You can run SilverBlog using tools such as Tmux or Screen. You just need to execute `python3 watch.py` to open your blog.
 
-Because of the cache, every time you add an article, update a list of articles, you need to restart SilverBlog to reread the data. To do automatic monitoring and restart SilverBlog, see the next section
+You can run the management server with the `--control` parameter.
 
 ## Keep running and monitor your blog
 
-In order to avoid each update, the program error to bring you the trouble. SilverBlog strongly recommends that you use NodeJS-based monitoring programs: PM2
+You can configure your server using the `systemd_startup_install.sh` file in the install directory. It works in the same way as the recommended method below.
 
-For more information about PM2 installation, please see [How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04) and [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
+SilverBlog recommends using NodeJS-based monitor: PM2
 
-Then you just need to run
+For the installation of PM2, check out [How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16- 04) and [PM2 - Quick Start] (http://pm2.keymetrics.io/docs/usage/quick-start/)
 
-```shell
+Then you just need to run it
+
+```
 pm2 start start.json
 ```
 
-It can be achieved in the update file or program error, automatically restart SilverBlog.
+It is possible to automatically restart the SilverBlog after an update file or a program error.
 
-You can also use it.
+You can also use it
 
-```shell
+```
 pm2 startup
 pm2 save
 ```
 
-So that your SilverBlog can start automatically when the system is powered on
+Make your SilverBlog can be activated automatically when the system is powered on.
 
-## How to use administrative scripts
+## How to use management scripts
 
-You can use `./manage.py -h` at any time to get help information for the SilverBlog management module
+You can use `./manage.py -h` at any time to get help for the SilverBlog Management Module
 
-The following is a list of features:
+Enter `./manage.py` directly into the graphical environment whiptail builds.
 
-Add article json example:(You need to put the file in the Document directory. The name here should be the same as the md file name in the Document directory.)
-
-```json
+Add an article config json Example: (Note that you need to put the file in the Document directory. The name here should be the same as the md file name in the Document directory.)
+`` `
 {
-	"title":"hello world",
-	"name":"hello-world",
-	"time":1508747668.0
+"title": "Hello, world!",
+"name": "hello-world"
 }
-```
+`` `
 
-## Use the phone client
+## using mobile client
 
-You can visit https://github.com/SilverBlogTeam/SilverBlog_Android/releases download the latest android client(Only Chinese version).
+You can download the latest android client at https://github.com/SilverBlogTeam/SilverBlog_Android/releases.
 
-You can use SilverCreate (https://c.silverblog.org) to manage your blog.
+You can manage your blog using `SilverCreate` (https://c.silverblog.org).
 
-You can use pip to install [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) dependencies, and then execute `python3 control_server.py` to generate the automated configuration of the QR code.
+You can use pip install [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) dependencies, and then execute `python3 control_server.py` generate automated configuration QR code.
 
-## Participate in development
+## participate in the development
 
-We welcome you to report the issue or pull request on GitHub of the SilverBlog project.
+We welcome you to report issue or pull request on the GitHub SilverBlog project.
 
-If you are not familiar with GitHub's Fork and Pull development mode, you can read [GitHub's documentation](https://help.github.com/articles/using-pull-requests) for more information.
+If you are new to GitHub's Fork and Pull development model, you can read more about GitHub's documentation (https://help.github.com/articles/using-pull-requests).
 
-## Distribution protocol
-
-Copyright (c) 2017, SilverBlogTeam
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-* Neither the name of SilverBlogTeam nor the names of its
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+We suggest that you issue an issue in Chinese, accompanied by an English translation below, for easy reading and understanding by non-native speakers.
