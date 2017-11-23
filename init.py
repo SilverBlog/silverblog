@@ -6,10 +6,10 @@ from flask import Flask, abort, redirect
 
 from common import file, page, console, post_map
 
-system_config = None
-page_list = None
+system_config = dict()
+page_list = list()
 rss = None
-menu_list = None
+menu_list = list()
 template_config = None
 page_name_list = list()
 cache_index = dict()
@@ -20,6 +20,7 @@ app = Flask(__name__)
 console.log("info", "Loading configuration...")
 @asyncio.coroutine
 def get_system_config():
+    global system_config
     system_config = json.loads(file.read_file("./config/system.json"))
     system_config["API_Password"] = None
     if len(system_config["Theme"]) == 0:
@@ -31,11 +32,13 @@ def get_system_config():
 
 @asyncio.coroutine
 def get_menu_list():
+    global menu_list
     menu_list = json.loads(file.read_file("./config/menu.json"))
     menu_list = list(map(post_map.add_post_header, menu_list))
 
 @asyncio.coroutine
 def get_page_list():
+    global page_list
     page_list = json.loads(file.read_file("./config/page.json"))
     for item in page_list:
         page_name_list.append(item["name"])
@@ -43,6 +46,7 @@ def get_page_list():
 
 @asyncio.coroutine
 def get_rss():
+    global rss
     if os.path.exists("./document/rss.xml"):
         rss = file.read_file("document/rss.xml")
 
