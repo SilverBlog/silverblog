@@ -6,6 +6,8 @@ from flask import Flask, abort, redirect
 
 from common import file, page, console, post_map
 
+system_config = None
+page_list = None
 rss = None
 menu_list = None
 template_config = None
@@ -43,9 +45,6 @@ def get_page_list():
 def get_rss():
     if os.path.exists("./document/rss.xml"):
         rss = file.read_file("document/rss.xml")
-
-
-
 
 for item in page_list:
     page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
