@@ -24,12 +24,12 @@ sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
 
 cat << EOF >start.sh
 #!/usr/bin/env bash
-docker run -dt -v $(pwd):/home/silverblog -p 5000:5000 --restart="always" --name="silverblog"  qwe7002/silverblog
-docker run -dt -v $(pwd):/home/silverblog -p 5001:5001 --restart="always" --name="silverblog_control" qwe7002/silverblog uwsgi --json uwsgi.json:control
+docker run -dt -v $(pwd):/home/silverblog -p 5000:5000 --restart="always" --name="silverblog"  silverblog/silverblog
+docker run -dt -v $(pwd):/home/silverblog -p 5001:5001 --restart="always" --name="silverblog_control" silverblog/silverblog uwsgi --json uwsgi.json:control
 EOF
 cat << EOF >attach-docker.sh
 #!/usr/bin/env bash
-docker run -it -v $(pwd):/home/silverblog qwe7002/silverblog sh
+docker run -it -v $(pwd):/home/silverblog silverblog/silverblog bash
 EOF
 
 chmod +x attach-docker.sh
