@@ -7,7 +7,7 @@ ${use_superuser} pip3 install watchdog
 if [ $(basename `pwd`) == "install" ];then
     cd ..
 fi
-$use_superuser cat << EOF >/etc/systemd/system/silverblog.service
+${use_superuser} cat << EOF >/etc/systemd/system/silverblog.service
 [Unit]
 Description=SilverBlog server daemon
 
@@ -22,7 +22,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-$use_superuser cat << EOF >/etc/systemd/system/silverblog_control.service
+${use_superuser} cat << EOF >/etc/systemd/system/silverblog_control.service
 [Unit]
 Description=SilverBlog server daemon
 

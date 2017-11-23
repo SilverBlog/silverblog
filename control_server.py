@@ -11,15 +11,23 @@ from manage import new_post, build_rss, update_post, build_static_page, delete_p
 app = Flask(__name__)
 api_version = 1
 system_config = json.loads(file.read_file("./config/system.json"))
-password_md5 = hashlib.md5(str(system_config["API_Password"]).encode('utf-8')).hexdigest()
 
+console.log("info", "Loading configuration...")
+try:
+    password_md5 = json.loads(system_config["API_Password"])["hash_password"]
+except (ValueError, KeyError, TypeError):
+    if len(system_config["API_Password"]) == 0:
+        exit(1)
+    password_md5 = hashlib.md5(str(system_config["API_Password"]).encode('utf-8')).hexdigest()
+    system_config["API_Password"] = json.dumps({"hash_password": password_md5})
+    file.write_file("./config/system.json", json.dumps(system_config, indent=4, sort_keys=False, ensure_ascii=False))
+console.log("Success", "load the configuration file successfully!")
 if __name__ == '__main__':
     try:
         import qrcode_terminal
     except ImportError:
         console.log("Error", "Please install the qrcode-terminal package to support this feature")
         exit(1)
-
     if len(system_config["API_Password"]) == 0 or len(system_config["Project_URL"]) == 0:
         print("Check the API_Password and Project_URL configuration items")
         exit(1)
@@ -29,11 +37,9 @@ if __name__ == '__main__':
     exit(0)
 
 def check_password(title, encode):
-    if len(system_config["API_Password"]) != 0:
         hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
         if encode == hash_md5:
             return True
-    return False
 
 
 @app.route('/control/system_info', methods=['POST'])
@@ -56,8 +62,7 @@ def select_type(request_type):
         file_url = "./config/menu.json"
     return file_url
 
-
-@app.route('/control/get_<request_type>_list', methods=['POST'])
+@app.route('/control/get_<request_type>_list', strict_slashes=False, methods=['POST'])
 def post_list(request_type):
     file_url = select_type(request_type)
     if file_url is None:
@@ -68,8 +73,7 @@ def post_list(request_type):
             page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
     return json.dumps(page_list)
 
-
-@app.route('/control/get_<request_type>_content', methods=['POST'])
+@app.route('/control/get_<request_type>_content', strict_slashes=False, methods=['POST'])
 def get_content(request_type):
     file_url = select_type(request_type)
     if file_url is None:
@@ -85,8 +89,7 @@ def get_content(request_type):
     result["status"] = True
     return json.dumps(result)
 
-
-@app.route('/control/edit_<request_type>', methods=['POST'])
+@app.route('/control/edit_<request_type>', strict_slashes=False, methods=['POST'])
 def edit(request_type):
     file_url = select_type(request_type)
     is_menu = False
@@ -112,8 +115,7 @@ def edit(request_type):
         build_rss.build_rss()
     return json.dumps({"status": state, "name": name})
 
-
-@app.route('/control/delete', methods=['POST'])
+@app.route('/control/delete', strict_slashes=False, methods=['POST'])
 def delete():
     if request.json is None:
         abort(400)
@@ -127,8 +129,7 @@ def delete():
         build_rss.build_rss()
     return json.dumps({"status": state})
 
-
-@app.route('/control/new', methods=['POST'])
+@app.route('/control/new', strict_slashes=False, methods=['POST'])
 def new():
     if request.json is None:
         abort(400)
@@ -147,8 +148,7 @@ def new():
         build_rss.build_rss()
     return json.dumps({"status": state, "name": name})
 
-
-@app.route("/control/git_page_publish", methods=['POST'])
+@app.route("/control/git_page_publish", strict_slashes=False, methods=['POST'])
 def git_publish():
     status = build_static_page.publish(True, False)
     return json.dumps({"status": status})

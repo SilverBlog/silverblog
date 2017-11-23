@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os.path
 
@@ -5,9 +6,11 @@ from flask import Flask, abort, redirect
 
 from common import file, page, console, post_map
 
+system_config = dict()
+page_list = list()
 rss = None
-menu_list = None
-template_config = None
+menu_list = list()
+template_config = dict()
 page_name_list = list()
 cache_index = dict()
 cache_post = dict()
@@ -15,36 +18,50 @@ cache_post = dict()
 app = Flask(__name__)
 
 console.log("info", "Loading configuration...")
+@asyncio.coroutine
+def get_system_config():
+    global system_config, template_config
+    system_config = json.loads(file.read_file("./config/system.json"))
+    system_config["API_Password"] = None
+    if len(system_config["Theme"]) == 0:
+        console.log("Error",
+                "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
+        exit(1)
+    if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
+        template_config = json.loads(
+            file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
 
-system_config = json.loads(file.read_file("./config/system.json"))
-
-page_list = json.loads(file.read_file("./config/page.json"))
-
-if os.path.exists("./config/menu.json"):
+@asyncio.coroutine
+def get_menu_list():
+    global menu_list
     menu_list = json.loads(file.read_file("./config/menu.json"))
+
+
+@asyncio.coroutine
+def get_page_list():
+    global page_list
+    page_list = json.loads(file.read_file("./config/page.json"))
+@asyncio.coroutine
+def get_rss():
+    global rss
+    if os.path.exists("./document/rss.xml"):
+        rss = file.read_file("document/rss.xml")
+
+loop = asyncio.get_event_loop()
+tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss()]
+loop.run_until_complete(asyncio.gather(*tasks))
+loop.close()
 
 for item in page_list:
     page_name_list.append(item["name"])
-
-if os.path.exists("./document/rss.xml"):
-    rss = file.read_file("document/rss.xml")
-if len(system_config["Theme"]) == 0:
-    console.log("Error",
-                "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
-    exit(1)
-if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
-    template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
-
-system_config["API_Password"] = None
-page_list = list(map(post_map.add_post_header, page_list))
-menu_list = list(map(post_map.add_post_header, menu_list))
-for item in page_list:
     page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
+menu_list = list(map(post_map.add_post_header, menu_list))
+page_list = list(map(post_map.add_post_header, page_list))
 console.log("Success", "load the configuration file successfully!")
 
 @app.route("/rss/", strict_slashes=False)
 @app.route("/feed/", strict_slashes=False)
-def load_rss():
+def result_rss():
     if rss is None:
         abort(404)
     return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
