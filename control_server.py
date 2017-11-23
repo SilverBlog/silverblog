@@ -62,8 +62,7 @@ def select_type(request_type):
         file_url = "./config/menu.json"
     return file_url
 
-
-@app.route('/control/get_<request_type>_list', methods=['POST'])
+@app.route('/control/get_<request_type>_list', strict_slashes=False, methods=['POST'])
 def post_list(request_type):
     file_url = select_type(request_type)
     if file_url is None:
@@ -74,8 +73,7 @@ def post_list(request_type):
             page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
     return json.dumps(page_list)
 
-
-@app.route('/control/get_<request_type>_content', methods=['POST'])
+@app.route('/control/get_<request_type>_content', strict_slashes=False, methods=['POST'])
 def get_content(request_type):
     file_url = select_type(request_type)
     if file_url is None:
@@ -91,8 +89,7 @@ def get_content(request_type):
     result["status"] = True
     return json.dumps(result)
 
-
-@app.route('/control/edit_<request_type>', methods=['POST'])
+@app.route('/control/edit_<request_type>', strict_slashes=False, methods=['POST'])
 def edit(request_type):
     file_url = select_type(request_type)
     is_menu = False
@@ -118,8 +115,7 @@ def edit(request_type):
         build_rss.build_rss()
     return json.dumps({"status": state, "name": name})
 
-
-@app.route('/control/delete', methods=['POST'])
+@app.route('/control/delete', strict_slashes=False, methods=['POST'])
 def delete():
     if request.json is None:
         abort(400)
@@ -133,8 +129,7 @@ def delete():
         build_rss.build_rss()
     return json.dumps({"status": state})
 
-
-@app.route('/control/new', methods=['POST'])
+@app.route('/control/new', strict_slashes=False, methods=['POST'])
 def new():
     if request.json is None:
         abort(400)
@@ -153,8 +148,7 @@ def new():
         build_rss.build_rss()
     return json.dumps({"status": state, "name": name})
 
-
-@app.route("/control/git_page_publish", methods=['POST'])
+@app.route("/control/git_page_publish", strict_slashes=False, methods=['POST'])
 def git_publish():
     status = build_static_page.publish(True, False)
     return json.dumps({"status": status})
