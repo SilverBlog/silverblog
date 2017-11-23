@@ -20,8 +20,7 @@ system_config = json.loads(file.read_file("./config/system.json"))
 
 page_list = json.loads(file.read_file("./config/page.json"))
 
-if os.path.exists("./config/menu.json"):
-    menu_list = json.loads(file.read_file("./config/menu.json"))
+menu_list = json.loads(file.read_file("./config/menu.json"))
 
 for item in page_list:
     page_name_list.append(item["name"])
