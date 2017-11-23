@@ -12,6 +12,7 @@ app = Flask(__name__)
 api_version = 1
 system_config = json.loads(file.read_file("./config/system.json"))
 
+console.log("info", "Loading configuration...")
 try:
     password_md5 = json.loads(system_config["API_Password"])["hash_password"]
 except (ValueError, KeyError, TypeError):
@@ -20,14 +21,13 @@ except (ValueError, KeyError, TypeError):
     password_md5 = hashlib.md5(str(system_config["API_Password"]).encode('utf-8')).hexdigest()
     system_config["API_Password"] = json.dumps({"hash_password": password_md5})
     file.write_file("./config/system.json", json.dumps(system_config, indent=4, sort_keys=False, ensure_ascii=False))
-
+console.log("Success", "load the configuration file successfully!")
 if __name__ == '__main__':
     try:
         import qrcode_terminal
     except ImportError:
         console.log("Error", "Please install the qrcode-terminal package to support this feature")
         exit(1)
-
     if len(system_config["API_Password"]) == 0 or len(system_config["Project_URL"]) == 0:
         print("Check the API_Password and Project_URL configuration items")
         exit(1)
