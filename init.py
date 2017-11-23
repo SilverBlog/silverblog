@@ -50,14 +50,14 @@ def get_rss():
 loop = asyncio.get_event_loop()
 tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss()]
 loop.run_until_complete(asyncio.gather(*tasks))
-
+loop.close()
 for item in page_list:
     page_name_list.append(item["name"])
     page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
 menu_list = list(map(post_map.add_post_header, menu_list))
 page_list = list(map(post_map.add_post_header, page_list))
 console.log("Success", "load the configuration file successfully!")
-loop.close()
+
 @app.route("/rss/", strict_slashes=False)
 @app.route("/feed/", strict_slashes=False)
 def result_rss():
