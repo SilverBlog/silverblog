@@ -6,10 +6,10 @@ from flask import Flask, abort, redirect
 
 from common import file, page, console, post_map
 
-system_config = dict()
-page_list = list()
+system_config = None
+page_list = None
 rss = None
-menu_list = list()
+menu_list = None
 template_config = None
 page_name_list = list()
 cache_index = dict()
@@ -20,7 +20,7 @@ app = Flask(__name__)
 console.log("info", "Loading configuration...")
 @asyncio.coroutine
 def get_system_config():
-    global system_config
+    global system_config, template_config
     system_config = json.loads(file.read_file("./config/system.json"))
     system_config["API_Password"] = None
     if len(system_config["Theme"]) == 0:
