@@ -19,5 +19,5 @@ start.json
 start.sh
 templates
 nginx_config
-attach-docker.sh
+attach.sh
 /upgrade/current_version.json
