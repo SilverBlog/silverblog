@@ -19,9 +19,6 @@ def update():
         if not hit_file:
             console.log("Remove", "Removing from list: {0}".format(processing_file))
 
-    if page_list_file != page_list:
-        file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False, indent=4, sort_keys=False))
-        console.log("Success", "Update article metadata is successful!")
-        return True
-    return False
-
+    file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False, indent=4, sort_keys=False))
+    console.log("Success", "Update article metadata is successful!")
+    return True

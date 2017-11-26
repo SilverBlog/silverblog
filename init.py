@@ -36,11 +36,11 @@ def get_menu_list():
     global menu_list
     menu_list = json.loads(file.read_file("./config/menu.json"))
 
-
 @asyncio.coroutine
 def get_page_list():
     global page_list
     page_list = json.loads(file.read_file("./config/page.json"))
+
 @asyncio.coroutine
 def get_rss():
     global rss
