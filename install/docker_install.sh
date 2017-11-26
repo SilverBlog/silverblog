@@ -29,7 +29,7 @@ docker run -dt -v $(pwd):/home/silverblog -p 5001:5001 --restart="always" --name
 EOF
 cat << EOF >attach-docker.sh
 #!/usr/bin/env bash
-docker run -it -v $(pwd):/home/silverblog silverblog/silverblog bash
+docker run -it -v $(pwd):/home/silverblog --rm --name silverblog_console silverblog/silverblog bash
 EOF
 
 chmod +x attach-docker.sh
