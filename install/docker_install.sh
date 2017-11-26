@@ -27,7 +27,7 @@ cat << EOF >start.sh
 docker run -dt -v $(pwd):/home/silverblog -p 5000:5000 --restart="always" --name="silverblog"  silverblog/silverblog
 docker run -dt -v $(pwd):/home/silverblog -p 5001:5001 --restart="always" --name="silverblog_control" silverblog/silverblog uwsgi --json uwsgi.json:control
 EOF
-cat << EOF >attach-docker.sh
+cat << EOF >attach.sh
 #!/usr/bin/env bash
 docker run -it -v $(pwd):/home/silverblog --rm --name silverblog_console silverblog/silverblog bash
 EOF
