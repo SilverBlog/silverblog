@@ -7,7 +7,7 @@ from common import console
 def get_gavatar(author_name):
     r = {"entry": [{"hash": ""}]}
     console.log("info", "Get Gravatar URL...")
-    gravatar_hash = "a89dc9213c1eafa581410f76eddbf890"
+    gravatar_hash = ""
     try:
         r = urllib.request.urlopen(
             "https://en.gravatar.com/{0}.json".format(author_name)).read().decode('utf-8')
