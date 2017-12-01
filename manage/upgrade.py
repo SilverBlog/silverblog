@@ -9,6 +9,8 @@ current_data_version = 1
 new_data_version = 2
 if os.path.exists("./upgrade/current_version.json"):
     current_data_version = json.loads(file.read_file("./upgrade/current_version.json"))["current_data_version"]
+if not os.path.exists("./.git"):
+    console.log("Error", "Not a git repository.")
 repo = git.Repo("./")
 remote = repo.remote()
 def upgrade_check():
