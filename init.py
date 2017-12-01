@@ -22,7 +22,7 @@ console.log("info", "Loading configuration...")
 def get_system_config():
     global system_config, template_config
     system_config = json.loads(file.read_file("./config/system.json"))
-    system_config["API_Password"] = None
+    del system_config["API_Password"]
     if len(system_config["Theme"]) == 0:
         console.log("Error",
                 "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
