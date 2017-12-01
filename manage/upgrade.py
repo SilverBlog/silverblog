@@ -13,9 +13,7 @@ repo = git.Repo("./")
 remote = repo.remote()
 def upgrade_check():
     remote.fetch(repo.active_branch)
-    if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
-        return True
-    if current_data_version != new_data_version:
+    if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD") and current_data_version != new_data_version:
         return True
     return False
 def upgrade_pull():
