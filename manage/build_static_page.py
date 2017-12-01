@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 import shutil
@@ -41,16 +42,11 @@ def build(github_mode):
     os.mkdir("./static_page/post/")
     for filename in os.listdir("./document/"):
         if filename.endswith(".md"):
-            file_name = filename.replace(".md", "")
-            console.log("Build", "Processing file: ./static_page/post/{0}.html".format(file_name))
-            page_info = None
-            if file_name in page_name_list:
-                this_page_index = page_name_list.index(file_name)
-                page_info = page_list[this_page_index]
-            content = page.build_page(file_name, system_config, page_info, menu_list,
-                                      html_static, template_config)
-            if content is not None:
-                file.write_file("./static_page/post/{0}.html".format(filename.replace(".md", "")), content)
+            tasks = list()
+            tasks.append(build_post_page(filename, page_name_list))
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(asyncio.gather(*tasks))
+    loop.close()
     shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
     shutil.copytree("./templates/static/{0}/".format(system_config["Theme"]),
                     "./static_page/static/{0}/".format(system_config["Theme"]))
@@ -58,7 +54,18 @@ def build(github_mode):
         shutil.copytree("./templates/static/user_file", "./static_page/static/user_file")
     console.log("Success", "Create Github Page Success!")
 
-
+@asyncio.coroutine
+def build_post_page(filename, page_name_list):
+    file_name = filename.replace(".md", "")
+    console.log("Build", "Processing file: ./static_page/post/{0}.html".format(file_name))
+    page_info = None
+    if file_name in page_name_list:
+        this_page_index = page_name_list.index(file_name)
+        page_info = page_list[this_page_index]
+    content = page.build_page(file_name, system_config, page_info, menu_list,
+                              html_static, template_config)
+    if content is not None:
+        file.write_file("./static_page/post/{0}.html".format(filename.replace(".md", "")), content)
 
 def publish(push, static):
     if not os.path.exists("./static_page/.git"):
