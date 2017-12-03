@@ -25,9 +25,7 @@ def upgrade_pull():
     remote.pull()
     if not repo.is_dirty() and os.path.exists("./upgrade/upgrade_from_{}.py".format(current_data_version)):
         exec(file.read_file("./upgrade/upgrade_from_{}.py".format(current_data_version)))
-        data_version = dict()
-        data_version["current_data_version"] = new_data_version
-        file.write_file("./upgrade/current_version.json", json.dumps(data_version))
+        file.write_file("./upgrade/current_version.json", json.dumps({"current_data_version": new_data_version}))
     console.log("Success", "Upgrade Successful!")
     console.log("Info", "Please restart your service process to ensure that the program is up and running.")
     exit(0)
