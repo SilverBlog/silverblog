@@ -59,10 +59,11 @@ def build(github_mode):
             file.write_file("./static_page/index/p/{0}.html".format(str(page_id)), content)
     os.mkdir("./static_page/post/")
 
-    tasks = [asyncio.Task(
-        build_post_page(filename, page_name_list, system_config, menu_list, html_static, template_config))
-             for filename in os.listdir("./document/")]
     loop = asyncio.get_event_loop()
+    tasks = [asyncio.Task(
+        build_post_page(filename, page_name_list, system_config,
+                        menu_list, html_static, template_config))
+        for filename in os.listdir("./document/")]
     loop.run_until_complete(asyncio.gather(*tasks))
     loop.close()
     shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
