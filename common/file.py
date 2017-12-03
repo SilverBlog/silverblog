@@ -1,7 +1,7 @@
+import asyncio
 import os
 
 from common import console
-
 
 def read_file(filename):
     f = open(filename, newline=None)
@@ -16,6 +16,13 @@ def write_file(filename, content):
     f.close()
     return True
 
+@asyncio.coroutine
+def async_read_file(filename):
+    read_file(filename)
+
+@asyncio.coroutine
+def async_write_file(filename, content):
+    write_file(filename, content)
 
 def list_dirs(folder):
     return [d for d in os.listdir(folder) if os.path.isdir(os.path.join(folder, d))]
