@@ -7,7 +7,7 @@ import time
 from common import console, file, page, post_map
 
 @asyncio.coroutine
-def async_build_page(file_name, system_config, page_info, menu_list, html_static, template_config)
+def async_build_page(file_name, system_config, page_info, menu_list, html_static, template_config):
     return page.build_page(file_name, system_config, page_info, menu_list, html_static, template_config)
 
 @asyncio.coroutine
