@@ -4,10 +4,10 @@ import os
 import shutil
 import time
 
-from common import console
+from common import console, file, page, post_map
 
 @asyncio.coroutine
-def async_build_page(file_name, system_config, page_info, menu_list, html_static, template_config):
+def async_build_page(file_name, system_config, page_info, menu_list, html_static, template_config)
     return page.build_page(file_name, system_config, page_info, menu_list, html_static, template_config)
 
 @asyncio.coroutine
@@ -25,7 +25,6 @@ def build_post_page(filename, page_name_list, page_list, system_config, menu_lis
             yield from file.async_write_file("./static_page/post/{0}.html".format(filename.replace(".md", "")), content)
 
 def build(github_mode):
-    from common import file, page, post_map
     html_static = False
     if github_mode is not None:
         html_static = github_mode
