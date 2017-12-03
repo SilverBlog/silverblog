@@ -11,7 +11,7 @@ def async_build_page(file_name, system_config, page_info, menu_list, html_static
     return page.build_page(file_name, system_config, page_info, menu_list, html_static, template_config)
 
 @asyncio.coroutine
-def build_post_page(filename, page_name_list, system_config, menu_list, html_static, template_config):
+def build_post_page(filename, page_name_list, page_list, system_config, menu_list, html_static, template_config):
     if filename.endswith(".md"):
         file_name = filename.replace(".md", "")
         console.log("Build", "Processing file: ./static_page/post/{0}.html".format(file_name))
@@ -61,7 +61,7 @@ def build(github_mode):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     tasks = [
-        build_post_page(filename, page_name_list, system_config,
+        build_post_page(filename, page_name_list, page_list, system_config,
                         menu_list, html_static, template_config)
         for filename in os.listdir("./document/")]
     loop.run_until_complete(asyncio.wait(tasks))
