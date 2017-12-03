@@ -58,13 +58,13 @@ def build(github_mode):
             content, row = page.build_index(page_id, system_config, page_list, menu_list, html_static, template_config)
             file.write_file("./static_page/index/p/{0}.html".format(str(page_id)), content)
     os.mkdir("./static_page/post/")
-
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
     tasks = [
         build_post_page(filename, page_name_list, system_config,
                         menu_list, html_static, template_config)
         for filename in os.listdir("./document/")]
-    loop.run_until_complete(asyncio.gather(*tasks))
+    loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
     shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
     shutil.copytree("./templates/static/{0}/".format(system_config["Theme"]),

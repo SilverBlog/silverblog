@@ -52,7 +52,7 @@ def get_rss():
 
 loop = asyncio.get_event_loop()
 tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss()]
-loop.run_until_complete(asyncio.gather(*tasks))
+loop.run_until_complete(asyncio.wait(tasks))
 loop.close()
 
 for item in page_list:
