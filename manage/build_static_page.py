@@ -18,7 +18,8 @@ def build_post_page(filename, page_name_list):
         content = page.build_page(file_name, system_config, page_info, menu_list,
                                   html_static, template_config)
         if content is not None:
-            file.write_file("./static_page/post/{0}.html".format(filename.replace(".md", "")), content)
+            yield from file.async_write_file("./static_page/post/{0}.html".format(filename.replace(".md", "")), content)
+    return True
 
 def build(github_mode):
     from common import file, page, post_map
@@ -55,7 +56,7 @@ def build(github_mode):
             file.write_file("./static_page/index/p/{0}.html".format(str(page_id)), content)
     os.mkdir("./static_page/post/")
 
-    coros = [asyncio.Task(build_post_page(filename, page_name_list)) for filename in os.listdir("./document/")]
+    coros = [asyncio.Task(build_post_page(filename, page_name_list)) for filename in file.list_dirs("./document/")]
     loop = asyncio.get_event_loop()
     loop.run_until_complete(asyncio.wait(coros))
     loop._default_executor.shutdown(wait=True)
