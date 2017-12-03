@@ -40,11 +40,12 @@ def build(github_mode):
             content, row = page.build_index(page_id, system_config, page_list, menu_list, html_static, template_config)
             file.write_file("./static_page/index/p/{0}.html".format(str(page_id)), content)
     os.mkdir("./static_page/post/")
+    loop = asyncio.get_event_loop()
     for filename in os.listdir("./document/"):
         if filename.endswith(".md"):
             tasks = list()
             tasks.append(build_post_page(filename, page_name_list))
-    loop = asyncio.get_event_loop()
+
     loop.run_until_complete(asyncio.gather(*tasks))
     loop.close()
     shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
