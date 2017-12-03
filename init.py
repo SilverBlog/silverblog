@@ -50,7 +50,7 @@ def get_rss():
     if os.path.exists("./document/rss.xml"):
         rss = yield from file.async_read_file("document/rss.xml")
 
-loop = asyncio.get_event_loop()
+loop = asyncio.new_event_loop()
 tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss()]
 loop.run_until_complete(asyncio.gather(*tasks))
 loop.close()

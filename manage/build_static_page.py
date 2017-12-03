@@ -57,7 +57,7 @@ def build(github_mode):
     os.mkdir("./static_page/post/")
 
     coros = [asyncio.Task(build_post_page(filename, page_name_list)) for filename in file.list_dirs("./document/")]
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
     loop.run_until_complete(asyncio.wait(coros))
     loop._default_executor.shutdown(wait=True)
     loop.close()
