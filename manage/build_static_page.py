@@ -7,7 +7,11 @@ import time
 from common import console
 
 @asyncio.coroutine
-def build_post_page(filename, page_name_list):
+def async_build_page(file_name, system_config, page_info, menu_list, html_static, template_config):
+    return page.build_page(file_name, system_config, page_info, menu_list, html_static, template_config)
+
+@asyncio.coroutine
+def build_post_page(filename, page_name_list, system_config, page_info, menu_list, html_static, template_config):
     if filename.endswith(".md"):
         file_name = filename.replace(".md", "")
         console.log("Build", "Processing file: ./static_page/post/{0}.html".format(file_name))
@@ -15,8 +19,8 @@ def build_post_page(filename, page_name_list):
         if file_name in page_name_list:
             this_page_index = page_name_list.index(file_name)
             page_info = page_list[this_page_index]
-        content = page.build_page(file_name, system_config, page_info, menu_list,
-                                  html_static, template_config)
+        content = yield from async_build_page(file_name, system_config, page_info, menu_list, html_static,
+                                              template_config)
         if content is not None:
             yield from file.async_write_file("./static_page/post/{0}.html".format(filename.replace(".md", "")), content)
 
@@ -55,11 +59,11 @@ def build(github_mode):
             file.write_file("./static_page/index/p/{0}.html".format(str(page_id)), content)
     os.mkdir("./static_page/post/")
 
-    coros = [asyncio.Task(build_post_page(filename, page_name_list)) for filename in os.listdir("./document/")]
-    asyncio.set_event_loop(asyncio.new_event_loop())
+    tasks = [asyncio.Task(
+        build_post_page(filename, page_name_list, system_config, page_info, menu_list, html_static, template_config))
+             for filename in os.listdir("./document/")]
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(asyncio.wait(coros))
-    loop._default_executor.shutdown(wait=True)
+    loop.run_until_complete(asyncio.gather(*tasks))
     loop.close()
     shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
     shutil.copytree("./templates/static/{0}/".format(system_config["Theme"]),
