@@ -129,8 +129,9 @@ def theme_manage():
         theme.remove_theme(theme_name)
 
 def use_text_mode(args):
-    from manage import build_rss, build_static_page, new_post, update_post, theme
+    from manage import build_rss
     if args.command == "new":
+        from manage import new_post
         config = None
         if args.config is not None:
             config = json.loads(file.read_file(args.config))
@@ -147,6 +148,7 @@ def use_text_mode(args):
             build_rss.build_rss()
         exit(0)
     if args.command == "update":
+        from manage import update_post
         if update_post.update():
             build_rss.build_rss()
         exit(0)
@@ -160,6 +162,7 @@ def use_text_mode(args):
         console.log("info", "No upgrade found")
         exit(0)
     if args.command == "theme-install":
+        from manage import theme
         print("Please enter the name of the theme you want to install:")
         theme_name = input()
         theme_name = theme.install_theme(theme_name)
@@ -168,5 +171,6 @@ def use_text_mode(args):
             theme.set_theme(theme_name)
         exit(0)
     if args.command == "build-gh-page":
+        from manage import build_static_page
         build_static_page.publish(args.push_git, args.static_page)
         exit(0)
