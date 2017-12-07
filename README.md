@@ -97,12 +97,12 @@ You can use `./manage.py -h` at any time to get help for the SilverBlog Manageme
 Enter `./manage.py` directly into the graphical environment whiptail builds.
 
 Add an article config json Example: (Note that you need to put the file in the Document directory. The name here should be the same as the md file name in the Document directory.)
-`` `
+```
 {
 "title": "Hello, world!",
 "name": "hello-world"
 }
-`` `
+```
 
 ## using mobile client
 
