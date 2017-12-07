@@ -38,4 +38,5 @@ if __name__ == '__main__':
         # After hitting will exit
     except KeyboardInterrupt:
         print("User cancelled operation.")
+        exit(0)
     parser.print_help()

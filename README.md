@@ -5,12 +5,6 @@
 [中文文档(简体中文)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/readme/README-zh-CN.md)
 [中文文档(繁体中文)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/readme/README-zh-TW.md)
 
-# SilverBlog
-
-[!] [License] (https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)] (https://github.com/qwe7002/SilverBlog/blob/master/LICENSE )
-
-SilverBlog is a lightweight Python3-based blog.
-
 ## Why SilverBlog
 
 * Simple, small blog system
@@ -45,7 +39,7 @@ Arch Linux:
 curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | bash
 ```
 
-You will need to select a theme in [SilverBlogTeam] (https://github.com/SilverBlogTeam) and put it in the templates directory. Run `install.sh` in the theme folder and in the following config file Configure it correctly
+You will need to select a theme in [SilverBlogTeam](https://github.com/SilverBlogTeam) and put it in the templates directory. Run `install.sh` in the theme folder and in the following config file Configure it correctly
 
 By default, this installation script uses the nginx + uwsgi execution mode, and you can place the `nginx_config` file generated automatically by the program into the site configuration directory of your nginx package.
 
@@ -77,7 +71,7 @@ You can configure your server using the `systemd_startup_install.sh` file in the
 
 SilverBlog recommends using NodeJS-based monitor: PM2
 
-For the installation of PM2, check out [How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16- 04) and [PM2 - Quick Start] (http://pm2.keymetrics.io/docs/usage/quick-start/)
+For the installation of PM2, check out [How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16- 04) and [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
 
 Then you just need to run it
 
@@ -103,12 +97,13 @@ You can use `./manage.py -h` at any time to get help for the SilverBlog Manageme
 Enter `./manage.py` directly into the graphical environment whiptail builds.
 
 Add an article config json Example: (Note that you need to put the file in the Document directory. The name here should be the same as the md file name in the Document directory.)
-`` `
+
+```
 {
 "title": "Hello, world!",
 "name": "hello-world"
 }
-`` `
+```
 
 ## using mobile client
 

@@ -39,7 +39,6 @@ def build_index(page, system_config, page_list, menu_list, static, template_conf
                              now_page=page, static=static, now_time=time.localtime())
     return result, page_row
 
-
 def build_page(name, system_config, page_info, menu_list, static, template_config):
     content = file.read_file("document/{0}.md".format(name))
     if page_info is None:

@@ -21,8 +21,9 @@ console.log("info", "Loading configuration...")
 @asyncio.coroutine
 def get_system_config():
     global system_config, template_config
-    system_config = json.loads(file.read_file("./config/system.json"))
-    system_config["API_Password"] = None
+    load_file = yield from file.async_read_file("./config/system.json")
+    system_config = json.loads(load_file)
+    del system_config["API_Password"]
     if len(system_config["Theme"]) == 0:
         console.log("Error",
                 "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
@@ -34,22 +35,24 @@ def get_system_config():
 @asyncio.coroutine
 def get_menu_list():
     global menu_list
-    menu_list = json.loads(file.read_file("./config/menu.json"))
-
+    load_file = yield from file.async_read_file("./config/menu.json")
+    menu_list = json.loads(load_file)
 
 @asyncio.coroutine
 def get_page_list():
     global page_list
-    page_list = json.loads(file.read_file("./config/page.json"))
+    load_file = yield from file.async_read_file("./config/page.json")
+    page_list = json.loads(load_file)
+
 @asyncio.coroutine
 def get_rss():
     global rss
     if os.path.exists("./document/rss.xml"):
-        rss = file.read_file("document/rss.xml")
+        rss = yield from file.async_read_file("document/rss.xml")
 
 loop = asyncio.get_event_loop()
 tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss()]
-loop.run_until_complete(asyncio.gather(*tasks))
+loop.run_until_complete(asyncio.wait(tasks))
 loop.close()
 
 for item in page_list:

@@ -1,12 +1,30 @@
+import asyncio
 import json
 import os
 import shutil
 import time
 
-from common import console
+from common import console, file, page, post_map
+
+@asyncio.coroutine
+def async_build_page(file_name, system_config, page_info, menu_list, html_static, template_config):
+    return page.build_page(file_name, system_config, page_info, menu_list, html_static, template_config)
+
+@asyncio.coroutine
+def build_post_page(filename, page_name_list, page_list, system_config, menu_list, html_static, template_config):
+    if filename.endswith(".md"):
+        file_name = filename.replace(".md", "")
+        console.log("Build", "Processing file: ./static_page/post/{0}.html".format(file_name))
+        page_info = None
+        if file_name in page_name_list:
+            this_page_index = page_name_list.index(file_name)
+            page_info = page_list[this_page_index]
+        content = yield from async_build_page(file_name, system_config, page_info, menu_list, html_static,
+                                              template_config)
+        if content is not None:
+            yield from file.async_write_file("./static_page/post/{0}.html".format(filename.replace(".md", "")), content)
 
 def build(github_mode):
-    from common import file, page, post_map
     html_static = False
     if github_mode is not None:
         html_static = github_mode
@@ -39,26 +57,20 @@ def build(github_mode):
             content, row = page.build_index(page_id, system_config, page_list, menu_list, html_static, template_config)
             file.write_file("./static_page/index/p/{0}.html".format(str(page_id)), content)
     os.mkdir("./static_page/post/")
-    for filename in os.listdir("./document/"):
-        if filename.endswith(".md"):
-            file_name = filename.replace(".md", "")
-            console.log("Build", "Processing file: ./static_page/post/{0}.html".format(file_name))
-            page_info = None
-            if file_name in page_name_list:
-                this_page_index = page_name_list.index(file_name)
-                page_info = page_list[this_page_index]
-            content = page.build_page(file_name, system_config, page_info, menu_list,
-                                      html_static, template_config)
-            if content is not None:
-                file.write_file("./static_page/post/{0}.html".format(filename.replace(".md", "")), content)
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    tasks = [
+        build_post_page(filename, page_name_list, page_list, system_config,
+                        menu_list, html_static, template_config)
+        for filename in os.listdir("./document/")]
+    loop.run_until_complete(asyncio.wait(tasks))
+    loop.close()
     shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
     shutil.copytree("./templates/static/{0}/".format(system_config["Theme"]),
                     "./static_page/static/{0}/".format(system_config["Theme"]))
     if os.path.exists("./templates/static/user_file"):
         shutil.copytree("./templates/static/user_file", "./static_page/static/user_file")
     console.log("Success", "Create Github Page Success!")
-
-
 
 def publish(push, static):
     if not os.path.exists("./static_page/.git"):
