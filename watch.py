@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     cmd = ["uwsgi", "--json", "uwsgi.json"]
     if args.docker:
-        cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "4"])
+        cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "5"])
     p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
     return_code = p.poll()
     signal.signal(signal.SIGINT, INT_handler)
@@ -58,7 +58,7 @@ if __name__ == "__main__":
             line = line.strip().decode("utf-8")
             if len(line) != 0:
                 print(line)
-            time.sleep(0.01)
+            time.sleep(0.05)
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
