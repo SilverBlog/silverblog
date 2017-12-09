@@ -40,6 +40,8 @@ def setting_menu():
         project_info()
     if result == "Set up author information":
         author_info()
+    if result == "Theme package manager":
+        theme_manage()
     if result == "Other settings":
         outher_info()
     save_config()
