@@ -28,24 +28,25 @@ if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
 
 def setting_menu():
-    menu_list = ["Use the Setup Wizard", "Set up basic information", "Set up author information",
-                 "Theme package manager", "Other settings",
-                 "Exit"]
-    result = dialog.menu("Please select an action", menu_list)
-    if result == "Exit":
-        exit(0)
-    if result == "Use the Setup Wizard":
-        setup_wizard()
-    if result == "Set up basic information":
-        project_info()
-    if result == "Set up author information":
-        author_info()
-    if result == "Theme package manager":
-        theme_manage()
-    if result == "Other settings":
-        outher_info()
-    save_config()
-
+    while True:
+        menu_list = ["Use the Setup Wizard", "Set up basic information", "Set up author information",
+                     "Theme package manager", "Other settings",
+                     "Exit"]
+        result = dialog.menu("Please select an action", menu_list)
+        if result == "Exit":
+            exit(0)
+        if result == "Use the Setup Wizard":
+            setup_wizard()
+        if result == "Set up basic information":
+            project_info()
+        if result == "Set up author information":
+            author_info()
+        if result == "Theme package manager":
+            theme_manage()
+        if result == "Other settings":
+            outher_info()
+        save_config()
+        time.sleep(0.5)
 def save_config():
     file.write_file("./config/system.json", json.dumps(system_config, indent=4, sort_keys=False, ensure_ascii=False))
 
@@ -126,8 +127,3 @@ def outher_info():
              {"name": "Editor", "info": "editor"}]
     show_prompt(items)
     system_config["Rss_Full_Content"] = dialog.confirm("Output full text Rss?", "yes")
-
-if __name__ == '__main__':
-    while True:
-        loop()
-        time.sleep(0.5)

@@ -10,6 +10,7 @@ dialog = whiptail.Whiptail()
 dialog.height = 15
 dialog.title = "SilverBlog management tool"
 def use_whiptail_mode():
+    dialog.title = "SilverBlog management tool"
     while True:
         menu_list = ["Article manager", "Build static page", "Upgrade", "Setting", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
