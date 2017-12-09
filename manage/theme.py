@@ -2,7 +2,7 @@ import json
 import os
 import urllib.request
 
-from common import console, file
+from common import console
 
 def get_orgs_list():
     console.log("info", "Getting the list of theme...")
@@ -48,11 +48,6 @@ def install_theme(theme_name, orgs_list=None):
     console.log("Success", "The theme is installed successfully!")
     return name
 
-def set_theme(theme_name):
-    system_info = json.loads(file.read_file("./config/system.json"))
-    system_info["Theme"] = theme_name
-    file.write_file("./config/system.json", json.dumps(system_info, indent=4, sort_keys=False, ensure_ascii=False))
-    console.log("Success", "The theme has been enabled!")
 
 def remove_theme(theme_name):
     import shutil

@@ -9,7 +9,7 @@ from common import whiptail, file
 
 dialog = whiptail.Whiptail()
 dialog.height = 15
-dialog.title = "SilverBlog settings management tool"
+dialog.title = "SilverBlog settings tool"
 system_config = {
     "Project_Name": "",
     "Project_Description": "",
@@ -27,8 +27,9 @@ system_config = {
 if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
 
-def loop():
-    menu_list = ["Use the Setup Wizard", "Set up basic information", "Set up author information", "Other settings",
+def setting_menu():
+    menu_list = ["Use the Setup Wizard", "Set up basic information", "Set up author information",
+                 "Theme package manager", "Other settings",
                  "Exit"]
     result = dialog.menu("Please select an action", menu_list)
     if result == "Exit":
@@ -46,6 +47,38 @@ def loop():
 def save_config():
     file.write_file("./config/system.json", json.dumps(system_config, indent=4, sort_keys=False, ensure_ascii=False))
 
+def theme_manage():
+    from manage import theme
+    dialog.title = "Theme package manager"
+    menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing Theme",
+                 "Uninstall existing Theme"]
+    result = dialog.menu("Please select an action", menu_list)
+    theme_name = ""
+    org_list = None
+    if result == "Install the theme":
+        install_menu = ["View list", "Enter the theme package name"]
+        result = dialog.menu("Please select an action", install_menu)
+        if result == "View list":
+            org_list = theme.get_orgs_list()
+            item_list = list()
+            for item in org_list:
+                item_list.append(item["name"])
+            theme_name = dialog.menu("Please select the theme you want to install:", item_list)
+        if result == "Enter the theme package name":
+            theme_name = dialog.prompt("Please enter the theme package name:")
+        if len(theme_name) != 0:
+            theme_name = theme.install_theme(theme_name, org_list)
+            if dialog.confirm("Do you want to enable this theme now?", "no"):
+                system_config["Theme"] = theme_name
+        return
+    directories = theme.get_local_theme_list()
+    theme_name = dialog.menu("Please select the theme to be operated:", directories)
+    if result == "Use the existing theme":
+        system_config["Theme"] = theme_name
+    if result == "Upgrade existing Theme":
+        theme.upgrade_theme(theme_name)
+    if result == "Uninstall existing Theme":
+        theme.remove_theme(theme_name)
 def setup_wizard():
     project_info()
     author_info()
