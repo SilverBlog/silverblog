@@ -13,4 +13,4 @@ develop_push_github:
   script:
   - git config --global http.proxy "http://192.168.3.1:1080"
   - git config --global https.proxy "http://192.168.3.1:1080"
-  - git push --set-upstream https://${github_key}@github.com/qwe7002/SilverBlog.git HEAD:master
+  - git push -f --set-upstream https://${github_key}@github.com/qwe7002/SilverBlog.git HEAD:develop
