@@ -1,4 +1,4 @@
-image: hedaqing/docker-alpine-git
+image: docker.reallserver.cn/alpine-git
 
 release_github: 
   only:
