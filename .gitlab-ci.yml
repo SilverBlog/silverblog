@@ -1,4 +1,4 @@
-image: docker.reallserver.cn/alpine-git
+image: docker.reallserver.cn/docker-git:latest
 
 release_github: 
   only:
