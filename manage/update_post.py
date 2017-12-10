@@ -5,10 +5,14 @@ import os.path
 from common import file, console
 from manage import get_excerpt
 
-page_list_file = json.loads(file.read_file("./config/page.json"))
-page_list = page_list_file
+page_list_file = list()
+page_list = list()
+
 def update():
     global page_list, page_list_file
+    page_list_file = json.loads(file.read_file("./config/page.json"))
+    page_list = page_list_file
+
     for item in page_list_file:
         processing_file = "./document/{0}.md".format(item["name"])
         file_exists = os.path.exists(processing_file)
