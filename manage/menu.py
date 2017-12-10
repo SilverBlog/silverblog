@@ -8,10 +8,11 @@ from common import whiptail, file, console
 
 dialog = whiptail.Whiptail()
 dialog.height = 15
-dialog.title = "SilverBlog CLI management tool"
+dialog.title = "SilverBlog management tool"
 def use_whiptail_mode():
+    dialog.title = "SilverBlog management tool"
     while True:
-        menu_list = ["Article manager", "Upgrade", "Theme package manager", "Build static page", "Exit"]
+        menu_list = ["Article manager", "Build static page", "Upgrade", "Setting", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
@@ -19,13 +20,14 @@ def use_whiptail_mode():
             article_manager()
         if result == "Upgrade":
             upgrade()
-        if result == "Theme package manager":
-            theme_manage()
         if result == "Build static page":
             from manage import build_static_page
             dialog.title = "Build static page"
             build_static_page.publish(dialog.confirm("Push to git?", "no"),
                                       dialog.confirm("Generate a hyperlink with a file extension?", "no"))
+        if result == "Setting":
+            from manage import setting
+            setting.setting_menu()
         time.sleep(0.5)
 
 def article_manager():
@@ -73,6 +75,9 @@ def select_post():
     page_title_list = list()
     page_list = json.loads(file.read_file("./config/page.json"))
     i = 1
+    if len(page_list) == 0:
+        console.log("Error")
+        exit(1)
     for item in page_list:
         page_title_list.append("{}. {}".format(i, item["title"]))
         i += 1
@@ -94,39 +99,6 @@ def new_post():
     from manage import new_post
     dialog.title = "New post"
     new_post.new_post_init(get_post_info(), dialog.confirm("Is this an independent page?", "no"))
-
-def theme_manage():
-    from manage import theme
-    dialog.title = "Theme package manager"
-    menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing Theme",
-                 "Uninstall existing Theme"]
-    result = dialog.menu("Please select an action", menu_list)
-    theme_name = ""
-    org_list = None
-    if result == "Install the theme":
-        install_menu = ["View list", "Enter the theme package name"]
-        result = dialog.menu("Please select an action", install_menu)
-        if result == "View list":
-            org_list = theme.get_orgs_list()
-            item_list = list()
-            for item in org_list:
-                item_list.append(item["name"])
-            theme_name = dialog.menu("Please select the theme you want to install:", item_list)
-        if result == "Enter the theme package name":
-            theme_name = dialog.prompt("Please enter the theme package name:")
-        if len(theme_name) != 0:
-            theme_name = theme.install_theme(theme_name, org_list)
-            if dialog.confirm("Do you want to enable this theme now?", "no"):
-                theme.set_theme(theme_name)
-        return
-    directories = theme.get_local_theme_list()
-    theme_name = dialog.menu("Please select the theme to be operated:", directories)
-    if result == "Use the existing theme":
-        theme.set_theme(theme_name)
-    if result == "Upgrade existing Theme":
-        theme.upgrade_theme(theme_name)
-    if result == "Uninstall existing Theme":
-        theme.remove_theme(theme_name)
 
 def use_text_mode(args):
     from manage import build_rss
@@ -168,7 +140,11 @@ def use_text_mode(args):
         theme_name = theme.install_theme(theme_name)
         enable_theme = input('Do you want to enable this theme now? [y/N]')
         if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
-            theme.set_theme(theme_name)
+            system_info = json.loads(file.read_file("./config/system.json"))
+            system_info["Theme"] = theme_name
+            file.write_file("./config/system.json",
+                            json.dumps(system_info, indent=4, sort_keys=False, ensure_ascii=False))
+            console.log("Success", "The theme has been enabled!")
         exit(0)
     if args.command == "build-gh-page":
         from manage import build_static_page
