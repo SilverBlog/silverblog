@@ -34,9 +34,9 @@ def async_markdown(raw):
     return markdown.markdown(raw)
 
 @asyncio.coroutine
-def make_rss_item(page_list, item):
+def make_rss_item(page_list, item, project_url):
     global rss_item_list, full_content
-    location = "{0}/post/{1}".format(system_config["Project_URL"], item["name"])
+    location = "{0}/post/{1}".format(project_url, item["name"])
     desc = item["excerpt"]
     if full_content:
         raw_document = yield from file.async_read_file("./document/{0}.md".format(item["name"]))
@@ -49,7 +49,7 @@ def make_rss(project_name, project_url, project_description, page_list, system_c
     rss_item_list = range(0, len(page_list))
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    tasks = [make_rss_item(page_list, item) for item in page_list]
+    tasks = [make_rss_item(page_list, item, system_config["Project_URL"]) for item in page_list]
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
     rss = PyRSS2Gen.RSS2(
