@@ -46,7 +46,7 @@ def make_rss_item(page_list, item, project_url):
                                                     pubDate=datetime.datetime.fromtimestamp(item["time"]))
 
 def make_rss(project_name, project_url, project_description, page_list, system_config):
-    rss_item_list = range(0, len(page_list))
+    rss_item_list = range(1, len(page_list))
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     tasks = [make_rss_item(page_list, item, system_config["Project_URL"]) for item in page_list]
