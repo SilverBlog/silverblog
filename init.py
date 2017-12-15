@@ -35,7 +35,7 @@ def get_system_config():
         exit(1)
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
         template_config_file = yield from file.async_read_file(
-            "./templates/{0}/config.json".format(system_config["Theme"])
+            "./templates/{0}/config.json".format(system_config["Theme"]))
         template_config = yield from async_json_loads(template_config_file)
 
 @asyncio.coroutine
