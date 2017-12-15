@@ -18,31 +18,37 @@ cache_post = dict()
 app = Flask(__name__)
 
 console.log("info", "Loading configuration...")
+
+@asyncio.coroutine
+def async_json_loads(text):
+    return json.loads(text)
+
 @asyncio.coroutine
 def get_system_config():
     global system_config, template_config
     load_file = yield from file.async_read_file("./config/system.json")
-    system_config = json.loads(load_file)
+    system_config = yield from async_json_loads(load_file)
     del system_config["API_Password"]
     if len(system_config["Theme"]) == 0:
         console.log("Error",
                 "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
         exit(1)
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
-        template_config = json.loads(
-            file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
+        template_config_file = yield from file.async_read_file(
+            "./templates/{0}/config.json".format(system_config["Theme"])
+        template_config = yield from async_json_loads(template_config_file)
 
 @asyncio.coroutine
 def get_menu_list():
     global menu_list
     load_file = yield from file.async_read_file("./config/menu.json")
-    menu_list = json.loads(load_file)
+    menu_list = yield from async_json_loads(load_file)
 
 @asyncio.coroutine
 def get_page_list():
     global page_list
     load_file = yield from file.async_read_file("./config/page.json")
-    page_list = json.loads(load_file)
+    page_list = yield from async_json_loads(load_file)
 
 @asyncio.coroutine
 def get_rss():
