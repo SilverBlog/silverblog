@@ -20,10 +20,9 @@ def build_index(page, system_config, page_list, menu_list, static, template_conf
     paging = system_config["Paging"]
     start_num = -paging + (int(page) * paging)
     page_row_mod = divmod(len(page_list), system_config["Paging"])
+    page_row = page_row_mod[0]
     if page_row_mod[1] != 0 and len(page_list) > system_config["Paging"]:
         page_row = page_row_mod[0] + 1
-    else:
-        page_row = page_row_mod[0]
     if page_row == 0:
         page_row = 1
     if page <= 0 or page > page_row:
