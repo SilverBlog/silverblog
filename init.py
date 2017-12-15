@@ -86,7 +86,8 @@ def index_route(page_index=1):
     console.log("info", "Trying to build: {0}".format(page_url))
     result, row = page.build_index(page_index, system_config, page_list, menu_list,
                                    False, template_config)
-
+    if result is None and row == 0:
+        abort(404)
     console.log("info", "Writing to cache: {0}".format(page_url))
     if len(cache_index) >= 100:
         page_keys = sorted(cache_index.keys())
