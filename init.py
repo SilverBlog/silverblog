@@ -51,13 +51,13 @@ def get_page_list():
     page_list = yield from async_json_loads(load_file)
 
 @asyncio.coroutine
-def get_rss():
+def get_rss_file():
     global rss
     if os.path.exists("./document/rss.xml"):
         rss = yield from file.async_read_file("document/rss.xml")
 
 loop = asyncio.get_event_loop()
-tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss()]
+tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss_file()]
 loop.run_until_complete(asyncio.wait(tasks))
 loop.close()
 
@@ -70,7 +70,7 @@ console.log("Success", "load the configuration file successfully!")
 
 def check_proxy_ip(header):
     if 'X-Real-Ip' in header:
-        console.log("Client IP", "X-Real-IP is :" + header['X-Real-Ip'])
+        console.log("ClientIP", "X-Real-IP is :" + header['X-Real-Ip'])
 
 @app.route("/rss/", strict_slashes=False)
 @app.route("/feed/", strict_slashes=False)
