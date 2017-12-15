@@ -2,7 +2,7 @@ import asyncio
 import json
 import os.path
 
-from flask import Flask, abort, redirect
+from flask import Flask, abort, redirect, request
 
 from common import file, page, console, post_map
 
