@@ -75,6 +75,7 @@ def check_proxy_ip(header):
 @app.route("/rss/", strict_slashes=False)
 @app.route("/feed/", strict_slashes=False)
 def result_rss():
+    check_proxy_ip(request.headers)
     if rss is None:
         abort(404)
     return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
@@ -88,7 +89,7 @@ def static_file():
 @app.route("/index", strict_slashes=False)
 @app.route('/index/p/<int:page_index>', strict_slashes=False)
 def index_route(page_index=1):
-    check_proxy_ip(request.header)
+    check_proxy_ip(request.headers)
     page_url = "/index/p/{0}/".format(page_index)
     if page_url in cache_index:
         console.log("info", "Get cache Success: {0}".format(page_url))
@@ -120,7 +121,7 @@ def redirect_301(file_name):
 @app.route("/post/<file_name>")
 @app.route("/post/<file_name>/")
 def post_route(file_name=None):
-    check_proxy_ip(request.header)
+    check_proxy_ip(request.headers)
     if file_name is None or not os.path.exists("document/{0}.md".format(file_name)):
         abort(404)
     page_url = "/post/{0}/".format(file_name)
