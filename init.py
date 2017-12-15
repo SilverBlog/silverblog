@@ -54,7 +54,7 @@ def get_page_list():
 def get_rss_file():
     global rss
     if os.path.exists("./document/rss.xml"):
-        rss = yield from file.async_read_file("document/rss.xml")
+        rss = yield from file.async_read_file("./document/rss.xml")
 
 loop = asyncio.get_event_loop()
 tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss_file()]
@@ -71,6 +71,7 @@ console.log("Success", "load the configuration file successfully!")
 def check_proxy_ip(header):
     if 'X-Real-Ip' in header:
         console.log("ClientIP", "X-Real-IP is :" + header['X-Real-Ip'])
+
 
 @app.route("/rss/", strict_slashes=False)
 @app.route("/feed/", strict_slashes=False)
@@ -101,7 +102,7 @@ def index_route(page_index=1):
     if result is None and row == 0:
         abort(404)
     console.log("info", "Writing to cache: {0}".format(page_url))
-    if len(cache_index) >= 100:
+    if len(cache_index) >= 50:
         page_keys = sorted(cache_index.keys())
         console.log("info", "Delete cache: {0}".format(page_keys[0]))
         del cache_index[page_keys[0]]
@@ -113,7 +114,7 @@ def index_route(page_index=1):
 
 @app.route("/<file_name>", strict_slashes=False)
 def redirect_301(file_name):
-    if file_name in page_name_list or os.path.exists("document/{0}.md".format(file_name)):
+    if file_name in page_name_list or os.path.exists("./document/{0}.md".format(file_name)):
         return redirect("/post/{0}/".format(file_name), code=301)
     abort(404)
 
@@ -122,7 +123,7 @@ def redirect_301(file_name):
 @app.route("/post/<file_name>/")
 def post_route(file_name=None):
     check_proxy_ip(request.headers)
-    if file_name is None or not os.path.exists("document/{0}.md".format(file_name)):
+    if file_name is None or not os.path.exists("./document/{0}.md".format(file_name)):
         abort(404)
     page_url = "/post/{0}/".format(file_name)
     if page_url in cache_post:
