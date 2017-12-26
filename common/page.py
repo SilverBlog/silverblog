@@ -39,10 +39,10 @@ def build_index(page, system_config, page_list, menu_list, static, template_conf
     return result, page_row
 
 def build_page(name, system_config, page_info, menu_list, static, template_config):
-    content = file.read_file("document/{0}.md".format(name))
+    content = file.read_file("./document/{0}.md".format(name))
     if page_info is None:
         page_info = {"title": "undefined"}
-    if os.path.exists("document/{0}.json".format(name)):
+    if os.path.exists("./document/{0}.json".format(name)):
         page_info = json.loads(file.read_file("document/{0}.json".format(name)))
         if "time" in page_info:
             page_info["time"] = str(post_map.build_time(page_info["time"], system_config))
