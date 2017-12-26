@@ -68,7 +68,8 @@ menu_list = list(map(post_map.add_post_header, menu_list))
 page_list = list(map(post_map.add_post_header, page_list))
 console.log("Success", "load the configuration file successfully!")
 
-app.run(host='0.0.0.0', debug=True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', debug=True)
 
 def check_proxy_ip(header):
     if 'X-Real-Ip' in header:
