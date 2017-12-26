@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+./check_python.sh
 use_superuser=""
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."

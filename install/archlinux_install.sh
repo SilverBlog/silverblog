@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #NextMoe-icecat modified 20170806 03:16(Asia/Shanghai)
 #Reall Computer modified 20170810 16:16(Asia/Shanghai)
+./check_python.sh
 use_superuser=""
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
