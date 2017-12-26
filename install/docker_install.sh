@@ -5,11 +5,11 @@ result=$(groups | grep "docker")
 use_superuser=""
 if [[ "$result" == "" ]]
 then
-    echo "The current user is not in the docker group, will use sudo to operate."
-    use_superuser="sudo"
-fi
+    echo "The current user is not in the docker group,Adding user to docker user group."
+    sudo gpasswd -a ${USER} docker
 
-${use_superuser} docker pull silverblog/silverblog
+fi
+docker pull silverblog/silverblog
 
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
