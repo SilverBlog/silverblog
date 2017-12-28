@@ -14,7 +14,6 @@ PY3 = sys.version_info[0] == 3
 string_types = str if PY3 else basestring
 Response = namedtuple('Response', 'returncode value')
 
-
 def flatten(data):
     return list(itertools.chain.from_iterable(data))
 

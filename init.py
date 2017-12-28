@@ -31,7 +31,7 @@ def get_system_config():
     del system_config["API_Password"]
     if len(system_config["Theme"]) == 0:
         console.log("Error",
-                "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
+                    "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
         exit(1)
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
         template_config_file = yield from file.async_read_file(
@@ -75,7 +75,6 @@ def check_proxy_ip(header):
     if 'X-Real-Ip' in header:
         console.log("ClientIP", "X-Real-IP is :" + header['X-Real-Ip'])
 
-
 @app.route("/rss/", strict_slashes=False)
 @app.route("/feed/", strict_slashes=False)
 def result_rss():
@@ -83,7 +82,6 @@ def result_rss():
     if rss is None:
         abort(404)
     return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
-
 
 @app.route("/static/")
 def static_file():
@@ -114,13 +112,11 @@ def index_route(page_index=1):
 
     return result
 
-
 @app.route("/<file_name>", strict_slashes=False)
 def redirect_301(file_name):
     if file_name in page_name_list or os.path.exists("./document/{0}.md".format(file_name)):
         return redirect("/post/{0}/".format(file_name), code=301)
     abort(404)
-
 
 @app.route("/post/<file_name>")
 @app.route("/post/<file_name>/")
@@ -148,4 +144,3 @@ def post_route(file_name=None):
     console.log("Success", "Get success: {0}".format(page_url))
 
     return result
-

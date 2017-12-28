@@ -8,6 +8,8 @@ from common import file, markdown, console
 
 rss_item_list = list()
 full_content = True
+
+
 class NoOutput:
     def __init__(self):
         pass
@@ -62,7 +64,6 @@ def make_rss(project_name, project_url, project_description, page_list, system_c
         generator="SilverBlog",
         docs="https://github.com/SilverBlogTeam")
     return rss.to_xml(encoding='utf-8')
-
 
 def build_rss():
     system_config = json.loads(file.read_file("./config/system.json"))

@@ -16,6 +16,7 @@ class when_file_chanage(FileSystemEventHandler):
         if not event.src_path.endswith((".", ".swp", ".sh")):
             p.send_signal(1)
 
+
 def HUP_handler(signum, frame):
     p.send_signal(1)
     if control_p is not None:

@@ -13,7 +13,6 @@ def get_orgs_list():
         console.log("Error", "Get the topic list error.")
         exit(1)
 
-
 def get_local_theme_list():
     from common import file
     directories = file.list_dirs("./templates")
@@ -48,14 +47,12 @@ def install_theme(theme_name, orgs_list=None):
     console.log("Success", "The theme is installed successfully!")
     return name
 
-
 def remove_theme(theme_name):
     import shutil
     shutil.rmtree("./templates/" + theme_name)
     if os.path.exists("./templates/static/" + theme_name):
         shutil.rmtree("./templates/static/" + theme_name)
     console.log("Success", "The theme is uninstalled successfully!")
-
 
 def upgrade_theme(theme_name):
     import git

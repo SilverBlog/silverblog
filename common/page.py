@@ -8,10 +8,8 @@ from common import file, markdown, post_map
 
 env = Environment(loader=PackageLoader('init', 'templates'))
 
-
 def format_datatime(value, format='%Y-%m-%d %H:%M'):
     return str(time.strftime(format, value))
-
 
 env.filters['datetimeformat'] = format_datatime
 

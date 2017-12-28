@@ -10,7 +10,6 @@ from manage import get_excerpt
 
 system_info = json.loads(file.read_file("./config/system.json"))
 
-
 def get_name(name_input):
     name_list = lazy_pinyin(name_input, errors='ignore')
     if len(name_list) != 0:
@@ -22,7 +21,6 @@ def get_name(name_input):
                     name = name + "-"
         return name
     return re.sub("[\s+\.\!\/_,$%^*()+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", name_input)
-
 
 def new_post_init(config, independent=False):
     title = config["title"]
