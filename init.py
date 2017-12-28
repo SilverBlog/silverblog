@@ -2,7 +2,7 @@ import asyncio
 import json
 import os.path
 
-from flask import Flask, abort, redirect
+from flask import Flask, abort, redirect, request
 
 from common import file, page, console, post_map
 
@@ -18,40 +18,46 @@ cache_post = dict()
 app = Flask(__name__)
 
 console.log("info", "Loading configuration...")
+
+@asyncio.coroutine
+def async_json_loads(text):
+    return json.loads(text)
+
 @asyncio.coroutine
 def get_system_config():
     global system_config, template_config
     load_file = yield from file.async_read_file("./config/system.json")
-    system_config = json.loads(load_file)
+    system_config = yield from async_json_loads(load_file)
     del system_config["API_Password"]
     if len(system_config["Theme"]) == 0:
         console.log("Error",
-                "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
+                    "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
         exit(1)
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
-        template_config = json.loads(
-            file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
+        template_config_file = yield from file.async_read_file(
+            "./templates/{0}/config.json".format(system_config["Theme"]))
+        template_config = yield from async_json_loads(template_config_file)
 
 @asyncio.coroutine
 def get_menu_list():
     global menu_list
     load_file = yield from file.async_read_file("./config/menu.json")
-    menu_list = json.loads(load_file)
+    menu_list = yield from async_json_loads(load_file)
 
 @asyncio.coroutine
 def get_page_list():
     global page_list
     load_file = yield from file.async_read_file("./config/page.json")
-    page_list = json.loads(load_file)
+    page_list = yield from async_json_loads(load_file)
 
 @asyncio.coroutine
-def get_rss():
+def get_rss_file():
     global rss
     if os.path.exists("./document/rss.xml"):
-        rss = yield from file.async_read_file("document/rss.xml")
+        rss = yield from file.async_read_file("./document/rss.xml")
 
 loop = asyncio.get_event_loop()
-tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss()]
+tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss_file()]
 loop.run_until_complete(asyncio.wait(tasks))
 loop.close()
 
@@ -62,13 +68,20 @@ menu_list = list(map(post_map.add_post_header, menu_list))
 page_list = list(map(post_map.add_post_header, page_list))
 console.log("Success", "load the configuration file successfully!")
 
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', debug=True)
+
+def check_proxy_ip(header):
+    if 'X-Real-Ip' in header:
+        console.log("ClientIP", "X-Real-IP is :" + header['X-Real-Ip'])
+
 @app.route("/rss/", strict_slashes=False)
 @app.route("/feed/", strict_slashes=False)
 def result_rss():
+    check_proxy_ip(request.headers)
     if rss is None:
         abort(404)
     return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
-
 
 @app.route("/static/")
 def static_file():
@@ -78,6 +91,7 @@ def static_file():
 @app.route("/index", strict_slashes=False)
 @app.route('/index/p/<int:page_index>', strict_slashes=False)
 def index_route(page_index=1):
+    check_proxy_ip(request.headers)
     page_url = "/index/p/{0}/".format(page_index)
     if page_url in cache_index:
         console.log("info", "Get cache Success: {0}".format(page_url))
@@ -86,9 +100,10 @@ def index_route(page_index=1):
     console.log("info", "Trying to build: {0}".format(page_url))
     result, row = page.build_index(page_index, system_config, page_list, menu_list,
                                    False, template_config)
-
+    if result is None and row == 0:
+        abort(404)
     console.log("info", "Writing to cache: {0}".format(page_url))
-    if len(cache_index) >= 100:
+    if len(cache_index) >= 50:
         page_keys = sorted(cache_index.keys())
         console.log("info", "Delete cache: {0}".format(page_keys[0]))
         del cache_index[page_keys[0]]
@@ -97,18 +112,17 @@ def index_route(page_index=1):
 
     return result
 
-
 @app.route("/<file_name>", strict_slashes=False)
 def redirect_301(file_name):
-    if file_name in page_name_list or os.path.exists("document/{0}.md".format(file_name)):
+    if file_name in page_name_list or os.path.exists("./document/{0}.md".format(file_name)):
         return redirect("/post/{0}/".format(file_name), code=301)
     abort(404)
-
 
 @app.route("/post/<file_name>")
 @app.route("/post/<file_name>/")
 def post_route(file_name=None):
-    if file_name is None or not os.path.exists("document/{0}.md".format(file_name)):
+    check_proxy_ip(request.headers)
+    if file_name is None or not os.path.exists("./document/{0}.md".format(file_name)):
         abort(404)
     page_url = "/post/{0}/".format(file_name)
     if page_url in cache_post:
@@ -130,4 +144,3 @@ def post_route(file_name=None):
     console.log("Success", "Get success: {0}".format(page_url))
 
     return result
-

@@ -21,3 +21,4 @@ templates
 nginx_config
 attach.sh
 /upgrade/current_version.json
+docker-compose.yml

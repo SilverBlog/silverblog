@@ -37,10 +37,9 @@ if __name__ == '__main__':
     exit(0)
 
 def check_password(title, encode):
-        hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
-        if encode == hash_md5:
-            return True
-
+    hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
+    if encode == hash_md5:
+        return True
 
 @app.route('/control/system_info', methods=['POST'])
 def system_info():
@@ -52,7 +51,6 @@ def system_info():
     result["author_introduction"] = system_config["Author_Introduction"]
     result["api_version"] = api_version
     return json.dumps(result)
-
 
 def select_type(request_type):
     file_url = None

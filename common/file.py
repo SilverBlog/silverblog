@@ -8,7 +8,6 @@ def read_file(filename):
     content = f.read()
     return content
 
-
 def write_file(filename, content):
     console.log("info", "Write the file: {0}".format(filename))
     f = open(filename, "w", newline=None)

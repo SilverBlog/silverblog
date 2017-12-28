@@ -8,10 +8,8 @@ from common import file, markdown, post_map
 
 env = Environment(loader=PackageLoader('init', 'templates'))
 
-
 def format_datatime(value, format='%Y-%m-%d %H:%M'):
     return str(time.strftime(format, value))
-
 
 env.filters['datetimeformat'] = format_datatime
 
@@ -20,10 +18,9 @@ def build_index(page, system_config, page_list, menu_list, static, template_conf
     paging = system_config["Paging"]
     start_num = -paging + (int(page) * paging)
     page_row_mod = divmod(len(page_list), system_config["Paging"])
+    page_row = page_row_mod[0]
     if page_row_mod[1] != 0 and len(page_list) > system_config["Paging"]:
         page_row = page_row_mod[0] + 1
-    else:
-        page_row = page_row_mod[0]
     if page_row == 0:
         page_row = 1
     if page <= 0 or page > page_row:
@@ -40,10 +37,10 @@ def build_index(page, system_config, page_list, menu_list, static, template_conf
     return result, page_row
 
 def build_page(name, system_config, page_info, menu_list, static, template_config):
-    content = file.read_file("document/{0}.md".format(name))
+    content = file.read_file("./document/{0}.md".format(name))
     if page_info is None:
         page_info = {"title": "undefined"}
-    if os.path.exists("document/{0}.json".format(name)):
+    if os.path.exists("./document/{0}.json".format(name)):
         page_info = json.loads(file.read_file("document/{0}.json".format(name)))
         if "time" in page_info:
             page_info["time"] = str(post_map.build_time(page_info["time"], system_config))

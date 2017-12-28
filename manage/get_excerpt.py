@@ -2,14 +2,12 @@ import re
 
 from common import file, markdown
 
-
 def get_excerpt(filename):
     content = file.read_file(filename)
     excerpt = filter_tags(markdown.markdown(content))
     if len(excerpt) > 140:
         excerpt = excerpt[0:140]
     return excerpt
-
 
 def filter_tags(html):
     re_cdata = re.compile('//<!\[CDATA\[[^>]*//\]\]>', re.I)

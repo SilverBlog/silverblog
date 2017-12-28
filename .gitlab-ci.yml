@@ -8,8 +8,3 @@ release_github:
   - master
   script:
   - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
-develop_push_github: 
-  only:
-  - develop
-  script:
-  - git push -f --set-upstream https://${github_key}@github.com/qwe7002/SilverBlog.git HEAD:develop
