@@ -9,7 +9,7 @@ from common import file, console, post_map
 from manage import new_post, build_rss, update_post, build_static_page, delete_post, edit_post
 
 app = Flask(__name__)
-api_version = 1
+api_version = 2
 system_config = json.loads(file.read_file("./config/system.json"))
 
 console.log("info", "Loading configuration...")
