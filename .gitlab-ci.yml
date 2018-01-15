@@ -1,4 +1,4 @@
-image: docker.reallserver.cn/docker-git:latest
+image: docker.reallserver.cn/public/docker-git
 
 before_script:
   - git config --global http.proxy "http://192.168.3.1:1080"
