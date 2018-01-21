@@ -4,7 +4,7 @@ from common import file, markdown
 
 def get_excerpt(filename):
     content = file.read_file(filename)
-    excerpt = filter_tags(markdown.markdown(content))
+    excerpt = filter_tags(markdown.markdown(content, True))
     if len(excerpt) > 140:
         excerpt = excerpt[0:140]
     return excerpt
