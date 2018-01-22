@@ -44,10 +44,3 @@ cat << EOF >start.sh
 docker run -dt -v $(pwd):/home/silverblog -p 127.0.0.1:5000:5000 --restart="always" --name="silverblog"  silverblog/silverblog
 docker run -dt -v $(pwd):/home/silverblog -p 127.0.0.1:5001:5001 --restart="always" --name="silverblog_control" silverblog/silverblog uwsgi --json uwsgi.json:control
 EOF
-
-cat << EOF >attach.sh
-#!/usr/bin/env bash
-docker run -it -v $(pwd):/home/silverblog --rm --name silverblog_console silverblog/silverblog python3 manage.py
-EOF
-
-chmod +x attach-docker.sh
