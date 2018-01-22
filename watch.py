@@ -45,6 +45,7 @@ if __name__ == "__main__":
         cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "8"])
     p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
     return_code = p.poll()
+    control_return_code = control_p.poll()
     signal.signal(signal.SIGINT, INT_handler)
     signal.signal(signal.SIGHUP, HUP_handler)
     event_handler = when_file_chanage()
@@ -52,9 +53,10 @@ if __name__ == "__main__":
     observer.schedule(event_handler, path=os.getcwd(), recursive=True)
     observer.start()
     try:
-        while return_code is None:
+        while return_code is None or control_return_code is None:
             line = p.stderr.readline()
             return_code = p.poll()
+            control_return_code = control_p.poll()
             line = line.strip().decode("utf-8")
             if len(line) != 0:
                 print(line)
@@ -62,4 +64,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
-    exit(return_code)
+    if return_code is not None:
+        exit(return_code)
+    exit(control_return_code)
