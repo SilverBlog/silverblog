@@ -13,8 +13,7 @@ p = None
 
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
-        if not event.src_path.endswith((".", ".swp", ".sh")):
-            p.send_signal(1)
+        p.send_signal(1)
 
 
 def HUP_handler(signum, frame):
