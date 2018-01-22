@@ -26,13 +26,13 @@ cat << EOF > docker-compose.yml
 version: '1'
 services:
   silverblog:
-    image: "SilverBlog/Silverblog"
+    image: "silverBlog/silverblog"
     ports:
      - "5000:5000"
     volumes:
      - $(pwd):/home/silverblog
   silverblog_control:
-    image: "SilverBlog/Silverblog"
+    image: "silverBlog/silverblog"
     ports:
      - "5001:5001"
     volumes:
