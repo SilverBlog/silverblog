@@ -63,7 +63,6 @@ if __name__ == "__main__":
             time.sleep(0.05)
     except KeyboardInterrupt:
         observer.stop()
-    observer.join()
     if return_code is not None:
         exit(return_code)
     exit(control_return_code)
