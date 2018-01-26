@@ -30,17 +30,17 @@ services:
     ports:
      - "5000:5000"
     volumes:
-     - $(pwd):/home/silverblog
+     - ./:/home/silverblog
   silverblog_control:
     image: "silverBlog/silverblog"
     ports:
      - "5001:5001"
     volumes:
-     - $(pwd):/home/silverblog
+     - ./:/home/silverblog
 EOF
 
 cat << EOF >start.sh
 #!/usr/bin/env bash
-docker run -dt -v $(pwd):/home/silverblog -p 127.0.0.1:5000:5000 --restart="always" --name="silverblog"  silverblog/silverblog
-docker run -dt -v $(pwd):/home/silverblog -p 127.0.0.1:5001:5001 --restart="always" --name="silverblog_control" silverblog/silverblog uwsgi --json uwsgi.json:control
+docker run -dt -v ./:/home/silverblog -p 127.0.0.1:5000:5000 --restart="always" --name="silverblog"  silverblog/silverblog
+docker run -dt -v ./:/home/silverblog -p 127.0.0.1:5001:5001 --restart="always" --name="silverblog_control" silverblog/silverblog uwsgi --json uwsgi.json:control
 EOF
