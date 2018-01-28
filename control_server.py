@@ -9,7 +9,7 @@ from common import file, console, post_map
 from manage import new_post, build_rss, update_post, build_static_page, delete_post, edit_post
 
 app = Flask(__name__)
-api_version = 1
+api_version = 2
 system_config = json.loads(file.read_file("./config/system.json"))
 
 console.log("info", "Loading configuration...")
@@ -17,6 +17,7 @@ try:
     password_md5 = json.loads(system_config["API_Password"])["hash_password"]
 except (ValueError, KeyError, TypeError):
     if len(system_config["API_Password"]) == 0:
+        #todo output
         exit(1)
     password_md5 = hashlib.md5(str(system_config["API_Password"]).encode('utf-8')).hexdigest()
     system_config["API_Password"] = json.dumps({"hash_password": password_md5})
@@ -59,7 +60,7 @@ def select_type(request_type):
     if request_type == "menu":
         file_url = "./config/menu.json"
     return file_url
-
+@app.route('/control/get_list/<request_type>', strict_slashes=False, methods=['POST'])
 @app.route('/control/get_<request_type>_list', strict_slashes=False, methods=['POST'])
 def post_list(request_type):
     file_url = select_type(request_type)
@@ -71,6 +72,7 @@ def post_list(request_type):
             page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
     return json.dumps(page_list)
 
+@app.route('/control/get_content/<request_type>', strict_slashes=False, methods=['POST'])
 @app.route('/control/get_<request_type>_content', strict_slashes=False, methods=['POST'])
 def get_content(request_type):
     file_url = select_type(request_type)
@@ -86,7 +88,7 @@ def get_content(request_type):
     result["content"] = file.read_file("./document/{0}.md".format(page_list[post_id]["name"]))
     result["status"] = True
     return json.dumps(result)
-
+@app.route('/control/edit/<request_type>', strict_slashes=False, methods=['POST'])
 @app.route('/control/edit_<request_type>', strict_slashes=False, methods=['POST'])
 def edit(request_type):
     file_url = select_type(request_type)

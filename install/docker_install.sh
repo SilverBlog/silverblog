@@ -26,28 +26,21 @@ cat << EOF > docker-compose.yml
 version: '1'
 services:
   silverblog:
-    image: "SilverBlog/Silverblog"
+    image: "silverBlog/silverblog"
     ports:
      - "5000:5000"
     volumes:
-     - $(pwd):/home/silverblog
+     - ./:/home/silverblog
   silverblog_control:
-    image: "SilverBlog/Silverblog"
+    image: "silverBlog/silverblog"
     ports:
      - "5001:5001"
     volumes:
-     - $(pwd):/home/silverblog
+     - ./:/home/silverblog
 EOF
 
 cat << EOF >start.sh
 #!/usr/bin/env bash
-docker run -dt -v $(pwd):/home/silverblog -p 127.0.0.1:5000:5000 --restart="always" --name="silverblog"  silverblog/silverblog
-docker run -dt -v $(pwd):/home/silverblog -p 127.0.0.1:5001:5001 --restart="always" --name="silverblog_control" silverblog/silverblog uwsgi --json uwsgi.json:control
+docker run -dt -v ./:/home/silverblog -p 127.0.0.1:5000:5000 --restart="always" --name="silverblog"  silverblog/silverblog
+docker run -dt -v ./:/home/silverblog -p 127.0.0.1:5001:5001 --restart="always" --name="silverblog_control" silverblog/silverblog uwsgi --json uwsgi.json:control
 EOF
-
-cat << EOF >attach.sh
-#!/usr/bin/env bash
-docker run -it -v $(pwd):/home/silverblog --rm --name silverblog_console silverblog/silverblog python3 manage.py
-EOF
-
-chmod +x attach-docker.sh
