@@ -2,7 +2,6 @@
 if [ $(basename `pwd`) == "install" ];then
     cd ..
 fi
-
 echo "Generate a Nginx configuration file..."
 
 cat << EOF >nginx_config
@@ -60,6 +59,6 @@ if [ ! -f "./uwsgi.json" ]; then
 fi
 
 chmod +x manage.py
-chmod +x manage-gui.py
+
 echo "The installation is complete! "
 echo "Warning, please do not use git clean to restore your warehouse, which will lead to personal data loss!"

@@ -20,5 +20,6 @@ start.sh
 templates
 nginx_config
 attach.sh
+manage.sh
 /upgrade/current_version.json
 docker-compose.yml
