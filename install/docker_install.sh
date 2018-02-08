@@ -1,16 +1,6 @@
 #!/usr/bin/env bash
 command -v docker >/dev/null 2>&1 || { echo >&2 "This installation method relies on Docker, but does not find Docker. Please install Docker and try again."; exit 1; }
 
-result=$(groups | grep "docker")
-if [[ "$result" == "" ]]
-then
-    echo "The current user is not in the docker group,Adding user to docker user group."
-    sudo gpasswd -a ${USER} docker
-
-fi
-docker pull silverblog/silverblog
-
-
 echo "Create directory..."
 
 mkdir ./document
