@@ -10,30 +10,38 @@ then
 fi
 docker pull silverblog/silverblog
 
-#sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
 
-cat << EOF > docker-compose.yml
-version: '1'
-services:
-  silverblog:
-    image: "silverBlog/silverblog"
-    volumes:
-     - ./template:/home/silverblog/templates
-     - ./config:/home/silverblog/config
-     - ./document:/home/silverblog/documents
-    links:
-     - silverblog_nginx
-  silverblog_control:
-    image: "silverBlog/silverblog"
-    volumes:
-     - ./template:/home/silverblog/templates
-     - ./config:/home/silverblog/config
-     - ./document:/home/silverblog/documents
-    links:
-     - silverblog_nginx
-EOF
+echo "Create directory..."
+
+mkdir ./document
+mkdir ./config
+mkdir -p ./templates/static
+mkdir ./templates/include
+
+touch ./templates/include/comment.html
+touch ./templates/include/head.html
+touch ./templates/include/foot.html
+
+echo "Create configuration file..."
+
+if [ ! -f "./config/menu.json" ]; then
+    echo "[]" > ./config/menu.json
+fi
+if [ ! -f "./config/page.json" ]; then
+    echo "[]" > ./config/page.json
+fi
+if [ ! -f "./config/system.json" ]; then
+    wget -O ./config/system.json https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/example/system.example.json
+fi
+if [ ! -f "./uwsgi.json" ]; then
+    wget -O ./uwsgi.json https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/example/uwsgi.example.json
+fi
+
+sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
+
+wget -O ./docker-compose.yml https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/example/docker-compose.example.yml
 
 cat << EOF >manage.sh
 #!/usr/bin/env bash
-docker run -it -v ./:/home/silverblog -p 127.0.0.1:5000:5000 --restart="always" --name="silverblog"  silverblog/silverblog python3 manage.py
+docker run -it -v ./:/home/silverblog --name="silverblog_manage"  silverblog/silverblog python3 manage.py
 EOF

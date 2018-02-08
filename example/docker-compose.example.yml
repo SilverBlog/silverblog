@@ -1,0 +1,32 @@
+version: '1'
+services:
+  silverblog:
+    image: "silverblog/silverblog"
+    restart: always
+    volumes:
+     - ./template:/home/silverblog/templates
+     - ./config:/home/silverblog/config
+     - ./document:/home/silverblog/documents
+  #ports:
+     #- "127.0.0.1:5000:5000"
+  links:
+     - silverblog_nginx
+  silverblog_control:
+    image: "silverblog/silverblog"
+    restart: always
+    volumes:
+     - ./template:/home/silverblog/templates
+     - ./config:/home/silverblog/config
+     - ./document:/home/silverblog/documents
+  #ports:
+     #- "127.0.0.1:5001:5001"
+  links:
+     - silverblog_nginx
+  silverblog_nginx:
+    images: "silverblog/nginx"
+    restart: always
+    volumes:
+     - ./template:/home/silverblog/templates
+    ports:
+     - "8080:80"
+     #- “80:80”
