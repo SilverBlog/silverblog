@@ -23,11 +23,6 @@ fi
 if [ ! -f "./config/system.json" ]; then
     wget -O ./config/system.json https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/example/system.example.json
 fi
-if [ ! -f "./uwsgi.json" ]; then
-    wget -O ./uwsgi.json https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/example/uwsgi.example.json
-fi
-
-sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
 
 wget -O ./docker-compose.yml https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/example/docker-compose.example.yml
 
