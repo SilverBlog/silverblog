@@ -49,7 +49,6 @@ def make_rss_item(page_list, item, project_url):
 
 def make_rss(project_name, project_url, project_description, page_list, system_config):
     global rss_item_list
-    rss_item_list = list()
     if len(page_list) != 0:
         rss_item_list = list(range(0, len(page_list)))
         loop = asyncio.new_event_loop()
