@@ -13,6 +13,7 @@ p = None
 
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
+        print()
         p.send_signal(1)
 
 
@@ -52,17 +53,14 @@ if __name__ == "__main__":
     observer = Observer()
     observer.schedule(event_handler, path=os.getcwd(), recursive=True)
     observer.start()
-    try:
-        while return_code is None or control_return_code is None:
-            line = p.stderr.readline()
-            return_code = p.poll()
-            control_return_code = control_p.poll()
-            line = line.strip().decode("utf-8")
-            if len(line) != 0:
-                print(line)
-            time.sleep(0.05)
-    except KeyboardInterrupt:
-        observer.stop()
+    while return_code is None or control_return_code is None:
+        line = p.stderr.readline()
+        return_code = p.poll()
+        control_return_code = control_p.poll()
+        line = line.strip().decode("utf-8")
+        if len(line) != 0:
+            print(line)
+        time.sleep(0.05)
     if return_code is not None:
         exit(return_code)
     exit(control_return_code)
