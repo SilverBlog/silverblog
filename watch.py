@@ -13,7 +13,6 @@ p = None
 
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
-        print()
         p.send_signal(1)
 
 
