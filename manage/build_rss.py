@@ -49,12 +49,13 @@ def make_rss_item(page_list, item, project_url):
 
 def make_rss(project_name, project_url, project_description, page_list, system_config):
     global rss_item_list
-    rss_item_list = list(range(0, len(page_list)))
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    tasks = [make_rss_item(page_list, item, system_config["Project_URL"]) for item in page_list]
-    loop.run_until_complete(asyncio.wait(tasks))
-    loop.close()
+    if len(page_list) != 0:
+        rss_item_list = list(range(0, len(page_list)))
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        tasks = [make_rss_item(page_list, item, system_config["Project_URL"]) for item in page_list]
+        loop.run_until_complete(asyncio.wait(tasks))
+        loop.close()
     rss = PyRSS2Gen.RSS2(
         title=project_name,
         link=project_url,

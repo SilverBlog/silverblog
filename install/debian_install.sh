@@ -31,7 +31,6 @@ echo "Installing Dependency..."
 ${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git
 ${use_superuser} pip3 install -r python_dependency.txt
 
-
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
     cd silverblog/install
@@ -48,3 +47,4 @@ if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
 fi
 
 ./install.sh
+python3 manage.py setting

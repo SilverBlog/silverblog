@@ -106,6 +106,8 @@ def edit(request_type):
     content = str(request.json["content"])
     encode = str(request.json["encode"])
     state = False
+    if page_list[int(post_id)].get("protection", False):
+        return json.dumps({"status": False})
     if check_password(title, encode):
         state = True
         config = {"name": name, "title": title}
@@ -123,6 +125,8 @@ def delete():
     post_id = str(request.json["post_id"])
     encode = str(request.json["encode"])
     state = False
+    if page_list[int(post_id)].get("protection", False):
+        return json.dumps({"status": False})
     if check_password(post_id + page_list[int(post_id)]["title"], encode):
         state = True
         delete_post.delete(page_list, int(post_id))

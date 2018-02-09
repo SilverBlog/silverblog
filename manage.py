@@ -24,6 +24,7 @@ if __name__ == '__main__':
     parser.add_argument_group('theme-install', "Theme pack installation management.")
 
     parser.add_argument_group('upgrade', "Upgrade program")
+    parser.add_argument_group('setting', "Setting program")
 
     #build-gh-page
     group_build_gh_page = parser.add_argument_group("build-gh-page", "Generate static pages.")
@@ -32,7 +33,10 @@ if __name__ == '__main__':
     group_build_gh_page.add_argument("-p", "--push_git", help="Automatically submitted to Git", action="store_true")
 
     args = parser.parse_args()
-
+    if args.command == "setting":
+        from manage import setting
+        setting.setup_wizard()
+        exit(0)
     try:
         menu.use_text_mode(args)
         # After hitting will exit

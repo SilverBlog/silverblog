@@ -45,24 +45,25 @@ if __name__ == "__main__":
         cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "8"])
     p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
     return_code = p.poll()
-    control_return_code = control_p.poll()
+    if args.control:
+        control_return_code = control_p.poll()
     signal.signal(signal.SIGINT, INT_handler)
     signal.signal(signal.SIGHUP, HUP_handler)
     event_handler = when_file_chanage()
     observer = Observer()
     observer.schedule(event_handler, path=os.getcwd(), recursive=True)
     observer.start()
-    try:
-        while return_code is None or control_return_code is None:
-            line = p.stderr.readline()
-            return_code = p.poll()
+    while return_code is None:
+        line = p.stderr.readline()
+        return_code = p.poll()
+        if args.control:
+            if control_return_code is None:
+                break
             control_return_code = control_p.poll()
-            line = line.strip().decode("utf-8")
-            if len(line) != 0:
-                print(line)
-            time.sleep(0.05)
-    except KeyboardInterrupt:
-        observer.stop()
+        line = line.strip().decode("utf-8")
+        if len(line) != 0:
+            print(line)
+        time.sleep(0.05)
     if return_code is not None:
         exit(return_code)
     exit(control_return_code)
