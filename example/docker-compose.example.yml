@@ -5,30 +5,15 @@ services:
     restart: always
     command: python3 watch.py --docker
     volumes:
-     - ./template:/home/silverblog/templates
-     - ./config:/home/silverblog/config
-     - ./document:/home/silverblog/documents
-    #ports:
-     #- "127.0.0.1:5000:5000"
-    links:
-     - silverblog_nginx
+     - ./:/home/silverblog/
+    ports:
+     - "127.0.0.1:5000:5000"
   silverblog_control:
     image: "silverblog/silverblog"
     restart: always
     command: uwsgi --json uwsgi.json:control
     volumes:
-     - ./template:/home/silverblog/templates
-     - ./config:/home/silverblog/config
-     - ./document:/home/silverblog/documents
-    #ports:
-     #- "127.0.0.1:5001:5001"
-    links:
-     - silverblog_nginx
-  silverblog_nginx:
-    image: "silverblog/nginx"
-    restart: always
-    volumes:
-     - ./template:/home/silverblog/templates
+     - ./:/home/silverblog/
     ports:
-     - "8080:80"
-     #- “80:80”
+     - "127.0.0.1:5001:5001"
+
