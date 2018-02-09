@@ -15,5 +15,4 @@ def get_gavatar(author_name):
         gravatar_hash = req["entry"][0]["hash"]
     except (TypeError, ValueError, urllib.error.HTTPError, urllib.error.URLError, urllib.error.ContentTooShortError):
         console.log("Error", "Get Gravatar URL error.")
-        exit(1)
     return "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
