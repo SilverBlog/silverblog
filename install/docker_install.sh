@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 .
+git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
+cd silverblog
 if [ ! -f "./docker-compose.yml" ]; then
     cp -i ./example/docker-compose.example.yml ./docker-compose.yml
 fi
