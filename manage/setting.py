@@ -37,6 +37,7 @@ def setting_menu():
             exit(0)
         if result == "Use the Setup Wizard":
             setup_wizard()
+            exit(0)
         if result == "Set up basic information":
             project_info()
         if result == "Set up author information":
@@ -99,6 +100,7 @@ def setup_wizard():
             item_list.append(item["name"])
         theme_name = dialog.menu("Please select the theme you want to install:", item_list)
         system_config["Theme"] = theme.install_theme(theme_name, orgs_list)
+    save_config()
 
 def show_prompt(items):
     for item in items:
