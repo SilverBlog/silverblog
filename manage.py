@@ -35,8 +35,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.command == "setting":
         from manage import setting
-
         setting.setup_wizard()
+        exit(0)
     try:
         menu.use_text_mode(args)
         # After hitting will exit
