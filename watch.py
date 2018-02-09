@@ -53,12 +53,11 @@ if __name__ == "__main__":
     observer = Observer()
     observer.schedule(event_handler, path=os.getcwd(), recursive=True)
     observer.start()
-    while return_code is None:
-        if control_return_code is None:
-            break
+    while return_code is None or control_return_code is None:
         line = p.stderr.readline()
         return_code = p.poll()
-        control_return_code = control_p.poll()
+        if args.control:
+            control_return_code = control_p.poll()
         line = line.strip().decode("utf-8")
         if len(line) != 0:
             print(line)
