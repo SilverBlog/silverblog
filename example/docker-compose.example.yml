@@ -3,6 +3,7 @@ services:
   silverblog:
     image: "silverblog/silverblog"
     restart: always
+    command: python3 watch.py --docker
     volumes:
      - ./template:/home/silverblog/templates
      - ./config:/home/silverblog/config
@@ -14,6 +15,7 @@ services:
   silverblog_control:
     image: "silverblog/silverblog"
     restart: always
+    command: uwsgi --json uwsgi.json:control
     volumes:
      - ./template:/home/silverblog/templates
      - ./config:/home/silverblog/config
