@@ -1,4 +1,4 @@
-version: '1'
+version: '2'
 services:
   silverblog:
     image: "silverblog/silverblog"
@@ -7,9 +7,9 @@ services:
      - ./template:/home/silverblog/templates
      - ./config:/home/silverblog/config
      - ./document:/home/silverblog/documents
-  #ports:
+    #ports:
      #- "127.0.0.1:5000:5000"
-  links:
+    links:
      - silverblog_nginx
   silverblog_control:
     image: "silverblog/silverblog"
@@ -18,12 +18,12 @@ services:
      - ./template:/home/silverblog/templates
      - ./config:/home/silverblog/config
      - ./document:/home/silverblog/documents
-  #ports:
+    #ports:
      #- "127.0.0.1:5001:5001"
-  links:
+    links:
      - silverblog_nginx
   silverblog_nginx:
-    images: "silverblog/nginx"
+    image: "silverblog/nginx"
     restart: always
     volumes:
      - ./template:/home/silverblog/templates
