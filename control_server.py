@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import os.path
 
 from flask import Flask, request, abort
 
@@ -17,7 +18,6 @@ try:
     password_md5 = json.loads(system_config["API_Password"])["hash_password"]
 except (ValueError, KeyError, TypeError):
     if len(system_config["API_Password"]) == 0:
-        #todo output
         exit(1)
     password_md5 = hashlib.md5(str(system_config["API_Password"]).encode('utf-8')).hexdigest()
     system_config["API_Password"] = json.dumps({"hash_password": password_md5})
@@ -105,17 +105,17 @@ def edit(request_type):
     title = str(request.json["title"])
     content = str(request.json["content"])
     encode = str(request.json["encode"])
-    state = False
+    status = False
     if page_list[int(post_id)].get("protection", False):
         return json.dumps({"status": False})
     if check_password(title, encode):
-        state = True
+        status = True
         config = {"name": name, "title": title}
         edit_post.edit(page_list, int(post_id), config, None, is_menu)
         file.write_file("./document/{0}.md".format(name), content)
         update_post.update()
         build_rss.build_rss()
-    return json.dumps({"status": state, "name": name})
+    return json.dumps({"status": status, "name": name})
 
 @app.route('/control/delete', strict_slashes=False, methods=['POST'])
 def delete():
@@ -124,14 +124,14 @@ def delete():
     page_list = json.loads(file.read_file("./config/page.json"))
     post_id = str(request.json["post_id"])
     encode = str(request.json["encode"])
-    state = False
+    status = False
     if page_list[int(post_id)].get("protection", False):
         return json.dumps({"status": False})
     if check_password(post_id + page_list[int(post_id)]["title"], encode):
-        state = True
+        status = True
         delete_post.delete(page_list, int(post_id))
         build_rss.build_rss()
-    return json.dumps({"status": state})
+    return json.dumps({"status": status})
 
 @app.route('/control/new', strict_slashes=False, methods=['POST'])
 def new():
@@ -141,16 +141,18 @@ def new():
     name = str(request.json["name"]).replace('/', "")
     content = str(request.json["content"])
     encode = str(request.json["encode"])
-    state = False
+    status = False
+    if os.path.exists("./document/{0}.md".format(name)):
+        return json.dumps({"status": status})
     if check_password(title, encode):
         if len(name) == 0:
             name = new_post.get_name(title)
         file.write_file("./document/{0}.md".format(name), content)
         config = {"title": title, "name": name}
         new_post.new_post_init(config)
-        state = True
+        status = True
         build_rss.build_rss()
-    return json.dumps({"status": state, "name": name})
+    return json.dumps({"status": status, "name": name})
 
 @app.route("/control/git_page_publish", strict_slashes=False, methods=['POST'])
 def git_publish():
