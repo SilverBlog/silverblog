@@ -65,6 +65,7 @@ def build(github_mode):
         for filename in os.listdir("./document/")]
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
+
     shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
     shutil.copytree("./templates/{0}/static".format(system_config["Theme"]),
                     "./static_page/static/{0}/".format(system_config["Theme"]))
@@ -77,8 +78,9 @@ def publish(push, static):
         console.log("Error", "[./static_page/] Not a git repository.")
         return False
     if os.path.exists("./static_page/.git"):
-        if not os.path.exists("./.temp"):
-            os.mkdir("./.temp")
+        if os.path.exists("./.temp"):
+            shutil.rmtree("./.temp")
+        os.mkdir("./.temp")
         shutil.copytree("./static_page/.git", "./.temp/.git")
     build(static)
     if push:
