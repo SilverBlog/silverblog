@@ -66,7 +66,7 @@ def build(github_mode):
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
     shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
-    shutil.copytree("./templates/static/{0}/".format(system_config["Theme"]),
+    shutil.copytree("./templates/{0}/static".format(system_config["Theme"]),
                     "./static_page/static/{0}/".format(system_config["Theme"]))
     if os.path.exists("./templates/static/user_file"):
         shutil.copytree("./templates/static/user_file", "./static_page/static/user_file")
