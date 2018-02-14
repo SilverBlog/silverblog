@@ -4,6 +4,7 @@ if [ $(basename `pwd`) == "install" ];then
 fi
 echo "Generate a Nginx configuration file..."
 
+if [ ! -f "./nginx_config" ]; then
 cat << EOF >nginx_config
 server {
     listen 80;
@@ -31,7 +32,7 @@ server {
     }
 }
 EOF
-
+fi
 echo "Create directory..."
 
 mkdir ./document

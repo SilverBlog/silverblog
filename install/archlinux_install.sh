@@ -9,12 +9,14 @@ fi
 
 echo "Installing Dependency..."
 ${use_superuser} pacman -Sy nginx uwsgi python libnewt uwsgi-plugin-python python-pip python-wheel git
-${use_superuser} pip install -r python_dependency.txt
+
 
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
     cd silverblog/install
 fi
+
+${use_superuser} pip install -r python_dependency.txt
 
 if [ ! -f "../start.json" ]; then
     cp -i ../example/pm2.example.json ../pm2.json
