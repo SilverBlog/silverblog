@@ -31,4 +31,3 @@ if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
 fi
 
 ./install.sh
-python3 manage.py setting
