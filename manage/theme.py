@@ -10,7 +10,7 @@ def get_orgs_list():
         return json.loads(
             urllib.request.urlopen("https://api.github.com/orgs/silverblogtheme/repos").read().decode('utf-8'))
     except urllib.error:
-        console.log("Error", "Get the topic list error.")
+        console.log("Error", "Get the theme list error.")
         exit(1)
 
 def get_local_theme_list():
@@ -34,7 +34,7 @@ def install_theme(theme_name, orgs_list=None):
             name = item["name"]
     if not has_theme:
         console.log("Error", "Can not find this theme.")
-        exit(1)
+        return
     r = None
     console.log("info", "Getting the theme installation script...")
     try:
@@ -42,7 +42,7 @@ def install_theme(theme_name, orgs_list=None):
             "https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).read().decode('utf-8')
     except urllib.error:
         console.log("Error", "Get the theme installation script error.")
-        exit(1)
+        return
     os.system("cd ./templates \n" + r)
     console.log("Success", "The theme is installed successfully!")
     return name
@@ -62,5 +62,5 @@ def upgrade_theme(theme_name):
     if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
         remote.pull()
         console.log("Success", "The theme is upgrade successfully!")
-        exit()
+        return
     console.log("Info", "No upgrade found.")

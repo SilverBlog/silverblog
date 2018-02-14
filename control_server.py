@@ -3,7 +3,6 @@
 import hashlib
 import json
 import os.path
-
 from flask import Flask, request, abort
 
 from common import file, console, post_map
@@ -142,11 +141,11 @@ def new():
     content = str(request.json["content"])
     encode = str(request.json["encode"])
     status = False
+    if len(name) == 0:
+        name = new_post.get_name(title)
     if os.path.exists("./document/{0}.md".format(name)):
         return json.dumps({"status": status})
     if check_password(title, encode):
-        if len(name) == 0:
-            name = new_post.get_name(title)
         file.write_file("./document/{0}.md".format(name), content)
         config = {"title": title, "name": name}
         new_post.new_post_init(config)

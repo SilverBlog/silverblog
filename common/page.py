@@ -13,7 +13,7 @@ def format_datatime(value, format='%Y-%m-%d %H:%M'):
 
 env.filters['datetimeformat'] = format_datatime
 
-def build_index(page, system_config, page_list, menu_list, static, template_config, i18n):
+def build_index(page, system_config, page_list, menu_list, static, template_config, i18n=None):
     page_info = {"title": "index"}
     paging = system_config["Paging"]
     start_num = -paging + (int(page) * paging)
@@ -36,7 +36,7 @@ def build_index(page, system_config, page_list, menu_list, static, template_conf
                              now_page=page, static=static, now_time=time.localtime(), i18n=i18n)
     return result, page_row
 
-def build_page(name, system_config, page_info, menu_list, static, template_config, i18n):
+def build_page(name, system_config, page_info, menu_list, static, template_config, i18n=None):
     content = file.read_file("./document/{0}.md".format(name))
     if page_info is None:
         page_info = {"title": "undefined"}

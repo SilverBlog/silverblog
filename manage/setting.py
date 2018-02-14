@@ -84,7 +84,6 @@ def theme_manage():
         theme.upgrade_theme(theme_name)
     if result == "Uninstall existing Theme":
         theme.remove_theme(theme_name)
-    exit()
 def setup_wizard():
     project_info()
     author_info()
