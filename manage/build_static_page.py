@@ -73,10 +73,9 @@ def build(github_mode):
     console.log("Success", "Create Github Page Success!")
 
 def publish(push, static):
-    if not os.path.exists("./static_page/.git"):
-        if push:
-            console.log("Error", "[./static_page/] Not a git repository.")
-            return False
+    if not os.path.exists("./static_page/.git") and push:
+        console.log("Error", "[./static_page/] Not a git repository.")
+        return False
     if os.path.exists("./static_page/.git"):
         if not os.path.exists("./.temp"):
             os.mkdir("./.temp")
