@@ -79,6 +79,7 @@ def theme_manage():
     theme_name = dialog.menu("Please select the theme to be operated:", directories)
     if result == "Use the existing theme":
         system_config["Theme"] = theme_name
+        save_config()
     if result == "Upgrade existing Theme":
         theme.upgrade_theme(theme_name)
     if result == "Uninstall existing Theme":
