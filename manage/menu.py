@@ -76,8 +76,8 @@ def select_post():
     page_list = json.loads(file.read_file("./config/page.json"))
     i = 1
     if len(page_list) == 0:
-        console.log("Error")
-        exit(1)
+        dialog.alert("The page list can not be blank.")
+        return
     for item in page_list:
         page_title_list.append("{}. {}".format(i, item["title"]))
         i += 1
