@@ -19,7 +19,7 @@ fi
 ${use_superuser} pip install -r python_dependency.txt
 
 if [ ! -f "../pm2.json" ]; then
-    cp -i ../example/pm2.example.json ../pm2.json
+    cp -i ../example/pm2.json ../pm2.json
 fi
 
 read -p "Is qrcode support component installed? (Y/N): " yn

@@ -20,4 +20,4 @@ templates
 /nginx_config
 /manage.sh
 /upgrade/current_version.json
-docker-compose.yml
+/docker-compose.yml
