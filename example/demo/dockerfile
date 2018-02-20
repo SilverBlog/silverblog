@@ -13,6 +13,7 @@ COPY ./ /home/silverblog
 RUN bash /home/silverblog/install/install.sh \
 && cp -f /home/silverblog/example/demo/page.json /home/silverblog/config/page.json \
 && cp -f /home/silverblog/example/demo/system.json /home/silverblog/config/system.json
-RUN curl https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh | bash
+RUN cd /home/silverblog/templates \
+&& curl https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh | bash
 
 CMD ["python3","watch.py","--docker","--control"]
