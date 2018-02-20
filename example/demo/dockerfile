@@ -10,7 +10,7 @@ RUN apk add --no-cache ca-certificates dumb-init bash newt curl python3 uwsgi uw
 && apk del --purge .build-deps
 
 COPY ./ /home/silverblog
-RUN bash /home/silverblog/install.sh \
+RUN bash /home/silverblog/install/install.sh \
 && cp -f /home/silverblog/example/demo/page.json /home/silverblog/config/page.json \
 && cp -f /home/silverblog/example/demo/system.json /home/silverblog/config/system.json
 RUN curl https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh | bash
