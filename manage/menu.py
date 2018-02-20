@@ -23,7 +23,7 @@ def use_whiptail_mode():
         if result == "Build static page":
             from manage import build_static_page
             dialog.title = "Build static page"
-            build_static_page.publish(dialog.confirm("Push to git?", "no"),
+            build_static_page.publish(dialog.confirm("Push to git?", "yes"),
                                       dialog.confirm("Generate a hyperlink with a file extension?", "no"))
         if result == "Setting":
             from manage import setting
