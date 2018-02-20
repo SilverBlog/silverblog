@@ -12,7 +12,9 @@ RUN apk add --no-cache ca-certificates dumb-init bash git newt curl python3 uwsg
 COPY ./ /home/silverblog
 RUN bash /home/silverblog/install/install.sh \
 && cp -f /home/silverblog/example/demo/page.json /home/silverblog/config/page.json \
-&& cp -f /home/silverblog/example/demo/system.json /home/silverblog/config/system.json
+&& cp -f /home/silverblog/example/demo/system.json /home/silverblog/config/system.json \
+&& cp /home/silverblog/example/demo/demo-article.md /home/silverblog/document/demo-article.md \
+&& python3 manage.py update
 RUN cd /home/silverblog/templates \
 && curl https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh | bash
 

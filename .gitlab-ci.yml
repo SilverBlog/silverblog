@@ -12,5 +12,10 @@ build_docker_demo:
   - docker-build
   script:
   - docker build -t docker.reallserver.cn/silverblog/silverblog-demo -f ./example/demo/dockerfile .
+
+docker_push:
+  tags:
+  - docker-build
+  script:
   - docker login -u qwe7002 -p ${docker_passwd} docker.reallserver.cn
   - docker push docker.reallserver.cn/silverblog/silverblog-demo
