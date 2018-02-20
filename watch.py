@@ -57,7 +57,7 @@ if __name__ == "__main__":
         line = p.stderr.readline()
         return_code = p.poll()
         if args.control:
-            if control_return_code is None:
+            if control_return_code is not None:
                 break
             control_return_code = control_p.poll()
         line = line.strip().decode("utf-8")
