@@ -1,9 +1,9 @@
 image: docker.reallserver.cn/public/docker-git
 stages:
-  - build_docker_demo
-  - docker_push
-  - release_github
-release_github: 
+  - build
+  - push
+release_github:
+  stage: push
   only:
   - master
   script:
@@ -12,12 +12,14 @@ release_github:
   - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
 
 build_docker_demo:
+  stage: build
   tags:
   - docker-build
   script:
   - docker build -t docker.reallserver.cn/silverblog/silverblog-demo -f ./example/demo/dockerfile .
 
 docker_push:
+  stage: push
   tags:
   - docker-build
   script:
