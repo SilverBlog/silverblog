@@ -11,14 +11,14 @@ release_github:
   - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
 
 build_docker_demo:
-  stages: build_docker_demo
+  stage: build_docker_demo
   tags:
   - docker-build
   script:
   - docker build -t docker.reallserver.cn/silverblog/silverblog-demo -f ./example/demo/dockerfile .
 
 docker_push:
-  stages: docker_push
+  stage: docker_push
   tags:
   - docker-build
   script:
