@@ -2,6 +2,14 @@
 stages:
   - build
   - push
+
+build_docker_demo:
+  stage: build
+  tags:
+  - docker-build
+  script:
+  - docker build -t docker.reallserver.cn/silverblog/silverblog-demo -f ./example/demo/dockerfile .
+
 release_github:
   image: docker.reallserver.cn/public/docker-git
   stage: push
@@ -11,13 +19,6 @@ release_github:
   - git config --global http.proxy "http://192.168.3.1:1080"
   - git config --global https.proxy "http://192.168.3.1:1080"
   - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
-
-build_docker_demo:
-  stage: build
-  tags:
-  - docker-build
-  script:
-  - docker build -t docker.reallserver.cn/silverblog/silverblog-demo -f ./example/demo/dockerfile .
 
 docker_push:
   stage: push
