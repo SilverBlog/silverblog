@@ -4,7 +4,7 @@ ENV LANG C.UTF-8
 
 WORKDIR /home/silverblog/
 
-RUN apk add --no-cache ca-certificates dumb-init bash newt curl python3 uwsgi uwsgi-python3 \
+RUN apk add --no-cache ca-certificates dumb-init bash git newt curl python3 uwsgi uwsgi-python3 \
 && apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev \
 && pip3 install flask hoedown pypinyin pyrss2gen watchdog \
 && apk del --purge .build-deps
