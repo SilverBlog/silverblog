@@ -1,10 +1,16 @@
 image: docker.reallserver.cn/public/docker-git
 
-before_script:
-  - git config --global http.proxy "http://192.168.3.1:1080"
-  - git config --global https.proxy "http://192.168.3.1:1080"
 release_github: 
   only:
   - master
   script:
+  - git config --global http.proxy "http://192.168.3.1:1080"
+  - git config --global https.proxy "http://192.168.3.1:1080"
   - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
+build_docker_demo:
+  tags:
+  -
+  script:
+  - docker build -t docker.reallserver.cn/silverblog/silverblog-demo .
+  - docker login -u qwe7002 -p ${docker_passwd} docker.reallserver.cn
+  - docker push docker.reallserver.cn/silverblog/silverblog-demo
