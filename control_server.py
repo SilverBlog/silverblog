@@ -3,6 +3,7 @@
 import hashlib
 import json
 import os.path
+
 from flask import Flask, request, abort
 
 from common import file, console, post_map
@@ -143,8 +144,8 @@ def new():
     status = False
     if len(name) == 0:
         name = new_post.get_name(title)
-    if os.path.exists("./document/{0}.md".format(name)):
-        return json.dumps({"status": status})
+    while os.path.exists("./document/{0}.md".format(name)):
+        name = "{}-repeat".format(name)
     if check_password(title, encode):
         file.write_file("./document/{0}.md".format(name), content)
         config = {"title": title, "name": name}
