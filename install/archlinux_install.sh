@@ -18,7 +18,7 @@ fi
 
 ${use_superuser} pip install -r python_dependency.txt
 
-if [ ! -f "../start.json" ]; then
+if [ ! -f "../pm2.json" ]; then
     cp -i ../example/pm2.example.json ../pm2.json
 fi
 
