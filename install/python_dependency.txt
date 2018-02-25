@@ -3,3 +3,4 @@ hoedown
 pypinyin
 pyrss2gen
 gitpython
+requests
