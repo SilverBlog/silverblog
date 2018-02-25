@@ -7,7 +7,7 @@ COPY ./ /home/silverblog
 
 RUN apk add --no-cache ca-certificates dumb-init bash git curl python3 uwsgi uwsgi-python3 \
 && apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev \
-&& cd /home/silverblog/install && bash container_install.sh\
+&& pip3 install flask hoedown xpinyin pyrss2gen gitpython watchdog requests \
 && apk del --purge .build-deps
 
 
