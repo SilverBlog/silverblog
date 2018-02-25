@@ -50,7 +50,7 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, INT_handler)
     signal.signal(signal.SIGHUP, HUP_handler)
     event_handler = when_file_chanage()
-    observer = Observer()
+    observer = Observer(timeout=10)
     observer.schedule(event_handler, path=os.getcwd(), recursive=True)
     observer.start()
     while return_code is None:
