@@ -2,6 +2,7 @@
 stages:
   - build
   - push
+  - deploy
 
 build_docker_demo:
   stage: build
@@ -27,3 +28,17 @@ docker_push:
   script:
   - docker login -u qwe7002 -p ${docker_passwd} docker.reallserver.cn
   - docker push docker.reallserver.cn/silverblog/silverblog-demo
+
+demo_update:
+  stage: deploy
+  image: docker.reallserver.cn/public/docker-git
+  script:
+  - 'which ssh-agent || ( apk update && apk add openssh-client)'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" > deploy.key
+  - chmod 0600 deploy.key
+  - ssh-add deploy.key
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - ssh qwe7002@demo.silverblog.org "bash start.sh"
+
