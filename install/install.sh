@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if [ $(basename `pwd`) == "install" ];then
+if [ -f "install.sh" ]; then
     cd ..
 fi
 echo "Generate a Nginx configuration file..."
