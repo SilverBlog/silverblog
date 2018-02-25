@@ -3,6 +3,7 @@ if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
     cd silverblog/install
 fi
+python3 -m pip install -r python_dependency.txt
 ./install.sh
 cd ..
 sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
