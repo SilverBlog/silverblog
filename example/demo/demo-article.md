@@ -1,5 +1,7 @@
 This is SilverBlog's official demo server. Here you can try to add, modify, and delete articles to experience SilverBlog's convenience and speed.
 
+This article has been set to protected mode, please do not attempt to modify, delete this article.
+
 **This blog is automatically reset at 0 o'clock (UTC), and the content is automatically cleared.**
 
 Visit [Silver Creator] (https://c.silverblog.org/) to experience the online editing of SilverBlog. Enter `https://demo.silverblog.org` into the edit and use `SilverBlog` as the password when submitting the edit.
@@ -13,6 +15,8 @@ Mobile client automatically configures two-dimensional code:
 ***
 
 这里是 SilverBlog 的官方演示服务器。在这里你可以尝试添加、修改、删除文章以体验SilverBlog的便捷与迅速。
+
+本文章已被设置为保护模式，请不要尝试修改，删除这篇文章。
 
 **本博客每日0时(UTC)自动重置，届时内容自动清除。**
 
