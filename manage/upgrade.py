@@ -24,7 +24,8 @@ def upgrade_pull():
                     "The current warehouse is modified and can not be upgraded automatically. Please re-store the warehouse and try again.")
         exit(1)
     remote.pull()
-    if not repo.is_dirty() and os.path.exists("./upgrade/upgrade_from_{}.py".format(current_data_version)):
+    os.system("python3 -m pip install -r ./install/python_dependency.txt")
+    if os.path.exists("./upgrade/upgrade_from_{}.py".format(current_data_version)):
         exec(file.read_file("./upgrade/upgrade_from_{}.py".format(current_data_version)))
         file.write_file("./upgrade/current_version.json", json.dumps({"current_data_version": new_data_version}))
     console.log("Success", "Upgrade Successful!")

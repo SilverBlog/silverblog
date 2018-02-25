@@ -1,6 +1,6 @@
-flask
-hoedown
-pypinyin
+Flask>=0.12.2
+hoedown>=0.2.3
+xpinyin
 pyrss2gen
 gitpython
 requests

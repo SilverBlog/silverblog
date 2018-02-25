@@ -3,7 +3,8 @@ import os.path
 import re
 import time
 
-from pypinyin import lazy_pinyin
+#from pypinyin import lazy_pinyin
+from xpinyin import Pinyin
 
 from common import file, console
 from manage import get_excerpt
@@ -11,16 +12,10 @@ from manage import get_excerpt
 system_info = json.loads(file.read_file("./config/system.json"))
 
 def get_name(name_input):
-    name_list = lazy_pinyin(name_input, errors='ignore')
-    if len(name_list) != 0:
-        name = ""
-        for item in name_list:
-            if len(item) != 0:
-                name = name + item
-                if name_list.index(item) != (len(name_list) - 1):
-                    name = name + "-"
-        return name
-    return re.sub("[\s+\.\!\/_,$%^*()+\"\']+|[+——！，。？、~@#￥%……&*（）]+", "", name_input)
+    p = Pinyin()
+    name = re.sub('[\/:*?"<>|]', '', name_input)
+    name = name.replace(" ", "-")
+    return p.get_pinyin(name)
 
 def new_post_init(config, independent=False):
     title = config["title"]
