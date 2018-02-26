@@ -20,7 +20,7 @@ if [ ! -f "install.sh" ]; then
     cd silverblog/install
 fi
 
-${use_superuser} pip3 install -r python_dependency.txt
+./install_python_dependency.sh
 
 if [ ! -f "../pm2.json" ]; then
     cp -i ../example/pm2.json ../pm2.json
