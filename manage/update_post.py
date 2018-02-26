@@ -11,6 +11,9 @@ page_list = list()
 def update():
     global page_list, page_list_file
     page_list_file = json.loads(file.read_file("./config/page.json"))
+    if len(page_list_file) == 0:
+        console.log("Error", "UThe page list can not be blank.")
+        return False
     page_list = page_list_file
 
     for item in page_list_file:

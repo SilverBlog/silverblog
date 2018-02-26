@@ -39,11 +39,13 @@ def article_manager():
         new_post()
     if result == "Edit":
         edit_post()
-        update_post.update()
+        if not update_post.update():
+            return
     if result == "Delete":
         delete_post()
     if result == "Update":
-        update_post.update()
+        if not update_post.update():
+            return
     build_rss.build_rss()
 
 def upgrade():
