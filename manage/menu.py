@@ -61,6 +61,8 @@ def edit_post():
     from manage import edit_post
     dialog.title = "Edit post"
     page_list, post_index = select_post()
+    if not page_list:
+        return
     config = get_post_info(page_list[post_index]["title"], page_list[post_index]["name"])
     system_info = json.loads(file.read_file("./config/system.json"))
     edit_post.edit(page_list, post_index, config, system_info["Editor"])
@@ -68,6 +70,8 @@ def edit_post():
 def delete_post():
     from manage import delete_post
     page_list, post_index = select_post()
+    if not page_list:
+        return
     if dialog.confirm(
             "Are you sure you want to delete this article? (Warning! This operation is irreversible, please be careful!)",
             "no"):
@@ -79,7 +83,7 @@ def select_post():
     i = 1
     if len(page_list) == 0:
         dialog.alert("The page list can not be blank.")
-        return
+        return [], 0
     for item in page_list:
         page_title_list.append("{}. {}".format(i, item["title"]))
         i += 1
