@@ -15,14 +15,13 @@ p = None
 
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
-        if not event.is_directory and not event.src_path.endswith(('.pyc', '.swp', ".swx")):
+        if event.is_directory:
+            return
+        if event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
+                'init.py') or event.src_path.endswith('.xml'):
             if os.path.basename(os.path.dirname(event.src_path)) != "static_page":
                 console.log("info", "File [{}] detected a change, the program is restarting".format(event.src_path))
                 p.send_signal(1)
-            if os.path.basename(event.src_path) == "control_server.py":
-                if control_p is not None:
-                    control_p.send_signal(1)
-
 
 def HUP_handler(signum, frame):
     p.send_signal(1)
@@ -71,7 +70,7 @@ if __name__ == "__main__":
         line = line.strip().decode("utf-8")
         if len(line) != 0:
             print(line)
-        time.sleep(0.05)
+        time.sleep(0.01)
     if return_code is not None:
         exit(return_code)
     exit(control_return_code)
