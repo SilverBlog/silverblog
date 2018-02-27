@@ -18,7 +18,7 @@ i18n = dict()
 
 app = Flask(__name__)
 
-console.log("info", "Loading configuration...")
+
 
 @asyncio.coroutine
 def async_json_loads(text):
@@ -68,6 +68,7 @@ def get_rss_file():
     if os.path.exists("./document/rss.xml"):
         rss = yield from file.async_read_file("./document/rss.xml")
 
+console.log("info", "Loading configuration...")
 asyncio.set_event_loop(asyncio.new_event_loop())
 loop = asyncio.get_event_loop()
 tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss_file()]

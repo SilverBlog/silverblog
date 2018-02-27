@@ -12,16 +12,17 @@ from common import console
 control_p = None
 p = None
 
-
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
         if event.is_directory:
             return
         if event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
-                'init.py') or event.src_path.endswith('.xml'):
-            if os.path.basename(os.path.dirname(event.src_path)) != "static_page":
-                console.log("info", "File [{}] detected a change, the program is restarting".format(event.src_path))
-                p.send_signal(1)
+                'init.py') or event.src_path.endswith('.xml') and os.path.basename(
+            os.path.dirname(event.src_path)) != "static_page":
+            console.log("info", "File [{}] detected a change, the program is restarting".format(event.src_path))
+            p.send_signal(1)
+        if event.src_path.endswith('control_server.py') and control_p is not None:
+            control_p.send_signal(1)
 
 def HUP_handler(signum, frame):
     p.send_signal(1)
