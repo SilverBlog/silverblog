@@ -4,7 +4,7 @@ stages:
   - deploy
 
 variables:
-  docker_tag_name: "docker.reallserver.cn/silverblog/silverblog-demo"
+  docker_tag_name: "docker.reallserver.cn/silverblog/silverblog"
 
 
 build_docker_demo:
@@ -12,7 +12,14 @@ build_docker_demo:
   tags:
   - docker-build
   script:
-  - docker build -t ${docker_tag_name} -f ./example/demo/dockerfile .
+  - docker build -t ${docker_tag_name}-demo -f ./example/demo/dockerfile .
+
+build_docker_test_env:
+  stage: build
+  tags:
+  - docker-build
+  script:
+  - docker build -t ${docker_tag_name} .
 
 release_github:
   image: docker.reallserver.cn/public/docker-git
@@ -31,6 +38,7 @@ docker_push:
   script:
   - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
   - docker push ${docker_tag_name}
+  - docker push ${docker_tag_name}-demo
 
 demo_update:
   stage: deploy
