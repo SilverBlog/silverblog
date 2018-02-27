@@ -27,7 +27,7 @@ Description=SilverBlog server daemon
 
 [Service]
 WorkingDirectory=$(pwd)
-ExecStart=/usr/bin/uwsgi --json ./uwsgi.json:control
+ExecStart=/usr/bin/python3 watch.py --control
 ExecReload=/bin/kill -HUP \$MAINPID
 ExecStop=/bin/kill -INT \$MAINPID
 Restart=always

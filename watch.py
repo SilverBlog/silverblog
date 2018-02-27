@@ -7,71 +7,83 @@ import time
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
-from common import console
-
-control_p = None
+control_return_code = None
+docker_control_p = None
 p = None
+control = False
 
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
-        if event.is_directory:
+        if event.is_directory or os.path.basename(os.path.dirname(event.src_path)) == "static_page":
             return
         if event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
-                'init.py') or event.src_path.endswith('.xml') and os.path.basename(
-            os.path.dirname(event.src_path)) != "static_page":
-            console.log("info", "File [{}] detected a change, the program is restarting".format(event.src_path))
-            p.send_signal(1)
-        if event.src_path.endswith('control_server.py') and control_p is not None:
-            control_p.send_signal(1)
+                'init.py') or event.src_path.endswith('.xml'):
+            if not control:
+                p.send_signal(1)
+                return
+        if event.src_path.endswith('control_server.py'):
+            if control:
+                p.send_signal(1)
+            if docker_control_p is not None:
+                docker_control_p.send_signal(1)
 
 def HUP_handler(signum, frame):
     p.send_signal(1)
-    if control_p is not None:
-        control_p.send_signal(1)
+    if docker_control_p is not None:
+        docker_control_p.send_signal(1)
 
 def INT_handler(signum, frame):
     p.kill()
-    if control_p is not None:
-        control_p.kill()
+    if docker_control_p is not None:
+        docker_control_p.kill()
     exit(0)
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--docker",
-                        help="When running in the docker, please add this command to speed up the restart of the program",
-                        action="store_true")
-    parser.add_argument("--control", action="store_true",
-                        help="If you need to monitor the control server, add this option")
-    args = parser.parse_args()
+parser = argparse.ArgumentParser()
+parser.add_argument("--docker",
+                    help="When running in the docker, please add this command to speed up the restart of the program",
+                    action="store_true")
+parser.add_argument("--control", action="store_true",
+                    help="If you need to monitor the control server, add this option")
+args = parser.parse_args()
 
-    if args.control:
-        control_cmd = ["uwsgi", "--json", "uwsgi.json:control"]
-        control_p = subprocess.Popen(control_cmd, stderr=subprocess.PIPE)
+cmd = ["uwsgi", "--json", "uwsgi.json", "--worker-reload-mercy", "1", "--reload-mercy", "8"]
 
-    cmd = ["uwsgi", "--json", "uwsgi.json"]
-    if args.docker:
-        cmd.extend(["--worker-reload-mercy", "1", "--reload-mercy", "8"])
-    p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
+if args.control and not args.docker:
+    control = True
+    cmd = ["uwsgi", "--json", "uwsgi.json:control", "--worker-reload-mercy", "1", "--reload-mercy", "8"]
+
+if args.control and args.docker:
+    control_cmd = ["uwsgi", "--json", "uwsgi.json:control", "--worker-reload-mercy", "1", "--reload-mercy", "8"]
+    docker_control_p = subprocess.Popen(control_cmd, stderr=subprocess.PIPE)
+    control_return_code = docker_control_p.poll()
+
+p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
+return_code = p.poll()
+
+control_line = ""
+signal.signal(signal.SIGINT, INT_handler)
+signal.signal(signal.SIGHUP, HUP_handler)
+event_handler = when_file_chanage()
+observer = Observer(timeout=10)
+observer.schedule(event_handler, path=os.getcwd(), recursive=True)
+observer.start()
+while return_code is None:
     return_code = p.poll()
-    if args.control:
-        control_return_code = control_p.poll()
-    signal.signal(signal.SIGINT, INT_handler)
-    signal.signal(signal.SIGHUP, HUP_handler)
-    event_handler = when_file_chanage()
-    observer = Observer(timeout=10)
-    observer.schedule(event_handler, path=os.getcwd(), recursive=True)
-    observer.start()
-    while return_code is None:
-        line = p.stderr.readline()
-        return_code = p.poll()
-        if args.control:
-            if control_return_code is not None:
-                break
-            control_return_code = control_p.poll()
-        line = line.strip().decode("utf-8")
-        if len(line) != 0:
-            print(line)
-        time.sleep(0.01)
-    if return_code is not None:
-        exit(return_code)
-    exit(control_return_code)
+    if args.control and args.docker:
+        if control_return_code is not None:
+            break
+        control_return_code = docker_control_p.poll()
+        control_line = docker_control_p.stderr.readline().strip().decode("utf-8")
+        if len(control_line) != 0:
+            print("[control] " + control_line)
+    line = p.stderr.readline().strip().decode("utf-8")
+    if len(line) != 0:
+        head = "[main] "
+        if control:
+            head = "[control] "
+        print(head + line)
+    time.sleep(0.01)
+
+if return_code is not None:
+    exit(return_code)
+exit(control_return_code)

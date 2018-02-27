@@ -1,22 +1,18 @@
 {
   "apps": [
     {
-      "name": "SilverBlog",
-      "script": "/usr/bin/uwsgi",
-      "args": [
-        "--json",
-        "./uwsgi.json"
-      ],
+      "name": "silverblog",
+      "script": "/usr/bin/python3",
+      "args": "watch.py",
       "merge_logs": true,
-      "watch": true,
       "cwd": "./"
     },
     {
-      "name": "SilverBlog_Control",
-      "script": "/usr/bin/uwsgi",
+      "name": "silverblog-control",
+      "script": "/usr/bin/python3",
       "args": [
-        "--json",
-        "./uwsgi.json:control"
+        "watch.py",
+        "--control"
       ],
       "merge_logs": true,
       "cwd": "./"
