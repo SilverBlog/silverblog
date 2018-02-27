@@ -1,4 +1,3 @@
-
 stages:
   - build
   - push
@@ -41,5 +40,5 @@ demo_update:
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
-  - ssh qwe7002@demo.silverblog.org "bash start.sh"
+  - ssh qwe7002@demo.silverblog.org "docker pull ${docker_tag_name} && bash start.sh"
 
