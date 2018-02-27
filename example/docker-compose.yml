@@ -2,6 +2,7 @@ version: '2'
 services:
   silverblog:
     image: "silverblog/silverblog"
+    container_name: "silverblog"
     restart: always
     command: python3 watch.py --docker
     volumes:
@@ -10,6 +11,7 @@ services:
      - "127.0.0.1:5000:5000"
   silverblog_control:
     image: "silverblog/silverblog"
+    container_name: "silverblog_control"
     restart: always
     command: python3 watch.py --control
     volumes:
