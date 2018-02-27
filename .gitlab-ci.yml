@@ -33,12 +33,8 @@ demo_update:
   stage: deploy
   image: docker.reallserver.cn/public/docker-git
   script:
-  - 'which ssh-agent || ( apk update && apk add openssh-client)'
-  - eval $(ssh-agent -s)
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
-  - mkdir -p ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   - ssh qwe7002@demo.silverblog.org "bash start.sh"
 
