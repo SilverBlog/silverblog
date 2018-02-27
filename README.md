@@ -2,7 +2,6 @@
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/qwe7002/SilverBlog/blob/master/LICENSE)
 
-[中文文档(简体中文)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/readme/README-zh-CN.md)
 [中文文档(繁体中文)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/readme/README-zh-TW.md)
 
 ## Why SilverBlog
@@ -24,19 +23,25 @@ You can install SilverBlog directly using the installation script
 Docker:
 
 ```
-curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh | bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
+```
+
+On Container:
+
+```
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/container_install.sh)"
 ```
 
 Debian:
 
 ```
-curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh | bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh)"
 ```
 
 Arch Linux:
 
 ```
-curl https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh | bash
+bash -c "$(https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh)"
 ```
 
 You will need to select a theme in [SilverBlogTeam](https://github.com/SilverBlogTeam) and put it in the templates directory. Run `install.sh` in the theme folder and in the following config file Configure it correctly
