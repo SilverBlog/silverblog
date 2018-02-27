@@ -19,6 +19,7 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 EOF
+
 cat << EOF >/etc/systemd/system/silverblog_control.service
 [Unit]
 Description=SilverBlog server daemon
@@ -37,3 +38,5 @@ EOF
 systemctl daemon-reload
 systemctl enable silverblog
 systemctl enable silverblog_control
+systemctl start silverblog
+systemctl start silverblog_control
