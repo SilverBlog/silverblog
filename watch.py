@@ -14,16 +14,19 @@ control = False
 
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
-        if not event.is_directory or os.path.basename(os.path.dirname(event.src_path)) != "static_page":
-            if event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
-                    'init.py') or event.src_path.endswith('.xml'):
-                if not control:
-                    p.send_signal(1)
-            if event.src_path.endswith('control_server.py'):
-                if control:
-                    p.send_signal(1)
-                if docker_control_p is not None:
-                    docker_control_p.send_signal(1)
+        if event.is_directory or os.path.basename(os.path.dirname(event.src_path)) == "static_page":
+            return
+        if event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
+                'init.py') or event.src_path.endswith('.xml'):
+            if not control:
+                p.send_signal(1)
+                return
+        if event.src_path.endswith('control_server.py'):
+            if control:
+                p.send_signal(1)
+                return
+            if docker_control_p is not None:
+                docker_control_p.send_signal(1)
 
 def HUP_handler(signum, frame):
     p.send_signal(1)
@@ -66,6 +69,8 @@ observer = Observer(timeout=10)
 observer.schedule(event_handler, path=os.getcwd(), recursive=True)
 observer.start()
 while return_code is None:
+    if not observer.is_alive():
+        observer.start()
     return_code = p.poll()
     if args.control and args.docker:
         if control_return_code is not None:
@@ -81,7 +86,7 @@ while return_code is None:
             head = "[control] "
         print(head + line)
     time.sleep(0.01)
-
+observer.stop()
 if return_code is not None:
     exit(return_code)
 exit(control_return_code)
