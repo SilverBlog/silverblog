@@ -3,10 +3,8 @@ if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
     exit 1
 fi
-pip3 install watchdog
-if [ $(basename `pwd`) == "install" ];then
-    cd ..
-fi
+python3 -m pip install watchdog
+
 cat << EOF >/etc/systemd/system/silverblog.service
 [Unit]
 Description=SilverBlog server daemon

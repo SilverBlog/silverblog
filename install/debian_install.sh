@@ -22,14 +22,10 @@ fi
 
 ./install_python_dependency.sh
 
-if [ ! -f "../pm2.json" ]; then
-    cp -i ../example/pm2.json ../pm2.json
-fi
-
 read -p "Is qrcode support component installed? (Y/N): " yn
 
 if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
-    ${use_superuser} pip3 install qrcode-terminal
+    ${use_superuser} python3 -m pip install qrcode-terminal
 fi
 
 ./install.sh
