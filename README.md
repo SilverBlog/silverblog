@@ -1,6 +1,6 @@
 # SilverBlog
 
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/qwe7002/SilverBlog/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/LICENSE)
 
 [中文文档(繁体中文)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/readme/README-zh-TW.md)
 

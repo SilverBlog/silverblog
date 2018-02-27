@@ -1,6 +1,6 @@
 # SilverBlog
 
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/qwe7002/SilverBlog/blob/master/LICENSE )
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/LICENSE )
 
 SilverBlog 是一個基於 Python3 的輕量級博客。
 
