@@ -11,7 +11,7 @@ services:
   silverblog_control:
     image: "silverblog/silverblog"
     restart: always
-    command: uwsgi --json uwsgi.json:control
+    command: python3 watch.py --control
     volumes:
      - ./:/home/silverblog/
     ports:
