@@ -3,7 +3,6 @@ if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
     exit 1
 fi
-python3 -m pip install watchdog
 
 cat << EOF >/etc/systemd/system/silverblog.service
 [Unit]
