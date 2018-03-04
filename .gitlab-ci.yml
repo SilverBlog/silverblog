@@ -8,5 +8,5 @@ release_github:
   - master
   script:
   - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
-  - git clone https://git.reallserver.cn:SilverBlog/SilverBlog.wiki.git wiki
+  - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
   - cd wiki && git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.wiki.git HEAD:master
