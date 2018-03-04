@@ -1,8 +1,5 @@
 image: docker.reallserver.cn/public/docker-git
 
-before_script:
-  - git config --global http.proxy "http://192.168.3.1:1080"
-  - git config --global https.proxy "http://192.168.3.1:1080"
 release_github: 
   only:
   - master
