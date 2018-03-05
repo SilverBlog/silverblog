@@ -4,6 +4,10 @@ if [ $UID -ne 0 ]; then
     exit 1
 fi
 
+if [ -f "install.sh" ]; then
+    cd ..
+fi
+
 cat << EOF >/etc/systemd/system/silverblog.service
 [Unit]
 Description=SilverBlog server daemon
