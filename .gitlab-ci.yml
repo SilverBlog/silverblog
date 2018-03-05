@@ -6,7 +6,6 @@ stages:
 variables:
   docker_tag_name: "docker.reallserver.cn/silverblog/silverblog"
 
-
 build_docker_demo:
   stage: build
   tags:
@@ -28,6 +27,8 @@ release_github:
   - master
   script:
   - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
+  - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
+  - cd wiki && git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.wiki.git HEAD:master
 
 docker_push:
   stage: push
