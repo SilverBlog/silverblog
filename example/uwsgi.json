@@ -1,8 +1,8 @@
 {
   "uwsgi": {
     "socket": "127.0.0.1:5000",
-    "processes": 4,
-    "threads": 2,
+    "processes": 1,
+    "threads": 4,
     "plugins": "python3",
     "master": true,
     "module": "init",

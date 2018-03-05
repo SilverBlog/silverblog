@@ -51,11 +51,12 @@ if args.control and not args.docker:
     control = True
     job_name = "uwsgi.json:control"
 if args.control and args.docker:
-    control_cmd = ["uwsgi", "--json", "uwsgi.json:control", "--worker-reload-mercy", "1", "--reload-mercy", "8"]
+    control_cmd = ["uwsgi", "--json", "uwsgi.json:control", "--disable-logging", "--worker-reload-mercy", "1",
+                   "--reload-mercy", "8"]
     docker_control_p = subprocess.Popen(control_cmd, stderr=subprocess.PIPE)
     control_return_code = docker_control_p.poll()
 
-cmd = ["uwsgi", "--json", job_name, "--worker-reload-mercy", "1", "--reload-mercy", "8"]
+cmd = ["uwsgi", "--json", job_name, "--worker-reload-mercy", "--disable-logging", "1", "--reload-mercy", "8"]
 p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
 return_code = p.poll()
 
