@@ -63,7 +63,6 @@ def select_type(request_type):
         file_url = "./config/menu.json"
     return file_url
 @app.route('/control/get_list/<request_type>', strict_slashes=False, methods=['POST'])
-@app.route('/control/get_<request_type>_list', strict_slashes=False, methods=['POST'])
 def post_list(request_type):
     file_url = select_type(request_type)
     if file_url is None:
@@ -75,7 +74,6 @@ def post_list(request_type):
     return json.dumps(page_list)
 
 @app.route('/control/get_content/<request_type>', strict_slashes=False, methods=['POST'])
-@app.route('/control/get_<request_type>_content', strict_slashes=False, methods=['POST'])
 def get_content(request_type):
     file_url = select_type(request_type)
     if file_url is None:
@@ -91,7 +89,6 @@ def get_content(request_type):
     result["status"] = True
     return json.dumps(result)
 @app.route('/control/edit/<request_type>', strict_slashes=False, methods=['POST'])
-@app.route('/control/edit_<request_type>', strict_slashes=False, methods=['POST'])
 def edit(request_type):
     file_url = select_type(request_type)
     is_menu = False
