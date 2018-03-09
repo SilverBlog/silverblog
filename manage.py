@@ -25,7 +25,7 @@ if __name__ == '__main__':
     parser.add_argument_group('setting', "Setting program")
 
     #build-gh-page
-    group_build_gh_page = parser.add_argument_group("build-gh-page", "Generate static pages.")
+    group_build_gh_page = parser.add_argument_group("build-page", "Generate static pages.")
 
     args = parser.parse_args()
     if args.command == "setting":
