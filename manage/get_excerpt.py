@@ -13,5 +13,13 @@ def get_excerpt(filename):
     for item in excerpt_list:
         excerpt_output = excerpt_output + item.lstrip("#*-'")
     if len(excerpt_output) > 140:
-        excerpt = excerpt_output[:140]
+        split_index = 140
+        excerpt_output_replace = excerpt_output.replace(".", "。").replace(",", "，")
+        dot_index = excerpt_output_replace.find("。", 140, 240)
+        comma_index = excerpt_output_replace.find("，", 140, 240)
+        if dot_index != -1:
+            split_index = dot_index
+        if comma_index != -1 and dot_index == 1:
+            split_index = comma_index
+        excerpt = excerpt_output[:split_index]
     return excerpt
