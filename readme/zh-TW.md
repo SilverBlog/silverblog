@@ -20,7 +20,6 @@ SilverBlog 是一個基於 Python3 的輕量級博客。
 
 您可以直接使用安裝腳本安裝 SilverBlog
 
-Docker:
 
 Docker:
 

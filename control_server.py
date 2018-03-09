@@ -39,9 +39,9 @@ if __name__ == '__main__':
     qrcode_terminal.draw(config_json)
     exit(0)
 
-def check_password(title, encode):
+def check_password(title, sign):
     hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
-    if encode == hash_md5:
+    if sign == hash_md5:
         return True
 
 @app.route('/control/system_info', methods=['POST'])
@@ -99,18 +99,18 @@ def edit(request_type):
     if request.json is None:
         abort(400)
     page_list = json.loads(file.read_file(file_url))
-    post_id = str(request.json["post_id"])
+    post_id = int(request.json["post_id"])
     name = str(request.json["name"]).replace('/', "")
     title = str(request.json["title"])
     content = str(request.json["content"])
-    encode = str(request.json["encode"])
+    sign = str(request.json["sign"])
     status = False
-    if page_list[int(post_id)].get("protection", False):
+    if page_list[post_id].get("protection", False):
         return json.dumps({"status": False})
-    if check_password(title, encode):
+    if check_password(title, sign):
         status = True
         config = {"name": name, "title": title}
-        edit_post.edit(page_list, int(post_id), config, None, is_menu)
+        edit_post.edit(page_list, post_id, config, None, is_menu)
         file.write_file("./document/{0}.md".format(name), content)
         update_post.update()
         build_rss.build_rss()
@@ -121,14 +121,14 @@ def delete():
     if request.json is None:
         abort(400)
     page_list = json.loads(file.read_file("./config/page.json"))
-    post_id = str(request.json["post_id"])
-    encode = str(request.json["encode"])
+    post_id = int(request.json["post_id"])
+    sign = str(request.json["sign"])
     status = False
-    if page_list[int(post_id)].get("protection", False):
+    if page_list[post_id].get("protection", False):
         return json.dumps({"status": False})
-    if check_password(post_id + page_list[int(post_id)]["title"], encode):
+    if check_password(str(post_id) + page_list[post_id]["title"], sign):
         status = True
-        delete_post.delete(page_list, int(post_id))
+        delete_post.delete(page_list, post_id)
         build_rss.build_rss()
     return json.dumps({"status": status})
 
@@ -139,13 +139,13 @@ def new():
     title = str(request.json["title"])
     name = str(request.json["name"]).replace('/', "")
     content = str(request.json["content"])
-    encode = str(request.json["encode"])
+    sign = str(request.json["sign"])
     status = False
     if len(name) == 0:
         name = new_post.get_name(title)
     while os.path.exists("./document/{0}.md".format(name)):
         name = "{}-repeat".format(name)
-    if check_password(title, encode):
+    if check_password(title, sign):
         file.write_file("./document/{0}.md".format(name), content)
         config = {"title": title, "name": name}
         new_post.new_post_init(config)
