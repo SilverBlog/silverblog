@@ -112,8 +112,7 @@ def index_route(page_index=1):
         return cache_index[page_url]
 
     console.log("info", "Trying to build: {0}".format(page_url))
-    result, row = page.build_index(page_index, system_config, page_list, menu_list,
-                                   False, template_config, i18n)
+    result, row = page.build_index(page_index, system_config, page_list, menu_list, template_config, i18n)
     if result is None and row == 0:
         abort(404)
     console.log("info", "Writing to cache: {0}".format(page_url))
@@ -147,7 +146,6 @@ def post_route(file_name=None):
         this_page_index = page_name_list.index(file_name)
         page_info = page_list[this_page_index]
     result = page.build_page(file_name, system_config, page_info, menu_list,
-                             False,
                              template_config, i18n)
     console.log("info", "Writing to cache: {0}".format(page_url))
     if len(cache_post) >= 100:

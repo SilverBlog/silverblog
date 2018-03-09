@@ -23,8 +23,7 @@ def use_whiptail_mode():
         if result == "Build static page":
             from manage import build_static_page
             dialog.title = "Build static page"
-            build_static_page.publish(dialog.confirm("Push to git?", "yes"),
-                                      dialog.confirm("Generate a hyperlink with a file extension?", "no"))
+            build_static_page.publish()
         if result == "Setting":
             from manage import setting
             setting.setting_menu()
@@ -143,5 +142,5 @@ def use_text_mode(args):
         exit(0)
     if args.command == "build-gh-page":
         from manage import build_static_page
-        build_static_page.publish(args.push_git, args.static_page)
+        build_static_page.publish()
         exit(0)

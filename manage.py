@@ -26,9 +26,6 @@ if __name__ == '__main__':
 
     #build-gh-page
     group_build_gh_page = parser.add_argument_group("build-gh-page", "Generate static pages.")
-    group_build_gh_page.add_argument("-s", "--static_page", help="Create page that is available to static server",
-                                     action="store_true")
-    group_build_gh_page.add_argument("-p", "--push_git", help="Automatically submitted to Git", action="store_true")
 
     args = parser.parse_args()
     if args.command == "setting":
