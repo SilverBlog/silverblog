@@ -90,7 +90,6 @@ def check_proxy_ip(header):
         console.log("ClientIP", "X-Real-IP is :" + header['X-Real-Ip'])
 
 @app.route("/rss/", strict_slashes=False)
-@app.route("/feed/", strict_slashes=False)
 def result_rss():
     check_proxy_ip(request.headers)
     if rss is None:
@@ -127,6 +126,8 @@ def index_route(page_index=1):
 
 @app.route("/<file_name>", strict_slashes=False)
 def redirect_301(file_name):
+    if file_name in ('rss.xml', "feed.xml", "atom.xml", "feed", "atom"):
+        return redirect("/rss", code=301)
     if file_name in page_name_list or os.path.exists("./document/{0}.md".format(file_name)):
         return redirect("/post/{0}/".format(file_name), code=301)
     abort(404)
