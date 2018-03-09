@@ -7,7 +7,7 @@ import os.path
 from flask import Flask, request, abort
 
 from common import file, console, post_map
-from manage import new_post, build_rss, update_post, build_static_page, delete_post, edit_post
+from manage import new_post, build_rss, update_post, delete_post, edit_post
 
 app = Flask(__name__)
 api_version = 2
@@ -155,5 +155,6 @@ def new():
 
 @app.route("/control/git_page_publish", strict_slashes=False, methods=['POST'])
 def git_publish():
+    import build_static_page
     status = build_static_page.publish()
     return json.dumps({"status": status})
