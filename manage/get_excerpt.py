@@ -6,6 +6,8 @@ def get_excerpt(filename):
     content = file.read_file(filename)
     excerpt = content.replace('<p>', '').replace('</p>', '')
     excerpt = re.sub('!\[\]\((.*?)\)', '', excerpt)
+    excerpt = re.sub('(\[.+\]\([^\)]+\))', '', excerpt)
+    excerpt = re.sub('<.+>', '', excerpt)
     excerpt_list = excerpt.split("\n")
     excerpt_output = ""
     for item in excerpt_list:
