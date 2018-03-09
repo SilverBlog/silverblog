@@ -119,7 +119,9 @@ def use_text_mode(args):
             if len(title) != 0:
                 name = new_post.get_name(title)
             print("Please enter the slug [{}]:".format(name))
-            name = input()
+            name2 = input()
+            if len(name2) != 0:
+                name = name2
         if len(name) != 0 and len(title) != 0:
             config = {"title": title, "name": name}
             new_post.new_post_init(config, args.independent)
@@ -138,19 +140,6 @@ def use_text_mode(args):
                 upgrade.upgrade_pull()
                 exit(0)
         console.log("info", "No upgrade found")
-        exit(0)
-    if args.command == "theme-install":
-        from manage import theme
-        print("Please enter the name of the theme you want to install:")
-        theme_name = input()
-        theme_name = theme.install_theme(theme_name)
-        enable_theme = input('Do you want to enable this theme now? [y/N]')
-        if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
-            system_info = json.loads(file.read_file("./config/system.json"))
-            system_info["Theme"] = theme_name
-            file.write_file("./config/system.json",
-                            json.dumps(system_info, indent=4, sort_keys=False, ensure_ascii=False))
-            console.log("Success", "The theme has been enabled!")
         exit(0)
     if args.command == "build-gh-page":
         from manage import build_static_page

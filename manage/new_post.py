@@ -26,7 +26,7 @@ def new_post_init(config, independent=False):
         os.system("{0} ./document/{1}.md".format(editor, name))
     post_info = {"name": name, "title": title, "time": time.time()}
 
-    if not independent:
+    if not independent and os.path.exists("./document/{0}.md".format(name)):
         excerpt = get_excerpt.get_excerpt("./document/{0}.md".format(name))
         post_info["excerpt"] = excerpt
 
