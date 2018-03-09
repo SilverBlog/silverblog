@@ -12,7 +12,8 @@ def get_excerpt(filename):
     excerpt_output = ""
     for item in excerpt_list:
         excerpt_output = excerpt_output + item.lstrip("#*-'")
-    if len(excerpt_output) > 140:
+    excerpt = excerpt_output
+    if len(excerpt) > 140:
         split_index = 140
         excerpt_output_replace = excerpt_output.replace(".", "。").replace(",", "，")
         dot_index = excerpt_output_replace.find("。", 140, 240)
