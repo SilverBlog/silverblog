@@ -80,9 +80,9 @@ while return_code is None:
             print("[control] " + control_line)
     line = p.stderr.readline().strip().decode("utf-8")
     if len(line) != 0:
-        head = "[main] "
-        if control:
-            head = "[control] "
+        head = ""
+        if args.control and args.docker:
+            head = "[main] "
         print(head + line)
     time.sleep(0.01)
 observer.stop()
