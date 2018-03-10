@@ -45,7 +45,7 @@ def setting_menu():
         if result == "Theme package manager":
             theme_manage()
         if result == "Other settings":
-            outher_info()
+            other_info()
         save_config()
         time.sleep(0.5)
 def save_config():
@@ -87,7 +87,7 @@ def theme_manage():
 def setup_wizard():
     project_info()
     author_info()
-    outher_info()
+    other_info()
     if system_config["Theme"] == "":
         from manage import theme
         local_theme_list = theme.get_local_theme_list()
@@ -120,12 +120,12 @@ def author_info():
              {"name": "Author_Introduction", "info": "author introduction"}]
     show_prompt(items)
     if dialog.confirm("Use Gavatar?", "no"):
-        from manage import get_gavatar
-        system_config["Author_Image"] = get_gavatar.get_gavatar(system_config["Author_Name"])
+        from manage import get
+        system_config["Author_Image"] = get.get_gavatar(system_config["Author_Name"])
         return
     system_config["Author_Image"] = dialog.prompt("Please enter the author image:", system_config["Author_Image"])
 
-def outher_info():
+def other_info():
     system_config["Paging"] = int(dialog.prompt("Please enter the paging:", str(system_config["Paging"])))
     items = [{"name": "Time_Format", "info": "time format"},
              {"name": "Editor", "info": "editor"}]

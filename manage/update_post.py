@@ -3,7 +3,7 @@ import json
 import os.path
 
 from common import file, console
-from manage import get_excerpt
+from manage import get
 
 page_list_file = list()
 page_list = list()
@@ -32,7 +32,7 @@ def update():
     return True
 @asyncio.coroutine
 def async_get_excerpt(file):
-    return get_excerpt.get_excerpt(file)
+    return get.get_excerpt(file)
 
 @asyncio.coroutine
 def build_excerpt(item):
