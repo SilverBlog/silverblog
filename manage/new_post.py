@@ -13,14 +13,12 @@ system_info = json.loads(file.read_file("./config/system.json"))
 
 def get_name(name_input):
     p = Pinyin()
-    name = re.sub('[/:*?"<>|]', '', name_input)
     name = name.replace(" ", "-")
     return p.get_pinyin(name)
 
 def new_post_init(config, independent=False):
     title = config["title"]
-    name = config["name"]
-
+    name = re.sub('[/:*?"<>|]', '', config["name"])
     if not os.path.exists("./document/{}.md".format(name)):
         editor = system_info["Editor"]
         os.system("{0} ./document/{1}.md".format(editor, name))
