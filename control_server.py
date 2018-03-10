@@ -133,7 +133,7 @@ def delete():
     return json.dumps({"status": status})
 
 @app.route('/control/new', strict_slashes=False, methods=['POST'])
-def new():
+def new_post():
     if request.json is None:
         abort(400)
     title = str(request.json["title"])
