@@ -7,7 +7,7 @@ import time
 from xpinyin import Pinyin
 
 from common import file, console
-from manage import get_excerpt
+from manage import get
 
 system_info = json.loads(file.read_file("./config/system.json"))
 
@@ -27,7 +27,7 @@ def new_post_init(config, independent=False):
     post_info = {"name": name, "title": title, "time": time.time()}
 
     if not independent and os.path.exists("./document/{0}.md".format(name)):
-        excerpt = get_excerpt.get_excerpt("./document/{0}.md".format(name))
+        excerpt = get.get_excerpt("./document/{0}.md".format(name))
         post_info["excerpt"] = excerpt
 
     write_json = post_info

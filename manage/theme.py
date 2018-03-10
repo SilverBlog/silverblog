@@ -16,11 +16,12 @@ def get_orgs_list():
 def get_local_theme_list():
     from common import file
     directories = file.list_dirs("./templates")
-    if "static" in directories:
-        directories.remove("static")
-    if "include" in directories:
-        directories.remove("include")
-    return directories
+    dir_list = list()
+    for item in directories:
+        if os.path.exists("./templates/{}/.git".format(item)):
+            dir_list.append(item)
+    return dir_list
+
 def install_theme(theme_name, orgs_list=None):
     if orgs_list is None:
         orgs_list = get_orgs_list()
