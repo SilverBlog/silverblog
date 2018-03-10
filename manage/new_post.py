@@ -13,7 +13,7 @@ system_info = json.loads(file.read_file("./config/system.json"))
 
 def get_name(name_input):
     p = Pinyin()
-    name = re.sub('[\/:*?"<>|]', '', name_input)
+    name = re.sub('[/:*?"<>|]', '', name_input)
     name = name.replace(" ", "-")
     return p.get_pinyin(name)
 
@@ -21,17 +21,19 @@ def new_post_init(config, independent=False):
     title = config["title"]
     name = config["name"]
 
-    if not os.path.exists("./document/{0}.md".format(name)):
+    if not os.path.exists("./document/{}.md".format(name)):
         editor = system_info["Editor"]
         os.system("{0} ./document/{1}.md".format(editor, name))
     post_info = {"name": name, "title": title, "time": time.time()}
-
-    if not independent and os.path.exists("./document/{0}.md".format(name)):
-        excerpt = get.get_excerpt("./document/{0}.md".format(name))
+    if not os.path.exists("./document/{}.md".format(name)):
+        console.log("Error", "Cannot find [./document/{}.md] file".format(name))
+        return
+    if not independent:
+        excerpt = get.get_excerpt("./document/{}.md".format(name))
         post_info["excerpt"] = excerpt
 
     write_json = post_info
-    page_config = "./document/{0}.json".format(name)
+    page_config = "./document/{}.json".format(name)
 
     if not independent:
         write_json = json.loads(file.read_file("./config/page.json"))
