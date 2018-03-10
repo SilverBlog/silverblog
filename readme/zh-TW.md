@@ -6,20 +6,19 @@ SilverBlog 是一個基於 Python3 的輕量級博客。
 
 ## 為什麼選擇 SilverBlog
 
-* 簡單、小巧的博客系統
-* 易於安裝部署
-* 完整的 Rss 支持
-* 模塊化設計，方便自行添加，刪除
-* 無數據庫化設計
-* 擁有媲美 Hexo 的靜態頁面生成模塊，只需一行命令，就可在 Github Page 上運行
-* 支持 Mac os 和 Linux
-* 擁有一個Android客戶端
+* 簡單、小巧的博客系統。
+* 易於安裝部署。
+* 完整的 Rss 支持。
+* 模塊化設計，方便自行添加，刪除。
+* 無數據庫化設計。
+* 擁有媲美 Hexo 的靜態頁面生成模塊，只需一行命令，就可在 Github Page 上運行。
+* 支持 Mac os 和 Linux。
+* 擁有一個Android客戶端。
 * 擁有一個web管理器。
 
 ## 如何安裝
 
 您可以直接使用安裝腳本安裝 SilverBlog
-
 
 Docker:
 
@@ -46,7 +45,7 @@ bash -c "$(https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/in
 ```
 
 
-您需要自行在[SilverBlogTeam](https://github.com/SilverBlogTeam) 中選擇一個主題，存放到`templates` 目錄中，運行主題文件夾中的`install.sh` ，並在下面的配置文件中正確配置它
+您需要自行在[SilverBlogTheme](https://github.com/SilverBlogTheme) 中選擇一個主題，存放到`templates` 目錄中，運行主題文件夾中的`install.sh` ，並在下面的配置文件中正確配置它
 
 本安裝腳本默認使用 nginx + uwsgi 執行模式，您可以將程序自動生成的 `nginx_config` 文件放到您的 nginx 軟件包的網站配置目錄下。
 

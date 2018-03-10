@@ -6,14 +6,14 @@
 
 ## Why SilverBlog
 
-* Simple, small blog system
-* Easy to install and deploy
-* Full Rss support
-* Modular design, easy to add, delete
-* No database design
-* Equivalent Hexo static page generation module, just a line of commands, you can run on Github Page
-* Mac OS and Linux support
-* Have an Android client
+* Simple, small blog system.
+* Easy to install and deploy.
+* Full Rss support.
+* Modular design, easy to add, delete.
+* No database design.
+* Equivalent Hexo static page generation module, just a line of commands, you can run on Github Page.
+* Mac OS and Linux support.
+* Have an Android client.
 * Have a web manager.
 
 ## how to install
@@ -44,7 +44,7 @@ Arch Linux:
 bash -c "$(https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh)"
 ```
 
-You will need to select a theme in [SilverBlogTeam](https://github.com/SilverBlogTeam) and put it in the templates directory. Run `install.sh` in the theme folder and in the following config file Configure it correctly
+You will need to select a theme in [SilverBlogTheme](https://github.com/SilverBlogTheme) and put it in the templates directory. Run `install.sh` in the theme folder and in the following config file Configure it correctly
 
 By default, this installation script uses the nginx + uwsgi execution mode, and you can place the `nginx_config` file generated automatically by the program into the site configuration directory of your nginx package.
 
@@ -114,7 +114,7 @@ Add an article config json Example: (Note that you need to put the file in the D
 
 You can download the latest android client at https://github.com/SilverBlogTeam/SilverBlog_Android/releases.
 
-You can manage your blog using `SilverCreate` (https://c.silverblog.org).
+You can manage your blog using `Silver Create` (https://c.silverblog.org).
 
 You can use pip install [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) dependencies, and then execute `python3 control_server.py` generate automated configuration QR code.
 
