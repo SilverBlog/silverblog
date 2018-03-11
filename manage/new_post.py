@@ -13,7 +13,7 @@ system_info = json.loads(file.read_file("./config/system.json"))
 
 def get_name(name_input):
     p = Pinyin()
-    name = name.replace(" ", "-")
+    name = name_input.replace(" ", "-")
     return p.get_pinyin(name)
 
 def new_post_init(config, independent=False):

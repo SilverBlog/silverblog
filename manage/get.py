@@ -22,7 +22,7 @@ def get_excerpt(filename):
             split_index = dot_index
         if comma_index != -1 and dot_index == 1:
             split_index = comma_index
-        excerpt = excerpt_output[:split_index]
+        excerpt = excerpt_output[:split_index + 1]
     return excerpt
 
 def get_gavatar(author_name):
