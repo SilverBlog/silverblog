@@ -78,6 +78,7 @@ def publish():
     try:
         repo = git.Repo("./static_page")
         if repo.is_dirty():
+            console.log("Success", "Done")
             return True
         repo.git.add("--all")
         repo.git.commit("-m Publish Time：{0}".format(localtime))
