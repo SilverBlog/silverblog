@@ -102,10 +102,10 @@ def static_file():
 
 @app.route("/")
 @app.route("/index", strict_slashes=False)
-@app.route('/index/p/<int:page_index>', strict_slashes=False)
+@app.route('/index/<int:page_index>', strict_slashes=False)
 def index_route(page_index=1):
     check_proxy_ip(request.headers)
-    page_url = "/index/p/{0}/".format(page_index)
+    page_url = "/index/{0}/".format(page_index)
     if page_url in cache_index:
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_index[page_url]

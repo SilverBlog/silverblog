@@ -47,12 +47,11 @@ def publish():
     file.write_file("./static_page/index.html", content)
     if row != 1:
         os.mkdir("./static_page/index/")
-        os.mkdir("./static_page/index/p")
-        file.write_file("./static_page/index/p/1.html", "<meta http-equiv='refresh' content='0.1; url=/'>")
+        file.write_file("./static_page/index/1.html", "<meta http-equiv='refresh' content='0.1; url=/'>")
         for page_id in range(2, row + 1):
-            console.log("Build", "Processing file: ./static_page/index/p/{0}.html".format(str(page_id)))
+            console.log("Build", "Processing file: ./static_page/index/{0}.html".format(str(page_id)))
             content, row = page.build_index(page_id, system_config, page_list, menu_list, template_config)
-            file.write_file("./static_page/index/p/{0}.html".format(str(page_id)), content)
+            file.write_file("./static_page/index/{0}.html".format(str(page_id)), content)
     os.mkdir("./static_page/post/")
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
