@@ -123,9 +123,11 @@ def index_route(page_index=1):
     console.log("Success", "Get success: {0}".format(page_url))
 
     return result
-
+@app.route("/<file_name>/p/<int:page_index>")
 @app.route("/<file_name>", strict_slashes=False)
 def redirect_301(file_name):
+    if file_name == "index":
+        return redirect("/index/{}".format(page_index), code=301)
     if file_name in ('rss.xml', "feed.xml", "atom.xml", "feed", "atom"):
         return redirect("/rss", code=301)
     if file_name in page_name_list or os.path.exists("./document/{0}.md".format(file_name)):

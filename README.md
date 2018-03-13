@@ -76,7 +76,7 @@ You can configure your server using the `systemd_startup_install.sh` file in the
 
 SilverBlog recommends using NodeJS-based monitor: PM2
 
-For the installation of PM2, check out [How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16- 04) and [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
+For the installation of PM2, check out [How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04) and [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
 
 Then you just need to run it
 
