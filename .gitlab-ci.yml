@@ -44,7 +44,7 @@ docker_push:
 demo_update:
   stage: deploy
   only:
-  - master
+  - develop
   image: docker.reallserver.cn/public/docker-git
   script:
   - eval $(ssh-agent -s)
