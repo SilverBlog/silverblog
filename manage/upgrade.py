@@ -25,6 +25,7 @@ def upgrade_pull():
                     "The current warehouse is modified and can not be upgraded automatically. Please re-store the warehouse and try again.")
         exit(1)
     remote.pull()
+
     if current_data_version != new_data_version and os.path.exists(
             "./upgrade/upgrade_from_{}.py".format(current_data_version)):
         exec(file.read_file("./upgrade/upgrade_from_{}.py".format(current_data_version)))

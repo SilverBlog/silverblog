@@ -13,15 +13,6 @@ build_docker_demo:
   script:
   - docker build -t ${docker_tag_name}-demo -f ./develop/demo/dockerfile .
 
-build_docker_test_env:
-  stage: build
-  only:
-  - master
-  tags:
-  - docker-build
-  script:
-  - docker build -t ${docker_tag_name} .
-
 release_github:
   image: docker.reallserver.cn/public/docker-git
   stage: push
@@ -51,5 +42,5 @@ demo_update:
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
-  - ssh qwe7002@demo.silverblog.org "docker pull ${docker_tag_name}-demo && bash start.sh && curl https://demo.silverblog.org"
+  - ssh qwe7002@demo.silverblog.org "docker pull ${docker_tag_name}-demo && bash start.sh"
 
