@@ -1,9 +1,46 @@
-image: docker.reallserver.cn/public/docker-git
+stages:
+  - build
+  - push
+  - deploy
 
-release_github: 
+variables:
+  docker_tag_name: "docker.reallserver.cn/silverblog/silverblog"
+
+build_docker_demo:
+  stage: build
+  tags:
+  - docker-build
+  script:
+  - docker build -t ${docker_tag_name}-demo -f ./develop/demo/dockerfile .
+
+release_github:
+  image: docker.reallserver.cn/public/docker-git
+  stage: push
   only:
   - master
   script:
   - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
   - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
-  - cd wiki && git push -f --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.wiki.git HEAD:master
+  - cd wiki && git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.wiki.git HEAD:master
+
+docker_push:
+  stage: push
+  tags:
+  - docker-build
+  script:
+  - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
+  - docker push ${docker_tag_name}
+  - docker push ${docker_tag_name}-demo
+
+demo_update:
+  stage: deploy
+  only:
+  - develop
+  image: docker.reallserver.cn/public/docker-git
+  script:
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" > deploy.key
+  - chmod 0600 deploy.key
+  - ssh-add deploy.key
+  - ssh qwe7002@demo.silverblog.org "docker pull ${docker_tag_name}-demo && bash start.sh"
+

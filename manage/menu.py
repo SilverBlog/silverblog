@@ -23,8 +23,7 @@ def use_whiptail_mode():
         if result == "Build static page":
             from manage import build_static_page
             dialog.title = "Build static page"
-            build_static_page.publish(dialog.confirm("Push to git?", "no"),
-                                      dialog.confirm("Generate a hyperlink with a file extension?", "no"))
+            build_static_page.publish()
         if result == "Setting":
             from manage import setting
             setting.setting_menu()
@@ -39,11 +38,13 @@ def article_manager():
         new_post()
     if result == "Edit":
         edit_post()
-        update_post.update()
+        if not update_post.update():
+            return
     if result == "Delete":
         delete_post()
     if result == "Update":
-        update_post.update()
+        if not update_post.update():
+            return
     build_rss.build_rss()
 
 def upgrade():
@@ -59,6 +60,8 @@ def edit_post():
     from manage import edit_post
     dialog.title = "Edit post"
     page_list, post_index = select_post()
+    if not page_list:
+        return
     config = get_post_info(page_list[post_index]["title"], page_list[post_index]["name"])
     system_info = json.loads(file.read_file("./config/system.json"))
     edit_post.edit(page_list, post_index, config, system_info["Editor"])
@@ -66,6 +69,8 @@ def edit_post():
 def delete_post():
     from manage import delete_post
     page_list, post_index = select_post()
+    if not page_list:
+        return
     if dialog.confirm(
             "Are you sure you want to delete this article? (Warning! This operation is irreversible, please be careful!)",
             "no"):
@@ -76,8 +81,8 @@ def select_post():
     page_list = json.loads(file.read_file("./config/page.json"))
     i = 1
     if len(page_list) == 0:
-        console.log("Error")
-        exit(1)
+        dialog.alert("The page list can not be blank.")
+        return [], 0
     for item in page_list:
         page_title_list.append("{}. {}".format(i, item["title"]))
         i += 1
@@ -113,7 +118,9 @@ def use_text_mode(args):
             if len(title) != 0:
                 name = new_post.get_name(title)
             print("Please enter the slug [{}]:".format(name))
-            name = input()
+            name2 = input()
+            if len(name2) != 0:
+                name = name2
         if len(name) != 0 and len(title) != 0:
             config = {"title": title, "name": name}
             new_post.new_post_init(config, args.independent)
@@ -133,20 +140,7 @@ def use_text_mode(args):
                 exit(0)
         console.log("info", "No upgrade found")
         exit(0)
-    if args.command == "theme-install":
-        from manage import theme
-        print("Please enter the name of the theme you want to install:")
-        theme_name = input()
-        theme_name = theme.install_theme(theme_name)
-        enable_theme = input('Do you want to enable this theme now? [y/N]')
-        if enable_theme.lower() == 'yes' or enable_theme.lower() == 'y':
-            system_info = json.loads(file.read_file("./config/system.json"))
-            system_info["Theme"] = theme_name
-            file.write_file("./config/system.json",
-                            json.dumps(system_info, indent=4, sort_keys=False, ensure_ascii=False))
-            console.log("Success", "The theme has been enabled!")
-        exit(0)
     if args.command == "build-gh-page":
         from manage import build_static_page
-        build_static_page.publish(args.push_git, args.static_page)
+        build_static_page.publish()
         exit(0)

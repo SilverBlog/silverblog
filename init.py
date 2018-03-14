@@ -18,7 +18,7 @@ i18n = dict()
 
 app = Flask(__name__)
 
-console.log("info", "Loading configuration...")
+
 
 @asyncio.coroutine
 def async_json_loads(text):
@@ -68,6 +68,8 @@ def get_rss_file():
     if os.path.exists("./document/rss.xml"):
         rss = yield from file.async_read_file("./document/rss.xml")
 
+console.log("info", "Loading configuration...")
+asyncio.set_event_loop(asyncio.new_event_loop())
 loop = asyncio.get_event_loop()
 tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss_file()]
 loop.run_until_complete(asyncio.wait(tasks))
@@ -88,7 +90,6 @@ def check_proxy_ip(header):
         console.log("ClientIP", "X-Real-IP is :" + header['X-Real-Ip'])
 
 @app.route("/rss/", strict_slashes=False)
-@app.route("/feed/", strict_slashes=False)
 def result_rss():
     check_proxy_ip(request.headers)
     if rss is None:
@@ -101,17 +102,16 @@ def static_file():
 
 @app.route("/")
 @app.route("/index", strict_slashes=False)
-@app.route('/index/p/<int:page_index>', strict_slashes=False)
+@app.route('/index/<int:page_index>', strict_slashes=False)
 def index_route(page_index=1):
     check_proxy_ip(request.headers)
-    page_url = "/index/p/{0}/".format(page_index)
+    page_url = "/index/{0}/".format(page_index)
     if page_url in cache_index:
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_index[page_url]
 
     console.log("info", "Trying to build: {0}".format(page_url))
-    result, row = page.build_index(page_index, system_config, page_list, menu_list,
-                                   False, template_config, i18n)
+    result, row = page.build_index(page_index, system_config, page_list, menu_list, template_config, i18n)
     if result is None and row == 0:
         abort(404)
     console.log("info", "Writing to cache: {0}".format(page_url))
@@ -123,9 +123,13 @@ def index_route(page_index=1):
     console.log("Success", "Get success: {0}".format(page_url))
 
     return result
-
+@app.route("/<file_name>/p/<int:page_index>", strict_slashes=False)
 @app.route("/<file_name>", strict_slashes=False)
-def redirect_301(file_name):
+def redirect_301(file_name, page_index=1):
+    if file_name == "index":
+        return redirect("/index/{}".format(page_index), code=301)
+    if file_name in ('rss.xml', "feed.xml", "atom.xml", "feed", "atom"):
+        return redirect("/rss", code=301)
     if file_name in page_name_list or os.path.exists("./document/{0}.md".format(file_name)):
         return redirect("/post/{0}/".format(file_name), code=301)
     abort(404)
@@ -145,7 +149,6 @@ def post_route(file_name=None):
         this_page_index = page_name_list.index(file_name)
         page_info = page_list[this_page_index]
     result = page.build_page(file_name, system_config, page_info, menu_list,
-                             False,
                              template_config, i18n)
     console.log("info", "Writing to cache: {0}".format(page_url))
     if len(cache_post) >= 100:

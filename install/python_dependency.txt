@@ -1,5 +1,7 @@
-flask
+Flask
 hoedown
-pypinyin
+xpinyin
 pyrss2gen
 gitpython
+requests
+watchdog

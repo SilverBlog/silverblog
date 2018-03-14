@@ -2,16 +2,20 @@ version: '2'
 services:
   silverblog:
     image: "silverblog/silverblog"
+    tty: true
+    container_name: "silverblog"
     restart: always
-    command: python3 watch.py --docker
+    command: python3 watch.py
     volumes:
      - ./:/home/silverblog/
     ports:
      - "127.0.0.1:5000:5000"
   silverblog_control:
     image: "silverblog/silverblog"
+    tty: true
+    container_name: "silverblog_control"
     restart: always
-    command: uwsgi --json uwsgi.json:control
+    command: python3 watch.py --control
     volumes:
      - ./:/home/silverblog/
     ports:

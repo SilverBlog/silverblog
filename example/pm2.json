@@ -1,0 +1,22 @@
+{
+  "apps": [
+    {
+      "name": "silverblog",
+      "script": "/usr/bin/python3",
+      "args": "watch.py",
+      "merge_logs": true,
+      "cwd": "./"
+    },
+    {
+      "name": "silverblog-control",
+      "script": "/usr/bin/python3",
+      "args": [
+        "watch.py",
+        "--control"
+      ],
+      "merge_logs": true,
+      "cwd": "./"
+    }
+  ]
+}
+

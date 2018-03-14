@@ -1,26 +1,27 @@
-import json
+
 import os
-import urllib.request
+
+import requests
 
 from common import console
 
 def get_orgs_list():
     console.log("info", "Getting the list of theme...")
     try:
-        return json.loads(
-            urllib.request.urlopen("https://api.github.com/orgs/silverblogtheme/repos").read().decode('utf-8'))
-    except urllib.error:
+        return requests.get("https://api.github.com/orgs/silverblogtheme/repos").json()
+    except  requests.exceptions.RequestException:
         console.log("Error", "Get the theme list error.")
         exit(1)
 
 def get_local_theme_list():
     from common import file
     directories = file.list_dirs("./templates")
-    if "static" in directories:
-        directories.remove("static")
-    if "include" in directories:
-        directories.remove("include")
-    return directories
+    dir_list = list()
+    for item in directories:
+        if os.path.exists("./templates/{}/.git".format(item)):
+            dir_list.append(item)
+    return dir_list
+
 def install_theme(theme_name, orgs_list=None):
     if orgs_list is None:
         orgs_list = get_orgs_list()
@@ -38,9 +39,8 @@ def install_theme(theme_name, orgs_list=None):
     r = None
     console.log("info", "Getting the theme installation script...")
     try:
-        r = urllib.request.urlopen(
-            "https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).read().decode('utf-8')
-    except urllib.error:
+        r = requests.get("https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).text
+    except requests.exceptions.RequestException:
         console.log("Error", "Get the theme installation script error.")
         return
     os.system("cd ./templates \n" + r)

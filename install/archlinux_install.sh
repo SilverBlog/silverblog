@@ -10,16 +10,16 @@ fi
 echo "Installing Dependency..."
 ${use_superuser} pacman -Sy nginx uwsgi python libnewt uwsgi-plugin-python python-pip python-wheel git
 
-
+echo "Cloning silverblog..."
 if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
     cd silverblog/install
 fi
 
-${use_superuser} pip install -r python_dependency.txt
+./install_python_dependency.sh
 
-if [ ! -f "../start.json" ]; then
-    cp -i ../example/pm2.example.json ../pm2.json
+if [ ! -f "../pm2.json" ]; then
+    cp -i ../example/pm2.json ../pm2.json
 fi
 
 read -p "Is qrcode support component installed? (Y/N): " yn
