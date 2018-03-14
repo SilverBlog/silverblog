@@ -76,7 +76,7 @@ def publish():
         return False
     try:
         repo = git.Repo("./static_page")
-        if repo.is_dirty():
+        if not repo.is_dirty():
             console.log("Success", "Done")
             return True
         repo.git.add("--all")
