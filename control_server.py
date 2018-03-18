@@ -155,6 +155,6 @@ def create_post():
 
 @app.route("/control/git_page_publish", strict_slashes=False, methods=['POST'])
 def git_publish():
-    import build_static_page
+    from manage import build_static_page
     status = build_static_page.publish()
     return json.dumps({"status": status})
