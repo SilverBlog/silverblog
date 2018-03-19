@@ -8,12 +8,22 @@ variables:
 
 build_docker_demo:
   stage: build
+  only:
+  - nightly
   tags:
   - docker-build
   script:
   - docker build -t ${docker_tag_name}-demo -f ./develop/demo/dockerfile .
 
-release_github:
+release_github_nightly:
+  image: docker.reallserver.cn/public/docker-git
+  stage: push
+  only:
+  - nightly
+  script:
+  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:nightly
+
+release_github_master:
   image: docker.reallserver.cn/public/docker-git
   stage: push
   only:
@@ -25,6 +35,8 @@ release_github:
 
 docker_push:
   stage: push
+  only:
+  - nightly
   tags:
   - docker-build
   script:
@@ -35,7 +47,7 @@ docker_push:
 demo_update:
   stage: deploy
   only:
-  - develop
+  - nightly
   image: docker.reallserver.cn/public/docker-git
   script:
   - eval $(ssh-agent -s)
