@@ -4,7 +4,7 @@
 
 [Click here for English version](/blob/master/readme/en_US.md)
 
-SilverBlog 是一個基於 Python3 的輕量級博客。
+SilverBlog 是一個基於 Python3 的輕量級博客專案。
 
 ## 為什麼選擇 SilverBlog
 
@@ -14,10 +14,10 @@ SilverBlog 是一個基於 Python3 的輕量級博客。
 * 模塊化設計，方便自行添加，刪除。
 * 無數據庫化設計。
 * 擁有媲美 Hexo 的靜態頁面生成模塊，只需一行命令，就可在 Github Page 上運行。
-* 支持 Mac os 和 Linux。
-* 擁有一個Android用戶端。
-* 擁有一個web用戶端。
-* 正在開發一個ios用戶端
+* 原生支持 Linux，可以通過 Docker 部署在任意平台。
+* 擁有一個 Android 用戶端。
+* 擁有一個 web 用戶端。
+* 正在開發一個 IOS 用戶端
 
 ## 如何安裝
 
@@ -48,7 +48,7 @@ bash -c "$(https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/in
 ```
 
 
-您可以在 [SilverBlogTheme](https://github.com/SilverBlogTheme) 中選擇一個主題，然後使用 `./manage.py`來安裝配置 ，並在下面的配置文件中正確配置它。
+您可以在 [SilverBlogTheme](https://github.com/SilverBlogTheme) 中選擇一個主題，然後使用 `./manage.py` 來安裝配置 ，並在下面的配置文件中正確配置它。
 
 本安裝腳本默認使用 nginx + uwsgi 執行模式，您可以將程序自動生成的 `nginx_config` 文件放到您的 nginx 軟件包的網站配置目錄下。如果您需要使用第三方網頁用戶端，別忘了修改 `nginx_config` 中的CORS配置。
 
@@ -78,13 +78,13 @@ bash -c "$(https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/in
 
 ## 持續運行並監控您的博客
 
-使用 Docker-compose 啟動的容器帶有自動重啟執行的功能，您只要確保Docker服務在開機啟動的時候能夠自動啟動即可。
+使用 docker-compose 啟動的容器帶有自動重啟執行的功能，您只要確保 Docker 服務在開機啟動的時候能夠自動啟動即可。
 
 您可以使用 install 目錄下的 `systemd_startup_install.sh` 文件配置您的伺服器，這需要root權限。它和下面推薦的方法效果一致。
 
 SilverBlog 推薦您使用基於 NodeJS 的監控程序： PM2
 
-有關PM2的安裝請查看[How To Install Node.js on Ubuntu 16.04 | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16- 04) 和[PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
+有關PM2的安裝請查看 [GitHub - tj/n: Node version management](https://github.com/tj/n) 和 [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
 
 然後，您只需要運行：
 
@@ -123,16 +123,22 @@ git config user.name "your name"
 
 接下來，您只需要執行 Build static page 命令，系統就會自動生成靜態頁面並且提交到 github page。
 
-您可以嘗試使用 /example/.travis.yml 腳本，實現自動化提交。（實驗性功能，不保證可用）
+您可以嘗試使用 `/example/.travis.yml` 腳本，實現自動化提交。（實驗性功能，不保證可用）
 
 
 ## 使用手機用戶端
 
 您可以訪問 https://github.com/SilverBlogTeam/SilverBlog_Android/releases 下載最新android用戶端。
 
-您可以使用 Silver Create (https://c.silverblog.org) 來管理你的博客。
+您可以自己編譯部署 https://github.com/SilverBlogTeam/silverblog_ios IOS客戶端。
+
+您可以使用 Silver Create(https://c.silverblog.org) 來管理你的博客。
 
 您可以使用 pip 安裝 [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) 依賴，之後執行 `python3 control_server.py` 生成自動化配置二維碼。
+
+## 切換到開發者預覽版本
+
+SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執行 `git checkout nightly` 切換到開發者預覽版。該版本可能有未被發現的Bug，請慎重使用。
 
 ## 參與開發
 
