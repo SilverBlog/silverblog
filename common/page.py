@@ -41,7 +41,7 @@ def build_index(page, system_config, page_list, menu_list, template_config, i18n
                              system_config=system_config,
                              template_config=template_config,
                              page_row=page_row,
-                             now_page=page, static=False, now_time=time.localtime(), i18n=i18n)
+                             now_page=page, now_time=time.localtime(), i18n=i18n)
     return result, page_row
 
 def build_page(name, system_config, page_info, menu_list, template_config, i18n=None):
@@ -55,6 +55,6 @@ def build_page(name, system_config, page_info, menu_list, template_config, i18n=
     document = markdown.markdown(content)
     template = env.get_template("./{0}/post.html".format(system_config["Theme"]))
     result = template.render(page_info=page_info, menu_list=menu_list, content=document,
-                             system_config=system_config, static=False, template_config=template_config,
+                             system_config=system_config, template_config=template_config,
                              now_time=time.localtime(), i18n=i18n)
     return result
