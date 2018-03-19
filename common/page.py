@@ -8,10 +8,18 @@ from common import file, markdown, post_map
 
 env = Environment(loader=PackageLoader('init', 'templates'))
 
-def format_datatime(value, format='%Y-%m-%d %H:%M'):
+def format_datetime(value, format='%Y-%m-%d %H:%M'):
     return str(time.strftime(format, value))
 
-env.filters['datetimeformat'] = format_datatime
+def get_i18n_value(i18n, value):
+    if value in i18n:
+        return i18n[value]
+    return value
+
+env.filters["get_i18n_value"] = get_i18n_value
+env.filters['format_datetime'] = format_datetime
+#Obsolete
+env.filters['datetimeformat'] = format_datetime
 
 def build_index(page, system_config, page_list, menu_list, template_config, i18n=None):
     page_info = {"title": "index"}
