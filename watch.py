@@ -42,6 +42,7 @@ return_code = p.poll()
 
 signal.signal(signal.SIGINT, INT_handler)
 signal.signal(signal.SIGHUP, HUP_handler)
+signal.alarm(1)
 event_handler = when_file_chanage()
 observer = Observer(timeout=10)
 observer.schedule(event_handler, path=os.getcwd(), recursive=True)
