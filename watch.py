@@ -54,6 +54,7 @@ while return_code is None:
         print(line)
         sys.stderr.flush()
     time.sleep(0.01)
+
 print("[{}] process has been killed.".format(job_name))
 observer.stop()
 exit(return_code)

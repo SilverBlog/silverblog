@@ -11,7 +11,7 @@ def get_excerpt(filename):
     excerpt_list = excerpt.split("\n")
     excerpt_output = ""
     for item in excerpt_list:
-        excerpt_output = excerpt_output + item.lstrip("#*-'")
+        excerpt_output = excerpt_output + item.lstrip("#*-'>")
     excerpt = excerpt_output
     if len(excerpt) > 140:
         split_index = 140
