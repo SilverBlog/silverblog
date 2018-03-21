@@ -18,7 +18,7 @@ def get_name(name_input):
 
 def new_post_init(config, independent=False):
     title = config["title"]
-    name = re.sub('[/:*?"<>|]', '', config["name"])
+    name = re.sub('[/:*?<>\|\'|"]', '', config["name"])
     if not os.path.exists("./document/{}.md".format(name)):
         editor = system_info["Editor"]
         os.system("{0} ./document/{1}.md".format(editor, name))
