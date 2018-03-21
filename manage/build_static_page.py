@@ -87,22 +87,6 @@ def load_config():
     console.log("Success", "load the configuration file successfully!")
 
 def publish():
-    #page_list = json.loads(file.read_file("./config/page.json"))
-    #menu_list = json.loads(file.read_file("./config/menu.json"))
-
-    #page_name_list = list()
-    #for item in page_list:
-    #    page_name_list.append(item["name"])
-    #page_list = list(map(post_map.add_post_header, page_list))
-    #menu_list = list(map(post_map.add_post_header, menu_list))
-
-    #system_config = json.loads(file.read_file("./config/system.json"))
-
-    #for item in page_list:
-    #    page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
-    #template_config = None
-    #if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
-    #    template_config = json.loads(file.read_file("./templates/{0}/config.json".format(system_config["Theme"])))
     load_config()
 
     if not os.path.isdir("./static_page"):
@@ -116,14 +100,14 @@ def publish():
         file.write_file("./static_page/index/1.html", "<meta http-equiv='refresh' content='0.1; url=/'>")
         for page_id in range(2, row + 1):
             console.log("Build", "Processing file: ./static_page/index/{0}.html".format(str(page_id)))
-            content, row = page.build_index(page_id, system_config, page_list, menu_list, template_config)
+            content, row = page.build_index(page_id, system_config, page_list, menu_list, template_config, i18n)
             file.write_file("./static_page/index/{0}.html".format(str(page_id)), content)
     os.mkdir("./static_page/post/")
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     tasks = [
         build_post_page(filename, page_name_list, page_list, system_config,
-                        menu_list, template_config)
+                        menu_list, template_config, i18n)
         for filename in os.listdir("./document/")]
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()

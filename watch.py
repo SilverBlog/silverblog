@@ -20,10 +20,11 @@ class when_file_chanage(FileSystemEventHandler):
             if event.src_path.endswith('control_server.py') and control:
                 p.send_signal(1)
 def HUP_handler(signum, frame):
-    p.send_signal(1)
-def INT_handler(signum, frame):
+    p.send_signal(signum)
+def KILL_handler(signum, frame):
+    print("[{}] process has been killed.".format(job))
     p.kill()
-    exit(0)
+    exit(signum)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--control", action="store_true",
@@ -31,17 +32,22 @@ parser.add_argument("--control", action="store_true",
 args = parser.parse_args()
 
 job_name = "uwsgi.json"
+job = "main"
 
 if args.control:
     job_name = "uwsgi.json:control"
+    job = "control"
     control = True
 cmd = ["uwsgi", "--json", job_name, "--worker-reload-mercy", "1", "--reload-mercy", "4"]
 
 p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
 return_code = p.poll()
 
-signal.signal(signal.SIGINT, INT_handler)
+for sig in [signal.SIGINT, signal.SIGTERM, signal.SIGQUIT]:
+    signal.signal(sig, KILL_handler)
+
 signal.signal(signal.SIGHUP, HUP_handler)
+
 event_handler = when_file_chanage()
 observer = Observer(timeout=10)
 observer.schedule(event_handler, path=os.getcwd(), recursive=True)
@@ -56,7 +62,10 @@ while return_code is None:
         print(line)
         sys.stderr.flush()
     time.sleep(0.01)
-
-print("[{}] process has been killed.".format(job_name))
+while len(line) != 0:
+    line = p.stderr.readline().strip().decode("utf-8")
+    print(line)
+    sys.stderr.flush()
+print("[{}] process has been killed.".format(job))
 observer.stop()
 exit(return_code)
