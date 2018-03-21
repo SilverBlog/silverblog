@@ -75,7 +75,7 @@ def load_config():
     console.log("info", "Loading configuration...")
     asyncio.set_event_loop(asyncio.new_event_loop())
     loop = asyncio.get_event_loop()
-    tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss_file()]
+    tasks = [get_system_config(), get_page_list(), get_menu_list()]
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
     global page_list, page_name_list, menu_list, page_list
