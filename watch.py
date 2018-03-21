@@ -14,18 +14,15 @@ control = False
 
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
-        if event.is_directory or os.path.basename(os.path.dirname(event.src_path)) == "static_page":
-            return
-        if event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
-                'init.py') or event.src_path.endswith('.xml') and not control:
-            p.send_signal(1)
-            return
-        if event.src_path.endswith('control_server.py'):
-            if control:
+        if not event.is_directory or not os.path.basename(os.path.dirname(event.src_path)) == "static_page":
+            if event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
+                    'init.py') or event.src_path.endswith('.xml') and not control:
                 p.send_signal(1)
-                return
-            if docker_control_p is not None:
-                docker_control_p.send_signal(1)
+            if event.src_path.endswith('control_server.py'):
+                if control:
+                    p.send_signal(1)
+                if docker_control_p is not None:
+                    docker_control_p.send_signal(1)
 
 def HUP_handler(signum, frame):
     p.send_signal(1)
@@ -48,15 +45,16 @@ args = parser.parse_args()
 job_name = "uwsgi.json"
 
 if args.control and not args.docker:
-    control = True
+    contr
+    ol = True
     job_name = "uwsgi.json:control"
 if args.control and args.docker:
     control_cmd = ["uwsgi", "--json", "uwsgi.json:control", "--worker-reload-mercy", "1",
-                   "--reload-mercy", "8"]
+                   "--reload-mercy", "4"]
     docker_control_p = subprocess.Popen(control_cmd, stderr=subprocess.PIPE)
     control_return_code = docker_control_p.poll()
 
-cmd = ["uwsgi", "--json", job_name, "--worker-reload-mercy", "1", "--reload-mercy", "8"]
+cmd = ["uwsgi", "--json", job_name, "--worker-reload-mercy", "1", "--reload-mercy", "4"]
 p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
 return_code = p.poll()
 

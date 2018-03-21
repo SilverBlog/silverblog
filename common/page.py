@@ -18,6 +18,7 @@ def get_i18n_value(i18n, value):
 
 env.filters["get_i18n_value"] = get_i18n_value
 env.filters['format_datetime'] = format_datetime
+
 #Obsolete
 env.filters['datetimeformat'] = format_datetime
 
