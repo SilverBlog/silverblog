@@ -16,10 +16,6 @@ cache_index = dict()
 cache_post = dict()
 i18n = dict()
 
-app = Flask(__name__)
-
-
-
 @asyncio.coroutine
 def async_json_loads(text):
     return json.loads(text)
@@ -42,13 +38,11 @@ def get_system_config():
         i18n_name = "en-US"
         if "i18n" in system_config:
             if len(system_config["i18n"]) != 0:
-                i18n_name = system_config[i18n_name]
+                i18n_name = system_config["i18n"]
         i18n_filename = "./templates/{0}/i18n/{1}.json".format(system_config["Theme"], i18n_name)
         if os.path.exists(i18n_filename):
             i18n_file = yield from file.async_read_file(i18n_filename)
             i18n = yield from async_json_loads(i18n_file)
-
-
 
 @asyncio.coroutine
 def get_menu_list():
@@ -67,27 +61,27 @@ def get_rss_file():
     global rss
     if os.path.exists("./document/rss.xml"):
         rss = yield from file.async_read_file("./document/rss.xml")
-
-console.log("info", "Loading configuration...")
-asyncio.set_event_loop(asyncio.new_event_loop())
-loop = asyncio.get_event_loop()
-tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss_file()]
-loop.run_until_complete(asyncio.wait(tasks))
-loop.close()
-
-for item in page_list:
-    page_name_list.append(item["name"])
-    page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
-menu_list = list(map(post_map.add_post_header, menu_list))
-page_list = list(map(post_map.add_post_header, page_list))
-console.log("Success", "load the configuration file successfully!")
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
+def load_config():
+    console.log("info", "Loading configuration...")
+    asyncio.set_event_loop(asyncio.new_event_loop())
+    loop = asyncio.get_event_loop()
+    tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss_file()]
+    loop.run_until_complete(asyncio.wait(tasks))
+    loop.close()
+    global page_list, page_name_list, menu_list, page_list
+    for item in page_list:
+        page_name_list.append(item["name"])
+        page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
+    menu_list = list(map(post_map.add_post_header, menu_list))
+    page_list = list(map(post_map.add_post_header, page_list))
+    console.log("Success", "load the configuration file successfully!")
 
 def check_proxy_ip(header):
     if 'X-Real-Ip' in header:
         console.log("ClientIP", "X-Real-IP is :" + header['X-Real-Ip'])
+
+app = Flask(__name__)
+load_config()
 
 @app.route("/rss/", strict_slashes=False)
 def result_rss():
@@ -99,6 +93,17 @@ def result_rss():
 @app.route("/static/")
 def static_file():
     abort(400)
+
+@app.route("/<file_name>/p/<int:page_index>", strict_slashes=False)
+@app.route("/<file_name>", strict_slashes=False)
+def redirect_301(file_name, page_index=1):
+    if file_name == "index":
+        return redirect("/index/{}".format(page_index), code=301)
+    if file_name in ('rss.xml', "feed.xml", "atom.xml", "feed", "atom"):
+        return redirect("/rss", code=301)
+    if file_name in page_name_list or os.path.exists("./document/{0}.md".format(file_name)):
+        return redirect("/post/{0}/".format(file_name), code=301)
+    abort(404)
 
 @app.route("/")
 @app.route("/index", strict_slashes=False)
@@ -121,18 +126,7 @@ def index_route(page_index=1):
         del cache_index[page_keys[0]]
     cache_index[page_url] = result
     console.log("Success", "Get success: {0}".format(page_url))
-
     return result
-@app.route("/<file_name>/p/<int:page_index>", strict_slashes=False)
-@app.route("/<file_name>", strict_slashes=False)
-def redirect_301(file_name, page_index=1):
-    if file_name == "index":
-        return redirect("/index/{}".format(page_index), code=301)
-    if file_name in ('rss.xml', "feed.xml", "atom.xml", "feed", "atom"):
-        return redirect("/rss", code=301)
-    if file_name in page_name_list or os.path.exists("./document/{0}.md".format(file_name)):
-        return redirect("/post/{0}/".format(file_name), code=301)
-    abort(404)
 
 @app.route("/post/<file_name>")
 @app.route("/post/<file_name>/")
