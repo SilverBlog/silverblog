@@ -43,6 +43,7 @@ def check_password(title, sign):
     hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
     if sign == hash_md5:
         return True
+    return False
 
 @app.route('/control/system_info', methods=['POST'])
 def system_info():

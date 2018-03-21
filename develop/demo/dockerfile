@@ -19,4 +19,4 @@ RUN bash /home/silverblog/install/install.sh \
 && python3 manage.py update \
 && cd /home/silverblog/templates && curl https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh | bash
 
-CMD ["python3","watch.py","--docker","--control"]
+CMD ["python3","watch.py","--control","&","python3","watch.py"]
