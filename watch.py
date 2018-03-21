@@ -13,9 +13,10 @@ control = False
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
         if not event.is_directory or not os.path.basename(os.path.dirname(event.src_path)) == "static_page":
-            if event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
-                    'init.py') or event.src_path.endswith('.xml') and not control:
-                p.send_signal(1)
+            if not control:
+                if event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
+                        'init.py') or event.src_path.endswith('.xml'):
+                    p.send_signal(1)
             if event.src_path.endswith('control_server.py') and control:
                 p.send_signal(1)
 def HUP_handler(signum, frame):
