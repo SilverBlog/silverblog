@@ -1,5 +1,4 @@
-# coding=utf-8
-
+# -*- coding: utf-8 -*-
 import hashlib
 import json
 import os.path
