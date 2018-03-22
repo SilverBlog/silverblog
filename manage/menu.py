@@ -140,7 +140,7 @@ def use_text_mode(args):
                 exit(0)
         console.log("info", "No upgrade found")
         exit(0)
-    if args.command == "build-gh-page":
+    if args.command == "build-page":
         from manage import build_static_page
         build_static_page.publish()
         exit(0)
