@@ -7,4 +7,4 @@ print("Current python version information:")
 print(sys.version)
 if sys.version_info < (3, 4):
     print("Current python version is lower than 3.4, need to install asyncio.")
-    os.system("python3 -m pip install asyncio")
+    os.system("/usr/bin/python3 -m pip install asyncio")
