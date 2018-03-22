@@ -19,6 +19,7 @@ if [ ! -f "install.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
     cd silverblog/install
 fi
+./check_python_version.py
 
 ./install_python_dependency.sh
 
