@@ -1,6 +1,8 @@
 import re
 
-from common import file
+import requests
+
+from common import file, console
 
 def get_excerpt(filename):
     content = file.read_file(filename)
