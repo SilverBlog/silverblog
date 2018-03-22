@@ -37,9 +37,8 @@ def get_system_config():
         template_config = yield from async_json_loads(template_config_file)
     if os.path.exists("./templates/{}/i18n".format(system_config["Theme"])):
         i18n_name = "en-US"
-        if "i18n" in system_config:
-            if len(system_config["i18n"]) != 0:
-                i18n_name = system_config["i18n"]
+        if "i18n" in system_config and len(system_config["i18n"]) != 0:
+            i18n_name = system_config["i18n"]
         i18n_filename = "./templates/{0}/i18n/{1}.json".format(system_config["Theme"], i18n_name)
         if os.path.exists(i18n_filename):
             i18n_file = yield from file.async_read_file(i18n_filename)
