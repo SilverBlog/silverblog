@@ -5,7 +5,7 @@ ENV LANG C.UTF-8
 WORKDIR /home/silverblog/
 COPY ./ /home/silverblog
 
-RUN apk add --no-cache ca-certificates bash git curl python3 uwsgi uwsgi-python3 \
+RUN apk add --no-cache ca-certificates bash git curl python3 uwsgi uwsgi-python3 supervisor \
 && apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev \
 && pip3 install flask hoedown xpinyin pyrss2gen gitpython watchdog requests  \
 && apk del --purge .build-deps
@@ -18,5 +18,6 @@ RUN bash /home/silverblog/install/install.sh \
 && cp /home/silverblog/develop/demo/demo-article.md /home/silverblog/document/demo-article.md \
 && python3 manage.py update \
 && cd /home/silverblog/templates && curl https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh | bash
+CMD ["supervisord", "-c", "/home/silverblog/silverblog.conf"]
 
-CMD ["python3","watch.py","--control","&","python3","watch.py"]
+#CMD ["python3","watch.py","--control","&","python3","watch.py"]
