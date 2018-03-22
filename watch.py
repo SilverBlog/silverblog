@@ -22,12 +22,15 @@ class when_file_chanage(FileSystemEventHandler):
                     p.send_signal(1)
             if event.src_path.endswith('control_server.py') and control:
                 p.send_signal(1)
+
 def HUP_handler(signum, frame):
     p.send_signal(signum)
+
 def KILL_handler(signum, frame):
     print("[{}] process has been killed.".format(job))
-    p.kill()
-    exit(signum)
+    #p.kill()
+    os.killpg(os.getpgid(p.pid), signum)
+    exit(0)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--control", action="store_true",
@@ -47,7 +50,7 @@ p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
 return_code = p.poll()
 
 for sig in [signal.SIGINT, signal.SIGTERM, signal.SIGQUIT]:
-    signal.signal(sig, KILL_handler)
+    signal.signal(signal.SIGINT, KILL_handler)
 
 signal.signal(signal.SIGHUP, HUP_handler)
 
@@ -71,4 +74,4 @@ while len(line) != 0:
     sys.stderr.flush()
 print("[{}] process has been killed.".format(job))
 observer.stop()
-exit(return_code)
+exit(0)
