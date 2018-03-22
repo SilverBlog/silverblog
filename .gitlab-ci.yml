@@ -41,7 +41,6 @@ docker_push:
   - docker-build
   script:
   - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
-  - docker push ${docker_tag_name}
   - docker push ${docker_tag_name}-demo
 
 demo_update:

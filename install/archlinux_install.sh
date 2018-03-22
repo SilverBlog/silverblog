@@ -16,6 +16,8 @@ if [ ! -f "install.sh" ]; then
     cd silverblog/install
 fi
 
+./check_python_version.py
+
 ./install_python_dependency.sh
 
 if [ ! -f "../pm2.json" ]; then
