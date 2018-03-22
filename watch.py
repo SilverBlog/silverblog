@@ -11,8 +11,10 @@ import time
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
+kill_send = False
 p = None
 control = False
+
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
         if not event.is_directory or not os.path.basename(os.path.dirname(event.src_path)) == "static_page":
@@ -27,7 +29,10 @@ def HUP_handler(signum, frame):
     p.send_signal(signum)
 
 def KILL_handler(signum, frame):
-    print("[{}] process has been killed.".format(job))
+    global kill_send
+    if not kill_send:
+        kill_send = True
+        print("[{}] process has been killed.".format(job))
     #p.kill()
     os.killpg(os.getpgid(p.pid), signum)
     exit(0)
