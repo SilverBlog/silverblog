@@ -8,16 +8,14 @@ COPY ./ /home/silverblog
 RUN apk add --no-cache ca-certificates bash git curl python3 uwsgi uwsgi-python3 supervisor \
 && apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev \
 && pip3 install flask hoedown xpinyin pyrss2gen gitpython watchdog requests  \
-&& apk del --purge .build-deps
-
-
-RUN bash /home/silverblog/install/install.sh \
+&& apk del --purge .build-deps \
+&& bash /home/silverblog/install/install.sh \
 && sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json \
 && cp -f /home/silverblog/develop/demo/page.json /home/silverblog/config/page.json \
 && cp -f /home/silverblog/develop/demo/system.json /home/silverblog/config/system.json \
 && cp /home/silverblog/develop/demo/demo-article.md /home/silverblog/document/demo-article.md \
+&& cp /home/silverblog/develop/demo/silverblog.conf /home/silverblog/silverblog.conf \
 && python3 manage.py update \
 && cd /home/silverblog/templates && curl https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh | bash
-CMD ["supervisord", "-c", "/home/silverblog/silverblog.conf"]
 
-#CMD ["python3","watch.py","--control","&","python3","watch.py"]
+CMD ["supervisord", "-c", "silverblog.conf"]
