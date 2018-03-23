@@ -24,25 +24,25 @@ You can install SilverBlog directly using the installation script:
 Docker:
 
 ```
-Bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
 ```
 
 On Container:
 
 ```
-Bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/container_install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/container_install.sh)"
 ```
 
 Debian:
 
 ```
-Bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh)"
 ```
 
 Arch Linux:
 
 ```
-Bash -c "$(https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh)"
+bash -c "$(https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh)"
 ```
 
 
@@ -80,14 +80,14 @@ Containers started with docker-compose are automatically restarted. You just nee
 
 You can configure your server using the `systemd_startup_install.sh` file in the install directory, which requires root privileges. It is consistent with the recommended method below.
 
-SilverBlog recommends using a NodeJS-based monitor: PM2
+SilverBlog recommends using a NodeJS-based monitor: pm2
 
-For the installation of PM2 see [GitHub - tj/n: Node version management](https://github.com/tj/n) and [PM2 - Quick Start](http://pm2.keymetrics.io/docs/Usage/quick-start/)
+For the installation of pm2 see [GitHub - tj/n: Node version management](https://github.com/tj/n) and [pm2 - Quick Start](http://pm2.keymetrics.io/docs/Usage/quick-start/)
 
 Then, you just have to run:
 
 ```
-Pm2 start pm2.json
+pm2 start pm2.json
 ```
 
 It is possible to automatically restart SilverBlog after updating files or program errors.
@@ -95,8 +95,8 @@ It is possible to automatically restart SilverBlog after updating files or progr
 You can also use:
 
 ```
-Pm2 startup
-Pm2 save
+pm2 startup
+pm2 save
 ```
 
 Enables your SilverBlog to start automatically when the system is powered on.
@@ -114,9 +114,9 @@ You can use `git clone https://${personal_access_tokens}@github.com/${your_repo}
 Don't forget to initialize your submit user information using the following command:
 
 ```
-Cd static_page
-Git config user.email "youremail@google.com"
-Git config user.name "your name"
+cd static_page
+git config user.email "youremail@google.com"
+git config user.name "your name"
 ```
 
 Next, you just need to execute the Build static page command. The system will automatically generate a static page and submit it to the github page.
