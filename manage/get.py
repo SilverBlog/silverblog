@@ -6,22 +6,25 @@ from common import file, console
 
 def get_excerpt(filename):
     content = file.read_file(filename)
-    excerpt = re.sub('(!\[.+\]\([^\)]+\))|(\[.+\]\([^\)]+\))|<.+>|\*|`', '', content)
-    excerpt_list = excerpt.split("\n")
+    excerpt_content = re.sub('(!\[.+\]\([^\)]+\))|(\[.+\]\([^\)]+\))|<.+>|\*|`', '', content)
+    excerpt_list = excerpt_content.split("\n")
     excerpt_output = ""
     for item in excerpt_list:
-        excerpt_output = excerpt_output + item.lstrip("#*-'>")
+        excerpt_output = excerpt_output + item.lstrip("#*-'>") + "\n"
     excerpt = excerpt_output
     if len(excerpt) > 140:
         split_index = 140
         excerpt_output_replace = excerpt_output.replace(".", "。").replace(",", "，")
         dot_index = excerpt_output_replace.find("。", 140, 240)
+        newline_index = excerpt_output_replace.find("\n", 140, 240)
         comma_index = excerpt_output_replace.find("，", 140, 240)
-        if dot_index != -1:
+        if newline_index != -1:
+            split_index = newline_index
+        if newline_index == -1 and dot_index != -1:
             split_index = dot_index
         if dot_index == -1 and comma_index != -1:
             split_index = comma_index
-        excerpt = excerpt_output[:split_index]
+        excerpt = excerpt_output[:split_index].replace("\n", "")
     return excerpt
 
 def get_gavatar(author_name):
