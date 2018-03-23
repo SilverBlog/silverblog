@@ -147,7 +147,7 @@ def post_route(file_name=None):
     result = page.build_page(file_name, system_config, page_info, menu_list,
                              template_config, i18n)
     console.log("info", "Writing to cache: {0}".format(page_url))
-    if len(cache_post) >= 100:
+    if len(cache_post) >= 50:
         page_keys = sorted(cache_post.keys())
         console.log("info", "Delete cache: {0}".format(page_keys[0]))
         del cache_post[page_keys[0]]
