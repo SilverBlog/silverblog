@@ -6,7 +6,7 @@ from common import file, console
 
 def get_excerpt(filename):
     content = file.read_file(filename)
-    excerpt = re.sub('(!\[.+\]\([^\)]+\))|(\[.+\]\([^\)]+\))|<.+>|\*|`', '', excerpt)
+    excerpt = re.sub('(!\[.+\]\([^\)]+\))|(\[.+\]\([^\)]+\))|<.+>|\*|`', '', content)
     excerpt_list = excerpt.split("\n")
     excerpt_output = ""
     for item in excerpt_list:
@@ -21,7 +21,7 @@ def get_excerpt(filename):
             split_index = dot_index
         if dot_index == -1 and comma_index != -1:
             split_index = comma_index
-        excerpt = excerpt_output[:split_index + 1]
+        excerpt = excerpt_output[:split_index]
     return excerpt
 
 def get_gavatar(author_name):
