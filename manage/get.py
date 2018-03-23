@@ -6,7 +6,7 @@ from common import file, console
 
 def get_excerpt(filename):
     content = file.read_file(filename)
-    excerpt_content = re.sub('(!\[.+\]\([^\)]+\))|(\[.+\]\([^\)]+\))|<.+>|\*|`', '', content)
+    excerpt_content = re.sub('(!\[.+\]\([^)]+\))|(\[.+\]\([^)]+\))|<.+>|\*|`', '', content)
     excerpt_list = excerpt_content.split("\n")
     excerpt_output = ""
     for item in excerpt_list:
