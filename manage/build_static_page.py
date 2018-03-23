@@ -110,10 +110,12 @@ def publish():
     tasks = [
         build_post_page(filename, page_name_list, page_list, system_config, menu_list, template_config, i18n)
         for filename in glob.glob("./document/*.md")]
-    loop.run_until_complete(asyncio.wait(tasks))
-    loop.close()
+    if len(tasks) != 0:
+        loop.run_until_complete(asyncio.wait(tasks))
+        loop.close()
+    if os.path.exists("./document/rss.xml"):
+        shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
 
-    shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
     shutil.copytree("./templates/{0}/static".format(system_config["Theme"]),
                     "./static_page/static/{0}/".format(system_config["Theme"]))
     if os.path.exists("./templates/static/user_file"):
