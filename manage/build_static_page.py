@@ -51,9 +51,8 @@ def get_system_config():
         template_config = yield from async_json_loads(template_config_file)
     if os.path.exists("./templates/{}/i18n".format(system_config["Theme"])):
         i18n_name = "en-US"
-        if "i18n" in system_config:
-            if len(system_config["i18n"]) != 0:
-                i18n_name = system_config[i18n_name]
+        if "i18n" in system_config and len(system_config["i18n"]) != 0:
+            i18n_name = system_config["i18n"]
         i18n_filename = "./templates/{0}/i18n/{1}.json".format(system_config["Theme"], i18n_name)
         if os.path.exists(i18n_filename):
             i18n_file = yield from file.async_read_file(i18n_filename)
@@ -72,7 +71,6 @@ def get_page_list():
     page_list = yield from async_json_loads(load_file)
 
 def load_config():
-    console.log("info", "Loading configuration...")
     asyncio.set_event_loop(asyncio.new_event_loop())
     loop = asyncio.get_event_loop()
     tasks = [get_system_config(), get_page_list(), get_menu_list()]
@@ -84,7 +82,6 @@ def load_config():
         page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
     menu_list = list(map(post_map.add_post_header, menu_list))
     page_list = list(map(post_map.add_post_header, page_list))
-    console.log("Success", "load the configuration file successfully!")
 
 def publish():
     load_config()
@@ -92,15 +89,16 @@ def publish():
     if not os.path.isdir("./static_page"):
         os.mkdir("./static_page")
     os.system("cd ./static_page && rm -rf *")
+    page_row = page.get_page_row(system_config["Paging"], len(page_list))
     console.log("Build", "Processing file: ./static_page/index.html")
-    content, row = page.build_index(1, system_config, page_list, menu_list, template_config)
+    content = page.build_index(1, page_row, system_config, page_list, menu_list, template_config, i18n)
     file.write_file("./static_page/index.html", content)
-    if row != 1:
+    if page_row != 1:
         os.mkdir("./static_page/index/")
         file.write_file("./static_page/index/1.html", "<meta http-equiv='refresh' content='0.1; url=/'>")
-        for page_id in range(2, row + 1):
+        for page_id in range(2, page_row + 1):
             console.log("Build", "Processing file: ./static_page/index/{0}.html".format(str(page_id)))
-            content, row = page.build_index(page_id, system_config, page_list, menu_list, template_config, i18n)
+            content = page.build_index(page_id, page_row, system_config, page_list, menu_list, template_config, i18n)
             file.write_file("./static_page/index/{0}.html".format(str(page_id)), content)
     os.mkdir("./static_page/post/")
     loop = asyncio.new_event_loop()

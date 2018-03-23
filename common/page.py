@@ -22,18 +22,21 @@ env.filters['format_datetime'] = format_datetime
 #Obsolete
 env.filters['datetimeformat'] = format_datetime
 
-def build_index(page, system_config, page_list, menu_list, template_config, i18n=None):
-    page_info = {"title": "index"}
-    paging = system_config["Paging"]
-    start_num = -paging + (int(page) * paging)
-    page_row_mod = divmod(len(page_list), system_config["Paging"])
+def get_page_row(paging, page_list_len):
+    page_row_mod = divmod(page_list_len, paging)
     page_row = page_row_mod[0]
-    if page_row_mod[1] != 0 and len(page_list) > system_config["Paging"]:
+    if page_row_mod[1] != 0 and page_list_len > paging:
         page_row = page_row_mod[0] + 1
     if page_row == 0:
         page_row = 1
+    return page_row
+
+def build_index(page, page_row, system_config, page_list, menu_list, template_config, i18n=None):
+    page_info = {"title": "index"}
+    paging = system_config["Paging"]
+    start_num = -paging + (int(page) * paging)
     if page <= 0 or page > page_row:
-        return None, 0
+        return None
     index_list = page_list[start_num:start_num + paging]
     template = env.get_template("./{0}/index.html".format(system_config["Theme"]))
     result = template.render(menu_list=menu_list,
@@ -43,7 +46,7 @@ def build_index(page, system_config, page_list, menu_list, template_config, i18n
                              template_config=template_config,
                              page_row=page_row,
                              now_page=page, now_time=time.localtime(), i18n=i18n)
-    return result, page_row
+    return result
 
 def build_page(name, system_config, page_info, menu_list, template_config, i18n=None):
     content = file.read_file("./document/{0}.md".format(name))

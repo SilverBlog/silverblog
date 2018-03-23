@@ -116,7 +116,8 @@ def index_route(page_index=1):
         return cache_index[page_url]
 
     console.log("info", "Trying to build: {0}".format(page_url))
-    result, row = page.build_index(page_index, system_config, page_list, menu_list, template_config, i18n)
+    page_row = page.get_page_row(system_config["Paging"], len(page_list))
+    result = page.build_index(page_index, page_row, system_config, page_list, menu_list, template_config, i18n)
     if result is None and row == 0:
         abort(404)
     console.log("info", "Writing to cache: {0}".format(page_url))
