@@ -114,11 +114,12 @@ def index_route(page_index=1):
     if page_url in cache_index:
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_index[page_url]
-
     console.log("info", "Trying to build: {0}".format(page_url))
     page_row = page.get_page_row(system_config["Paging"], len(page_list))
+    if page_index == 0 or page_index > page_row:
+        abort(404)
     result = page.build_index(page_index, page_row, system_config, page_list, menu_list, template_config, i18n)
-    if result is None and row == 0:
+    if result is None:
         abort(404)
     console.log("info", "Writing to cache: {0}".format(page_url))
     if len(cache_index) >= 50:

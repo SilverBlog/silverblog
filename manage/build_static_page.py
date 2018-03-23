@@ -1,4 +1,5 @@
 import asyncio
+import glob
 import json
 import os
 import shutil
@@ -19,17 +20,16 @@ def async_build_page(file_name, system_config, page_info, menu_list, template_co
 
 @asyncio.coroutine
 def build_post_page(filename, page_name_list, page_list, system_config, menu_list, template_config, i18n):
-    if filename.endswith(".md"):
-        file_name = filename.replace(".md", "")
-        console.log("Build", "Processing file: ./static_page/post/{0}.html".format(file_name))
-        page_info = None
-        if file_name in page_name_list:
-            this_page_index = page_name_list.index(file_name)
-            page_info = page_list[this_page_index]
-        content = yield from async_build_page(file_name, system_config, page_info, menu_list,
-                                              template_config, i18n)
-        if content is not None:
-            yield from file.async_write_file("./static_page/post/{0}.html".format(filename.replace(".md", "")), content)
+    file_name = os.path.basename(filename).replace(".md", "")
+    console.log("Build", "Processing file: ./static_page/post/{0}.html".format(file_name))
+    page_info = None
+    if file_name in page_name_list:
+        this_page_index = page_name_list.index(file_name)
+        page_info = page_list[this_page_index]
+    content = yield from async_build_page(file_name, system_config, page_info, menu_list,
+                                          template_config, i18n)
+    if content is not None:
+        yield from file.async_write_file("./static_page/post/{0}.html".format(file_name), content)
 
 @asyncio.coroutine
 def async_json_loads(text):
@@ -89,10 +89,13 @@ def publish():
     if not os.path.isdir("./static_page"):
         os.mkdir("./static_page")
     os.system("cd ./static_page && rm -rf *")
+
     page_row = page.get_page_row(system_config["Paging"], len(page_list))
+
     console.log("Build", "Processing file: ./static_page/index.html")
     content = page.build_index(1, page_row, system_config, page_list, menu_list, template_config, i18n)
     file.write_file("./static_page/index.html", content)
+
     if page_row != 1:
         os.mkdir("./static_page/index/")
         file.write_file("./static_page/index/1.html", "<meta http-equiv='refresh' content='0.1; url=/'>")
@@ -100,13 +103,13 @@ def publish():
             console.log("Build", "Processing file: ./static_page/index/{0}.html".format(str(page_id)))
             content = page.build_index(page_id, page_row, system_config, page_list, menu_list, template_config, i18n)
             file.write_file("./static_page/index/{0}.html".format(str(page_id)), content)
+
     os.mkdir("./static_page/post/")
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     tasks = [
-        build_post_page(filename, page_name_list, page_list, system_config,
-                        menu_list, template_config, i18n)
-        for filename in os.listdir("./document/")]
+        build_post_page(filename, page_name_list, page_list, system_config, menu_list, template_config, i18n)
+        for filename in glob.glob("./document/*.md")]
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
 
