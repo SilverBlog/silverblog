@@ -15,8 +15,8 @@ def get_excerpt(filename):
     if len(excerpt) > 140:
         split_index = 140
         excerpt_output_replace = excerpt_output.replace(".", "。").replace(",", "，")
-        dot_index = excerpt_output_replace.find("。", 140, 240)
         newline_index = excerpt_output_replace.find("\n", 140, 240)
+        dot_index = excerpt_output_replace.find("。", 140, 240)
         comma_index = excerpt_output_replace.find("，", 140, 240)
         if newline_index != -1:
             split_index = newline_index
