@@ -59,7 +59,5 @@ if [ ! -f "./uwsgi.json" ]; then
     cp -i ./example/uwsgi.json ./uwsgi.json
 fi
 
-chmod +x manage.py
-
 echo "The installation is complete! "
 echo "Warning, please do not use git clean to restore your warehouse, which will lead to personal data loss!"
