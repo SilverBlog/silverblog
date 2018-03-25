@@ -1,11 +1,11 @@
-FROM alpine:latest
+FROM keymetrics/pm2:latest-alpine
 
 ENV LANG C.UTF-8
 
 WORKDIR /home/silverblog/
 COPY ./ /home/silverblog
 
-RUN apk add --no-cache ca-certificates bash git curl python3 uwsgi uwsgi-python3 supervisor \
+RUN apk add --no-cache ca-certificates bash git curl python3 uwsgi uwsgi-python3 \
 && python3 -m pip install -U pip \
 && apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev \
 && pip3 install flask hoedown xpinyin pyrss2gen gitpython watchdog requests  \
@@ -15,6 +15,8 @@ RUN apk add --no-cache ca-certificates bash git curl python3 uwsgi uwsgi-python3
 && cp -f /home/silverblog/develop/demo/page.json /home/silverblog/config/page.json \
 && cp -f /home/silverblog/develop/demo/system.json /home/silverblog/config/system.json \
 && cp /home/silverblog/develop/demo/demo-article.md /home/silverblog/document/demo-article.md \
-&& cp /home/silverblog/develop/demo/silverblog.conf /home/silverblog/silverblog.conf \
+&& cp /home/silverblog/develop/example/pm2.json /home/silverblog/pm2.json \
 && python3 manage.py update \
 && cd /home/silverblog/templates && curl https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh | bash
+
+CMD [ "pm2-runtime", "start", "pm2.json" ]
