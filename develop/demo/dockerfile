@@ -15,7 +15,7 @@ RUN apk add --no-cache ca-certificates bash git curl python3 uwsgi uwsgi-python3
 && cp -f /home/silverblog/develop/demo/page.json /home/silverblog/config/page.json \
 && cp -f /home/silverblog/develop/demo/system.json /home/silverblog/config/system.json \
 && cp /home/silverblog/develop/demo/demo-article.md /home/silverblog/document/demo-article.md \
-&& cp /home/silverblog/develop/example/pm2.json /home/silverblog/pm2.json \
+&& cp /home/silverblog/example/pm2.json /home/silverblog/pm2.json \
 && python3 manage.py update \
 && cd /home/silverblog/templates && curl https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh | bash
 
