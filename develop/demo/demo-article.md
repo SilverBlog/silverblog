@@ -7,7 +7,7 @@ This article has been set to protected mode, please do not attempt to modify, de
 
 本文章已被设置为保护模式，请不要尝试修改，删除这篇文章。
 
-Visit [Silver Creator] (https://c.silverblog.org/) to experience the online editing of SilverBlog. Enter `https://demo.silverblog.org` into the edit and use `SilverBlog` as the password when submitting the edit.
+Visit [Silver Creator](https://c.silverblog.org/) to experience the online editing of SilverBlog. Enter `https://demo.silverblog.org` into the edit and use `SilverBlog` as the password when submitting the edit.
 
 访问 [Silver Creator](https://c.silverblog.org/) 以体验 SilverBlog 的在线编辑功能。输入 `https://demo.silverblog.org` 进入编辑，并在提交编辑时使用 `SilverBlog` 作为密码。
 
