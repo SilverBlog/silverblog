@@ -13,7 +13,7 @@ Visit [Silver Creator](https://c.silverblog.org/) to experience the online editi
 
 The Android editor can be found in [here](https://github.com/SilverBlogTeam/SilverBlog_Android/releases/).
 
-Android 版编辑器可以在[这里](https://github.com/SilverBlogTeam/SilverBlog_Android/releases/)获取。
+Android 版编辑器可以在 [这里](https://github.com/SilverBlogTeam/SilverBlog_Android/releases/) 获取。
 
 Mobile client automatically configures two-dimensional code:
 
