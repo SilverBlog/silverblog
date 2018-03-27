@@ -4,7 +4,7 @@ ENV LANG C.UTF-8
 
 WORKDIR /home/silverblog/
 
-RUN apk add --no-cache python3 git nano vim bash uwsgi uwsgi-python3 newt ca-certificates \
+RUN apk add --no-cache python3 git nano vim bash uwsgi uwsgi-python3 newt ca-certificates inotify-tools \
 && python3 -m pip install -U pip \
 && update-ca-certificates \
 && apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev \
