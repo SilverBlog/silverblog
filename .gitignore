@@ -21,4 +21,4 @@ templates
 /manage.sh
 /upgrade/current_version.json
 /docker-compose.yml
-/static_page
+static_page

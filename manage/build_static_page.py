@@ -122,8 +122,8 @@ def publish():
         shutil.copytree("./templates/static/user_file", "./static_page/static/user_file")
     console.log("Success", "Create Github Page Success!")
 
-    localtime = time.asctime(time.localtime(time.time()))
     import git
+    localtime = time.asctime(time.localtime(time.time()))
     if not os.path.exists("./static_page/.git"):
         console.log("Error", "[./static_page/] Not a git repository.")
         return False
