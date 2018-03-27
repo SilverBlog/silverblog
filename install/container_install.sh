@@ -7,6 +7,8 @@ fi
 
 ./install_python_dependency.sh
 
+./check_python_version.py
+
 ./install.sh
 cd ..
 sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
