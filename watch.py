@@ -49,7 +49,7 @@ if args.control:
     job_name = "uwsgi.json:control"
     job = "control"
     control = True
-cmd = ["uwsgi", "--json", job_name, "--worker-reload-mercy", "1", "--reload-mercy", "4"]
+cmd = ["uwsgi", "--json", job_name, "--lazy-apps", "--worker-reload-mercy", "2", "--reload-mercy", "8"]
 
 p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
 return_code = p.poll()
@@ -60,7 +60,7 @@ for sig in [signal.SIGINT, signal.SIGTERM, signal.SIGQUIT]:
 signal.signal(signal.SIGHUP, HUP_handler)
 
 event_handler = when_file_chanage()
-observer = Observer()
+observer = Observer(timeout=20)
 observer.schedule(event_handler, path=os.getcwd(), recursive=True)
 observer.start()
 
