@@ -17,7 +17,7 @@ control = False
 
 class when_file_chanage(FileSystemEventHandler):
     def on_any_event(self, event):
-        if not event.is_directory or not os.path.basename(os.path.dirname(event.src_path)) == "static_page":
+        if not os.path.basename(os.path.dirname(event.src_path)) == "static_page":
             if not control:
                 if event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
                         'init.py') or event.src_path.endswith('.xml'):
@@ -60,13 +60,14 @@ for sig in [signal.SIGINT, signal.SIGTERM, signal.SIGQUIT]:
 signal.signal(signal.SIGHUP, HUP_handler)
 
 event_handler = when_file_chanage()
-observer = Observer(timeout=10)
+observer = Observer()
 observer.schedule(event_handler, path=os.getcwd(), recursive=True)
 observer.start()
 
 while return_code is None:
     if not observer.is_alive():
-        observer.start()
+        print("Watch process has been killed.".format(job))
+        exit(1)
     return_code = p.poll()
     line = p.stderr.readline().strip().decode("utf-8")
     if len(line) != 0:
