@@ -56,7 +56,7 @@ def start_watch():
             sys.stderr.flush()
         time.sleep(0.01)
     observer.stop()
-
+    return return_code
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--control", action="store_true",
@@ -71,5 +71,7 @@ if args.control:
 for sig in [signal.SIGINT, signal.SIGTERM, signal.SIGQUIT]:
     signal.signal(signal.SIGINT, KILL_handler)
 signal.signal(signal.SIGHUP, HUP_handler)
-while True:
-    start_watch()
+result_code = 0
+while result_code != 1:
+    result_code = start_watch()
+exit(result_code)
