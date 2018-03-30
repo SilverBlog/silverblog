@@ -37,12 +37,11 @@ def KILL_handler(signum, frame):
 
 def kill_progress():
     global p
-    print("[{}] process has been killed.".format(job))
     p.kill()
 
 def start_watch():
     event_handler = when_file_chanage(kill_progress)
-    observer = Observer(timeout=20)
+    observer = Observer(timeout=0.01)
     observer.schedule(event_handler, path=os.getcwd(), recursive=True)
     observer.start()
     global p, job_name
@@ -56,10 +55,6 @@ def start_watch():
             print(line)
             sys.stderr.flush()
         time.sleep(0.01)
-    while len(line) != 0:
-        line = p.stderr.readline().strip().decode("utf-8")
-        print(line)
-        sys.stderr.flush()
     observer.stop()
 
 
