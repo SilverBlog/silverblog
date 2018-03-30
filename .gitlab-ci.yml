@@ -9,7 +9,7 @@ variables:
 build_docker_demo:
   stage: build
   only:
-  - nightly
+  - develop
   tags:
   - docker-build
   script:
@@ -36,7 +36,7 @@ release_github_master:
 docker_push:
   stage: push
   only:
-  - nightly
+  - develop
   tags:
   - docker-build
   script:
