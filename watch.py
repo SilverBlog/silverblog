@@ -55,6 +55,10 @@ def start_watch():
             print(line)
             sys.stderr.flush()
         time.sleep(0.01)
+    while len(line) != 0:
+        line = p.stderr.readline().strip().decode("utf-8")
+        print(line)
+        sys.stderr.flush()
     observer.stop()
     return return_code
 
