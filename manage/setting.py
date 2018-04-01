@@ -113,7 +113,8 @@ def project_info():
     show_prompt(items)
     new_password = dialog.prompt("Please enter the remote management tool password:", "", True)
     if len(new_password) != 0:
-        system_config["API_Password"] = new_password
+        system_config["API_Password"] = json.dumps(
+            {"hash_password": hashlib.md5(new_password.encode('utf-8')).hexdigest()})
 
 def author_info():
     items = [{"name": "Author_Name", "info": "author name"},

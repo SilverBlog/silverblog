@@ -106,6 +106,38 @@ def new_post():
     new_post.new_post_init(get_post_info(), dialog.confirm("Is this an independent page?", "no"))
 
 def use_text_mode(args):
+    if args.command == "qrcode":
+        system_config = json.loads(file.read_file("./config/system.json"))
+        try:
+            import qrcode_terminal
+        except ImportError:
+            console.log("Error", "Please install the qrcode-terminal package to support this feature")
+            exit(1)
+        if len(system_config["API_Password"]) == 0 or len(system_config["Project_URL"]) == 0:
+            console.log("Error", "Check the API_Password and Project_URL configuration items")
+            exit(1)
+        try:
+            password_md5 = json.loads(system_config["API_Password"])["hash_password"]
+        except (ValueError, KeyError, TypeError):
+            exit(1)
+        console.log("Info", "Please use the client to scan the following QR Code")
+        config_json = json.dumps({"url": system_config["Project_URL"], "password": password_md5})
+        qrcode_terminal.draw(config_json)
+        exit(0)
+    if args.command == "upgrade":
+        from manage import upgrade
+        if upgrade.upgrade_check():
+            start_to_pull = input('Find new version, do you want to upgrade? [y/N]')
+            if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y':
+                upgrade.upgrade_pull()
+                exit(0)
+        console.log("info", "No upgrade found")
+        exit(0)
+    if args.command == "build-page":
+        from manage import build_static_page
+        build_static_page.publish()
+        exit(0)
+
     from manage import build_rss
     if args.command == "new":
         from manage import new_post
@@ -130,17 +162,4 @@ def use_text_mode(args):
         from manage import update_post
         if update_post.update():
             build_rss.build_rss()
-        exit(0)
-    if args.command == "upgrade":
-        from manage import upgrade
-        if upgrade.upgrade_check():
-            start_to_pull = input('Find new version, do you want to upgrade? [y/N]')
-            if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y':
-                upgrade.upgrade_pull()
-                exit(0)
-        console.log("info", "No upgrade found")
-        exit(0)
-    if args.command == "build-page":
-        from manage import build_static_page
-        build_static_page.publish()
         exit(0)
