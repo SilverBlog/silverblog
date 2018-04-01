@@ -124,7 +124,9 @@ Next, you just need to execute the Build static page command. The system will au
 You can try using the `/example/.travis.yml` script for automated submission. (experimental feature, not guaranteed)
 
 
-## Using the mobile client
+## Use client management server
+
+Warning! If you need to use the SilverBlog client, make sure you use the https security protocol. Using http is like telling a password to a hacker! This may compromise your server security!
 
 You can download the latest android client at https://github.com/SilverBlogTeam/SilverBlog_Android/releases.
 

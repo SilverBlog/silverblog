@@ -127,7 +127,9 @@ git config user.name "your name"
 您可以嘗試使用 `/example/.travis.yml` 腳本，實現自動化提交。（實驗性功能，不保證可用）
 
 
-## 使用手機用戶端
+## 使用用戶端管理伺服器
+
+注意！您如果需要使用 SilverBlog 用戶端，請確保您使用了https安全協定。使用http如同將密碼告訴黑客！這將可能危害您的伺服器安全！
 
 您可以訪問 https://github.com/SilverBlogTeam/SilverBlog_Android/releases 下載最新android用戶端。
 
