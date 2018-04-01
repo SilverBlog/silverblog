@@ -59,7 +59,7 @@ unit_test:
 demo_update:
   stage: deploy
   only:
-  - develop
+  - nightly
   image: docker.reallserver.cn/public/docker-git
   script:
   - eval $(ssh-agent -s)
