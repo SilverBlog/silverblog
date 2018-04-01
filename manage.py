@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     parser.add_argument_group('upgrade', "Upgrade program")
     parser.add_argument_group('setting', "Setting program")
-
+    parser.add_argument_group('qrcode', "Output client qrcode.")
     #build-gh-page
     group_build_gh_page = parser.add_argument_group("build-page", "Generate static pages.")
 
