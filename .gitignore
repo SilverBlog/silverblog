@@ -22,3 +22,4 @@ templates
 /upgrade/current_version.json
 /docker-compose.yml
 static_page
+trash
