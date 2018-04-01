@@ -51,7 +51,9 @@ unit_test:
   - apk add --no-cache nginx
   - cd /home/silverblog
   - rm /etc/nginx/conf.d/default.conf && cp /home/silverblog/nginx_config /etc/nginx/conf.d/default.conf && mkdir /run/nginx
-  - nginx && nohup python3 watch.py --control
+  - python3 watch.py &
+  - python3 watch.py --control &
+  - nginx
   - python3 develop/unit_test/test.py
 
 demo_update:
