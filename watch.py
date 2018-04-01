@@ -9,7 +9,7 @@ import sys
 import time
 
 from watchdog.events import FileSystemEventHandler
-from watchdog.observers import Observer
+from watchdog.observers.polling import PollingObserver as Observer
 
 p = None
 control = False
@@ -41,7 +41,7 @@ def kill_progress():
 
 def start_watch():
     event_handler = when_file_chanage(kill_progress)
-    observer = Observer(timeout=0.01)
+    observer = Observer(timeout=1)
     observer.schedule(event_handler, path=os.getcwd(), recursive=True)
     observer.start()
     global p, job_name
@@ -49,6 +49,9 @@ def start_watch():
     p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
     return_code = p.poll()
     while return_code is None:
+        if not observer.is_alive():
+            kill_progress()
+            break
         return_code = p.poll()
         line = p.stderr.readline().strip().decode("utf-8")
         if len(line) != 0:

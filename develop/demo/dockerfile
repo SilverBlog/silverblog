@@ -8,7 +8,7 @@ COPY ./ /home/silverblog
 RUN apk add --no-cache ca-certificates bash git curl python3 uwsgi uwsgi-python3 dumb-init \
 && python3 -m pip install -U pip \
 && apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev \
-&& pip3 install flask hoedown xpinyin pyrss2gen gitpython watchdog requests inotify \
+&& python3 -m pip install flask hoedown xpinyin pyrss2gen gitpython watchdog requests inotify \
 && apk del --purge .build-deps \
 && bash /home/silverblog/install/install.sh \
 && sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json \
