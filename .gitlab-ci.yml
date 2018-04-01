@@ -49,9 +49,9 @@ unit_test:
   stage: test
   script:
   - apk add --no-cache nginx
-  - rm /etc/nginx/conf.d/default.conf && cp nginx_config /etc/nginx/conf.d/default.conf && mkdir /run/nginx
-  - nginx && nohup python3 watch.py --control
-  - python3 develop/unit_test/test.py
+  - rm /etc/nginx/conf.d/default.conf && cp /home/silverblog/nginx_config /etc/nginx/conf.d/default.conf && mkdir /run/nginx
+  - nginx && nohup python3 /home/silverblog/watch.py --control
+  - python3 /home/silverblog/develop/unit_test/test.py
 
 demo_update:
   stage: deploy
