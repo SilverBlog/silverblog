@@ -1,6 +1,7 @@
 stages:
   - build
   - push
+  - test
   - deploy
 
 variables:
@@ -42,6 +43,15 @@ docker_push:
   script:
   - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
   - docker push ${docker_tag_name}-demo
+
+unit_test:
+  image: docker.reallserver.cn/silverblog/silverblog-demo
+  stage: test
+  script:
+  - apk add --no-cache nginx
+  - rm /etc/nginx/conf.d/default.conf && cp nginx_config /etc/nginx/conf.d/default.conf && mkdir /run/nginx
+  - nginx && nohup python3 watch.py --control
+  - python3 develop/unit_test/test.py
 
 demo_update:
   stage: deploy
