@@ -1,13 +1,14 @@
 import json
 import os
 import shutil
-import re
 
 from common import console, file
+from manage import get
 
 def edit(page_list, post_index, config, editor=None, is_menu=False):
     if page_list[post_index]["name"] is not config["name"]:
-        safe_name = re.sub('[/:*?"<>|]', '', config["name"])
+        #safe_name = re.sub('[/:*?"<>|]', '', config["name"])
+        safe_name = get.filter_name(config["name"])
         shutil.move("./document/{}.md".format(page_list[post_index]["name"]),
                     "./document/{}.md".format(safe_name))
         if os.path.exists("./document/{}.json".format(page_list[post_index]["name"])):

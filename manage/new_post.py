@@ -1,9 +1,7 @@
 import json
-import os.path
-import re
 import time
 
-#from pypinyin import lazy_pinyin
+import os.path
 from xpinyin import Pinyin
 
 from common import file, console
@@ -14,12 +12,12 @@ system_info = json.loads(file.read_file("./config/system.json"))
 def get_name(name_input):
     p = Pinyin()
     name = name_input.replace(" ", "-")
-    name = re.sub('[/:*?<>\|\'|"]', '', name)
+    name = get.filter_name(name)
     return p.get_pinyin(name)
 
 def new_post_init(config, independent=False):
     title = config["title"]
-    name = re.sub('[/:*?<>\|\'|"]', '', config["name"])
+    name = get.filter_name(config["name"])
     if not os.path.exists("./document/{}.md".format(name)):
         editor = system_info["Editor"]
         os.system("{0} ./document/{1}.md".format(editor, name))

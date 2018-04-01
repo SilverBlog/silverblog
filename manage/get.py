@@ -6,12 +6,8 @@ from common import file, console
 
 def get_excerpt(filename):
     content = file.read_file(filename)
-    excerpt_content = re.sub('(!\[.+\]\([^)]+\))|(\[.+\]\([^)]+\))|<.+>|\*|`', '', content)
-    excerpt_list = excerpt_content.split("\n")
-    excerpt_output = ""
-    for item in excerpt_list:
-        excerpt_output = excerpt_output + item.lstrip("#*-'>") + "\n"
-    excerpt = excerpt_output
+    excerpt_output = re.sub('(!\[.+\]\([^)]+\))|(\[.+\]\([^)]+\))|<.+>|\*+|`|#+|-+|>', '', content)
+    excerpt = excerpt_output.replace("\n", "")
     if len(excerpt) > 140:
         split_index = 140
         excerpt_output_replace = excerpt_output.replace(".", "。").replace(",", "，")
@@ -37,3 +33,6 @@ def get_gavatar(author_name):
     except (TypeError, ValueError, requests.exceptions.RequestExceptiona):
         console.log("Error", "Get Gravatar URL error,use default avatar.")
     return "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
+
+def filter_name(name):
+    return re.sub('[/:*?<>\|\'|"]', '', name)
