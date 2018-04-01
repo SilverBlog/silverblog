@@ -10,9 +10,7 @@ Thumbs.db
 *.pyc
 *.pyo
 .idea
-config/system.json
-config/menu.json
-config/page.json
+config
 document
 /uwsgi.json
 /pm2.json
