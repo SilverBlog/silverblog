@@ -47,6 +47,8 @@ docker_push:
 unit_test:
   image: docker.reallserver.cn/silverblog/silverblog-demo
   stage: test
+  only:
+  - develop
   script:
   - apk add --no-cache nginx
   - cd /home/silverblog
