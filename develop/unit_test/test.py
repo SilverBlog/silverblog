@@ -2,13 +2,11 @@ import requests
 
 def get(url):
     r = requests.get("http://127.0.0.1/" + url)
-    print(r.text)
     if r.status_code == 200:
         return True
     return False
 def post(url):
     r = requests.post("http://127.0.0.1/" + url)
-    print(r.text)
     if r.status_code == 200:
         return True
     return False
@@ -26,14 +24,14 @@ for item in post_list:
         exit(1)
 
 r = requests.post("http://127.0.0.1/control/get_content/post", json={"post_id": 0})
-print(r.text)
+print("get_content:" + r.text)
 if not r.json()["status"]:
     print("ERROR:get_content")
     exit(1)
 
 r = requests.post("http://127.0.0.1/control/new", json={"content": "test", "name": "test", "title": "title",
                                                         "sign": "bd35db586ff3f4617d90511546aa6e3b"})
-print(r.text)
+print("new:" + r.text)
 if not r.json()["status"]:
     print("ERROR:new")
     exit(1)
@@ -41,13 +39,12 @@ if not r.json()["status"]:
 r = requests.post("http://127.0.0.1/control/edit/post",
                   json={"post_id": 0, "content": "test2", "name": "test", "title": "title",
                         "sign": "bd35db586ff3f4617d90511546aa6e3b"})
-print(r.text)
+print("edit:" + r.text)
 if not r.json()["status"]:
     print("ERROR:edit")
     exit(1)
-
 r = requests.post("http://127.0.0.1/control/delete", json={"post_id": 0, "sign": "f48659e554318cf884d0edbc7038c52c"})
-print(r.text)
+print("delete:" + r.text)
 if not r.json()["status"]:
     print("ERROR:delete")
     exit(1)
