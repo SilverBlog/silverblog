@@ -23,16 +23,16 @@ def get_excerpt(filename):
         excerpt = excerpt_output[:split_index].replace("\n", "")
     return excerpt
 
-def get_gavatar(author_name):
+def get_gravatar(author_name):
     r = {"entry": [{"hash": ""}]}
     console.log("info", "Get Gravatar URL...")
-    gavatar_hash = ""
+    gravatar_hash = ""
     try:
         r = requests.get("https://en.gravatar.com/{0}.json".format(author_name)).json()
-        gavatar_hash = r["entry"][0]["hash"]
+        gravatar_hash = r["entry"][0]["hash"]
     except (TypeError, ValueError, requests.exceptions.RequestException):
         console.log("Error", "Get Gravatar URL error,use default avatar.")
-    return "https://secure.gravatar.com/avatar/{0}".format(gavatar_hash)
+    return "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
 
 def filter_name(name):
     return re.sub('[/:*?<>|\'"\\\|.]|\.\.', '', name)

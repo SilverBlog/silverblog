@@ -94,12 +94,12 @@ def setup_wizard():
         if len(local_theme_list) != 0:
             system_config["Theme"] = dialog.menu("Please select the theme to be operated:", local_theme_list)
             return
-        orgs_list = theme.get_orgs_list()
+        org_list = theme.get_orgs_list()
         item_list = list()
-        for item in orgs_list:
+        for item in org_list:
             item_list.append(item["name"])
         theme_name = dialog.menu("Please select the theme you want to install:", item_list)
-        system_config["Theme"] = theme.install_theme(theme_name, orgs_list)
+        system_config["Theme"] = theme.install_theme(theme_name, org_list)
     save_config()
 
 def show_prompt(items):
@@ -122,9 +122,9 @@ def author_info():
     items = [{"name": "Author_Name", "info": "author name"},
              {"name": "Author_Introduction", "info": "author introduction"}]
     show_prompt(items)
-    if dialog.confirm("Use Gavatar?", "no"):
+    if dialog.confirm("Use Gravatar?", "no"):
         from manage import get
-        system_config["Author_Image"] = get.get_gavatar(system_config["Author_Name"])
+        system_config["Author_Image"] = get.get_gravatar(system_config["Author_Name"])
         return
     system_config["Author_Image"] = dialog.prompt("Please enter the author image:", system_config["Author_Image"])
 
