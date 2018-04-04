@@ -30,7 +30,7 @@ def get_gavatar(author_name):
     try:
         r = requests.get("https://en.gravatar.com/{0}.json".format(author_name)).json()
         gavatar_hash = r["entry"][0]["hash"]
-    except (TypeError, ValueError, requests.exceptions.RequestExceptiona):
+    except (TypeError, ValueError, requests.exceptions.RequestException):
         console.log("Error", "Get Gravatar URL error,use default avatar.")
     return "https://secure.gravatar.com/avatar/{0}".format(gavatar_hash)
 
