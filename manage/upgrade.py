@@ -22,7 +22,7 @@ def upgrade_check():
         return True
     return False
 def upgrade_pull():
-    os.system("git status")
+    print("On branch " + repo.active_branch)
     if repo.is_dirty():
         console.log("Error",
                     "The current warehouse is modified and can not be upgraded automatically.")
@@ -31,8 +31,11 @@ def upgrade_pull():
             repo.index.checkout(force=True)
         if repo.is_dirty():
             exit(1)
+    diff = repo.git.diff('HEAD~1..HEAD', name_only=True)
+    print(diff)
+    if "python_dependency.txt" in diff:
+        os.system("cd ./install && bash install_python_dependency.sh")
     remote.pull()
-
     if current_data_version != new_data_version and os.path.exists(
             "./upgrade/upgrade_from_{}.py".format(current_data_version)):
         os.system("python3 ./upgrade/upgrade_from_{}.py".format(current_data_version))
