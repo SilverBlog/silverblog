@@ -137,7 +137,7 @@ git config user.name "your name"
 
 您可以使用 Silver Create(https://c.silverblog.org) 來管理你的博客。
 
-您可以使用 pip 安裝 [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) 依賴，之後執行 `python3 control_server.py` 生成自動化配置二維碼。
+您可以使用 pip 安裝 [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) 依賴，之後執行 `./manage.py qrcode` 生成自動化配置二維碼。
 
 ## 切換到開發者預覽版本
 

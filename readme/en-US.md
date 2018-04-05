@@ -134,7 +134,7 @@ You can compile and deploy the https://github.com/SilverBlogTeam/silverblog_ios 
 
 You can use Silver Create (https://c.silverblog.org) to manage your blog.
 
-You can use pip to install the [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) dependency, and then execute `python3 control_server.py` to generate the automated configuration QR code.
+You can use pip to install the [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) dependency, and then execute `./manage.py qrcode` to generate the automated configuration QR code.
 
 ## Switch to developer preview
 
