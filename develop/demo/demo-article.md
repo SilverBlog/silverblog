@@ -15,6 +15,10 @@ The Android editor can be found in [here](https://github.com/SilverBlogTeam/Silv
 
 Android 版编辑器可以在 [这里](https://github.com/SilverBlogTeam/SilverBlog_Android/releases/) 获取。
 
+Many thanks to Jetbrains for its great support for this project.
+
+非常感谢 Jetbrains 对本项目提供的大力支持。
+
 Mobile client automatically configures two-dimensional code:
 
 手机客户端自动配置二维码:
