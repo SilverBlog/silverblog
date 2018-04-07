@@ -35,4 +35,6 @@ def get_gravatar(author_name):
     return "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
 
 def filter_name(name):
-    return re.sub('[/:*?<>|\'"\\\|.]|\.\.', '', name)
+    sub = re.sub('[/:*?<>|\'"\\\]', '', name)
+    sub = sub.replace(".", "")
+    return sub
