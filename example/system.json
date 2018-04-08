@@ -10,6 +10,6 @@
   "Paging": 10,
   "Time_Format": "%Y-%m-%d",
   "Rss_Full_Content": true,
-  "Editor": "vim",
+  "Editor": "nano",
   "i18n": "en-US"
 }
