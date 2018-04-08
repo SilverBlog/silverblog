@@ -22,7 +22,7 @@ system_config = {
     "Paging": 10,
     "Time_Format": "%Y-%m-%d",
     "Rss_Full_Content": True,
-    "Editor": "vim"
+    "Editor": "nano"
 }
 if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
