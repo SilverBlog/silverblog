@@ -150,3 +150,9 @@ SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執
 如果您還不熟悉 GitHub 的 Fork and Pull 開發模式，您可以閱讀 [GitHub的文檔](https://help.github.com/articles/using-pull-requests) 獲得更多的信息。
 
 我們建議您在使用中文提出issue的同時，在下方附上英語翻譯版本，以便非中文母語地區開發者的閱讀和理解。
+
+## 鳴謝
+
+感謝 [@Liqueur Librazy](https://github.com/Librazy) 為本項目提供Demo程式伺服器。
+
+感謝 [Jetbrains](https://www.jetbrains.com/) 為本項目提供免費的全套IDE支持
