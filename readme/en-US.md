@@ -147,3 +147,9 @@ We welcome you to report issue or pull request on GitHub of the SilverBlog proje
 If you are not yet familiar with GitHub's Fork and Pull development model, you can read the [GitHub Documentation](https://help.github.com/articles/using-pull-requests) for more information.
 
 We recommend that you use the Chinese language to raise an issue, and attach an English translation below to make it easier for non-Chinese native language developers to read and understand.
+
+## Thanks
+
+Thanks to [@Liqueur Librazy](https://github.com/Librazy) for providing the demo program server for this project.
+
+Thanks [Jetbrains](https://www.jetbrains.com/) for providing a free full IDE for this project
