@@ -1,18 +1,14 @@
 #!/usr/bin/env bash
-
+#NextMoe-icecat modified 20170806 03:16(Asia/Shanghai)
+#Reall Computer modified 20170810 16:16(Asia/Shanghai)
 use_superuser=""
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
     use_superuser="sudo"
 fi
 
-echo "Updating software source..."
-
-${use_superuser} apt-get update
-
 echo "Installing Dependency..."
-
-${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git
+${use_superuser} pacman -Sy nginx uwsgi python libnewt uwsgi-plugin-python python-pip python-wheel git
 
 echo "Cloning silverblog..."
 if [ ! -f "install.sh" ]; then
@@ -24,10 +20,14 @@ fi
 
 ./install_python_dependency.sh
 
+if [ ! -f "../pm2.json" ]; then
+    cp -i ../example/pm2.json ../pm2.json
+fi
+
 read -p "Is qrcode support component installed? (Y/N): " yn
 
 if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
     ${use_superuser} python3 -m pip install qrcode-terminal
 fi
 
-./install.sh
+./initialization.sh
