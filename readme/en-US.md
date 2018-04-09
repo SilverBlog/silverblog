@@ -152,4 +152,4 @@ We recommend that you use the Chinese language to raise an issue, and attach an 
 
 Thanks to [@Liqueur Librazy](https://github.com/Librazy) for providing the demo program server for this project.
 
-Thanks [Jetbrains](https://www.jetbrains.com/) for providing a free full IDE for this project
+Thanks [Jetbrains](https://www.jetbrains.com/) for providing a free All product IDE for this project
