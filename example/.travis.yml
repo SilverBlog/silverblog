@@ -2,7 +2,7 @@ language: python
 python: 3.6
 
 before_install:
-- pip install -r install/python_dependency.txt
+- pip install hoedown pyrss2gen
 script:
 - git clone https://github.com/${github_repo} static_page
 - ./manage.py build-page

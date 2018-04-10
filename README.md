@@ -17,7 +17,7 @@ SilverBlog 是一個基於 Python3 的輕量級博客專案。
 * 原生支持 Linux，可以通過 Docker 部署在任意平台。
 * 擁有一個 Android 用戶端。
 * 擁有一個 web 用戶端。
-* 正在開發一個 IOS 用戶端
+* 擁有一個 IOS 用戶端
 
 ## 如何安裝
 
