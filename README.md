@@ -36,16 +36,16 @@ On Container:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/container_install.sh)"
 ```
 
-Debian:
+Debian(apt-get):
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/apt_install.sh)"
 ```
 
-Arch Linux:
+Arch Linux(pacman):
 
 ```
-bash -c "$(https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh)"
+bash -c "$(https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/pacman_install.sh)"
 ```
 
 
