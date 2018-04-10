@@ -151,6 +151,13 @@ SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執
 
 我們建議您在使用中文提出issue的同時，在下方附上英語翻譯版本，以便非中文母語地區開發者的閱讀和理解。
 
+## 關於亞洲地區的訪問加速
+
+您可以執行以下命令來更換您的倉庫源，這將加速您的更新：
+```
+git remote set-url origin https://gitee.com/qwe7002/silverblog.git
+```
+
 ## 鳴謝
 
 感謝 [@Liqueur Librazy](https://github.com/Librazy) 為本項目提供Demo程式伺服器。
