@@ -60,6 +60,7 @@ unit_test:
   - export LC_ALL="en_US.UTF-8" && export LC_CTYPE="en_US.UTF-8"
   - locale-gen en_US.UTF-8
   - cd install
+  - python3 check_python_version.py
   - bash install_python_dependency.sh
   - cd ..
   - bash ./install/initialization.sh
