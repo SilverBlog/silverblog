@@ -10,7 +10,7 @@ variables:
 build_docker_demo:
   stage: build
   only:
-  - develop
+  - nightly
   tags:
   - docker-build
   script:
@@ -37,7 +37,7 @@ release_github_master:
 docker_push:
   stage: push
   only:
-  - develop
+  - nightly
   tags:
   - docker-build
   script:
@@ -45,14 +45,16 @@ docker_push:
   - docker push ${docker_tag_name}-demo
 
 unit_test:
-  image: docker.reallserver.cn/silverblog/silverblog-demo
+  image: ubuntu:latest
   stage: test
   only:
   - develop
   script:
-  - apk add --no-cache nginx
-  - cd /home/silverblog
-  - rm /etc/nginx/conf.d/default.conf && cp /home/silverblog/nginx_config /etc/nginx/conf.d/default.conf && mkdir /run/nginx
+  - apt-get update
+  - apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel
+  - bash ./install/install_python_dependency.sh
+  - bash ./install/initialization.sh
+  - rm /etc/nginx/sites-enabled/default.conf && cp ./nginx_config /etc/nginx/conf.d/silverblog.conf
   - python3 watch.py &
   - python3 watch.py --control &
   - nginx
