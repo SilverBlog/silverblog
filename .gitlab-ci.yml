@@ -73,10 +73,7 @@ unit_test:
   - cd ..
   - rm /etc/nginx/sites-enabled/default
   - cp ./nginx_config /etc/nginx/sites-enabled/silverblog
-  - python3 watch.py &
-  - python3 watch.py --control &
-  - nginx
-  - python3 develop/unit_test/test.py
+  - python3 ./develop/unit_test/test.py
 
 demo_update:
   stage: deploy

@@ -1,5 +1,12 @@
 import requests
+import subprocess
+import time
 
+main_progress = subprocess.Popen(["python3", "watch.py"])
+control_progress = subprocess.Popen(["python3", "watch.py", "--control"])
+nginx_progress = subprocess.Popen("nginx")
+
+time.sleep(5)
 def get(url):
     r = requests.get("http://127.0.0.1/" + url)
     if r.status_code == 200:
@@ -48,3 +55,7 @@ print("delete:" + r.text)
 if not r.json()["status"]:
     print("ERROR:delete")
     exit(1)
+nginx_progress.kill()
+main_progress.kill()
+control_progress.kill()
+exit(0)
