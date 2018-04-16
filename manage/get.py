@@ -20,7 +20,7 @@ def get_excerpt(filename):
             split_index = dot_index - 1
         if dot_index == -1 and comma_index != -1:
             split_index = comma_index - 1
-        excerpt = excerpt_output[:split_index - 1].replace("\n", "")
+        excerpt = excerpt_output[:split_index].replace("\n", "")
     return excerpt
 
 def get_gravatar(author_name):
