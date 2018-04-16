@@ -1,4 +1,3 @@
-
 This is SilverBlog's official demo server. Here you can try to add, modify, and delete articles to experience SilverBlog's convenience and speed.
 
 这里是 SilverBlog 的官方演示服务器。在这里你可以尝试添加、修改、删除文章以体验SilverBlog的便捷与迅速。
@@ -11,9 +10,13 @@ Visit [Silver Creator](https://c.silverblog.org/) to experience the online editi
 
 访问 [Silver Creator](https://c.silverblog.org/) 以体验 SilverBlog 的在线编辑功能。输入 `https://demo.silverblog.org` 进入编辑，并在提交编辑时使用 `SilverBlog` 作为密码。
 
-The Android editor can be found in [here](https://github.com/SilverBlogTeam/SilverBlog_Android/releases/).
+The Android editor can be found in [here](https://play.google.com/store/apps/details?id=com.reallct.qwe7002.SilverBlog_client).
 
-Android 版编辑器可以在 [这里](https://github.com/SilverBlogTeam/SilverBlog_Android/releases/) 获取。
+Android 版编辑器可以在 [这里](https://play.google.com/store/apps/details?id=com.reallct.qwe7002.SilverBlog_client) 获取。
+
+The ios editor can be found in [here](https://github.com/SilverBlogTeam/silverblog_ios).
+
+ios 版编辑器可以在 [这里](https://github.com/SilverBlogTeam/silverblog_ios) 获取。
 
 Many thanks to Jetbrains for its great support for this project.
 
