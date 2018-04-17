@@ -2,7 +2,7 @@
 if [ -f "install.sh" ]; then
     cd ..
 fi
-echo "Generate a Nginx configuration file..."
+echo "Generating Nginx configuration..."
 
 if [ ! -f "./nginx_config" ]; then
 cat << EOF >nginx_config
@@ -33,7 +33,8 @@ server {
 }
 EOF
 fi
-echo "Create directory..."
+
+echo "Setup directories..."
 
 mkdir ./document
 mkdir ./config
@@ -44,7 +45,7 @@ touch ./templates/include/comment.html
 touch ./templates/include/head.html
 touch ./templates/include/foot.html
 
-echo "Create configuration file..."
+echo "Setup missing configuration files..."
 
 if [ ! -f "./config/menu.json" ]; then
     echo "[]" > ./config/menu.json
@@ -59,5 +60,5 @@ if [ ! -f "./uwsgi.json" ]; then
     cp -i ./example/uwsgi.json ./uwsgi.json
 fi
 
-echo "The installation is complete! "
-echo "Warning, please do not use git clean to restore your warehouse, which will lead to personal data loss!"
+echo "Installation complete! "
+echo -e "Note: \e[31;1;4mDO NOT\e[0m use `git clean` to reset your git repository. This command could potentially cause data loss!"
