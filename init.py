@@ -72,8 +72,6 @@ def load_config():
     for item in page_list:
         page_name_list.append(item["name"])
         page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
-    menu_list = list(map(post_map.add_post_header, menu_list))
-    page_list = list(map(post_map.add_post_header, page_list))
     console.log("Success", "load the configuration file successfully!")
 
 def check_proxy_ip(header):
