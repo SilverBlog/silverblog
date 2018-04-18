@@ -26,10 +26,4 @@ echo "{\"install\":\"apt-get\"}" > install.lock
 
 ./install_python_dependency.sh
 
-read -p "Is qrcode support component installed? (Y/N): " yn
-
-if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
-    ${use_superuser} python3 -m pip install qrcode-terminal
-fi
-
 ./initialization.sh
