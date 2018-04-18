@@ -82,6 +82,7 @@ unit_test:
   - locale-gen en_US.UTF-8
   - cd install
   - bash apt_install.sh
+  - cd ..
   - cp -f ./develop/demo/page.json ./config/page.json
   - cp -f ./develop/demo/system.json ./config/system.json
   - cp ./develop/demo/demo-article.md ./document/demo-article.md
