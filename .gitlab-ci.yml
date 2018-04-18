@@ -48,7 +48,7 @@ release_github_master:
   - git push -f --set-upstream https://${oschina_key}@gitee.com/qwe7002/silverblog.wiki.git HEAD:master
 
 
-docker_push:
+docker_push_demo:
   stage: push
   only:
   - nightly
