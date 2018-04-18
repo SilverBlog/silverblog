@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-echo "Cloning silverblog..."
+
 if [ ! -f "initialization.sh" ]; then
+    echo "Cloning silverblog..."
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
     cd silverblog/install
 fi
+
 echo "{\"install\":\"docker\"}" > install.lock
 ./initialization.sh
 cd ..
