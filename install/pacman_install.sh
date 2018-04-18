@@ -15,7 +15,7 @@ if [ ! -f "initialization.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
     cd silverblog/install
 fi
-
+echo "{\"install\":\"pacman\"}" > install.lock
 ./check_python_version.py
 
 ./install_python_dependency.sh
