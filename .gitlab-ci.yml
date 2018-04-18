@@ -81,7 +81,7 @@ unit_test:
   - export LC_ALL="en_US.UTF-8" && export LC_CTYPE="en_US.UTF-8"
   - locale-gen en_US.UTF-8
   - cd install
-  - bash apt-install.sh
+  - bash apt_install.sh
   - cp -f ./develop/demo/page.json ./config/page.json
   - cp -f ./develop/demo/system.json ./config/system.json
   - cp ./develop/demo/demo-article.md ./document/demo-article.md
