@@ -104,5 +104,5 @@ demo_update:
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
-  - ssh qwe7002@demo.silverblog.org "docker-compose down && docker pull docker.reallserver.cn/silverblog/silverblog-demo && docker-compose up -d"
+  - ssh qwe7002@demo.silverblog.org "docker-compose down && docker-compose pull && docker-compose up -d"
 
