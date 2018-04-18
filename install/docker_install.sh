@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Cloning silverblog..."
-if [ ! -f "install.sh" ]; then
+if [ ! -f "initialization.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
     cd silverblog/install
 fi

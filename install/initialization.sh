@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if [ -f "install.sh" ]; then
+if [ -f "initialization.sh" ]; then
     cd ..
 fi
 echo "Generate a Nginx configuration file..."

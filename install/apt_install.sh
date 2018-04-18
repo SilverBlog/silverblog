@@ -15,7 +15,7 @@ echo "Installing Dependency..."
 ${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git
 
 echo "Cloning silverblog..."
-if [ ! -f "install.sh" ]; then
+if [ ! -f "initialization.sh" ]; then
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
     cd silverblog/install
 fi
