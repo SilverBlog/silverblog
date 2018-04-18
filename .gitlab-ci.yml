@@ -1,7 +1,7 @@
 stages:
+  - test
   - build
   - push
-  - test
   - deploy
 
 variables:
@@ -88,7 +88,7 @@ unit_test:
   - cp ./develop/demo/demo-article.md ./document/demo-article.md
   - python3 manage.py update
   - cd ./templates
-  - curl https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh | bash
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
   - cd ..
   - rm /etc/nginx/sites-enabled/default
   - cp ./nginx_config /etc/nginx/sites-enabled/silverblog
