@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if [ -f "install.sh" ]; then
+if [ -f "initialization.sh" ]; then
     cd ..
 fi
 echo "Generating Nginx configuration..."
@@ -61,4 +61,4 @@ if [ ! -f "./uwsgi.json" ]; then
 fi
 
 echo "Installation complete! "
-echo -e "Note: \e[31;1;4mDO NOT\e[0m use `git clean` to reset your git repository. This command could potentially cause data loss!"
+echo -e "Note: \e[31;1;4mDO NOT\e[0m use \`git clean\` to reset your git repository. This command could potentially cause data loss!"
