@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 print("If the upgrade process fails, please re-upgrade")
 print("You can now remove the pypinyin support library")
 import os
