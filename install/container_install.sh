@@ -9,7 +9,7 @@ fi
 
 ./check_python_version.py
 
-./install.sh
+./initialization.sh
 cd ..
 sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
 
