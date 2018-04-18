@@ -158,6 +158,8 @@ SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執
 git remote set-url origin https://gitee.com/qwe7002/silverblog.git
 ```
 
+您可以使用阿里雲提供的registry加速器來加快鏡像下載，修改image爲 `registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog` 即可
+
 ## 鳴謝
 
 感謝 [@Liqueur Librazy](https://github.com/Librazy) 為本項目提供Demo程式伺服器。
