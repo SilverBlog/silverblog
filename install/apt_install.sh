@@ -12,7 +12,7 @@ ${use_superuser} apt-get update
 
 echo "Installing Dependency..."
 
-${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git
+${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl
 
 if [ ! -f "initialization.sh" ]; then
     echo "Cloning silverblog..."
