@@ -5,7 +5,7 @@ stages:
   - deploy
 
 variables:
-  docker_tag_name: "docker.reallserver.cn/silverblog/silverblog"
+  docker_tag_name: "silverblog/silverblog"
 
 build_docker_demo:
   stage: build
@@ -14,7 +14,16 @@ build_docker_demo:
   tags:
   - docker-build
   script:
-  - docker build -t ${docker_tag_name}-demo -f ./develop/demo/dockerfile .
+  - docker build -t docker.reallserver.cn/${docker_tag_name}-demo -f ./develop/demo/dockerfile .
+
+build_docker:
+  stage: build
+  only:
+  - master
+  tags:
+  - docker-build
+  script:
+  - docker build -t ${docker_tag_name} .
 
 release_github_nightly:
   image: docker.reallserver.cn/public/docker-git
@@ -47,7 +56,17 @@ docker_push:
   - docker-build
   script:
   - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
-  - docker push ${docker_tag_name}-demo
+  - docker push docker.reallserver.cn/${docker_tag_name}-demo
+  
+docker_push:
+  stage: push
+  only:
+  - master
+  tags:
+  - docker-build
+  script:
+  - docker login -u qwe7002 -p ${docker_hub_passwd}
+  - docker push ${docker_tag_name}
 
 unit_test:
   image: ubuntu:bionic
