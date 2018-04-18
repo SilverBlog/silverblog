@@ -10,8 +10,9 @@ fi
 echo "Installing Dependency..."
 ${use_superuser} pacman -Sy nginx uwsgi python libnewt uwsgi-plugin-python python-pip python-wheel git gcc curl
 
-echo "Cloning silverblog..."
+
 if [ ! -f "initialization.sh" ]; then
+    echo "Cloning silverblog..."
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
     cd silverblog/install
 fi
