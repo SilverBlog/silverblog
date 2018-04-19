@@ -53,9 +53,6 @@ fi
 if [ ! -f "./config/page.json" ]; then
     echo "[]" > ./config/page.json
 fi
-if [ ! -f "./config/system.json" ]; then
-    cp -i ./example/system.json ./config/system.json
-fi
 if [ ! -f "./uwsgi.json" ]; then
     cp -i ./example/uwsgi.json ./uwsgi.json
 fi

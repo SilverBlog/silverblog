@@ -5,6 +5,7 @@ import requests
 
 from common import console
 
+
 def get_orgs_list():
     console.log("info", "Getting the list of theme...")
     try:
@@ -21,6 +22,7 @@ def get_local_theme_list():
         if os.path.exists("./templates/{}/.git".format(item)):
             dir_list.append(item)
     return dir_list
+
 
 def install_theme(theme_name, orgs_list=None):
     if orgs_list is None:
