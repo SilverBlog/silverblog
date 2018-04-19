@@ -81,6 +81,7 @@ def load_config():
         page_name_list.append(item["name"])
         page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
 
+
 def publish():
     load_config()
 

@@ -2,7 +2,7 @@ language: python
 python: 3.6
 
 script:
-- pip install hoedown pyrss2gen jinja2
+- pip install hoedown pyrss2gen flask gitpython
 - cp -r ./document ./silverblog/document
 - cp -r ./config ./silverblog/config
 - cp -r templates ./silverblog/templates
