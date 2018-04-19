@@ -22,7 +22,8 @@ system_config = {
     "Paging": 10,
     "Time_Format": "%Y-%m-%d",
     "Rss_Full_Content": True,
-    "Editor": "nano"
+    "Editor": "nano",
+    "i18n": "en-US"
 }
 if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
@@ -90,7 +91,6 @@ def theme_manage():
 
 
 def setting_i18n(theme_name):
-    print(theme_name)
     dir_list = os.listdir("./templates/{0}/i18n".format(theme_name))
     show_list = list()
     for item in dir_list:
