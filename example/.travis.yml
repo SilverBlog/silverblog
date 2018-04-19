@@ -1,8 +1,13 @@
 language: python
 python: 3.6
 
-before_install:
-- pip install hoedown pyrss2gen
 script:
-- git clone https://github.com/${github_repo} static_page
+- pip install hoedown pyrss2gen
+- git submodule init
+- git submodule update
+- cp -r ./document ./silverblog/document
+- cp -r ./config ./silverblog/config
+- cp -r static ./silverblog/static
+- cd silverblog
+- git clone https://@github.com/${github_repo} static_page
 - ./manage.py build-page
