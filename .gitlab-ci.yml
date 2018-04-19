@@ -92,6 +92,8 @@ unit_test:
   - cd ..
   - rm /etc/nginx/sites-enabled/default
   - cp ./nginx_config /etc/nginx/sites-enabled/silverblog
+  - python3 ./manage.py update
+  - python3 ./manage.py build-page
   - python3 ./develop/unit_test/test.py
 
 demo_update:
