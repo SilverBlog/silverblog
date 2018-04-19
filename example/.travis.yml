@@ -2,12 +2,10 @@ language: python
 python: 3.6
 
 script:
-- pip install hoedown pyrss2gen
-- git submodule init
-- git submodule update
+- pip install hoedown pyrss2gen jinja2
 - cp -r ./document ./silverblog/document
 - cp -r ./config ./silverblog/config
-- cp -r static ./silverblog/static
+- cp -r templates ./silverblog/templates
 - cd silverblog
-- git clone https://@github.com/${github_repo} static_page
-- ./manage.py build-page
+- git clone https://${github_key}@github.com/${github_repo} static_page
+- python manage.py build-page
