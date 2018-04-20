@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 print("If the upgrade process fails, please re-upgrade")
 import json
 import os

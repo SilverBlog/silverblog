@@ -22,7 +22,7 @@ class when_file_chanage(FileSystemEventHandler):
         if not os.path.basename(os.path.dirname(event.src_path)) == "static_page":
             if not control:
                 if event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
-                        'init.py') or event.src_path.endswith('.xml'):
+                        'init.py') or event.src_path.endswith('.xml') or event.src_path.endswith('.html'):
                     self.kill()
             if event.src_path.endswith('control_server.py') and control:
                 self.kill()

@@ -22,7 +22,8 @@ system_config = {
     "Paging": 10,
     "Time_Format": "%Y-%m-%d",
     "Rss_Full_Content": True,
-    "Editor": "nano"
+    "Editor": "nano",
+    "i18n": "en-US"
 }
 if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
@@ -74,16 +75,29 @@ def theme_manage():
             theme_name = theme.install_theme(theme_name, org_list)
             if dialog.confirm("Do you want to enable this theme now?", "no"):
                 system_config["Theme"] = theme_name
+                if os.path.exists("./templates/{}/i18n".format(theme_name)):
+                    system_config["i18n"] = setting_i18n(theme_name)
         return
     directories = theme.get_local_theme_list()
     theme_name = dialog.menu("Please select the theme to be operated:", directories)
     if result == "Use the existing theme":
         system_config["Theme"] = theme_name
-        save_config()
+        if os.path.exists("./templates/{}/i18n".format(theme_name)):
+            system_config["i18n"] = setting_i18n(theme_name)
     if result == "Upgrade existing Theme":
         theme.upgrade_theme(theme_name)
     if result == "Uninstall existing Theme":
         theme.remove_theme(theme_name)
+
+
+def setting_i18n(theme_name):
+    dir_list = os.listdir("./templates/{0}/i18n".format(theme_name))
+    show_list = list()
+    for item in dir_list:
+        if item.endswith(".json"):
+            show_list.append(item.replace(".json", ""))
+    return dialog.menu("Please select the i18n to be operated:", show_list)
+
 def setup_wizard():
     project_info()
     author_info()

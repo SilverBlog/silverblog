@@ -1,7 +1,7 @@
 stages:
+  - test
   - build
   - push
-  - test
   - deploy
 
 variables:
@@ -48,7 +48,7 @@ release_github_master:
   - git push -f --set-upstream https://${oschina_key}@gitee.com/qwe7002/silverblog.wiki.git HEAD:master
 
 
-docker_push:
+docker_push_demo:
   stage: push
   only:
   - nightly
@@ -66,7 +66,9 @@ docker_push:
   - docker-build
   script:
   - docker login -u qwe7002 -p ${docker_hub_passwd}
+  - docker login -u qwe7002@hotmail.com -p ${docker_hub_passwd} registry.cn-hangzhou.aliyuncs.com
   - docker push ${docker_tag_name}
+  - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
 
 unit_test:
   image: ubuntu:bionic
@@ -74,24 +76,26 @@ unit_test:
   only:
   - develop
   script:
+  - sed -i '''s/deb-src/#deb-src/g' /etc/apt/sources.list
   - apt-get update
-  - apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel locales curl git
+  - apt-get -y upgrade
+  - apt-get install -y locales
   - export LC_ALL="en_US.UTF-8" && export LC_CTYPE="en_US.UTF-8"
   - locale-gen en_US.UTF-8
   - cd install
-  - python3 check_python_version.py
-  - bash install_python_dependency.sh
+  - bash apt_install.sh
   - cd ..
-  - bash ./install/initialization.sh
   - cp -f ./develop/demo/page.json ./config/page.json
   - cp -f ./develop/demo/system.json ./config/system.json
   - cp ./develop/demo/demo-article.md ./document/demo-article.md
   - python3 manage.py update
   - cd ./templates
-  - curl https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh | bash
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
   - cd ..
   - rm /etc/nginx/sites-enabled/default
   - cp ./nginx_config /etc/nginx/sites-enabled/silverblog
+  - python3 ./manage.py update
+  - python3 ./manage.py build-page
   - python3 ./develop/unit_test/test.py
 
 demo_update:
@@ -104,5 +108,5 @@ demo_update:
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
-  - ssh qwe7002@demo.silverblog.org "docker-compose down && docker pull docker.reallserver.cn/silverblog/silverblog-demo && docker-compose up -d"
+  - ssh qwe7002@demo.silverblog.org "docker-compose down && docker-compose pull && docker-compose up -d"
 

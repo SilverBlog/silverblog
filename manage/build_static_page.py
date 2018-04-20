@@ -80,8 +80,7 @@ def load_config():
     for item in page_list:
         page_name_list.append(item["name"])
         page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
-    menu_list = list(map(post_map.add_post_header, menu_list))
-    page_list = list(map(post_map.add_post_header, page_list))
+
 
 def publish():
     load_config()
@@ -122,23 +121,22 @@ def publish():
         shutil.copytree("./templates/static/user_file", "./static_page/static/user_file")
     console.log("Success", "Create Github Page Success!")
 
+    if not os.path.exists("./static_page/.git"):
+        return False
     import git
     localtime = time.asctime(time.localtime(time.time()))
-    if not os.path.exists("./static_page/.git"):
-        console.log("Error", "[./static_page/] Not a git repository.")
-        return False
     try:
         repo = git.Repo("./static_page")
-        if not repo.is_dirty():
-            console.log("Success", "Done")
-            return True
         repo.git.add("--all")
-        repo.git.commit("-m Publish Time：{0}".format(localtime))
+        if not repo.is_dirty():
+            console.log("Success", "Build complete,No changes found.")
+            return True
+        repo.git.commit("-m Release time：{0}".format(localtime))
     except git.exc.GitCommandError as e:
         console.log("Error", e.args[2].decode())
         return False
-    console.log("Info", "Submitted to the remote.")
+    console.log("Info", "Push to the remote.")
     remote = repo.remote()
     remote.push()
-    console.log("Success", "Done")
+    console.log("Success", "Done.")
     return True

@@ -53,12 +53,9 @@ fi
 if [ ! -f "./config/page.json" ]; then
     echo "[]" > ./config/page.json
 fi
-if [ ! -f "./config/system.json" ]; then
-    cp -i ./example/system.json ./config/system.json
-fi
 if [ ! -f "./uwsgi.json" ]; then
     cp -i ./example/uwsgi.json ./uwsgi.json
 fi
 
 echo "Installation complete! "
-echo -e "Note: \e[31;1;4mDO NOT\e[0m use `git clean` to reset your git repository. This command could potentially cause data loss!"
+echo -e "Note: \e[31;1;4mDO NOT\e[0m use \`git clean\` to reset your git repository. This command could potentially cause data loss!"

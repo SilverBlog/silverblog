@@ -18,12 +18,14 @@ The ios editor can be found in [here](https://github.com/SilverBlogTeam/silverbl
 
 ios 版编辑器可以在 [这里](https://github.com/SilverBlogTeam/silverblog_ios) 获取。
 
-Many thanks to Jetbrains for its great support for this project.
-
-非常感谢 Jetbrains 对本项目提供的大力支持。
-
 Mobile client automatically configures two-dimensional code:
 
 手机客户端自动配置二维码:
 
-![](https://i.loli.net/2018/02/26/5a930c403202d.png)
+![qrcode](https://i.loli.net/2018/02/26/5a930c403202d.png)
+
+***
+
+Many thanks to Jetbrains,Librazy for its great support for this project.
+
+非常感谢 Jetbrains,Librazy 对本项目提供的大力支持。

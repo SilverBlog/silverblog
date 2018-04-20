@@ -1,8 +1,7 @@
 import re
 
-import requests
-
 from common import file, console
+
 
 def get_excerpt(filename):
     content = file.read_file(filename)
@@ -24,7 +23,7 @@ def get_excerpt(filename):
     return excerpt
 
 def get_gravatar(author_name):
-    r = {"entry": [{"hash": ""}]}
+    import requests
     console.log("info", "Get Gravatar URL...")
     gravatar_hash = ""
     try:
@@ -33,6 +32,7 @@ def get_gravatar(author_name):
     except (TypeError, ValueError, requests.exceptions.RequestException):
         console.log("Error", "Get Gravatar URL error,use default avatar.")
     return "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
+
 
 def filter_name(name):
     sub = re.sub('[/:*?<>|\'"\\\]', '', name)
