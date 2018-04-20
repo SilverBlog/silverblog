@@ -121,11 +121,11 @@ def publish():
         shutil.copytree("./templates/static/user_file", "./static_page/static/user_file")
     console.log("Success", "Create Github Page Success!")
 
-    import git
-    localtime = time.asctime(time.localtime(time.time()))
     if not os.path.exists("./static_page/.git"):
         console.log("Error", "[./static_page/] Not a git repository.")
         return False
+    import git
+    localtime = time.asctime(time.localtime(time.time()))
     try:
         repo = git.Repo("./static_page")
         if not repo.bare and not repo.is_dirty():
