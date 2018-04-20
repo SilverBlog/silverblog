@@ -24,7 +24,6 @@ def get_excerpt(filename):
 
 def get_gravatar(author_name):
     import requests
-    r = {"entry": [{"hash": ""}]}
     console.log("info", "Get Gravatar URL...")
     gravatar_hash = ""
     try:
