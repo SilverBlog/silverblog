@@ -122,7 +122,6 @@ def publish():
     console.log("Success", "Create Github Page Success!")
 
     if not os.path.exists("./static_page/.git"):
-        console.log("Error", "[./static_page/] Not a git repository.")
         return False
     import git
     localtime = time.asctime(time.localtime(time.time()))
