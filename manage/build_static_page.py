@@ -128,10 +128,10 @@ def publish():
     localtime = time.asctime(time.localtime(time.time()))
     try:
         repo = git.Repo("./static_page")
-        if not repo.bare and not repo.is_dirty():
+        repo.git.add("--all")
+        if not repo.is_dirty():
             console.log("Success", "Build complete,No changes found.")
             return True
-        repo.git.add("--all")
         repo.git.commit("-m Release time：{0}".format(localtime))
     except git.exc.GitCommandError as e:
         console.log("Error", e.args[2].decode())
