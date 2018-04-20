@@ -15,8 +15,7 @@ if [ ! -f "./docker-compose.yml" ]; then
 fi
 cat << EOF >manage.sh
 #!/usr/bin/env bash
-docker exec -it silverblog python3 manage.py
-clear
+docker exec -it silverblog python3 manage.py \$@
 EOF
 chmod +x manage.sh
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
