@@ -129,15 +129,15 @@ def publish():
     try:
         repo = git.Repo("./static_page")
         if not repo.bare and not repo.is_dirty():
-            console.log("Success", "Done")
+            console.log("Success", "Build complete,No changes found.")
             return True
         repo.git.add("--all")
-        repo.git.commit("-m Publish Time：{0}".format(localtime))
+        repo.git.commit("-m Release time：{0}".format(localtime))
     except git.exc.GitCommandError as e:
         console.log("Error", e.args[2].decode())
         return False
-    console.log("Info", "Submitted to the remote.")
+    console.log("Info", "Push to the remote.")
     remote = repo.remote()
     remote.push()
-    console.log("Success", "Done")
+    console.log("Success", "Done.")
     return True
