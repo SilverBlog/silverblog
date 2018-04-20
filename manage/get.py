@@ -33,6 +33,7 @@ def get_gravatar(author_name):
         console.log("Error", "Get Gravatar URL error,use default avatar.")
     return "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
 
+
 def filter_name(name):
     sub = re.sub('[/:*?<>|\'"\\\]', '', name)
     sub = sub.replace(".", "")
