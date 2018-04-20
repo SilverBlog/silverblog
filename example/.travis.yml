@@ -8,4 +8,5 @@ script:
 - cp -r templates ./silverblog/templates
 - cd silverblog
 - git clone https://${github_key}@github.com/${github_repo} static_page
+- python manage.py update
 - python manage.py build-page
