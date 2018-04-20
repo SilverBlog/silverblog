@@ -1,8 +1,7 @@
 import re
 
-import requests
-
 from common import file, console
+
 
 def get_excerpt(filename):
     content = file.read_file(filename)
@@ -24,6 +23,7 @@ def get_excerpt(filename):
     return excerpt
 
 def get_gravatar(author_name):
+    import requests
     r = {"entry": [{"hash": ""}]}
     console.log("info", "Get Gravatar URL...")
     gravatar_hash = ""
