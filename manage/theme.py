@@ -23,7 +23,6 @@ def get_local_theme_list():
             dir_list.append(item)
     return dir_list
 
-
 def install_theme(theme_name, orgs_list=None):
     if orgs_list is None:
         orgs_list = get_orgs_list()
@@ -38,7 +37,6 @@ def install_theme(theme_name, orgs_list=None):
     if not has_theme:
         console.log("Error", "Can not find this theme.")
         return
-    r = None
     console.log("info", "Getting the theme installation script...")
     try:
         r = requests.get("https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).text
@@ -57,6 +55,7 @@ def remove_theme(theme_name):
     console.log("Success", "The theme is uninstalled successfully!")
 
 def upgrade_theme(theme_name):
+    console.log("info", "Updating theme, please wait...")
     import git
     repo = git.Repo("./templates/" + theme_name)
     remote = repo.remote()
