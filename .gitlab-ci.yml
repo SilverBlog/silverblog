@@ -76,6 +76,7 @@ unit_test:
   only:
   - develop
   script:
+  - sed -i '''s/deb-src/#deb-src/g' /etc/apt/sources.list
   - apt-get update
   - apt-get install -y locales
   - export LC_ALL="en_US.UTF-8" && export LC_CTYPE="en_US.UTF-8"
