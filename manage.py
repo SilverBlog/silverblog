@@ -6,6 +6,7 @@ import sys
 
 from manage import menu
 
+sys.setdefaultencoding("utf-8")
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         menu.use_whiptail_mode()
