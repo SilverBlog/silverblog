@@ -87,6 +87,12 @@ SilverBlog 推薦您使用基於 NodeJS 的監控程序： PM2
 
 有關PM2的安裝請查看 [GitHub - tj/n: Node version management](https://github.com/tj/n) 和 [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
 
+预置配置档位于 `./example/pm2.json` ,您可以执行以下命令将它拷贝到根目录下使用：
+
+```
+cp ./exmaple/pm2.json pm2.json
+```
+
 然後，您只需要運行：
 
 ```
@@ -122,9 +128,9 @@ git config user.email "youremail@google.com"
 git config user.name "your name"
 ```
 
-接下來，您只需要執行 Build static page 命令，系統就會自動生成靜態頁面並且提交到 github page。
+接下來，您只需要執行 `Build static page` 命令，系統就會自動生成靜態頁面並且提交到 github page。
 
-您可以嘗試使用 `/example/.travis.yml` 腳本，實現自動化提交。（實驗性功能，不保證可用）
+您可以嘗試使用 `/example/.travis.yml` 腳本，實現自動化提交。
 
 
 ## 使用用戶端管理伺服器
@@ -137,7 +143,7 @@ git config user.name "your name"
 
 您可以使用 Silver Create(https://c.silverblog.org) 來管理你的博客。
 
-您可以使用 pip 安裝 [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) 依賴，之後執行 `./manage.py qrcode` 生成自動化配置二維碼。
+您可以執行 `./manage.py qrcode` 生成自動化配置二維碼。
 
 ## 切換到開發者預覽版本
 
