@@ -68,6 +68,7 @@ docker_push:
   - docker login -u qwe7002 -p ${docker_hub_passwd}
   - docker login -u qwe7002@hotmail.com -p ${docker_hub_passwd} registry.cn-hangzhou.aliyuncs.com
   - docker push ${docker_tag_name}
+  - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
   - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
 
 unit_test:
