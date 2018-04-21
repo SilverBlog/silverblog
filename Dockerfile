@@ -9,4 +9,4 @@ RUN apk upgrade --no-cache \
 && python3 -m pip install -U pip \
 && apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev \
 && python3 -m pip install -U Flask hoedown xpinyin pyrss2gen gitpython requests watchdog \
-&& apk del --purge .build-dep
+&& apk del --purge .build-deps
