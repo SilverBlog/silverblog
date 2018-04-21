@@ -84,6 +84,13 @@ SilverBlog recommends using a NodeJS-based monitor: pm2
 
 For the installation of pm2 see [GitHub - tj/n: Node version management](https://github.com/tj/n) and [pm2 - Quick Start](http://pm2.keymetrics.io/docs/Usage/quick-start/)
 
+The preset profile is located at `. / example / pm2.json`, you can use the following command to copy it to the root directory and use:
+
+```
+cp ./exmaple/pm2.json pm2.json
+```
+
+
 Then, you just have to run:
 
 ```
@@ -121,7 +128,7 @@ git config user.name "your name"
 
 Next, you just need to execute the Build static page command. The system will automatically generate a static page and submit it to the github page.
 
-You can try using the `/example/.travis.yml` script for automated submission. (experimental feature, not guaranteed)
+You can try using the `/example/.travis.yml` script for automated submission.
 
 
 ## Use client management server
@@ -134,7 +141,7 @@ You can compile and deploy the https://github.com/SilverBlogTeam/silverblog_ios 
 
 You can use Silver Create (https://c.silverblog.org) to manage your blog.
 
-You can use pip to install the [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) dependency, and then execute `./manage.py qrcode` to generate the automated configuration QR code.
+You can execute `./manage.py qrcode` to generate the automated configuration QR code.
 
 ## Switch to developer preview
 
