@@ -17,12 +17,9 @@ if [ ! -f "initialization.sh" ]; then
     cd silverblog/install
 fi
 echo "{\"install\":\"pacman\"}" > install.lock
+
 ./check_python_version.py
 
 ./install_python_dependency.sh
-
-if [ ! -f "../pm2.json" ]; then
-    cp -i ../example/pm2.json ../pm2.json
-fi
 
 ./initialization.sh
