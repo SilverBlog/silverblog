@@ -8,7 +8,8 @@ import sys
 from manage import menu
 
 if "UTF-8" not in os.environ["LANG"]:
-    print("The current system code is:{}.Chinese may not be processed properly.".format(os.environ["LANG"]))
+    print(
+        "The current system code is:{}.Some characters may not be displayed and processed.".format(os.environ["LANG"]))
     input("Press enter to continue.")
 if __name__ == '__main__':
     if len(sys.argv) == 1:
