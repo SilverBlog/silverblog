@@ -65,6 +65,7 @@ def load_config():
     console.log("info", "Loading configuration...")
     if not os.path.exists("./config/system.json"):
         console.log("Error", "system.json file not found.")
+        exit(1)
     asyncio.set_event_loop(asyncio.new_event_loop())
     loop = asyncio.get_event_loop()
     tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss_file()]
