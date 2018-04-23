@@ -9,8 +9,16 @@ import sys
 import time
 
 from watchdog.events import FileSystemEventHandler
-from watchdog.observers.polling import PollingObserver as Observer
+from watchdog.observers import Observer
 
+if os.path.exists("./install/install.lock"):
+    import json
+
+    f = open("./install/install.lock", newline=None)
+    install_info = json.loads(f.read())
+    if install_info["install"] == "docker":
+        print("Observer performed by polling method.")
+        from watchdog.observers.polling import PollingObserver as Observer
 p = None
 control = False
 
