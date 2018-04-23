@@ -4,7 +4,7 @@ if [ $UID -ne 0 ]; then
     exit 1
 fi
 
-if [ -f "install.sh" ]; then
+if [ -f "initialization.sh" ]; then
     cd ..
 fi
 
