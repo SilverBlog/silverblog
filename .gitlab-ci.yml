@@ -1,7 +1,6 @@
 stages:
   - test
   - build
-  - push
   - deploy
 
 variables:
@@ -15,6 +14,9 @@ build_docker_demo:
   - docker-build
   script:
   - docker build -t docker.reallserver.cn/${docker_tag_name}-demo -f ./develop/demo/dockerfile .
+  - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
+  - docker push docker.reallserver.cn/${docker_tag_name}-demo
+  - docker rmi docker.reallserver.cn/${docker_tag_name}-demo
 
 build_docker:
   stage: build
@@ -24,10 +26,18 @@ build_docker:
   - docker-build
   script:
   - docker build -t ${docker_tag_name} .
+  - docker login -u qwe7002 -p ${docker_hub_passwd}
+  - docker login -u qwe7002@hotmail.com -p ${docker_hub_passwd} registry.cn-hangzhou.aliyuncs.com
+  - docker push ${docker_tag_name}
+  - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
+  - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
+  - docker rmi ${docker_tag_name}
+  - docker rmi registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
+
 
 release_github_nightly:
   image: docker.reallserver.cn/public/docker-git
-  stage: push
+  stage: deploy
   only:
   - nightly
   script:
@@ -36,7 +46,7 @@ release_github_nightly:
 
 release_github_master:
   image: docker.reallserver.cn/public/docker-git
-  stage: push
+  stage: deploy
   only:
   - master
   script:
@@ -48,28 +58,6 @@ release_github_master:
   - git push -f --set-upstream https://${oschina_key}@gitee.com/qwe7002/silverblog.wiki.git HEAD:master
 
 
-docker_push_demo:
-  stage: push
-  only:
-  - nightly
-  tags:
-  - docker-build
-  script:
-  - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
-  - docker push docker.reallserver.cn/${docker_tag_name}-demo
-  
-docker_push:
-  stage: push
-  only:
-  - master
-  tags:
-  - docker-build
-  script:
-  - docker login -u qwe7002 -p ${docker_hub_passwd}
-  - docker login -u qwe7002@hotmail.com -p ${docker_hub_passwd} registry.cn-hangzhou.aliyuncs.com
-  - docker push ${docker_tag_name}
-  - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
-
 unit_test:
   image: ubuntu:bionic
   stage: test
@@ -79,9 +67,7 @@ unit_test:
   - sed -i '''s/deb-src/#deb-src/g' /etc/apt/sources.list
   - apt-get update
   - apt-get -y upgrade
-  - apt-get install -y locales
-  - export LC_ALL="en_US.UTF-8" && export LANG="en_US.UTF-8"
-  - locale-gen en_US.UTF-8
+  - export LANG="C.UTF-8"
   - cd install
   - bash apt_install.sh
   - cd ..

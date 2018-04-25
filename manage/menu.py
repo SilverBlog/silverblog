@@ -4,7 +4,8 @@
 import json
 import time
 
-from common import whiptail, file, console
+from common import file, console
+from manage import whiptail
 
 dialog = whiptail.Whiptail()
 dialog.height = 15

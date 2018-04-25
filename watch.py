@@ -9,8 +9,16 @@ import sys
 import time
 
 from watchdog.events import FileSystemEventHandler
-from watchdog.observers.polling import PollingObserver as Observer
+from watchdog.observers import Observer
 
+if os.path.exists("./install/install.lock"):
+    import json
+
+    f = open("./install/install.lock", newline=None)
+    install_info = json.loads(f.read())
+    if install_info["install"] == "docker":
+        print("Observer performed by polling method.")
+        from watchdog.observers.polling import PollingObserver as Observer
 p = None
 control = False
 
@@ -20,11 +28,11 @@ class when_file_chanage(FileSystemEventHandler):
         self.kill = fn
     def on_any_event(self, event):
         if not os.path.basename(os.path.dirname(event.src_path)) == "static_page":
-            if not control:
-                if event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
-                        'init.py') or event.src_path.endswith('.xml') or event.src_path.endswith('.html'):
-                    self.kill()
-            if event.src_path.endswith('control_server.py') and control:
+            if not control and (
+                    event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
+                    'init.py') or event.src_path.endswith('.xml') or event.src_path.endswith('.html')):
+                self.kill()
+            if event.src_path.endswith('.py') and control:
                 self.kill()
 
 def HUP_handler(signum, frame):
