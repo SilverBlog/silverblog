@@ -22,7 +22,6 @@ system_config = {
     "API_Password": "",
     "Paging": 10,
     "Time_Format": "%Y-%m-%d",
-    "Rss_Full_Content": True,
     "Editor": "nano",
     "i18n": "en-US"
 }
@@ -148,4 +147,3 @@ def other_info():
     items = [{"name": "Time_Format", "info": "time format"},
              {"name": "Editor", "info": "editor"}]
     show_prompt(items)
-    system_config["Rss_Full_Content"] = dialog.confirm("Output full text Rss?", "yes")
