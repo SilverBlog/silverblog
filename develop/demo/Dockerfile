@@ -19,6 +19,6 @@ RUN apk add --no-cache ca-certificates bash git curl python3 uwsgi uwsgi-python3
 && cp /home/silverblog/example/pm2.json /home/silverblog/pm2.json \
 && python3 manage.py update \
 && cd /home/silverblog/templates \
-&& curl https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh | bash
+&& bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
 
 CMD [ "pm2-runtime", "start", "pm2.json" ]
