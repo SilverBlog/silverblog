@@ -11,6 +11,11 @@ env = Environment(loader=PackageLoader('init', 'templates'))
 def format_datetime(value, format='%Y-%m-%d %H:%M'):
     return str(time.strftime(format, value))
 
+
+def datetimeformat(value, format='%Y-%m-%d %H:%M'):
+    return "{} <script>console.warn(\"Methods [datetimeformat] is outdated\");</script>".format(
+        format_datetime(value, format))
+
 def get_i18n_value(i18n, value):
     if value in i18n:
         return i18n[value]
@@ -19,8 +24,8 @@ def get_i18n_value(i18n, value):
 env.filters["get_i18n_value"] = get_i18n_value
 env.filters['format_datetime'] = format_datetime
 
-#Obsolete
-env.filters['datetimeformat'] = format_datetime
+# Obsolete
+env.filters['datetimeformat'] = datetimeformat
 
 def get_page_row(paging, page_list_len):
     page_row_mod = divmod(page_list_len, paging)

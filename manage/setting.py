@@ -22,7 +22,6 @@ system_config = {
     "API_Password": "",
     "Paging": 10,
     "Time_Format": "%Y-%m-%d",
-    "Rss_Full_Content": True,
     "Editor": "nano",
     "i18n": "en-US"
 }
@@ -74,7 +73,7 @@ def theme_manage():
             theme_name = dialog.prompt("Please enter the theme package name:")
         if len(theme_name) != 0:
             theme_name = theme.install_theme(theme_name, org_list)
-            if dialog.confirm("Do you want to enable this theme now?", "no"):
+            if theme_name is not None and dialog.confirm("Do you want to enable this theme now?", "no"):
                 system_config["Theme"] = theme_name
                 if os.path.exists("./templates/{}/i18n".format(theme_name)):
                     system_config["i18n"] = setting_i18n(theme_name)
@@ -148,4 +147,3 @@ def other_info():
     items = [{"name": "Time_Format", "info": "time format"},
              {"name": "Editor", "info": "editor"}]
     show_prompt(items)
-    system_config["Rss_Full_Content"] = dialog.confirm("Output full text Rss?", "yes")

@@ -7,7 +7,6 @@ import PyRSS2Gen
 from common import file, markdown, console
 
 rss_item_list = list()
-full_content = True
 
 
 class NoOutput:
@@ -37,12 +36,10 @@ def async_markdown(raw):
 
 @asyncio.coroutine
 def make_rss_item(page_list, item, project_url):
-    global rss_item_list, full_content
+    global rss_item_list
     location = "{0}/post/{1}".format(project_url, item["name"])
-    desc = item["excerpt"]
-    if full_content:
-        raw_document = yield from file.async_read_file("./document/{0}.md".format(item["name"]))
-        desc = yield from async_markdown(raw_document)
+    raw_document = yield from file.async_read_file("./document/{0}.md".format(item["name"]))
+    desc = yield from async_markdown(raw_document)
     rss_item_list[page_list.index(item)] = rss_item(title=item["title"], link=location, description=desc,
                                                     guid=PyRSS2Gen.Guid(location),
                                                     pubDate=datetime.datetime.fromtimestamp(item["time"]))
@@ -69,8 +66,6 @@ def make_rss(project_name, project_url, project_description, page_list, system_c
 def build_rss():
     system_config = json.loads(file.read_file("./config/system.json"))
     page_list = json.loads(file.read_file("./config/page.json"))
-    if "Rss_Full_Content" in system_config:
-        full_content = system_config["Rss_Full_Content"]
     file.write_file("./document/rss.xml", make_rss(system_config["Project_Name"], system_config["Project_URL"],
                                                    system_config["Project_Description"],
                                                    page_list, system_config))
