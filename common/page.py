@@ -19,9 +19,6 @@ def get_i18n_value(i18n, value):
 env.filters["get_i18n_value"] = get_i18n_value
 env.filters['format_datetime'] = format_datetime
 
-#Obsolete
-env.filters['datetimeformat'] = format_datetime
-
 def get_page_row(paging, page_list_len):
     page_row_mod = divmod(page_list_len, paging)
     page_row = page_row_mod[0]
