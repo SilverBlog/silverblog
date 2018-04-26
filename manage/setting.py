@@ -73,7 +73,7 @@ def theme_manage():
             theme_name = dialog.prompt("Please enter the theme package name:")
         if len(theme_name) != 0:
             theme_name = theme.install_theme(theme_name, org_list)
-            if dialog.confirm("Do you want to enable this theme now?", "no"):
+            if theme_name is not None and dialog.confirm("Do you want to enable this theme now?", "no"):
                 system_config["Theme"] = theme_name
                 if os.path.exists("./templates/{}/i18n".format(theme_name)):
                     system_config["i18n"] = setting_i18n(theme_name)
