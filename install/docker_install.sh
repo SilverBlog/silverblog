@@ -7,6 +7,7 @@ if [ ! -f "initialization.sh" ]; then
 fi
 
 echo "{\"install\":\"docker\"}" > install.lock
+
 ./initialization.sh
 cd ..
 sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
