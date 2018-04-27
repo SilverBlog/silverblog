@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 if [ -f "initialization.sh" ]; then
     cd ..
 fi
