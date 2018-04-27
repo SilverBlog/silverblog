@@ -21,6 +21,10 @@ SilverBlog is a lightweight blog project based on Python3.
 
 You can install SilverBlog directly using the installation script:
 
+```
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh)"
+```
+
 Docker:
 
 ```
@@ -31,18 +35,6 @@ On Container:
 
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/container_install.sh)"
-```
-
-Debian:
-
-```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh)"
-```
-
-Arch Linux:
-
-```
-bash -c "$(https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh)"
 ```
 
 

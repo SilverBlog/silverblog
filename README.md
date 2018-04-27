@@ -23,6 +23,10 @@ SilverBlog 是一個基於 Python3 的輕量級博客專案。
 
 您可以直接使用安裝腳本安裝 SilverBlog：
 
+```
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)"
+```
+
 Docker:
 
 ```
@@ -30,24 +34,11 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlo
 ```
 
 
-On Container:
+Container:
 
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/container_install.sh)"
 ```
-
-Debian(apt-get):
-
-```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/apt_install.sh)"
-```
-
-Arch Linux(pacman):
-
-```
-bash -c "$(https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/pacman_install.sh)"
-```
-
 
 您可以在 [SilverBlogTheme](https://github.com/SilverBlogTheme) 中選擇一個主題，然後使用 `./manage.py` 來安裝配置 ，並在下面的配置文件中正確配置它。
 
