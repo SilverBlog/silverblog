@@ -31,8 +31,6 @@ if [ ! -f "initialization.sh" ]; then
     cd silverblog/install
 fi
 
-
-
 ./check_python_version.py
 
 ./install_python_dependency.sh
