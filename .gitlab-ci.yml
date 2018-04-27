@@ -69,7 +69,7 @@ unit_test:
   - apt-get -y upgrade
   - export LANG="C.UTF-8"
   - cd install
-  - bash apt_install.sh
+  - bash install.sh
   - cd ..
   - cp -f ./develop/demo/page.json ./config/page.json
   - cp -f ./develop/demo/system.json ./config/system.json
