@@ -56,7 +56,7 @@ def theme_manage():
     from manage import theme
     dialog.title = "Theme package manager"
     menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing Theme",
-                 "Uninstall existing Theme"]
+                 "Remove existing Theme"]
     result = dialog.menu("Please select an action", menu_list)
     theme_name = ""
     org_list = None
@@ -86,7 +86,7 @@ def theme_manage():
             system_config["i18n"] = setting_i18n(theme_name)
     if result == "Upgrade existing Theme":
         theme.upgrade_theme(theme_name)
-    if result == "Uninstall existing Theme":
+    if result == "Remove existing Theme":
         theme.remove_theme(theme_name)
 
 
