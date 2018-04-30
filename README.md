@@ -44,21 +44,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlo
 
 本安裝腳本默認使用 nginx + uwsgi 執行模式，您可以將程序自動生成的 `nginx_config` 文件放到您的 nginx 軟件包的網站配置目錄下。如果您需要使用第三方網頁用戶端，別忘了修改 `nginx_config` 中的CORS配置。
 
-## 配置您的 SilverBlog
-
-您需要使用 `./manage.py setting` 來初始化你的系統信息。
-
-您需要編輯 `menu.json` ，`menu.json` 為導航欄的配置文件：
-
-```
-[
-  {
-    "title": "主頁", (顯示的名稱)
-    "name": "hello-world", (可選，文章名稱，不可與absolute同時存在。)
-    "absolute": “https://demo.silverblog.org” (可選，絕對路徑地址，不可與name同時存在。)
-  }
-]
-```
+[更多文檔](https://github.com/SilverBlogTeam/silverblog/wiki)
 
 ## 開始運行
 
