@@ -22,7 +22,7 @@ SilverBlog is a lightweight blog project based on Python3.
 You can install SilverBlog directly using the installation script:
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)"
 ```
 
 Docker:
@@ -42,22 +42,7 @@ You can select a theme in [SilverBlogTheme](https://github.com/SilverBlogTheme),
 
 This installation script uses the nginx + uwsgi execution mode by default. You can put the auto-generated `nginx_config` file into your nginx package's website configuration directory. If you need to use a third-party web client, don't forget to modify the CORS configuration in `nginx_config`.
 
-## Configure Your SilverBlog
-
-You need to use `./manage.py setting` to initialize your system information.
-
-You need to edit `menu.json` and `menu.json` as the configuration file for the navigation bar:
-
-```
-[
-  {
-    "title": "Homepage", (Name of display)
-    "name": "hello-world", (Optional, article name. Cannot exist with absolute.)
-    "absolute": "https://demo.silverblog.org" (Optional, absolute path address, cannot exist with name.)
-  }
-]
-```
-
+[wiki](https://github.com/SilverBlogTeam/silverblog/wiki)
 ## start operation
 
 You can run SilverBlog using tools such as Tmux or Screen. You just need to execute `python3 watch.py` to open your blog.

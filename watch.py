@@ -89,4 +89,5 @@ signal.signal(signal.SIGHUP, HUP_handler)
 result_code = 0
 while result_code != 1:
     result_code = start_watch()
-exit(result_code)
+print("Received 1 signal,exited.")
+exit(1)
