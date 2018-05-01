@@ -1,6 +1,7 @@
 # SilverBlog
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/LICENSE)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog?ref=badge_shield)
 
 [Click here for English version](https://github.com/SilverBlogTeam/silverblog/blob/master/readme/en-US.md)
 
@@ -165,3 +166,6 @@ git remote set-url origin https://gitee.com/qwe7002/silverblog.git
 感謝 [@Liqueur Librazy](https://github.com/Librazy) 為本項目提供Demo程式伺服器。
 
 感謝 [Jetbrains](https://www.jetbrains.com/) 為本項目提供免費的全套IDE支持
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog?ref=badge_large)
