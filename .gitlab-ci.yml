@@ -17,6 +17,10 @@ build_docker_demo:
   - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
   - docker push docker.reallserver.cn/${docker_tag_name}-demo
   - docker rmi docker.reallserver.cn/${docker_tag_name}-demo
+  - echo "$SSH_PRIVATE_KEY" > deploy.key
+  - chmod 0600 deploy.key
+  - ssh-add deploy.key
+  - ssh qwe7002@demo.silverblog.org "docker-compose down && docker-compose pull && docker-compose up -d"
 
 build_docker:
   stage: build
@@ -84,15 +88,4 @@ unit_test:
   - python3 ./manage.py build-page
   - python3 ./develop/unit_test/test.py
 
-demo_update:
-  stage: deploy
-  only:
-  - nightly
-  image: docker.reallserver.cn/public/docker-git
-  script:
-  - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_KEY" > deploy.key
-  - chmod 0600 deploy.key
-  - ssh-add deploy.key
-  - ssh qwe7002@demo.silverblog.org "docker-compose down && docker-compose pull && docker-compose up -d"
 
