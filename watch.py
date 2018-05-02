@@ -60,13 +60,13 @@ def start_watch():
             kill_progress()
             break
         return_code = p.poll()
-        line = p.stderr.readline().decode("utf-8").strip()
+        line = p.stderr.readline().decode("ISO-8859-1").strip()
         if len(line) != 0:
             print(line)
             sys.stderr.flush()
         time.sleep(0.01)
     while len(line) != 0:
-        line = p.stderr.readline().decode("utf-8").strip()
+        line = p.stderr.readline().decode("ISO-8859-1").strip()
         print(line)
         sys.stderr.flush()
     observer.stop()
