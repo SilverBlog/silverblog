@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 import hashlib
 import json
-
 import os.path
+
 from flask import Flask, request, abort
 
 from common import file, console, post_map
