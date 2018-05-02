@@ -1,6 +1,5 @@
 # whiptail.py - Use whiptail to display dialog boxes from shell scripts
 # Copyright (C) 2013 Marwan Alsabbagh
-# license: BSD, see LICENSE for more details.
 
 # Reall Computer modified 20171210
 
@@ -10,8 +9,6 @@ import sys
 from collections import namedtuple
 from subprocess import Popen, PIPE
 
-PY3 = sys.version_info[0] == 3
-string_types = str if PY3 else basestring
 Response = namedtuple('Response', 'returncode value')
 
 def flatten(data):
@@ -59,7 +56,7 @@ class Whiptail(object):
         return [str(self.height - height_offset)]
 
     def menu(self, msg='', items=(), prefix=' - '):
-        if isinstance(items[0], string_types):
+        if isinstance(items[0], str):
             items = [(i, '') for i in items]
         else:
             items = [(k, prefix + v) for k, v in items]
@@ -67,7 +64,7 @@ class Whiptail(object):
         return self.run('menu', msg, extra).value.decode("utf-8")
 
     def showlist(self, control, msg, items, prefix):
-        if isinstance(items[0], string_types):
+        if isinstance(items[0], str):
             items = [(i, '', 'OFF') for i in items]
         else:
             items = [(k, prefix + v, s) for k, v, s in items]
