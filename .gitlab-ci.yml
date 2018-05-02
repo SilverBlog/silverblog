@@ -17,6 +17,7 @@ build_docker_demo:
   - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
   - docker push docker.reallserver.cn/${docker_tag_name}-demo
   - docker rmi docker.reallserver.cn/${docker_tag_name}-demo
+  - eval $(ssh-agent -s)
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
