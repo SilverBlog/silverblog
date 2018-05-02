@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
 import argparse
 import os
@@ -61,13 +60,13 @@ def start_watch():
             kill_progress()
             break
         return_code = p.poll()
-        line = p.stderr.readline().strip().decode("utf-8")
+        line = p.stderr.readline().decode("utf-8").strip()
         if len(line) != 0:
             print(line)
             sys.stderr.flush()
         time.sleep(0.01)
     while len(line) != 0:
-        line = p.stderr.readline().strip().decode("utf-8")
+        line = p.stderr.readline().decode("utf-8").strip()
         print(line)
         sys.stderr.flush()
     observer.stop()
