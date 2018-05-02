@@ -69,7 +69,7 @@ def start_watch():
         if len(line) != 0:
             print(line)
             sys.stderr.flush()
-        time.sleep(0.01)
+        time.sleep(0.05)
     while len(line) != 0:
         line_byte = p.stderr.readline()
         try:
