@@ -50,10 +50,6 @@ build_docker:
 
 release_github_nightly:
   image: docker.reallserver.cn/public/docker-git
-  services:
-  - docker:dind
-  tags:
-  - docker-build
   stage: deploy
   only:
   - nightly
@@ -63,10 +59,6 @@ release_github_nightly:
 
 release_github_master:
   image: docker.reallserver.cn/public/docker-git
-  services:
-  - docker:dind
-  tags:
-  - docker-build
   stage: deploy
   only:
   - master
