@@ -7,7 +7,11 @@ variables:
   docker_tag_name: "silverblog/silverblog"
 
 build_docker_demo:
-  image: docker:latest
+  image: docker.reallserver.cn/public/docker-git
+  services:
+  - docker:dind
+  tags:
+  - docker-build
   stage: build
   only:
   - nightly
@@ -25,7 +29,11 @@ build_docker_demo:
   - ssh qwe7002@demo.silverblog.org "docker-compose down && docker-compose pull && docker-compose up -d"
 
 build_docker:
-  image: docker:latest
+  image: docker.reallserver.cn/public/docker-git
+  services:
+  - docker:dind
+  tags:
+  - docker-build
   stage: build
   only:
   - master
@@ -42,6 +50,10 @@ build_docker:
 
 release_github_nightly:
   image: docker.reallserver.cn/public/docker-git
+  services:
+  - docker:dind
+  tags:
+  - docker-build
   stage: deploy
   only:
   - nightly
@@ -51,6 +63,10 @@ release_github_nightly:
 
 release_github_master:
   image: docker.reallserver.cn/public/docker-git
+  services:
+  - docker:dind
+  tags:
+  - docker-build
   stage: deploy
   only:
   - master
