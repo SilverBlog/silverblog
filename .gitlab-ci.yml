@@ -7,28 +7,36 @@ variables:
   docker_tag_name: "silverblog/silverblog"
 
 build_docker_demo:
+  image: docker.reallserver.cn/public/docker-git
+  services:
+  - docker:dind
+  tags:
+  - docker-build
   stage: build
   only:
   - nightly
-  tags:
-  - docker-build
   script:
   - docker build -t docker.reallserver.cn/${docker_tag_name}-demo -f ./develop/demo/Dockerfile .
   - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
   - docker push docker.reallserver.cn/${docker_tag_name}-demo
   - docker rmi docker.reallserver.cn/${docker_tag_name}-demo
+  - apk --no-cache add git openssl openssh-client
   - eval $(ssh-agent -s)
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
   - ssh qwe7002@demo.silverblog.org "docker-compose down && docker-compose pull && docker-compose up -d"
 
 build_docker:
+  image: docker.reallserver.cn/public/docker-git
+  services:
+  - docker:dind
+  tags:
+  - docker-build
   stage: build
   only:
   - master
-  tags:
-  - docker-build
   script:
   - docker build -t ${docker_tag_name} -f ./example/Dockerfile .
   - docker login -u qwe7002 -p ${docker_hub_passwd}
@@ -42,6 +50,10 @@ build_docker:
 
 release_github_nightly:
   image: docker.reallserver.cn/public/docker-git
+  services:
+  - docker:dind
+  tags:
+  - docker-build
   stage: deploy
   only:
   - nightly
@@ -51,6 +63,10 @@ release_github_nightly:
 
 release_github_master:
   image: docker.reallserver.cn/public/docker-git
+  services:
+  - docker:dind
+  tags:
+  - docker-build
   stage: deploy
   only:
   - master
