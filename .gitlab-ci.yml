@@ -64,6 +64,28 @@ release_github_master:
   - git push -f --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.wiki.git HEAD:master
   - git push -f --set-upstream https://${oschina_key}@gitee.com/qwe7002/silverblog.wiki.git HEAD:master
 
+unit_test_master:
+  image: registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog
+  stage: test
+  retry: 2
+  only:
+  - master
+  script:
+  - cd install
+  - bash container_install.sh
+  - cd ..
+  - cp -f ./develop/demo/page.json ./config/page.json
+  - cp -f ./develop/demo/system.json ./config/system.json
+  - cp ./develop/demo/demo-article.md ./document/demo-article.md
+  - python3 manage.py update
+  - cd ./templates
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
+  - cd ..
+  - rm /etc/nginx/sites-enabled/default
+  - cp ./nginx_config /etc/nginx/sites-enabled/silverblog
+  - python3 ./manage.py update
+  - python3 ./manage.py build-page
+  - python3 ./develop/unit_test/test.py
 
 
 unit_test:
