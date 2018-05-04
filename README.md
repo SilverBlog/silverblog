@@ -16,9 +16,8 @@ SilverBlog 是一個基於 Python3 的輕量級博客專案。
 * 無數據庫化設計。
 * 擁有媲美 Hexo 的靜態頁面生成模組，只需一行命令，就可在 Github Page 上運行。
 * 原生支持 Linux，可以通過 Docker 部署在任意平台。
-* 擁有一個 Android 用戶端。
-* 擁有一個 web 用戶端。
-* 擁有一個 IOS 用戶端
+* 擁有 Android，IOS，WEB 用戶端。
+* 完整的 GitHub Flavored Markdown 支持
 
 ## 如何安裝
 
