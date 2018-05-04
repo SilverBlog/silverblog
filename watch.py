@@ -45,7 +45,6 @@ def HUP_handler(signum, frame):
 def KILL_handler(signum, frame):
     harakiri()
 
-
 def harakiri():
     global p
     p.kill()
