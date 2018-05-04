@@ -25,7 +25,7 @@ EOF
 
 cat << EOF >/etc/systemd/system/silverblog_control.service
 [Unit]
-Description=SilverBlog server daemon
+Description=SilverBlog control server daemon
 
 [Service]
 WorkingDirectory=$(pwd)

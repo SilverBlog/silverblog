@@ -21,3 +21,4 @@ templates
 /docker-compose.yml
 static_page
 trash
+logs
