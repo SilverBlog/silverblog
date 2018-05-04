@@ -19,9 +19,7 @@ build_docker_demo:
   - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
   - docker push docker.reallserver.cn/${docker_tag_name}-demo
   - docker rmi docker.reallserver.cn/${docker_tag_name}-demo
-  - apk --no-cache add git openssl openssh-client
   - eval $(ssh-agent -s)
-  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
@@ -67,9 +65,11 @@ release_github_master:
   - git push -f --set-upstream https://${oschina_key}@gitee.com/qwe7002/silverblog.wiki.git HEAD:master
 
 
+
 unit_test:
   image: ubuntu:bionic
   stage: test
+  retry: 5
   only:
   - develop
   script:
@@ -92,5 +92,4 @@ unit_test:
   - python3 ./manage.py update
   - python3 ./manage.py build-page
   - python3 ./develop/unit_test/test.py
-
 
