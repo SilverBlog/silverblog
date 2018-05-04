@@ -69,7 +69,7 @@ release_github_master:
 unit_test:
   image: ubuntu:bionic
   stage: test
-  retry: 5
+  retry: 2
   only:
   - develop
   script:
