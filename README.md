@@ -2,6 +2,8 @@
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/LICENSE)
 
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog?ref=badge_shield)
+
 [Click here for English version](https://github.com/SilverBlogTeam/silverblog/blob/master/readme/en-US.md)
 
 SilverBlog 是一個基於 Python3 的輕量級博客專案。
@@ -15,9 +17,8 @@ SilverBlog 是一個基於 Python3 的輕量級博客專案。
 * 無數據庫化設計。
 * 擁有媲美 Hexo 的靜態頁面生成模組，只需一行命令，就可在 Github Page 上運行。
 * 原生支持 Linux，可以通過 Docker 部署在任意平台。
-* 擁有一個 Android 用戶端。
-* 擁有一個 web 用戶端。
-* 擁有一個 IOS 用戶端
+* 擁有 Android，IOS，WEB 用戶端。
+* 完整的 [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) 支持
 
 ## 如何安裝
 
@@ -136,10 +137,12 @@ SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執
 
 ## 關於亞洲地區的訪問加速
 
-您可以執行以下命令來更換您的倉庫源，這將加速您的更新：
+您可以執行以下命令來更換您的倉庫源，這將加速您的更新：(亚洲地区服务由coding提供)
 ```
-git remote set-url origin https://gitee.com/qwe7002/silverblog.git
+git remote set-url origin https://git.coding.net/qwe7002/silverblog.git
 ```
+
+注：非 Github 上的任何 Issue 和 Pull Request 將不會被受理。
 
 您可以使用阿里雲提供的registry加速器來加快鏡像下載，修改image爲 `registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog` 即可
 
@@ -148,3 +151,6 @@ git remote set-url origin https://gitee.com/qwe7002/silverblog.git
 感謝 [@Liqueur Librazy](https://github.com/Librazy) 為本項目提供Demo程式伺服器。
 
 感謝 [Jetbrains](https://www.jetbrains.com/) 為本項目提供免費的全套IDE支持
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog?ref=badge_large)

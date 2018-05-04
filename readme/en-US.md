@@ -1,7 +1,5 @@
 # SilverBlog
 
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/LICENSE)
-
 SilverBlog is a lightweight blog project based on Python3.
 
 ## Why SilverBlog
@@ -13,9 +11,8 @@ SilverBlog is a lightweight blog project based on Python3.
 * No database design.
 * With a static page generation module comparable to Hexo, you can run on Github Page with only one line of commands.
 * Native support for Linux can be deployed on any platform through Docker.
-* Have an Android client.
-* Have a web client.
-* Developing an IOS client
+* Has Android, IOS, WEB client.
+* Full [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) support
 
 ## how to install
 

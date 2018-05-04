@@ -7,7 +7,6 @@ variables:
   docker_tag_name: "silverblog/silverblog"
 
 build_docker_demo:
-  image: docker.reallserver.cn/public/docker-git
   services:
   - docker:dind
   tags:
@@ -20,16 +19,13 @@ build_docker_demo:
   - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
   - docker push docker.reallserver.cn/${docker_tag_name}-demo
   - docker rmi docker.reallserver.cn/${docker_tag_name}-demo
-  - apk --no-cache add git openssl openssh-client
   - eval $(ssh-agent -s)
-  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
   - ssh qwe7002@demo.silverblog.org "docker-compose down && docker-compose pull && docker-compose up -d"
 
 build_docker:
-  image: docker.reallserver.cn/public/docker-git
   services:
   - docker:dind
   tags:
@@ -49,39 +45,53 @@ build_docker:
 
 
 release_github_nightly:
-  image: docker.reallserver.cn/public/docker-git
-  services:
-  - docker:dind
-  tags:
-  - docker-build
   stage: deploy
   only:
   - nightly
   script:
   - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:nightly
-  - git push --set-upstream https://${oschina_key}@gitee.com/qwe7002/silverblog.git HEAD:nightly
+  - git push --set-upstream https://${coding_key}@git.coding.net/qwe7002/silverblog.git HEAD:nightly
 
 release_github_master:
-  image: docker.reallserver.cn/public/docker-git
-  services:
-  - docker:dind
-  tags:
-  - docker-build
   stage: deploy
   only:
   - master
   script:
   - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
-  - git push --set-upstream https://${oschina_key}@gitee.com/qwe7002/silverblog.git HEAD:master
+  - git push --set-upstream https://${coding_key}@git.coding.net/qwe7002/silverblog.git HEAD:master
   - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
   - cd wiki
   - git push -f --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.wiki.git HEAD:master
-  - git push -f --set-upstream https://${oschina_key}@gitee.com/qwe7002/silverblog.wiki.git HEAD:master
+  - git push --set-upstream https://${coding_key}@git.coding.net/qwe7002/silverblog.wiki.git HEAD:master
+
+unit_test_master:
+  image: registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog
+  stage: test
+  retry: 2
+  only:
+  - master
+  script:
+  - cd install
+  - bash container_install.sh
+  - cd ..
+  - cp -f ./develop/demo/page.json ./config/page.json
+  - cp -f ./develop/demo/system.json ./config/system.json
+  - cp ./develop/demo/demo-article.md ./document/demo-article.md
+  - python3 manage.py update
+  - cd ./templates
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
+  - cd ..
+  - rm /etc/nginx/sites-enabled/default
+  - cp ./nginx_config /etc/nginx/sites-enabled/silverblog
+  - python3 ./manage.py update
+  - python3 ./manage.py build-page
+  - python3 ./develop/unit_test/test.py
 
 
 unit_test:
   image: ubuntu:bionic
   stage: test
+  retry: 2
   only:
   - develop
   script:
@@ -104,5 +114,4 @@ unit_test:
   - python3 ./manage.py update
   - python3 ./manage.py build-page
   - python3 ./develop/unit_test/test.py
-
 
