@@ -13,9 +13,8 @@ SilverBlog is a lightweight blog project based on Python3.
 * No database design.
 * With a static page generation module comparable to Hexo, you can run on Github Page with only one line of commands.
 * Native support for Linux can be deployed on any platform through Docker.
-* Have an Android client.
-* Have a web client.
-* Developing an IOS client
+* Has Android, IOS, WEB client.
+* Full GitHub Flavored Markdown support
 
 ## how to install
 
