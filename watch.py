@@ -24,13 +24,14 @@ p = None
 control = False
 
 class when_file_chanage(FileSystemEventHandler):
-    def __init__(self, fn):
+    def __init__(self, kill_sub, self_harakiri):
         super().__init__()
-        self.kill = fn
+        self.kill = kill_sub
+        self.harakiri = self_harakiri
     def on_any_event(self, event):
         if not os.path.basename(os.path.dirname(event.src_path)) == "static_page":
             if event.src_path.endswith('watch.py'):
-                KILL_handler(0, 0)
+                self.harakiri()
             if not control and (
                     event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
                     'init.py') or event.src_path.endswith('.xml') or event.src_path.endswith('.html')):
@@ -42,16 +43,21 @@ def HUP_handler(signum, frame):
     kill_progress()
 
 def KILL_handler(signum, frame):
+    harakiri()
+
+
+def harakiri():
     global p
     p.kill()
-    exit(0)
+    console.log("Success", "Stopped SilverBlog server.")
+    os._exit(0)
 
 def kill_progress():
     global p
     p.kill()
 
 def start_watch():
-    event_handler = when_file_chanage(kill_progress)
+    event_handler = when_file_chanage(kill_progress, harakiri)
     observer = Observer(timeout=1)
     observer.schedule(event_handler, path=os.getcwd(), recursive=True)
     observer.start()
@@ -111,7 +117,6 @@ console.log("info", "Started SilverBlog {} server".format(job))
 signal.signal(signal.SIGINT, KILL_handler)
 signal.signal(signal.SIGTERM, KILL_handler)
 signal.signal(signal.SIGQUIT, KILL_handler)
-# signal.signal(signal.SIGSTOP, KILL_handler)
 signal.signal(signal.SIGHUP, HUP_handler)
 result_code = 0
 while result_code != 1:
