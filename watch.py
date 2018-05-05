@@ -36,7 +36,7 @@ class when_file_chanage(FileSystemEventHandler):
                     event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
                     'init.py') or event.src_path.endswith('.xml') or event.src_path.endswith('.html')):
                 self.kill()
-            if event.src_path.endswith('.py') and control:
+            if event.src_path.endswith('.py') or event.src_path.endswith('config/system.json') and control:
                 self.kill()
 
 def HUP_handler(signum, frame):
