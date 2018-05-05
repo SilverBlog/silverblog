@@ -125,8 +125,7 @@ def project_info():
     items = [{"name": "Project_Name", "info": "blog name"}, {"name": "Project_Description", "info": "blog description"},
              {"name": "Project_URL", "info": "blog access URL"}]
     show_prompt(items)
-    new_password = dialog.prompt("Please enter the remote management tool password:", system_config["API_Password"],
-                                 True)
+    new_password = dialog.prompt("Please enter the remote management tool password:", "", True)
     if len(new_password) != 0:
         import hashlib
         system_config["API_Password"] = json.dumps(
