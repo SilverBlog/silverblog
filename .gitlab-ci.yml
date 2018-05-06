@@ -71,7 +71,8 @@ unit_test_master:
   only:
   - master
   script:
-  - apk add --no-cache nginx
+  - apk add --no-cache nginx && rm /etc/nginx/conf.d/default.conf
+
   - cd install
   - bash container_install.sh
   - cd ..
@@ -82,8 +83,7 @@ unit_test_master:
   - cd ./templates
   - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
   - cd ..
-  - rm /etc/nginx/sites-enabled/default
-  - cp ./nginx_config /etc/nginx/sites-enabled/silverblog
+  - cp ./nginx_config /etc/nginx/conf.d/default.conf
   - python3 ./manage.py update
   - python3 ./manage.py build-page
   - python3 ./develop/unit_test/test.py
