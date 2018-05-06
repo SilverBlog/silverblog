@@ -42,9 +42,10 @@ def install_theme(theme_name, orgs_list=None):
         r = requests.get("https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).text
     except requests.exceptions.RequestException:
         console.log("Error", "Get the theme installation script error.")
-        return
+        exit(1)
     os.system("cd ./templates \n" + r)
-    console.log("Success", "The theme is installed successfully!")
+
+    console.log("Success", "The theme is removed successfully!")
     return name
 
 def remove_theme(theme_name):
@@ -52,7 +53,7 @@ def remove_theme(theme_name):
     shutil.rmtree("./templates/" + theme_name)
     if os.path.exists("./templates/static/" + theme_name):
         shutil.rmtree("./templates/static/" + theme_name)
-    console.log("Success", "The theme is uninstalled successfully!")
+    console.log("Success", "The theme is removed successfully!")
 
 def upgrade_theme(theme_name):
     console.log("info", "Updating theme, please wait...")

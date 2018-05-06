@@ -5,7 +5,8 @@ import json
 import os
 import time
 
-from common import whiptail, file
+from common import file
+from manage import whiptail
 
 dialog = whiptail.Whiptail()
 dialog.height = 15
@@ -21,7 +22,6 @@ system_config = {
     "API_Password": "",
     "Paging": 10,
     "Time_Format": "%Y-%m-%d",
-    "Rss_Full_Content": True,
     "Editor": "nano",
     "i18n": "en-US"
 }
@@ -56,7 +56,7 @@ def theme_manage():
     from manage import theme
     dialog.title = "Theme package manager"
     menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing Theme",
-                 "Uninstall existing Theme"]
+                 "Remove existing Theme"]
     result = dialog.menu("Please select an action", menu_list)
     theme_name = ""
     org_list = None
@@ -73,7 +73,7 @@ def theme_manage():
             theme_name = dialog.prompt("Please enter the theme package name:")
         if len(theme_name) != 0:
             theme_name = theme.install_theme(theme_name, org_list)
-            if dialog.confirm("Do you want to enable this theme now?", "no"):
+            if theme_name is not None and dialog.confirm("Do you want to enable this theme now?", "no"):
                 system_config["Theme"] = theme_name
                 if os.path.exists("./templates/{}/i18n".format(theme_name)):
                     system_config["i18n"] = setting_i18n(theme_name)
@@ -86,7 +86,7 @@ def theme_manage():
             system_config["i18n"] = setting_i18n(theme_name)
     if result == "Upgrade existing Theme":
         theme.upgrade_theme(theme_name)
-    if result == "Uninstall existing Theme":
+    if result == "Remove existing Theme":
         theme.remove_theme(theme_name)
 
 
@@ -125,7 +125,7 @@ def project_info():
     items = [{"name": "Project_Name", "info": "blog name"}, {"name": "Project_Description", "info": "blog description"},
              {"name": "Project_URL", "info": "blog access URL"}]
     show_prompt(items)
-    new_password = dialog.prompt("Please enter the remote management tool password:", system_config["API_Password"],
+    new_password = dialog.prompt("Please enter the remote management tool password:(Leave blank does not change)", "",
                                  True)
     if len(new_password) != 0:
         import hashlib
@@ -147,4 +147,3 @@ def other_info():
     items = [{"name": "Time_Format", "info": "time format"},
              {"name": "Editor", "info": "editor"}]
     show_prompt(items)
-    system_config["Rss_Full_Content"] = dialog.confirm("Output full text Rss?", "yes")

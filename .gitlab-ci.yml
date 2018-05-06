@@ -1,90 +1,78 @@
 stages:
   - test
   - build
-  - push
   - deploy
 
 variables:
   docker_tag_name: "silverblog/silverblog"
 
 build_docker_demo:
+  services:
+  - docker:dind
+  tags:
+  - docker-build
   stage: build
   only:
   - nightly
-  tags:
-  - docker-build
   script:
-  - docker build -t docker.reallserver.cn/${docker_tag_name}-demo -f ./develop/demo/dockerfile .
-
-build_docker:
-  stage: build
-  only:
-  - master
-  tags:
-  - docker-build
-  script:
-  - docker build -t ${docker_tag_name} .
-
-release_github_nightly:
-  image: docker.reallserver.cn/public/docker-git
-  stage: push
-  only:
-  - nightly
-  script:
-  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:nightly
-  - git push --set-upstream https://${oschina_key}@gitee.com/qwe7002/silverblog.git HEAD:nightly
-
-release_github_master:
-  image: docker.reallserver.cn/public/docker-git
-  stage: push
-  only:
-  - master
-  script:
-  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
-  - git push --set-upstream https://${oschina_key}@gitee.com/qwe7002/silverblog.git HEAD:master
-  - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
-  - cd wiki
-  - git push -f --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.wiki.git HEAD:master
-  - git push -f --set-upstream https://${oschina_key}@gitee.com/qwe7002/silverblog.wiki.git HEAD:master
-
-
-docker_push_demo:
-  stage: push
-  only:
-  - nightly
-  tags:
-  - docker-build
-  script:
+  - docker build -t docker.reallserver.cn/${docker_tag_name}-demo -f ./develop/demo/Dockerfile .
   - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
   - docker push docker.reallserver.cn/${docker_tag_name}-demo
-  
-docker_push:
-  stage: push
-  only:
-  - master
+  - docker rmi docker.reallserver.cn/${docker_tag_name}-demo
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" > deploy.key
+  - chmod 0600 deploy.key
+  - ssh-add deploy.key
+  - ssh qwe7002@demo.silverblog.org "docker-compose down && docker-compose pull && docker-compose up -d"
+
+build_docker:
+  services:
+  - docker:dind
   tags:
   - docker-build
+  stage: build
+  only:
+  - master
   script:
+  - docker build -t ${docker_tag_name} -f ./example/Dockerfile .
   - docker login -u qwe7002 -p ${docker_hub_passwd}
   - docker login -u qwe7002@hotmail.com -p ${docker_hub_passwd} registry.cn-hangzhou.aliyuncs.com
   - docker push ${docker_tag_name}
   - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
   - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
+  - docker rmi ${docker_tag_name}
+  - docker rmi registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
 
-unit_test:
-  image: ubuntu:bionic
-  stage: test
+
+release_github_nightly:
+  stage: deploy
   only:
-  - develop
+  - nightly
   script:
-  - sed -i '''s/deb-src/#deb-src/g' /etc/apt/sources.list
-  - apt-get update
-  - apt-get -y upgrade
-  - apt-get install -y locales
-  - export LC_ALL="en_US.UTF-8" && export LANG="en_US.UTF-8"
-  - locale-gen en_US.UTF-8
+  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:nightly
+  - git push --set-upstream https://${coding_key}@git.coding.net/qwe7002/silverblog.git HEAD:nightly
+
+release_github_master:
+  stage: deploy
+  only:
+  - master
+  script:
+  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
+  - git push --set-upstream https://${coding_key}@git.coding.net/qwe7002/silverblog.git HEAD:master
+  - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
+  - cd wiki
+  - git push -f --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.wiki.git HEAD:master
+  - git push --set-upstream https://${coding_key}@git.coding.net/qwe7002/silverblog.wiki.git HEAD:master
+
+unit_test_master:
+  image: registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog
+  stage: test
+  retry: 2
+  only:
+  - master
+  script:
   - cd install
-  - bash apt_install.sh
+  - bash container_install.sh
   - cd ..
   - cp -f ./develop/demo/page.json ./config/page.json
   - cp -f ./develop/demo/system.json ./config/system.json
@@ -99,15 +87,31 @@ unit_test:
   - python3 ./manage.py build-page
   - python3 ./develop/unit_test/test.py
 
-demo_update:
-  stage: deploy
+
+unit_test:
+  image: ubuntu:bionic
+  stage: test
+  retry: 2
   only:
-  - nightly
-  image: docker.reallserver.cn/public/docker-git
+  - develop
   script:
-  - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_KEY" > deploy.key
-  - chmod 0600 deploy.key
-  - ssh-add deploy.key
-  - ssh qwe7002@demo.silverblog.org "docker-compose down && docker-compose pull && docker-compose up -d"
+  - sed -i '''s/deb-src/#deb-src/g' /etc/apt/sources.list
+  - apt-get update
+  - apt-get -y upgrade
+  - export LANG="C.UTF-8"
+  - cd install
+  - bash install.sh
+  - cd ..
+  - cp -f ./develop/demo/page.json ./config/page.json
+  - cp -f ./develop/demo/system.json ./config/system.json
+  - cp ./develop/demo/demo-article.md ./document/demo-article.md
+  - python3 manage.py update
+  - cd ./templates
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
+  - cd ..
+  - rm /etc/nginx/sites-enabled/default
+  - cp ./nginx_config /etc/nginx/sites-enabled/silverblog
+  - python3 ./manage.py update
+  - python3 ./manage.py build-page
+  - python3 ./develop/unit_test/test.py
 

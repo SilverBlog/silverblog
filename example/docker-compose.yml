@@ -1,10 +1,10 @@
-version: '2'
+version: '3'
 services:
   silverblog:
     image: "silverblog/silverblog"
     tty: true
     container_name: "silverblog"
-    restart: always
+    restart: on-failure:10
     command: python3 watch.py
     volumes:
      - ./:/home/silverblog/
@@ -14,7 +14,7 @@ services:
     image: "silverblog/silverblog"
     tty: true
     container_name: "silverblog_control"
-    restart: always
+    restart: on-failure:10
     command: python3 watch.py --control
     volumes:
      - ./:/home/silverblog/

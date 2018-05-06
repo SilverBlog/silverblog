@@ -1,7 +1,5 @@
 # SilverBlog
 
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/LICENSE)
-
 SilverBlog is a lightweight blog project based on Python3.
 
 ## Why SilverBlog
@@ -13,13 +11,16 @@ SilverBlog is a lightweight blog project based on Python3.
 * No database design.
 * With a static page generation module comparable to Hexo, you can run on Github Page with only one line of commands.
 * Native support for Linux can be deployed on any platform through Docker.
-* Have an Android client.
-* Have a web client.
-* Developing an IOS client
+* Has Android, IOS, WEB client.
+* Full [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) support
 
 ## how to install
 
 You can install SilverBlog directly using the installation script:
+
+```
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)"
+```
 
 Docker:
 
@@ -33,39 +34,12 @@ On Container:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/container_install.sh)"
 ```
 
-Debian:
-
-```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/debian_install.sh)"
-```
-
-Arch Linux:
-
-```
-bash -c "$(https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/archlinux_install.sh)"
-```
-
 
 You can select a theme in [SilverBlogTheme](https://github.com/SilverBlogTheme), then use `./manage.py` to install the configuration and configure it correctly in the configuration file below.
 
 This installation script uses the nginx + uwsgi execution mode by default. You can put the auto-generated `nginx_config` file into your nginx package's website configuration directory. If you need to use a third-party web client, don't forget to modify the CORS configuration in `nginx_config`.
 
-## Configure Your SilverBlog
-
-You need to use `./manage.py setting` to initialize your system information.
-
-You need to edit `menu.json` and `menu.json` as the configuration file for the navigation bar:
-
-```
-[
-  {
-    "title": "Homepage", (Name of display)
-    "name": "hello-world", (Optional, article name. Cannot exist with absolute.)
-    "absolute": "https://demo.silverblog.org" (Optional, absolute path address, cannot exist with name.)
-  }
-]
-```
-
+[wiki](https://github.com/SilverBlogTeam/silverblog/wiki)
 ## start operation
 
 You can run SilverBlog using tools such as Tmux or Screen. You just need to execute `python3 watch.py` to open your blog.
@@ -83,6 +57,13 @@ You can configure your server using the `systemd_startup_install.sh` file in the
 SilverBlog recommends using a NodeJS-based monitor: pm2
 
 For the installation of pm2 see [GitHub - tj/n: Node version management](https://github.com/tj/n) and [pm2 - Quick Start](http://pm2.keymetrics.io/docs/Usage/quick-start/)
+
+The preset profile is located at `. / example / pm2.json`, you can use the following command to copy it to the root directory and use:
+
+```
+cp ./exmaple/pm2.json pm2.json
+```
+
 
 Then, you just have to run:
 
@@ -121,7 +102,7 @@ git config user.name "your name"
 
 Next, you just need to execute the Build static page command. The system will automatically generate a static page and submit it to the github page.
 
-You can try using the `/example/.travis.yml` script for automated submission. (experimental feature, not guaranteed)
+You can try using the `/example/.travis.yml` script for automated submission.
 
 
 ## Use client management server
@@ -134,7 +115,7 @@ You can compile and deploy the https://github.com/SilverBlogTeam/silverblog_ios 
 
 You can use Silver Create (https://c.silverblog.org) to manage your blog.
 
-You can use pip to install the [qrcode_terminal](https://github.com/alishtory/qrcode-terminal) dependency, and then execute `./manage.py qrcode` to generate the automated configuration QR code.
+You can execute `./manage.py qrcode` to generate the automated configuration QR code.
 
 ## Switch to developer preview
 
