@@ -71,6 +71,7 @@ unit_test_master:
   only:
   - master
   script:
+  - apk add --no-cache nginx
   - cd install
   - bash container_install.sh
   - cd ..
