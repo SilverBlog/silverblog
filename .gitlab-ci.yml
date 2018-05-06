@@ -62,7 +62,6 @@ release_github_master:
   - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
   - cd wiki
   - git push -f --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.wiki.git HEAD:master
-  - git push --set-upstream https://${coding_key}@git.coding.net/qwe7002/silverblog.wiki.git HEAD:master
 
 unit_test_master:
   image: registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog
