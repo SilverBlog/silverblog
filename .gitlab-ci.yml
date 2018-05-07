@@ -37,11 +37,13 @@ build_docker:
   - docker build -t ${docker_tag_name} -f ./example/Dockerfile .
   - docker login -u qwe7002 -p ${docker_hub_passwd}
   - docker login -u qwe7002@hotmail.com -p ${docker_hub_passwd} registry.cn-hangzhou.aliyuncs.com
-  - docker push ${docker_tag_name}
+  - docker tag ${docker_tag_name} docker.reallserver.cn/${docker_tag_name}
   - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
+  - docker push ${docker_tag_name}
+  - docker push docker.reallserver.cn/${docker_tag_name}
   - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
-  - docker rmi ${docker_tag_name}
-  - docker rmi registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
+  - docker container prune -f
+  - docker image prune -f
 
 
 release_github_nightly:
