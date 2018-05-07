@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o errexit
 templates_name="your template name"
 
 if [ $(basename `pwd`) != "templates" ];then
