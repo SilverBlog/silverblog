@@ -68,6 +68,7 @@ def start_watch():
     p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
     return_code = p.poll()
     while return_code is None:
+        time.sleep(0.05)
         if not observer.is_alive():
             kill_progress()
             break
@@ -82,7 +83,6 @@ def start_watch():
             if len(line) != 0:
                 print(line)
                 sys.stderr.flush()
-            time.sleep(0.05)
             while len(line) != 0:
                 line_byte = p.stderr.readline()
                 try:
