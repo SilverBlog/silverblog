@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o errexit
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
     exit 1

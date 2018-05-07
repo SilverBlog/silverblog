@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -o errexit
 if test $(ps h -o comm -p $$) = "sh"; then
     echo "Please use bash to execute this script."
     exit 1
