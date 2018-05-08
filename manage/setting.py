@@ -14,7 +14,7 @@ dialog.title = "SilverBlog settings tool"
 system_config = {
     "Project_Name": "",
     "Project_Description": "",
-    "Project_URL": "",
+    "Project_URL": "https://",
     "Author_Image": "",
     "Author_Name": "",
     "Author_Introduction": "",
@@ -107,6 +107,7 @@ def setup_wizard():
         local_theme_list = theme.get_local_theme_list()
         if len(local_theme_list) != 0:
             system_config["Theme"] = dialog.menu("Please select the theme to be operated:", local_theme_list)
+            save_config()
             return
         org_list = theme.get_orgs_list()
         item_list = list()
@@ -125,7 +126,7 @@ def project_info():
     items = [{"name": "Project_Name", "info": "blog name"}, {"name": "Project_Description", "info": "blog description"},
              {"name": "Project_URL", "info": "blog access URL"}]
     show_prompt(items)
-    new_password = dialog.prompt("Please enter the remote management tool password:(Leave blank does not change)", "",
+    new_password = dialog.prompt("Please enter the remote management tool password:\n(Leave blank does not change)", "",
                                  True)
     if len(new_password) != 0:
         import hashlib
