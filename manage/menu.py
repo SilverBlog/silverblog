@@ -51,9 +51,8 @@ def article_manager():
 def upgrade():
     dialog.title = "Upgrade"
     from manage import upgrade
-    if upgrade.upgrade_check():
-        if dialog.confirm("Find new version, do you want to upgrade?", "no"):
-            upgrade.upgrade_pull()
+    if upgrade.upgrade_check() and dialog.confirm("Find new version, do you want to upgrade?", "no"):
+        upgrade.upgrade_pull()
         return
     dialog.alert("No upgrade found.")
 
@@ -70,9 +69,7 @@ def edit_post():
 def delete_post():
     from manage import delete_post
     page_list, post_index = select_post()
-    if not page_list:
-        return
-    if dialog.confirm(
+    if page_list and dialog.confirm(
             "Are you sure you want to delete this article? (Warning! This operation is irreversible, please be careful!)",
             "no"):
         delete_post.delete(page_list, post_index)
