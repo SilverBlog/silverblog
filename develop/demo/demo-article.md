@@ -22,7 +22,7 @@ Mobile client automatically configures two-dimensional code:
 
 手机客户端自动配置二维码:
 
-![qrcode](https://i.loli.net/2018/02/26/5a930c403202d.png)
+![qrcode](https://i.loli.net/2018/05/08/5af19b5e776bb.png)
 
 ***
 
