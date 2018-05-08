@@ -90,7 +90,8 @@ unit_test_master:
   - python3 ./develop/unit_test/test.py
 
 
-unit_test:
+
+unit_test_develop:
   image: ubuntu:bionic
   stage: test
   retry: 2
