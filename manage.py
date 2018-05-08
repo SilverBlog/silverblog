@@ -7,10 +7,12 @@ import sys
 
 from manage import menu
 
-if "UTF-8" not in os.environ["LANG"]:
+lang = None
+if "LANG" not in os.environ:
     lang = "None"
-    if "LANG" in os.environ:
-        lang = os.environ["LANG"]
+if "UTF-8" not in os.environ["LANG"]:
+    lang = os.environ["LANG"]
+if lang is not None:
     print("The current locale is: {}.Some characters may not be displayed and processed.".format(lang))
     input("Press enter to continue.")
 if __name__ == '__main__':
