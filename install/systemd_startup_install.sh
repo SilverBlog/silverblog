@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 set -o errexit
+if test $(ps h -o comm -p $$) = "sh"; then
+    echo "Please use bash to execute this script."
+    exit 1
+fi
+
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
     exit 1
