@@ -80,6 +80,7 @@ unit_test_master:
   - cp -f ./develop/demo/page.json ./config/page.json
   - cp -f ./develop/demo/system.json ./config/system.json
   - cp ./develop/demo/demo-article.md ./document/demo-article.md
+  - echo "{\"excerpt\":\"this is a test\",\"time\":0}" > ./document/demo-article.json
   - python3 manage.py update
   - cd ./templates
   - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
