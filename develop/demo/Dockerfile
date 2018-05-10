@@ -5,12 +5,12 @@ ENV LANG C.UTF-8
 WORKDIR /home/silverblog/
 COPY ./ /home/silverblog
 
-RUN apk add --no-cache ca-certificates bash git curl python3 uwsgi uwsgi-python3 dumb-init \
-&& python3 -m pip install -U pip \
+RUN apk add --no-cache ca-certificates bash git curl python3 uwsgi uwsgi-python3 dumb-init
+RUN python3 -m pip install -U pip \
 && apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev \
 && python3 -m pip install flask hoedown xpinyin pyrss2gen gitpython watchdog requests \
-&& apk del --purge .build-deps \
-&& echo "{\"install\":\"docker\"}" > /home/silverblog/install/install.lock \
+&& apk del --purge .build-deps
+RUN echo "{\"install\":\"docker\"}" > /home/silverblog/install/install.lock \
 && bash /home/silverblog/install/initialization.sh \
 && sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json \
 && cp -f /home/silverblog/develop/demo/page.json /home/silverblog/config/page.json \
