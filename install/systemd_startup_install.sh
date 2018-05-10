@@ -5,6 +5,10 @@ if test $(ps h -o comm -p $$) = "sh"; then
     exit 1
 fi
 
+if [ ! -n "$1" ] ;then
+    echo "you have not input username."
+fi
+
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
     exit 1
