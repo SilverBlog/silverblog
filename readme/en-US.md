@@ -54,6 +54,10 @@ Containers started with docker-compose are automatically restarted. You just nee
 
 You can configure your server using the `systemd_startup_install.sh` file in the install directory, which requires root privileges. It is consistent with the recommended method below.
 
+```
+sudo bash systemd_startup_install.sh ${USER}
+```
+
 SilverBlog recommends using a NodeJS-based monitor: pm2
 
 For the installation of pm2 see [GitHub - tj/n: Node version management](https://github.com/tj/n) and [pm2 - Quick Start](http://pm2.keymetrics.io/docs/Usage/quick-start/)
