@@ -114,7 +114,7 @@ unit_test_develop:
   - cd ..
   - rm /etc/nginx/sites-enabled/default
   - cp ./nginx_config /etc/nginx/sites-enabled/silverblog
-  - echo -e "{\"excerpt\":\"this is a test\","time":"0"}"
+  - echo "{\"excerpt\":\"this is a test\","time":"0"}" > ./document/demo-article.json
   - python3 ./manage.py update
   - python3 ./manage.py build-page
   - python3 ./develop/unit_test/test.py
