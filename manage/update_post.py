@@ -41,6 +41,7 @@ def build_excerpt(item):
     console.log("Build", "Processing file: {}".format(processing_file))
     custom_config_file = "./document/{}.json".format(item["name"])
     if os.path.exists(custom_config_file):
+        console.log("Build", "Processing file: {}".format(custom_config_file))
         custom_config_content = yield from file.async_read_file(custom_config_file)
         custom_config = json.loads(custom_config_content)
         # PEP448
