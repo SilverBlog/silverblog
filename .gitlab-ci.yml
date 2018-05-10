@@ -78,6 +78,7 @@ unit_test_master:
   - bash container_install.sh
   - cd ..
   - cp -f ./develop/demo/page.json ./config/page.json
+  - cp -f ./develop/demo/menu.json ./config/menu.json
   - cp -f ./develop/demo/system.json ./config/system.json
   - cp ./develop/demo/demo-article.md ./document/demo-article.md
   - echo "{\"excerpt\":\"this is a test\",\"time\":0}" > ./document/demo-article.json
@@ -107,6 +108,7 @@ unit_test_develop:
   - bash install.sh
   - cd ..
   - cp -f ./develop/demo/page.json ./config/page.json
+  - cp -f ./develop/demo/menu.json ./config/menu.json
   - cp -f ./develop/demo/system.json ./config/system.json
   - cp ./develop/demo/demo-article.md ./document/demo-article.md
   - python3 manage.py update

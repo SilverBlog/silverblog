@@ -14,6 +14,7 @@ RUN echo "{\"install\":\"docker\"}" > /home/silverblog/install/install.lock \
 && bash /home/silverblog/install/initialization.sh \
 && sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json \
 && cp -f /home/silverblog/develop/demo/page.json /home/silverblog/config/page.json \
+&& cp -f /home/silverblog/develop/demo/menu.json /home/silverblog/config/menu.json \
 && cp -f /home/silverblog/develop/demo/system.json /home/silverblog/config/system.json \
 && cp /home/silverblog/develop/demo/demo-article.md /home/silverblog/document/demo-article.md \
 && cp /home/silverblog/example/pm2.json /home/silverblog/pm2.json \
