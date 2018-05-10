@@ -19,8 +19,8 @@ cat << EOF >/etc/systemd/system/silverblog.service
 Description=SilverBlog server daemon
 
 [Service]
-User=${USER}
-Group=${USER}
+User=$1
+Group=$1
 WorkingDirectory=$(pwd)
 ExecStart=/usr/bin/python3 watch.py
 ExecReload=/bin/kill -HUP \$MAINPID
@@ -36,8 +36,8 @@ cat << EOF >/etc/systemd/system/silverblog_control.service
 Description=SilverBlog control server daemon
 
 [Service]
-User=${USER}
-Group=${USER}
+User=$1
+Group=$1
 WorkingDirectory=$(pwd)
 ExecStart=/usr/bin/python3 watch.py --control
 ExecReload=/bin/kill -HUP \$MAINPID
