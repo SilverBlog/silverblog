@@ -45,6 +45,6 @@ def build_excerpt(item):
         custom_config = json.loads(custom_config_content)
         # PEP448
         page_list[page_list.index(item)] = {**page_list[page_list.index(item)], **custom_config}
-        if excerpt in custom_config:
+        if "excerpt" in custom_config:
             return
     page_list[page_list.index(item)]["excerpt"] = yield from async_get_excerpt(processing_file)
