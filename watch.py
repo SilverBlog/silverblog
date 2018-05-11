@@ -96,6 +96,8 @@ def start_watch():
     return return_code
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--main", action="store_true",
+                    help=argparse.SUPPRESS)
 parser.add_argument("--control", action="store_true",
                     help="If you need to monitor the control server, add this option")
 parser.add_argument("--debug", action="store_true",
