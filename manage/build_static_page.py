@@ -138,5 +138,5 @@ def publish():
     console.log("Info", "Push to the remote.")
     remote = repo.remote()
     remote.push()
-    console.log("Success", "Done.")
+    console.log("Success", "Push to the remote success.")
     return True
