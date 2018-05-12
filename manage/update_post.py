@@ -44,8 +44,7 @@ def build_excerpt(item):
         console.log("Build", "Processing file: {}".format(custom_config_file))
         custom_config_content = yield from file.async_read_file(custom_config_file)
         custom_config = json.loads(custom_config_content)
-        # PEP448
-        page_list[page_list.index(item)] = {**page_list[page_list.index(item)], **custom_config}
+        page_list[page_list.index(item)].update(custom_config)
         if "excerpt" in custom_config:
             return
     page_list[page_list.index(item)]["excerpt"] = yield from async_get_excerpt(processing_file)
