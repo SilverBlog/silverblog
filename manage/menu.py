@@ -88,13 +88,12 @@ def select_post():
     return page_list, page_title_list.index(post_title)
 
 def get_post_info(title_input="", name_input=""):
-    from manage import new_post
     title = dialog.prompt("Please enter the title of the article:", title_input)
     if len(title) == 0:
         dialog.alert("The title can not be blank.")
         return
     if name_input == "":
-        name_input = new_post.get_name(title)
+        name_input = get.get_name(title)
     name = dialog.prompt("Please enter the slug:", name_input)
     return {"title": title, "name": name}
 
@@ -149,7 +148,7 @@ def use_text_mode(args):
             print("Please enter the title of the article:")
             title = input()
             if len(title) != 0:
-                name = new_post.get_name(title)
+                name = get.get_name(title)
             print("Please enter the slug [{}]:".format(name))
             name2 = input()
             if len(name2) != 0:

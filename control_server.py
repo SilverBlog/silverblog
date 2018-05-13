@@ -123,7 +123,7 @@ def create_post():
     sign = str(request.json["sign"])
     status = False
     if len(name) == 0:
-        name = new_post.get_name(title)
+        name = get.get_name(title)
     while os.path.exists("./document/{0}.md".format(name)):
         name = "{}-repeat".format(name)
     if check_password(title, sign):
