@@ -119,7 +119,7 @@ def publish():
                     "./static_page/static/{0}/".format(system_config["Theme"]))
     if os.path.exists("./templates/static/user_file"):
         shutil.copytree("./templates/static/user_file", "./static_page/static/user_file")
-    console.log("Success", "Create Github Page Success!")
+    console.log("Success", "Create page success!")
 
     if not os.path.exists("./static_page/.git"):
         return False
@@ -138,5 +138,5 @@ def publish():
     console.log("Info", "Push to the remote.")
     remote = repo.remote()
     remote.push()
-    console.log("Success", "Done.")
+    console.log("Success", "Push to the remote success.")
     return True

@@ -1,19 +1,12 @@
 import json
-import time
-
 import os.path
-from xpinyin import Pinyin
+import time
 
 from common import file, console
 from manage import get
 
 system_info = json.loads(file.read_file("./config/system.json"))
 
-def get_name(name_input):
-    p = Pinyin()
-    name = name_input.replace(" ", "-")
-    name = get.filter_name(name)
-    return p.get_pinyin(name)
 
 def new_post_init(config, independent=False):
     title = config["title"]

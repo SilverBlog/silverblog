@@ -1,7 +1,16 @@
 import re
 
+from xpinyin import Pinyin
+
 from common import file, console
 
+
+def get_name(name_input):
+    p = Pinyin()
+    name = name_input.replace(" ", "-").replace("。", ".").replace("，", ",")
+    name = re.sub('[/:*?,.<>|\'"\\\]', '', name)
+    name = get.filter_name(name)
+    return p.get_pinyin(name)
 
 def get_excerpt(filename):
     content = file.read_file(filename)
@@ -9,10 +18,10 @@ def get_excerpt(filename):
     excerpt = excerpt_output.replace("\n", "")
     if len(excerpt) > 140:
         split_index = 140
-        excerpt_output_replace = excerpt_output.replace(".", "。").replace(",", "，")
+        excerpt_output_replace = excerpt_output.replace("。", ".").replace("，", ",")
         newline_index = excerpt_output_replace.find("\n", 140, 240)
-        dot_index = excerpt_output_replace.find("。", 140, 240)
-        comma_index = excerpt_output_replace.find("，", 140, 240)
+        dot_index = excerpt_output_replace.find(".", 140, 240)
+        comma_index = excerpt_output_replace.find(",", 140, 240)
         if newline_index != -1:
             split_index = newline_index
         if newline_index == -1 and dot_index != -1:
