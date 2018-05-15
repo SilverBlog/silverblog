@@ -7,6 +7,7 @@ fi
 
 if [ ! -n "$1" ] ;then
     echo "you have not input username."
+    exit 1
 fi
 
 if [ $UID -ne 0 ]; then
