@@ -18,6 +18,14 @@ if [ -f "initialization.sh" ]; then
     cd ..
 fi
 
+if [  -f "/etc/systemd/system/silverblog.service" ]; then
+    rm /etc/systemd/system/silverblog.service
+fi
+
+if [  -f "/etc/systemd/system/silverblog_control.service" ]; then
+    rm /etc/systemd/system/silverblog_control.service
+fi
+
 cat << EOF >/etc/systemd/system/silverblog@.service
 [Unit]
 Description=SilverBlog server daemon
