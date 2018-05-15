@@ -25,6 +25,11 @@ if command -v pacman >/dev/null 2>&1; then
     echo "{\"install\":\"pacman\"}" > install.lock
 fi
 
+if command -v yum >/dev/null 2>&1; then
+    ${use_superuser} yum update
+    ${use_superuser} yum install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl
+    echo "{\"install\":\"yum\"}" > install.lock
+fi
 if [ ! -f "install.lock" ]; then
     echo "The current system does not support local deployment. Please use Docker deployment."
     exit 1
