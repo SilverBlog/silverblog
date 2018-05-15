@@ -25,9 +25,10 @@ if command -v pacman >/dev/null 2>&1; then
     echo "{\"install\":\"pacman\"}" > install.lock
 fi
 
-if command -v yum >/dev/null 2>&1; then
-    ${use_superuser} yum -y -v install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl gcc redhat-rpm-config python3-devel
-    echo "{\"install\":\"yum\"}" > install.lock
+if command -v dnf >/dev/null 2>&1; then
+    ${use_superuser} dnf -y update
+    ${use_superuser} dnf -y install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl gcc redhat-rpm-config python3-devel
+    echo "{\"install\":\"dnf\"}" > install.lock
 fi
 if [ ! -f "install.lock" ]; then
     echo "The current system does not support local deployment. Please use Docker deployment."
