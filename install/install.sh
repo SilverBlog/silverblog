@@ -37,6 +37,7 @@ fi
 if [ ! -f "initialization.sh" ]; then
     echo "Cloning silverblog..."
     git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
+    mv install.lock silverblog/install/install.lock
     cd silverblog/install
 fi
 
