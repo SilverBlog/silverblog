@@ -27,7 +27,7 @@ fi
 
 if command -v yum >/dev/null 2>&1; then
     ${use_superuser} yum update
-    ${use_superuser} yum install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl
+    ${use_superuser} yum -y install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl
     echo "{\"install\":\"yum\"}" > install.lock
 fi
 if [ ! -f "install.lock" ]; then
