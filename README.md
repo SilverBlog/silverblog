@@ -141,12 +141,10 @@ SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執
 
 ## 關於亞洲地區的訪問加速
 
-您可以執行以下命令來更換您的倉庫源，這將加速您的更新：(亚洲地区服务由coding提供)
+您可以執行以下命令來更換您的倉庫源，這將加速您的更新：(亚洲地区服务由碼雲提供)
 ```
-git remote set-url origin https://git.coding.net/qwe7002/silverblog.git
+git remote set-url origin https://gitee.com/qwe7002/silverblog.git
 ```
-
-注：非 Github 上的任何 Issue 和 Pull Request 將不會被受理。
 
 您可以使用阿里雲提供的registry加速器來加快鏡像下載，修改image爲 `registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog` 即可
 
