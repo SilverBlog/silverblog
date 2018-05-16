@@ -45,7 +45,6 @@ build_docker:
   - docker container prune -f
   - docker image prune -f
 
-
 release_github_nightly:
   stage: deploy
   only:
@@ -99,8 +98,6 @@ unit_test_master:
   - python3 ./manage.py update
   - python3 ./manage.py build-page
   - python3 ./develop/unit_test/test.py
-
-
 
 unit_test_develop:
   image: ubuntu:bionic
