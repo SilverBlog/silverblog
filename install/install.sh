@@ -25,14 +25,22 @@ if command -v pacman >/dev/null 2>&1; then
     echo "{\"install\":\"pacman\"}" > install.lock
 fi
 
+if command -v dnf >/dev/null 2>&1; then
+    ${use_superuser} dnf -y update
+    ${use_superuser} dnf -y install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl gcc redhat-rpm-config python3-devel
+    echo "{\"install\":\"dnf\"}" > install.lock
+fi
 if [ ! -f "install.lock" ]; then
     echo "The current system does not support local deployment. Please use Docker deployment."
     exit 1
 fi
 
 if [ ! -f "initialization.sh" ]; then
-    echo "Cloning silverblog..."
-    git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
+    if [ ! -d "silverblog" ]; then
+        echo "Cloning silverblog..."
+        git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
+    fi
+    mv install.lock silverblog/install/install.lock
     cd silverblog/install
 fi
 

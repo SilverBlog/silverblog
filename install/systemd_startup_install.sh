@@ -7,6 +7,7 @@ fi
 
 if [ ! -n "$1" ] ;then
     echo "you have not input username."
+    exit 1
 fi
 
 if [ $UID -ne 0 ]; then
@@ -16,6 +17,14 @@ fi
 
 if [ -f "initialization.sh" ]; then
     cd ..
+fi
+
+if [  -f "/etc/systemd/system/silverblog.service" ]; then
+    rm /etc/systemd/system/silverblog.service
+fi
+
+if [  -f "/etc/systemd/system/silverblog_control.service" ]; then
+    rm /etc/systemd/system/silverblog_control.service
 fi
 
 cat << EOF >/etc/systemd/system/silverblog@.service
