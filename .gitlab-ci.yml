@@ -51,19 +51,28 @@ release_github_nightly:
   only:
   - nightly
   script:
-  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:nightly
-  - git push --set-upstream https://${coding_key}@git.coding.net/qwe7002/silverblog.git HEAD:nightly
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" > deploy.key
+  - chmod 0600 deploy.key
+  - ssh-add deploy.key
+  - git push --set-upstream ssh://github.com/SilverBlogTeam/SilverBlog.git HEAD:nightly
+  - git push --set-upstream ssh://gitee.com/qwe7002/silverblog.git HEAD:nightly
 
 release_github_master:
   stage: deploy
   only:
   - master
   script:
-  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.git HEAD:master
-  - git push --set-upstream https://${coding_key}@git.coding.net/qwe7002/silverblog.git HEAD:master
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" > deploy.key
+  - chmod 0600 deploy.key
+  - ssh-add deploy.key
+  - git push --set-upstream ssh://github.com/SilverBlogTeam/SilverBlog.git HEAD:master
+  - git push --set-upstream ssh://gitee.com/qwe7002/silverblog.git HEAD:master
   - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
   - cd wiki
-  - git push -f --set-upstream https://${github_key}@github.com/SilverBlogTeam/SilverBlog.wiki.git HEAD:master
+  - git push -f --set-upstream ssh://github.com/SilverBlogTeam/SilverBlog.wiki.git HEAD:master
+  - git push -f --set-upstream ssh://gitee.com/qwe7002/SilverBlog.wiki.git HEAD:master
 
 unit_test_master:
   image: registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog
