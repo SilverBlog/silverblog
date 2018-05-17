@@ -55,12 +55,12 @@ release_github:
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
-  - git push --set-upstream ssh://git@github.com/SilverBlogTeam/SilverBlog.git HEAD:$CI_COMMIT_REF_NAME
-  - git push --set-upstream ssh://git@gitee.com/qwe7002/silverblog.git HEAD:$CI_COMMIT_REF_NAME
+  - git push --set-upstream ssh://git@github.com:SilverBlogTeam/SilverBlog.git HEAD:$CI_COMMIT_REF_NAME
+  - git push --set-upstream ssh://git@gitee.com:qwe7002/silverblog.git HEAD:$CI_COMMIT_REF_NAME
   - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
   - cd wiki
-  - git push -f --set-upstream ssh://git@github.com/SilverBlogTeam/SilverBlog.wiki.git HEAD:master
-  - git push -f --set-upstream ssh://git@gitee.com/qwe7002/SilverBlog.wiki.git HEAD:master
+  - git push -f --set-upstream ssh://git@github.com:SilverBlogTeam/SilverBlog.wiki.git HEAD:master
+  - git push -f --set-upstream ssh://git@gitee.com:qwe7002/SilverBlog.wiki.git HEAD:master
 
 
 unit_test_develop:
