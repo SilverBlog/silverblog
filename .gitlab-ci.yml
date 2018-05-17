@@ -45,19 +45,7 @@ build_docker:
   - docker container prune -f
   - docker image prune -f
 
-release_github_nightly:
-  stage: deploy
-  only:
-  - nightly
-  script:
-  - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_KEY" > deploy.key
-  - chmod 0600 deploy.key
-  - ssh-add deploy.key
-  - git push --set-upstream ssh://github.com/SilverBlogTeam/SilverBlog.git HEAD:nightly
-  - git push --set-upstream ssh://gitee.com/qwe7002/silverblog.git HEAD:nightly
-
-release_github_master:
+release_github:
   stage: deploy
   only:
   - master
@@ -66,38 +54,13 @@ release_github_master:
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
-  - git push --set-upstream ssh://github.com/SilverBlogTeam/SilverBlog.git HEAD:master
-  - git push --set-upstream ssh://gitee.com/qwe7002/silverblog.git HEAD:master
+  - git push --set-upstream ssh://github.com/SilverBlogTeam/SilverBlog.git HEAD:$CI_COMMIT_REF_NAME
+  - git push --set-upstream ssh://gitee.com/qwe7002/silverblog.git HEAD:$CI_COMMIT_REF_NAME
   - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
   - cd wiki
   - git push -f --set-upstream ssh://github.com/SilverBlogTeam/SilverBlog.wiki.git HEAD:master
   - git push -f --set-upstream ssh://gitee.com/qwe7002/SilverBlog.wiki.git HEAD:master
 
-unit_test_master:
-  image: registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog
-  stage: test
-  retry: 2
-  only:
-  - master
-  script:
-  - apk add --no-cache nginx && rm /etc/nginx/conf.d/default.conf
-  - mkdir /run/nginx
-  - cd install
-  - bash container_install.sh
-  - cd ..
-  - cp -f ./develop/demo/page.json ./config/page.json
-  - cp -f ./develop/demo/menu.json ./config/menu.json
-  - cp -f ./develop/demo/system.json ./config/system.json
-  - cp ./develop/demo/demo-article.md ./document/demo-article.md
-  - echo "{\"excerpt\":\"this is a test\",\"time\":0}" > ./document/demo-article.json
-  - python3 manage.py update
-  - cd ./templates
-  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
-  - cd ..
-  - cp ./nginx_config /etc/nginx/conf.d/default.conf
-  - python3 ./manage.py update
-  - python3 ./manage.py build-page
-  - python3 ./develop/unit_test/test.py
 
 unit_test_develop:
   image: ubuntu:bionic
