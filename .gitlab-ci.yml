@@ -60,7 +60,7 @@ release_github:
   - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
   - cd wiki
   - git push -f --set-upstream git@github.com:SilverBlogTeam/silverblog.wiki.git HEAD:master
-  - git push -f --set-upstream git@gitee.com:qwe7002/SilverBlog.wiki.git HEAD:master
+  - git push -f --set-upstream git@gitee.com:qwe7002/silverBlog.wiki.git HEAD:master
 
 
 unit_test_develop:
