@@ -63,7 +63,7 @@ release_github:
 
 
 unit_test_develop:
-  image: ubuntu:bionic
+  image: ubuntu:latest
   stage: test
   retry: 2
   only:
