@@ -49,6 +49,7 @@ release_github:
   stage: deploy
   only:
   - master
+  - nightly
   script:
   - eval $(ssh-agent -s)
   - echo "$SSH_PRIVATE_KEY" > deploy.key
