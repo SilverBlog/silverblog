@@ -61,6 +61,10 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlo
 
 您可以使用 install 目錄下的 `systemd_startup_install.sh` 文件配置您的伺服器，這需要root權限。它和下面推薦的方法效果一致。
 
+```
+sudo bash systemd_startup_install.sh ${USER}
+```
+
 SilverBlog 推薦您使用基於 NodeJS 的監控程序： PM2
 
 有關PM2的安裝請查看 [GitHub - tj/n: Node version management](https://github.com/tj/n) 和 [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
@@ -137,12 +141,10 @@ SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執
 
 ## 關於亞洲地區的訪問加速
 
-您可以執行以下命令來更換您的倉庫源，這將加速您的更新：(亚洲地区服务由coding提供)
+您可以執行以下命令來更換您的倉庫源，這將加速您的更新：(亚洲地区服务由碼雲提供)
 ```
-git remote set-url origin https://git.coding.net/qwe7002/silverblog.git
+git remote set-url origin https://gitee.com/qwe7002/silverblog.git
 ```
-
-注：非 Github 上的任何 Issue 和 Pull Request 將不會被受理。
 
 您可以使用阿里雲提供的registry加速器來加快鏡像下載，修改image爲 `registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog` 即可
 

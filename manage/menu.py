@@ -51,9 +51,8 @@ def article_manager():
 def upgrade():
     dialog.title = "Upgrade"
     from manage import upgrade
-    if upgrade.upgrade_check():
-        if dialog.confirm("Find new version, do you want to upgrade?", "no"):
-            upgrade.upgrade_pull()
+    if upgrade.upgrade_check() and dialog.confirm("Find new version, do you want to upgrade?", "no"):
+        upgrade.upgrade_pull()
         return
     dialog.alert("No upgrade found.")
 
@@ -70,9 +69,7 @@ def edit_post():
 def delete_post():
     from manage import delete_post
     page_list, post_index = select_post()
-    if not page_list:
-        return
-    if dialog.confirm(
+    if page_list and dialog.confirm(
             "Are you sure you want to delete this article? (Warning! This operation is irreversible, please be careful!)",
             "no"):
         delete_post.delete(page_list, post_index)
@@ -91,13 +88,12 @@ def select_post():
     return page_list, page_title_list.index(post_title)
 
 def get_post_info(title_input="", name_input=""):
-    from manage import new_post
     title = dialog.prompt("Please enter the title of the article:", title_input)
     if len(title) == 0:
         dialog.alert("The title can not be blank.")
         return
     if name_input == "":
-        name_input = new_post.get_name(title)
+        name_input = get.get_name(title)
     name = dialog.prompt("Please enter the slug:", name_input)
     return {"title": title, "name": name}
 
@@ -152,7 +148,7 @@ def use_text_mode(args):
             print("Please enter the title of the article:")
             title = input()
             if len(title) != 0:
-                name = new_post.get_name(title)
+                name = get.get_name(title)
             print("Please enter the slug [{}]:".format(name))
             name2 = input()
             if len(name2) != 0:

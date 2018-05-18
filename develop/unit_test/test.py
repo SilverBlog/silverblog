@@ -3,8 +3,8 @@ import time
 
 import requests
 
-main_progress = subprocess.Popen(["python3", "watch.py"])
-control_progress = subprocess.Popen(["python3", "watch.py", "--control"])
+main_progress = subprocess.Popen(["python3", "watch.py", "--debug"])
+control_progress = subprocess.Popen(["python3", "watch.py", "--control", "--debug"])
 nginx_progress = subprocess.Popen("nginx")
 host = "http://127.0.0.1/"
 time.sleep(5)

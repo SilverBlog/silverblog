@@ -45,7 +45,7 @@ def install_theme(theme_name, orgs_list=None):
         exit(1)
     os.system("cd ./templates \n" + r)
 
-    console.log("Success", "The theme is removed successfully!")
+    console.log("Success", "The theme is install successfully!")
     return name
 
 def remove_theme(theme_name):

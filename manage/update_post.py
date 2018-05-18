@@ -17,10 +17,10 @@ def update():
     page_list = page_list_file
 
     for item in page_list_file:
-        processing_file = "./document/{0}.md".format(item["name"])
+        processing_file = "./document/{}.md".format(item["name"])
         file_exists = os.path.exists(processing_file)
         if not file_exists:
-            console.log("Remove", "Removing from list: {0}".format(processing_file))
+            console.log("Remove", "Removing from list: {}".format(processing_file))
             del page_list[item]
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
@@ -31,12 +31,20 @@ def update():
     console.log("Success", "Update article metadata is successful!")
     return True
 @asyncio.coroutine
-def async_get_excerpt(file):
-    return get.get_excerpt(file)
+def async_get_excerpt(file_name):
+    return get.get_excerpt(file_name)
 
 @asyncio.coroutine
 def build_excerpt(item):
     global page_list
-    processing_file = "./document/{0}.md".format(item["name"])
-    console.log("Build", "Processing file: {0}".format(processing_file))
+    processing_file = "./document/{}.md".format(item["name"])
+    console.log("Build", "Processing file: {}".format(processing_file))
+    custom_config_file = "./document/{}.json".format(item["name"])
+    if os.path.exists(custom_config_file):
+        console.log("Build", "Processing file: {}".format(custom_config_file))
+        custom_config_content = yield from file.async_read_file(custom_config_file)
+        custom_config = json.loads(custom_config_content)
+        page_list[page_list.index(item)].update(custom_config)
+        if "excerpt" in custom_config:
+            return
     page_list[page_list.index(item)]["excerpt"] = yield from async_get_excerpt(processing_file)
