@@ -36,6 +36,7 @@ build_docker:
   script:
   - docker build -t ${docker_tag_name} -f ./example/Dockerfile .
   - docker login -u qwe7002 -p ${docker_hub_passwd}
+  - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
   - docker login -u qwe7002@hotmail.com -p ${docker_hub_passwd} registry.cn-hangzhou.aliyuncs.com
   - docker tag ${docker_tag_name} docker.reallserver.cn/${docker_tag_name}
   - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
@@ -70,10 +71,10 @@ unit_test_develop:
   only:
   - develop
   script:
+  - export LANG="C.UTF-8"
   - sed -i '''s/deb-src/#deb-src/g' /etc/apt/sources.list
   - apt-get update
-  - apt-get -y upgrade
-  - export LANG="C.UTF-8"
+  - apt-get -y install python3-socks
   - cd install
   - bash install.sh
   - cd ..

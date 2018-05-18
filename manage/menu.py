@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import os
 import time
 
 from common import file, console
@@ -13,14 +14,24 @@ dialog.title = "SilverBlog management tool"
 def use_whiptail_mode():
     dialog.title = "SilverBlog management tool"
     while True:
-        menu_list = ["Article manager", "Build static page", "Upgrade", "Setting", "Exit"]
+        upgrade_text = "Upgrade"
+        last_fetch_time = 0
+        if os.path.exists("./upgrade/last_fetch_time.json"):
+            last_fetch_time = json.loads(file.read_file("./upgrade/last_fetch_time.json"))["last_fetch_time"]
+        if (time.time() - last_fetch_time) > 604800:
+            from manage import upgrade
+            file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
+            if upgrade.upgrade_check():
+                upgrade_text = "⚠ Upgrade"
+
+        menu_list = ["Article manager", "Build static page", upgrade_text, "Setting", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
         if result == "Article manager":
             article_manager()
-        if result == "Upgrade":
-            upgrade()
+        if result == upgrade_text:
+            upgrade_system()
         if result == "Build static page":
             from manage import build_static_page
             dialog.title = "Build static page"
@@ -48,9 +59,10 @@ def article_manager():
             return
     build_rss.build_rss()
 
-def upgrade():
-    dialog.title = "Upgrade"
+
+def upgrade_system():
     from manage import upgrade
+    dialog.title = "Upgrade"
     if upgrade.upgrade_check() and dialog.confirm("Find new version, do you want to upgrade?", "no"):
         upgrade.upgrade_pull()
         return

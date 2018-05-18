@@ -11,11 +11,13 @@ time.sleep(5)
 def get(url):
     r = requests.get(host + url)
     if r.status_code == 200:
+        print(url + ":" + r.text)
         return True
     return False
 def post(url):
     r = requests.post(host + url)
     if r.status_code == 200:
+        print(url + ":" + r.text)
         return True
     return False
 

@@ -17,7 +17,7 @@ document
 templates
 /nginx_config
 /manage.sh
-/upgrade/current_version.json
+/upgrade/*.json
 /docker-compose.yml
 static_page
 trash
