@@ -4,16 +4,15 @@ import os
 from common import console
 
 def read_file(filename):
-    f = open(filename, newline=None)
-    content = f.read()
-    return content
+    with open(filename, newline=None, encoding="utf-8") as f:
+        content = f.read()
+        return content
 
 def write_file(filename, content):
     console.log("info", "Write the file: {0}".format(filename))
-    f = open(filename, "w", newline=None)
-    f.write(content)
-    f.close()
-    return True
+    with open(filename, "w", newline=None, encoding="utf-8") as f:
+        f.write(content)
+        return True
 
 @asyncio.coroutine
 def async_read_file(filename):
