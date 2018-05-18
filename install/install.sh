@@ -4,6 +4,10 @@ if test $(ps h -o comm -p $$) = "sh"; then
     echo "Please use bash to execute this script."
     exit 1
 fi
+install_name="silverblog"
+if [  -n "$1" ];then
+    install_name=$1
+fi
 
 use_superuser=""
 if [ $UID -ne 0 ]; then
@@ -36,12 +40,12 @@ if [ ! -f "install.lock" ]; then
 fi
 
 if [ ! -f "initialization.sh" ]; then
-    if [ ! -d "silverblog" ]; then
+    if [ ! -d ${install_name} ]; then
         echo "Cloning silverblog..."
-        git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
+        git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 ${install_name}
     fi
-    mv install.lock silverblog/install/install.lock
-    cd silverblog/install
+    mv install.lock ${install_name}/install/install.lock
+    cd ${install_name}/install
 fi
 
 ./check_python_version.py
