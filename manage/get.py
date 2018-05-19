@@ -14,7 +14,7 @@ def get_name(name_input):
 
 def get_excerpt(filename):
     content = file.read_file(filename)
-    excerpt_output = re.sub('<[\w\W]+?>.*<[\w\W]+?>', '', content)
+    excerpt_output = re.sub('<.*>.*<.*>|<.*/>', '', content)
     excerpt_output = re.sub('(!\[.*\]\([^)]*\))|(\(http[^)]*\))|\*+|`|#+|>|~+|\[|\]', '', excerpt_output)
     excerpt = excerpt_output.replace("\n", "")
     if len(excerpt) > 140:
