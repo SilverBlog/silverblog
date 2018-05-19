@@ -18,7 +18,7 @@ def use_whiptail_mode():
         last_fetch_time = 0
         if os.path.exists("./upgrade/last_fetch_time.json"):
             last_fetch_time = json.loads(file.read_file("./upgrade/last_fetch_time.json"))["last_fetch_time"]
-        if (time.time() - last_fetch_time) > 604800:
+        if (time.time() - last_fetch_time) > 86400:
             from manage import upgrade
             file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
             if upgrade.upgrade_check():
