@@ -14,9 +14,9 @@ def get_name(name_input):
 
 def get_excerpt(filename):
     content = file.read_file(filename)
-    excerpt_output = re.sub('<pre>[\w\W]+?</pre>', '', content)
-    excerpt_output = re.sub('(!\[.*\]\([^)]*\))|(\[.*\]\([^)]*\))|<.+>|\*+|`|#+|>|~+', '', excerpt_output)
-    excerpt = excerpt_output.replace("\n", "").replace(">", "").replace("<", "")
+    excerpt_output = re.sub('<[\w\W]+?>[\w\W]+?<[\w\W]+?>', '', content)
+    excerpt_output = re.sub('(!\[.*\]\([^)]*\))|(\[.*\]\([^)]*\))|\*+|`|#+|>|~+', '', excerpt_output)
+    excerpt = excerpt_output.replace("\n", "")
     if len(excerpt) > 140:
         split_index = 140
         excerpt_output_replace = excerpt_output.replace("。", ".").replace("，", ",")
