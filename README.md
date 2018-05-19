@@ -62,7 +62,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlo
 您可以使用 install 目錄下的 `systemd_startup_install.sh` 文件配置您的伺服器，這需要root權限。它和下面推薦的方法效果一致。
 
 ```
-sudo bash systemd_startup_install.sh ${USER}
+bash systemd_startup_install.sh
 ```
 
 SilverBlog 推薦您使用基於 NodeJS 的監控程序： PM2
