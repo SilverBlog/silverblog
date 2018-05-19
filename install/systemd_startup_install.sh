@@ -5,9 +5,9 @@ if test $(ps h -o comm -p $$) = "sh"; then
     exit 1
 fi
 
-if [ ! -n "$1" ] ;then
-    echo "you have not input username."
-    exit 1
+install_user=${USER}
+if [ -n "$1" ] ;then
+    install_user=$1
 fi
 
 install_name="silverblog"
@@ -15,9 +15,10 @@ if [ -n "$2" ];then
     install_name=$2
 fi
 
+use_superuser=""
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
-    exit 1
+    use_superuser="sudo"
 fi
 
 if [ -f "initialization.sh" ]; then
@@ -25,20 +26,21 @@ if [ -f "initialization.sh" ]; then
 fi
 
 if [  -f "/etc/systemd/system/silverblog.service" ]; then
-    rm /etc/systemd/system/silverblog.service
+    ${use_superuser} rm /etc/systemd/system/silverblog.service
 fi
 
 if [  -f "/etc/systemd/system/silverblog_control.service" ]; then
-    rm /etc/systemd/system/silverblog_control.service
+    ${use_superuser} rm /etc/systemd/system/silverblog_control.service
 fi
 
-cat << EOF >/etc/systemd/system/${install_name}@.service
+
+${use_superuser} bash -c "cat << EOF >/etc/systemd/system/${install_name}@.service
 [Unit]
 Description=${install_name} server daemon
 
 [Service]
-User=$1
-Group=$1
+User=${install_user}
+Group=${install_user}
 WorkingDirectory=$(pwd)
 ExecStart=/usr/bin/python3 watch.py --%i
 ExecReload=/bin/kill -HUP \$MAINPID
@@ -48,10 +50,11 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 EOF
+"
 
 
-systemctl daemon-reload
-systemctl enable ${install_name}@main
-systemctl enable ${install_name}@control
-systemctl start ${install_name}@main
-systemctl start ${install_name}@control
+${use_superuser} systemctl daemon-reload
+${use_superuser} systemctl enable ${install_name}@main
+${use_superuser} systemctl enable ${install_name}@control
+${use_superuser} systemctl start ${install_name}@main
+${use_superuser} systemctl start ${install_name}@control
