@@ -27,7 +27,7 @@ def update():
     tasks = [build_excerpt(item) for item in page_list]
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
-    file.write_file("./config/page.json", json.dumps(page_list, ensure_ascii=False, indent=4, sort_keys=False))
+    file.write_file("./config/page.json", file.json_format_dump(page_list))
     console.log("Success", "Update article metadata is successful!")
     return True
 @asyncio.coroutine
