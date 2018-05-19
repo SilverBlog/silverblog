@@ -71,10 +71,10 @@ unit_test_develop:
   only:
   - develop
   script:
+  - export LANG="C.UTF-8"
   - sed -i '''s/deb-src/#deb-src/g' /etc/apt/sources.list
   - apt-get update
-  - apt-get -y upgrade
-  - export LANG="C.UTF-8"
+  - apt-get -y install python3-socks
   - cd install
   - bash install.sh
   - cd ..

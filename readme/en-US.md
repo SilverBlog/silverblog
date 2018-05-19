@@ -142,6 +142,3 @@ We recommend that you use the Chinese language to raise an issue, and attach an 
 Thanks to [@Liqueur Librazy](https://github.com/Librazy) for providing the demo program server for this project.
 
 Thanks [Jetbrains](https://www.jetbrains.com/) for providing a free All product IDE for this project
-
-## License
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog?ref=badge_large)
