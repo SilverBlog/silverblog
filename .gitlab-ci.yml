@@ -8,7 +8,7 @@ variables:
 
 build_docker_demo:
   services:
-  - docker:dind
+  - name: docker:dind
     command: ["--insecure-registry=https://registry.docker-cn.com"]
   tags:
   - docker-build
@@ -28,7 +28,7 @@ build_docker_demo:
 
 build_docker:
   services:
-  - docker:dind
+  - name: docker:dind
     command: ["--insecure-registry=https://registry.docker-cn.com"]
   tags:
   - docker-build
