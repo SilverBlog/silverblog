@@ -9,12 +9,14 @@ def get_name(name_input):
     p = Pinyin()
     name = name_input.replace(" ", "-").replace("。", ".").replace("，", ",")
     name = re.sub('[/:*?,.<>|\'"\\\]', '', name)
-    name = get.filter_name(name)
+    name = filter_name(name)
     return p.get_pinyin(name)
 
 def get_excerpt(filename):
     content = file.read_file(filename)
-    excerpt_output = re.sub('(!\[.*\]\([^)]*\))|(\[.*\]\([^)]*\))|<.+>|\*+|`|#+|>|~+', '', content)
+    excerpt_output = re.sub('<[\w\W]+?>[\w\W]+?<[\w\W]+?>', '', content)
+    excerpt_output = re.sub('<pre>[\w\W]+?</pre>', '', excerpt_output)
+    excerpt_output = re.sub('(!\[.*\]\([^)]*\))|(\[.*\]\([^)]*\))|<.+>|\*+|`|#+|>|~+', '', excerpt_output)
     excerpt = excerpt_output.replace("\n", "")
     if len(excerpt) > 140:
         split_index = 140
