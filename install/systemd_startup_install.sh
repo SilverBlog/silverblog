@@ -10,6 +10,11 @@ if [ ! -n "$1" ] ;then
     exit 1
 fi
 
+install_name="silverblog"
+if [ -n "$2" ];then
+    install_name=$2
+fi
+
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
     exit 1
@@ -27,9 +32,9 @@ if [  -f "/etc/systemd/system/silverblog_control.service" ]; then
     rm /etc/systemd/system/silverblog_control.service
 fi
 
-cat << EOF >/etc/systemd/system/silverblog@.service
+cat << EOF >/etc/systemd/system/${install_name}@.service
 [Unit]
-Description=SilverBlog server daemon
+Description=${install_name} server daemon
 
 [Service]
 User=$1
@@ -46,7 +51,7 @@ EOF
 
 
 systemctl daemon-reload
-systemctl enable silverblog@main
-systemctl enable silverblog@control
-systemctl start silverblog@main
-systemctl start silverblog@control
+systemctl enable ${install_name}@main
+systemctl enable ${install_name}@control
+systemctl start ${install_name}@main
+systemctl start ${install_name}@control
