@@ -34,13 +34,6 @@ Docker:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
 ```
 
-
-Container:
-
-```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/container_install.sh)"
-```
-
 您可以在 [SilverBlogTheme](https://github.com/SilverBlogTheme) 中選擇一個主題，然後使用 `./manage.py` 來安裝配置 ，並在下面的配置文件中正確配置它。
 
 本安裝腳本默認使用 nginx + uwsgi 執行模式，您可以將程序自動生成的 `nginx_config` 文件放到您的 nginx 軟件包的網站配置目錄下。如果您需要使用第三方網頁用戶端，別忘了修改 `nginx_config` 中的CORS配置。

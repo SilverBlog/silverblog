@@ -32,13 +32,6 @@ Docker:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
 ```
 
-On Container:
-
-```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/container_install.sh)"
-```
-
-
 You can select a theme in [SilverBlogTheme](https://github.com/SilverBlogTheme), then use `./manage.py` to install the configuration and configure it correctly in the configuration file below.
 
 This installation script uses the nginx + uwsgi execution mode by default. You can put the auto-generated `nginx_config` file into your nginx package's website configuration directory. If you need to use a third-party web client, don't forget to modify the CORS configuration in `nginx_config`.
