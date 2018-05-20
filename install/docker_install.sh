@@ -4,10 +4,37 @@ if test $(ps h -o comm -p $$) = "sh"; then
     echo "Please use bash to execute this script."
     exit 1
 fi
+
+china_install=false
+install_name="silverblog"
+
+while getopts "n:c" arg; do
+    case ${arg} in
+         n)
+            install_name=$OPTARG
+            ;;
+         c)
+            china_install=true
+            ;;
+         ?)
+            echo "Unknown argument"
+            exit 1
+            ;;
+    esac
+done
+
 if [ ! -f "initialization.sh" ]; then
-    echo "Cloning silverblog..."
-    git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 silverblog
-    cd silverblog/install
+    if [ ! -d ${install_name} ]; then
+        echo "Cloning silverblog..."
+
+        repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
+        if [ -n ${china_install} ];then
+            repo_url=https://gitee.com/qwe7002/silverblog.git
+        fi
+
+        git clone ${repo_url} --depth=1 ${install_name}
+    fi
+    cd ${install_name}/install
 fi
 
 echo "{\"install\":\"docker\"}" > install.lock
