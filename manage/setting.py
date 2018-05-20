@@ -50,7 +50,7 @@ def setting_menu():
         save_config()
         time.sleep(0.5)
 def save_config():
-    file.write_file("./config/system.json", json.dumps(system_config, indent=4, sort_keys=False, ensure_ascii=False))
+    file.write_file("./config/system.json", file.json_format_dump(system_config))
 
 def theme_manage():
     from manage import theme

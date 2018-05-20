@@ -1,13 +1,29 @@
 #!/usr/bin/env bash
+
 set -o errexit
+
 if test $(ps h -o comm -p $$) = "sh"; then
     echo "Please use bash to execute this script."
     exit 1
 fi
+
+china_install=false
 install_name="silverblog"
-if [  -n "$1" ];then
-    install_name=$1
-fi
+
+while getopts "n:c" arg; do
+    case ${arg} in
+         n)
+            install_name=$OPTARG
+            ;;
+         c)
+            china_install=true
+            ;;
+         ?)
+            echo "Unknown argument"
+            exit 1
+            ;;
+    esac
+done
 
 use_superuser=""
 if [ $UID -ne 0 ]; then
@@ -34,6 +50,7 @@ if command -v dnf >/dev/null 2>&1; then
     ${use_superuser} dnf -y install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl gcc redhat-rpm-config python3-devel
     echo "{\"install\":\"dnf\"}" > install.lock
 fi
+
 if [ ! -f "install.lock" ]; then
     echo "The current system does not support local deployment. Please use Docker deployment."
     exit 1
@@ -42,7 +59,13 @@ fi
 if [ ! -f "initialization.sh" ]; then
     if [ ! -d ${install_name} ]; then
         echo "Cloning silverblog..."
-        git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 ${install_name}
+
+        repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
+        if [ -n ${china_install} ];then
+            repo_url=https://gitee.com/qwe7002/silverblog.git
+        fi
+
+        git clone ${repo_url} --depth=1 ${install_name}
     fi
     mv install.lock ${install_name}/install/install.lock
     cd ${install_name}/install
@@ -53,3 +76,5 @@ fi
 ./install_python_dependency.sh
 
 ./initialization.sh
+
+

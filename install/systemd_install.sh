@@ -1,19 +1,30 @@
 #!/usr/bin/env bash
+
 set -o errexit
+
 if test $(ps h -o comm -p $$) = "sh"; then
     echo "Please use bash to execute this script."
     exit 1
 fi
 
 install_user=${USER}
-if [ -n "$1" ] ;then
-    install_user=$1
-fi
-
 install_name="silverblog"
-if [ -n "$2" ];then
-    install_name=$2
-fi
+
+while getopts "u:n:" arg
+do
+    case ${arg} in
+        u)
+            install_user=$OPTARG
+            ;;
+        n)
+            install_name=$OPTARG
+            ;;
+        ?)
+            echo "Unknown argument"
+            exit 1
+            ;;
+    esac
+done
 
 use_superuser=""
 if [ $UID -ne 0 ]; then
@@ -26,10 +37,17 @@ if [ -f "initialization.sh" ]; then
 fi
 
 if [  -f "/etc/systemd/system/silverblog.service" ]; then
+    echo "Found old configuration file is being deleted."
+    ${use_superuser} systemctl disable silverblog
+    ${use_superuser} systemctl stop silverblog
     ${use_superuser} rm /etc/systemd/system/silverblog.service
 fi
 
 if [  -f "/etc/systemd/system/silverblog_control.service" ]; then
+    echo "Found old configuration file is being deleted."
+    ${use_superuser} systemctl disable silverblog_control
+    ${use_superuser} systemctl stop silverblog_control
+
     ${use_superuser} rm /etc/systemd/system/silverblog_control.service
 fi
 

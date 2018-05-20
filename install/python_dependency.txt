@@ -1,7 +1,0 @@
-Flask
-hoedown
-xpinyin
-pyrss2gen
-gitpython
-requests
-watchdog

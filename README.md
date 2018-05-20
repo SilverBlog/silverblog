@@ -34,13 +34,6 @@ Docker:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
 ```
 
-
-Container:
-
-```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/container_install.sh)"
-```
-
 您可以在 [SilverBlogTheme](https://github.com/SilverBlogTheme) 中選擇一個主題，然後使用 `./manage.py` 來安裝配置 ，並在下面的配置文件中正確配置它。
 
 本安裝腳本默認使用 nginx + uwsgi 執行模式，您可以將程序自動生成的 `nginx_config` 文件放到您的 nginx 軟件包的網站配置目錄下。如果您需要使用第三方網頁用戶端，別忘了修改 `nginx_config` 中的CORS配置。
@@ -62,7 +55,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlo
 您可以使用 install 目錄下的 `systemd_startup_install.sh` 文件配置您的伺服器，這需要root權限。它和下面推薦的方法效果一致。
 
 ```
-bash systemd_startup_install.sh
+bash systemd_install.sh
 ```
 
 SilverBlog 推薦您使用基於 NodeJS 的監控程序： PM2
@@ -142,6 +135,7 @@ SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執
 ## 關於亞洲地區的訪問加速
 
 您可以執行以下命令來更換您的倉庫源，這將加速您的更新：(亚洲地区服务由碼雲提供)
+
 ```
 git remote set-url origin https://gitee.com/qwe7002/silverblog.git
 ```

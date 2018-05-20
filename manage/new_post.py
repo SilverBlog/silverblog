@@ -30,6 +30,6 @@ def new_post_init(config, independent=False):
         write_json.insert(0, post_info)
         page_config = "./config/page.json"
 
-    file.write_file(page_config, json.dumps(write_json, indent=4, sort_keys=False, ensure_ascii=False))
+    file.write_file(page_config, file.json_format_dump(write_json))
 
     console.log("Success", "Create a new article successfully!")
