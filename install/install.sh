@@ -12,18 +12,18 @@ install_name="silverblog"
 
 while getopts "name:china" arg
 do
-        case ${arg} in
-             name)
-                install_name=$OPTARG
-                ;;
-             china)
-                china_install=true
-                ;;
-             ?)
+    case ${arg} in
+         name)
+            install_name=$OPTARG
+            ;;
+         china)
+            china_install=true
+            ;;
+         ?)
             echo "Unknown argument"
-        exit 1
-        ;;
-        esac
+            exit 1
+            ;;
+    esac
 done
 
 use_superuser=""
@@ -60,10 +60,12 @@ fi
 if [ ! -f "initialization.sh" ]; then
     if [ ! -d ${install_name} ]; then
         echo "Cloning silverblog..."
+
         repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
         if [ -n ${china_install} ];then
             repo_url=https://gitee.com/qwe7002/silverblog.git
         fi
+
         git clone ${repo_url} --depth=1 ${install_name}
     fi
     mv install.lock ${install_name}/install/install.lock

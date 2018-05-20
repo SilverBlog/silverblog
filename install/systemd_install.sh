@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+
 set -o errexit
+
 if test $(ps h -o comm -p $$) = "sh"; then
     echo "Please use bash to execute this script."
     exit 1
@@ -10,18 +12,18 @@ install_name="silverblog"
 
 while getopts "user:name" arg
 do
-        case ${arg} in
-             user)
-                install_user=$OPTARG
-                ;;
-            name)
-                install_name=$OPTARG
-                ;;
-             ?)
+    case ${arg} in
+        user)
+            install_user=$OPTARG
+            ;;
+        name)
+            install_name=$OPTARG
+            ;;
+        ?)
             echo "Unknown argument"
-        exit 1
-        ;;
-        esac
+            exit 1
+            ;;
+    esac
 done
 
 use_superuser=""
