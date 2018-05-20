@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
+
 set -o errexit
+
 if test $(ps h -o comm -p $$) = "sh"; then
     echo "Please use bash to execute this script."
     exit 1
 fi
+
 install_name="silverblog"
 if [  -n "$1" ];then
     install_name=$1
@@ -34,6 +37,7 @@ if command -v dnf >/dev/null 2>&1; then
     ${use_superuser} dnf -y install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl gcc redhat-rpm-config python3-devel
     echo "{\"install\":\"dnf\"}" > install.lock
 fi
+
 if [ ! -f "install.lock" ]; then
     echo "The current system does not support local deployment. Please use Docker deployment."
     exit 1
