@@ -13,9 +13,11 @@ install_name="silverblog"
 while getopts "n:c" arg; do
     case ${arg} in
          n)
-            install_name=$OPTARG;;
+            install_name=$OPTARG
+            ;;
          c)
-            china_install=true;;
+            china_install=true
+            ;;
          ?)
             echo "Unknown argument"
             exit 1
