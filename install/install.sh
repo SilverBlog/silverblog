@@ -7,10 +7,24 @@ if test $(ps h -o comm -p $$) = "sh"; then
     exit 1
 fi
 
+china_install=false
 install_name="silverblog"
-if [  -n "$1" ];then
-    install_name=$1
-fi
+
+while getopts "name:china" arg
+do
+        case ${arg} in
+             name)
+                install_name=$OPTARG
+                ;;
+             china)
+                china_install=true
+                ;;
+             ?)
+            echo "unkonw argument"
+        exit 1
+        ;;
+        esac
+done
 
 use_superuser=""
 if [ $UID -ne 0 ]; then
@@ -46,7 +60,11 @@ fi
 if [ ! -f "initialization.sh" ]; then
     if [ ! -d ${install_name} ]; then
         echo "Cloning silverblog..."
-        git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 ${install_name}
+        repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
+        if [ -n ${china_install} ];then
+            repo_url=https://gitee.com/qwe7002/silverblog.git
+        fi
+        git clone ${repo_url} --depth=1 ${install_name}
     fi
     mv install.lock ${install_name}/install/install.lock
     cd ${install_name}/install
@@ -57,3 +75,5 @@ fi
 ./install_python_dependency.sh
 
 ./initialization.sh
+
+

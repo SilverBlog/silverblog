@@ -6,14 +6,23 @@ if test $(ps h -o comm -p $$) = "sh"; then
 fi
 
 install_user=${USER}
-if [ -n "$1" ] ;then
-    install_user=$1
-fi
-
 install_name="silverblog"
-if [ -n "$2" ];then
-    install_name=$2
-fi
+
+while getopts "user:name" arg
+do
+        case ${arg} in
+             user)
+                install_user=$OPTARG
+                ;;
+            name)
+                install_name=$OPTARG
+                ;;
+             ?)
+            echo "unkonw argument"
+        exit 1
+        ;;
+        esac
+done
 
 use_superuser=""
 if [ $UID -ne 0 ]; then
