@@ -18,7 +18,7 @@ do
                 install_name=$OPTARG
                 ;;
              ?)
-            echo "unkonw argument"
+            echo "Unknown argument"
         exit 1
         ;;
         esac

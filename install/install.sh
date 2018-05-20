@@ -20,7 +20,7 @@ do
                 china_install=true
                 ;;
              ?)
-            echo "unkonw argument"
+            echo "Unknown argument"
         exit 1
         ;;
         esac
