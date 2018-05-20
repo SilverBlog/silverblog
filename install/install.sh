@@ -10,15 +10,12 @@ fi
 china_install=false
 install_name="silverblog"
 
-while getopts "name:china" arg
-do
+while getopts "n:c" arg; do
     case ${arg} in
-         name)
-            install_name=$OPTARG
-            ;;
-         china)
-            china_install=true
-            ;;
+         n)
+            install_name=$OPTARG;;
+         c)
+            china_install=true;;
          ?)
             echo "Unknown argument"
             exit 1

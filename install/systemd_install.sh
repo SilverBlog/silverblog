@@ -10,13 +10,13 @@ fi
 install_user=${USER}
 install_name="silverblog"
 
-while getopts "user:name" arg
+while getopts "u:n:" arg
 do
     case ${arg} in
-        user)
+        u)
             install_user=$OPTARG
             ;;
-        name)
+        n)
             install_name=$OPTARG
             ;;
         ?)
