@@ -35,10 +35,17 @@ if [ -f "initialization.sh" ]; then
 fi
 
 if [  -f "/etc/systemd/system/silverblog.service" ]; then
+    echo "Found old configuration file is being deleted."
+    ${use_superuser} systemctl disable silverblog
+    ${use_superuser} systemctl stop silverblog
     ${use_superuser} rm /etc/systemd/system/silverblog.service
 fi
 
 if [  -f "/etc/systemd/system/silverblog_control.service" ]; then
+    echo "Found old configuration file is being deleted."
+    ${use_superuser} systemctl disable silverblog_control
+    ${use_superuser} systemctl stop silverblog_control
+
     ${use_superuser} rm /etc/systemd/system/silverblog_control.service
 fi
 
