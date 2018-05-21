@@ -61,6 +61,7 @@ if [ ! -f "initialization.sh" ]; then
         echo "Cloning silverblog..."
 
         repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
+
         if [ -n ${china_install} ];then
             repo_url=https://gitee.com/qwe7002/silverblog.git
         fi
@@ -77,4 +78,4 @@ fi
 
 ./initialization.sh
 
-
+echo "alias ${install_name}=\"cd $(pwd)&&./manage.py&&cd -\""
