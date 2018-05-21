@@ -23,15 +23,18 @@ while getopts "n:c" arg; do
     esac
 done
 
+docker_image="silverblog/silverblog"
+
+repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
+
+if [ -n ${china_install} ];then
+    docker_image="registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog"
+    repo_url=https://gitee.com/qwe7002/silverblog.git
+fi
+
 if [ ! -f "initialization.sh" ]; then
     if [ ! -d ${install_name} ]; then
         echo "Cloning silverblog..."
-
-        repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
-        if [ -n ${china_install} ];then
-            repo_url=https://gitee.com/qwe7002/silverblog.git
-        fi
-
         git clone ${repo_url} --depth=1 ${install_name}
     fi
     cd ${install_name}/install
@@ -48,7 +51,7 @@ cat << EOF > docker-compose.yml
 version: '3'
 services:
   ${install_name}:
-    image: "silverblog/silverblog"
+    image: "${docker_image}"
     tty: true
     container_name: "${install_name}"
     restart: on-failure:10
@@ -58,7 +61,7 @@ services:
     ports:
      - "127.0.0.1:5000:5000"
   ${install_name}_control:
-    image: "silverblog/silverblog"
+    image: "${docker_image}"
     tty: true
     container_name: "${install_name}_control"
     restart: on-failure:10
@@ -77,5 +80,5 @@ EOF
 chmod +x manage.sh
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
 echo "./manage.sh setting"
-
-echo "alias ${install_name}=\"cd $(pwd)&&./manage.sh&&cd -\""
+echo "You can add the following code to .bashrc to quickly launch SilverBlog."
+echo "alias ${install_name}=\"bash -c 'cd $(pwd)&&./manage.sh'\""
