@@ -42,13 +42,40 @@ echo "{\"install\":\"docker\"}" > install.lock
 ./initialization.sh
 cd ..
 sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
+
 if [ ! -f "./docker-compose.yml" ]; then
-    cp -i ./example/docker-compose.yml ./docker-compose.yml
+cat << EOF > docker-compose.yml
+version: '3'
+services:
+  ${install_name}:
+    image: "silverblog/silverblog"
+    tty: true
+    container_name: "${install_name}"
+    restart: on-failure:10
+    command: python3 watch.py
+    volumes:
+     - $(pwd):/home/silverblog/
+    ports:
+     - "127.0.0.1:5000:5000"
+  ${install_name}_control:
+    image: "silverblog/silverblog"
+    tty: true
+    container_name: "${install_name}_control"
+    restart: on-failure:10
+    command: python3 watch.py --control
+    volumes:
+     - $(pwd):/home/silverblog/
+    ports:
+     - "127.0.0.1:5001:5001"
+EOF
 fi
+
 cat << EOF >manage.sh
 #!/usr/bin/env bash
-docker run -it --rm -v \$(pwd):/home/silverblog --name="silverblog_manage" silverblog/silverblog python3 manage.py \$@
+docker run -it --rm -v \$(pwd):/home/silverblog --name="${install_name}_manage" silverblog/silverblog python3 manage.py \$@
 EOF
 chmod +x manage.sh
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
 echo "./manage.sh setting"
+
+echo "alias ${install_name}=\"cd $(pwd)&&./manage.sh&&cd -\""

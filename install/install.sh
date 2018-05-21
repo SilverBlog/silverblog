@@ -78,4 +78,4 @@ fi
 
 ./initialization.sh
 
-
+echo "alias ${install_name}=\"cd $(pwd)&&./manage.py&&cd -\""
