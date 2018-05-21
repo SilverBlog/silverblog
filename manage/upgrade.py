@@ -16,12 +16,14 @@ def git_init():
     remote = repo.remote()
     return repo, remote
 
-def upgrade_check():
+
+def upgrade_check(fetch=True):
     if not os.path.exists("./.git"):
         console.log("Error", "Not a git repository.")
         return False
     repo, remote = git_init()
-    remote.fetch(repo.active_branch)
+    if fetch:
+        remote.fetch(repo.active_branch)
     if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD") or current_data_version != new_data_version:
         return True
     return False
