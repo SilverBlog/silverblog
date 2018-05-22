@@ -9,8 +9,7 @@ variables:
 build_docker_demo:
   retry: 2
   services:
-  - name: docker:dind
-    command: ["--insecure-registry=https://registry.docker-cn.com"]
+  - docker:dind
   tags:
   - docker-build
   stage: build
@@ -30,8 +29,7 @@ build_docker_demo:
 build_docker:
   retry: 2
   services:
-  - name: docker:dind
-    command: ["--insecure-registry=https://registry.docker-cn.com"]
+  - docker:dind
   tags:
   - docker-build
   stage: build
