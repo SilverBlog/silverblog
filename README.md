@@ -26,6 +26,15 @@ SilverBlog 是一個基於 Python3 的輕量級博客專案。
 
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)"
+
+custom:
+
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog
+
+china:
+
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog -c
+
 ```
 
 Docker:
@@ -56,6 +65,10 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlo
 
 ```
 bash systemd_install.sh
+
+custom:
+
+bash systemd_install.sh -n silverblog -u silverblog
 ```
 
 SilverBlog 推薦您使用基於 NodeJS 的監控程序： PM2

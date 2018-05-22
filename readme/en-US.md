@@ -24,6 +24,15 @@ You can install SilverBlog directly using the installation script:
 
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)"
+
+custom:
+
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog
+
+china:
+
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog -c
+
 ```
 
 Docker:
@@ -49,11 +58,16 @@ If you need to run blogs and manage servers simultaneously in a container, use t
 
 Containers started with docker-compose are automatically restarted. You just need to ensure that the Docker service starts automatically when it starts up.
 
-You can configure your server using the `systemd_startup_install.sh` file in the install directory, which requires root privileges. It is consistent with the recommended method below.
+You can configure your server using the `systemd_install.sh` file in the install directory, which requires root privileges. It is consistent with the recommended method below.
 
 ```
-sudo bash systemd_startup_install.sh ${USER}
+bash systemd_install.sh
+
+custom:
+
+bash systemd_install.sh -n silverblog -u silverblog
 ```
+
 
 SilverBlog recommends using a NodeJS-based monitor: pm2
 
