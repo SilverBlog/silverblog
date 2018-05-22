@@ -9,8 +9,7 @@ variables:
 build_docker_demo:
   retry: 2
   services:
-  - name: docker:dind
-    command: ["--insecure-registry=https://registry.docker-cn.com"]
+  - docker:dind
   tags:
   - docker-build
   stage: build
@@ -30,8 +29,7 @@ build_docker_demo:
 build_docker:
   retry: 2
   services:
-  - name: docker:dind
-    command: ["--insecure-registry=https://registry.docker-cn.com"]
+  - docker:dind
   tags:
   - docker-build
   stage: build
@@ -61,11 +59,12 @@ release_github:
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
-  - git push --set-upstream git@github.com:SilverBlogTeam/silverblog.git HEAD:$CI_COMMIT_REF_NAME
+  - git config --global http.https://github.com.proxy ${proxy}
+  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/silverblog.git HEAD:$CI_COMMIT_REF_NAME
   - git push --set-upstream git@gitee.com:qwe7002/silverblog.git HEAD:$CI_COMMIT_REF_NAME
   - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
   - cd wiki
-  - git push -f --set-upstream git@github.com:SilverBlogTeam/silverblog.wiki.git HEAD:master
+  - git push -f --set-upstream https://${github_key}@github.com/SilverBlogTeam/silverblog.wiki.git HEAD:master
   - git push -f --set-upstream git@gitee.com:qwe7002/silverblog.wiki.git HEAD:master
 
 
