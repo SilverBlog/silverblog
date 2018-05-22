@@ -33,7 +33,7 @@ def upgrade_pull():
         console.log("Error", "Not a git repository.")
         return False
     repo, remote = git_init()
-    print("On branch {}".format(repo.active_branch))
+    console.log("info", "On branch {}".format(repo.active_branch))
     if repo.is_dirty():
         console.log("Error",
                     "The current warehouse is modified and can not be upgraded automatically.")
