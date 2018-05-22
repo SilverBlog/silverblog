@@ -24,7 +24,6 @@ while getopts "n:c" arg; do
 done
 
 docker_image="silverblog/silverblog"
-
 repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
 
 if [ -n ${china_install} ];then

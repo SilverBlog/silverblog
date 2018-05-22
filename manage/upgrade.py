@@ -44,7 +44,7 @@ def upgrade_pull():
             exit(1)
     diff = repo.git.diff('FETCH_HEAD..HEAD', name_only=True)
     remote.pull()
-    if "install/python_dependency.txt" in diff:
+    if "install/install_python_dependency.py" in diff:
         os.system("cd ./install && bash install_python_dependency.sh")
     if current_data_version != new_data_version and os.path.exists(
             "./upgrade/upgrade_from_{}.py".format(current_data_version)):

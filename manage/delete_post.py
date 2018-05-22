@@ -2,10 +2,6 @@ import os
 import shutil
 
 from common import file
-import os
-import shutil
-
-from common import file
 
 
 def delete(page_list, post_index):
@@ -19,7 +15,6 @@ def delete(page_list, post_index):
     check_file("{}.json".format(file_name))
     file.write_file("./trash/{}.json".format(file_name), file.json_format_dump(meta_backup))
     shutil.move("./document/{}.md".format(file_name), "./trash/{}.md".format(file_name))
-
 
 def check_file(file_name):
     if os.path.exists("./trash/{}".format(file_name)):
