@@ -26,19 +26,21 @@ SilverBlog 是一個基於 Python3 的輕量級博客專案。
 
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)"
+
+custom:
+
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog
+
+china:
+
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog -c
+
 ```
 
 Docker:
 
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
-```
-
-
-Container:
-
-```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/container_install.sh)"
 ```
 
 您可以在 [SilverBlogTheme](https://github.com/SilverBlogTheme) 中選擇一個主題，然後使用 `./manage.py` 來安裝配置 ，並在下面的配置文件中正確配置它。
@@ -62,7 +64,11 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlo
 您可以使用 install 目錄下的 `systemd_startup_install.sh` 文件配置您的伺服器，這需要root權限。它和下面推薦的方法效果一致。
 
 ```
-sudo bash systemd_startup_install.sh ${USER}
+bash systemd_install.sh
+
+custom:
+
+bash systemd_install.sh -n silverblog -u silverblog
 ```
 
 SilverBlog 推薦您使用基於 NodeJS 的監控程序： PM2
@@ -129,7 +135,7 @@ git config user.name "your name"
 
 ## 切換到開發者預覽版本
 
-SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執行 `git checkout nightly` 切換到開發者預覽版。該版本可能有未被發現的Bug，請慎重使用。
+SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執行 `git checkout --track origin/nightly` 切換到開發者預覽版。該版本可能有未被發現的Bug，請慎重使用。
 
 ## 參與開發
 
@@ -142,6 +148,7 @@ SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執
 ## 關於亞洲地區的訪問加速
 
 您可以執行以下命令來更換您的倉庫源，這將加速您的更新：(亚洲地区服务由碼雲提供)
+
 ```
 git remote set-url origin https://gitee.com/qwe7002/silverblog.git
 ```

@@ -6,7 +6,7 @@ import os
 import time
 
 from common import file, console
-from manage import whiptail
+from manage import whiptail, upgrade
 
 dialog = whiptail.Whiptail()
 dialog.height = 15
@@ -15,11 +15,14 @@ def use_whiptail_mode():
     dialog.title = "SilverBlog management tool"
     while True:
         upgrade_text = "Upgrade"
+        upgrade_check = False
         last_fetch_time = 0
         if os.path.exists("./upgrade/last_fetch_time.json"):
             last_fetch_time = json.loads(file.read_file("./upgrade/last_fetch_time.json"))["last_fetch_time"]
-        if (time.time() - last_fetch_time) > 604800:
-            from manage import upgrade
+        if upgrade.upgrade_check(False):
+            upgrade_text = "⚠ Upgrade"
+            upgrade_check = True
+        if (time.time() - last_fetch_time) > 86400 and not upgrade_check:
             file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
             if upgrade.upgrade_check():
                 upgrade_text = "⚠ Upgrade"

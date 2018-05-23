@@ -16,12 +16,14 @@ def git_init():
     remote = repo.remote()
     return repo, remote
 
-def upgrade_check():
+
+def upgrade_check(fetch=True):
     if not os.path.exists("./.git"):
         console.log("Error", "Not a git repository.")
         return False
     repo, remote = git_init()
-    remote.fetch(repo.active_branch)
+    if fetch:
+        remote.fetch(repo.active_branch)
     if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD") or current_data_version != new_data_version:
         return True
     return False
@@ -31,7 +33,7 @@ def upgrade_pull():
         console.log("Error", "Not a git repository.")
         return False
     repo, remote = git_init()
-    print("On branch {}".format(repo.active_branch))
+    console.log("info", "On branch {}".format(repo.active_branch))
     if repo.is_dirty():
         console.log("Error",
                     "The current warehouse is modified and can not be upgraded automatically.")
@@ -41,9 +43,9 @@ def upgrade_pull():
         if repo.is_dirty():
             exit(1)
     diff = repo.git.diff('FETCH_HEAD..HEAD', name_only=True)
-    if "install/python_dependency.txt" in diff:
-        os.system("cd ./install && bash install_python_dependency.sh")
     remote.pull()
+    if "install/install_python_dependency.py" in diff:
+        os.system("cd ./install && bash install_python_dependency.sh")
     if current_data_version != new_data_version and os.path.exists(
             "./upgrade/upgrade_from_{}.py".format(current_data_version)):
         os.system("python3 ./upgrade/upgrade_from_{}.py".format(current_data_version))

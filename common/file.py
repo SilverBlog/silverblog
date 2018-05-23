@@ -1,7 +1,9 @@
 import asyncio
+import json
 import os
 
 from common import console
+
 
 def read_file(filename):
     with open(filename, newline=None, encoding="utf-8") as f:
@@ -24,3 +26,7 @@ def async_write_file(filename, content):
 
 def list_dirs(folder):
     return [d for d in os.listdir(folder) if os.path.isdir(os.path.join(folder, d))]
+
+
+def json_format_dump(obj):
+    return json.dumps(obj, indent=4, sort_keys=False, ensure_ascii=False)

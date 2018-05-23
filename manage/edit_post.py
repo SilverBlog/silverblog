@@ -5,6 +5,7 @@ import shutil
 from common import console, file
 from manage import get
 
+
 def edit(page_list, post_index, config, editor=None, is_menu=False):
     if page_list[post_index]["name"] is not config["name"]:
         safe_name = get.filter_name(config["name"])
@@ -16,7 +17,7 @@ def edit(page_list, post_index, config, editor=None, is_menu=False):
             config_file = json.loads(file.read_file("./document/{}.json".format(safe_name)))
             config_file["title"] = config["title"]
             file.write_file("./document/{}.json".format(safe_name),
-                            json.dumps(config_file, indent=4, sort_keys=False, ensure_ascii=False))
+                            file.json_format_dump(config_file))
         page_list[post_index]["name"] = safe_name
     if editor is not None:
         os.system("{0} ./document/{1}.md".format(editor, safe_name))
@@ -24,5 +25,5 @@ def edit(page_list, post_index, config, editor=None, is_menu=False):
     file_url = "./config/page.json"
     if is_menu:
         file_url = "./config/menu.json"
-    file.write_file(file_url, json.dumps(page_list, indent=4, sort_keys=False, ensure_ascii=False))
+    file.write_file(file_url, file.json_format_dump(page_list))
     console.log("Success", "Edit a new article successfully!")
