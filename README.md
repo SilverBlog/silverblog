@@ -33,7 +33,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlo
 
 china:
 
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog -c
+bash -c "$(curl -fsSL https://gitee.com/qwe7002/silverblog/raw/master/install/install.sh)" -n silverblog -c
 
 ```
 
