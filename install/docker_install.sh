@@ -36,7 +36,9 @@ if [ ! -f "initialization.sh" ]; then
         echo "Cloning silverblog..."
         git clone ${repo_url} --depth=1 ${install_name}
     fi
-    cd ${install_name}/install
+    cd ${install_name}
+    git fetch
+    cd install
 fi
 
 echo "{\"install\":\"docker\"}" > install.lock
