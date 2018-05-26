@@ -89,5 +89,5 @@ echo "Before you start SilverBlog for the first time, run the following command 
 echo "./manage.py setting"
 echo ""
 echo "You can add the following code to .bashrc to quickly launch SilverBlog."
-echo "alias ${install_name}=\"bash -c 'cd $(pwd)&&./manage.py'\""
+echo "${install_name}() {(cd \"$(pwd)\"&&./manage.py \$@)}"
 
