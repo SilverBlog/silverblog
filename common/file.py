@@ -6,15 +6,17 @@ from common import console
 
 
 def read_file(filename):
-    with open(filename, newline=None, encoding="utf-8") as f:
-        content = f.read()
-        return content
+    f = open(filename, newline=None, encoding="utf-8")
+    content = f.read()
+    f.close()
+    return content
 
 def write_file(filename, content):
     console.log("info", "Write the file: {0}".format(filename))
-    with open(filename, "w", newline=None, encoding="utf-8") as f:
-        f.write(content)
-        return True
+    f = open(filename, "w", newline=None, encoding="utf-8")
+    f.write(content)
+    f.close()
+    return True
 
 @asyncio.coroutine
 def async_read_file(filename):

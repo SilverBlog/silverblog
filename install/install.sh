@@ -20,6 +20,8 @@ while getopts "n:c" arg; do
             ;;
          ?)
             echo "Unknown argument"
+            echo "use systemd_install.sh -n <project name> [-c]"
+            echo "[-c] option represents using a Chinese image source."
             exit 1
             ;;
     esac
@@ -69,18 +71,23 @@ if [ ! -f "initialization.sh" ]; then
         git clone ${repo_url} --depth=1 ${install_name}
     fi
     mv install.lock ${install_name}/install/install.lock
-    cd ${install_name}/install
-fi
 
+    cd ${install_name}
+    git fetch
+    cd install
+fi
 ./check_python_version.py
 
 ./install_python_dependency.sh
 
 ./initialization.sh
 
+cd ..
+
+echo ""
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
 echo "./manage.py setting"
-
+echo ""
 echo "You can add the following code to .bashrc to quickly launch SilverBlog."
-echo "alias ${install_name}=\"bash -c 'cd $(pwd)&&./manage.py'\""
+echo "${install_name}() {(cd \"$(pwd)\"&&./manage.py \$@)}"
 
