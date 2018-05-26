@@ -6,7 +6,7 @@ import os
 import time
 
 from common import file, console
-from manage import whiptail, upgrade
+from manage import whiptail, upgrade, get
 
 dialog = whiptail.Whiptail()
 dialog.height = 15
@@ -108,7 +108,6 @@ def get_post_info(title_input="", name_input=""):
         dialog.alert("The title can not be blank.")
         return
     if name_input == "":
-        from manage import get
         name_input = get.get_name(title)
     name = dialog.prompt("Please enter the slug:", name_input)
     return {"title": title, "name": name}
