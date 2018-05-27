@@ -164,12 +164,14 @@ def use_text_mode(args):
         if config is None:
             print("Please enter the title of the article:")
             title = input()
-            if len(title) != 0:
-                name = get.get_name(title)
+            if len(title) == 0:
+                print("The title can not be blank.")
+                exit(1)
+            name = get.get_name(title)
             print("Please enter the slug [{}]:".format(name))
             name2 = input()
             if len(name2) != 0:
-                name = name2
+                name = get.filter_name(name2)
         if len(name) != 0 and len(title) != 0:
             config = {"title": title, "name": name}
             new_post.new_post_init(config, args.independent)

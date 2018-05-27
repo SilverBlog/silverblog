@@ -8,8 +8,7 @@ from common import file, console
 def get_name(name_input):
     p = Pinyin()
     name = name_input.replace(" ", "-").replace("。", ".").replace("，", ",")
-    name = re.sub('[/:*?,.<>|\'"\\\]', '', name)
-    name = filter_name(name)
+    name = filter_name(re.sub('[/:*?,.<>|\'"\\\]', '', name))
     return p.get_pinyin(name)
 
 def get_excerpt(filename):
