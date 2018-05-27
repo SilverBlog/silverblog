@@ -106,7 +106,7 @@ def get_post_info(title_input="", name_input=""):
     title = dialog.prompt("Please enter the title of the article:", title_input)
     if len(title) == 0:
         dialog.alert("The title can not be blank.")
-        return
+        return {"title": None, "name": None}
     if name_input == "":
         name_input = get.get_name(title)
     name = dialog.prompt("Please enter the slug:", name_input)
@@ -115,7 +115,9 @@ def get_post_info(title_input="", name_input=""):
 def new_post():
     from manage import new_post
     dialog.title = "New post"
-    new_post.new_post_init(get_post_info(), dialog.confirm("Is this an independent page?", "no"))
+    post_info = get_post_info()
+    if post_info["name"] is not None:
+        new_post.new_post_init(post_info, dialog.confirm("Is this an independent page?", "no"))
 
 def use_text_mode(args):
     if args.command == "qrcode":
