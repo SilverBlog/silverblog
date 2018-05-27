@@ -81,8 +81,8 @@ def edit(request_type):
         abort(400)
     page_list = json.loads(file.read_file(file_url))
     post_id = int(request.json["post_id"])
-    name = str(request.json["name"]).replace('/', "")
-    title = str(request.json["title"])
+    name = str(request.json["name"]).replace('/', "").strip()
+    title = str(request.json["title"]).strip()
     content = str(request.json["content"])
     sign = str(request.json["sign"])
     status = False
@@ -117,8 +117,8 @@ def delete():
 def create_post():
     if request.json is None:
         abort(400)
-    title = str(request.json["title"])
-    name = str(request.json["name"]).replace('/', "")
+    title = str(request.json["title"]).strip()
+    name = str(request.json["name"]).replace('/', "").strip()
     content = str(request.json["content"])
     sign = str(request.json["sign"])
     status = False

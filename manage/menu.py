@@ -103,13 +103,13 @@ def select_post():
     return page_list, page_title_list.index(post_title)
 
 def get_post_info(title_input="", name_input=""):
-    title = dialog.prompt("Please enter the title of the article:", title_input)
+    title = dialog.prompt("Please enter the title of the article:", title_input).strip()
     if len(title) == 0:
         dialog.alert("The title can not be blank.")
         return {"title": None, "name": None}
     if name_input == "":
         name_input = get.get_name(title)
-    name = dialog.prompt("Please enter the slug:", name_input)
+    name = dialog.prompt("Please enter the slug:", name_input).strip()
     return {"title": title, "name": name}
 
 def new_post():
@@ -163,13 +163,13 @@ def use_text_mode(args):
             config = json.loads(file.read_file(args.config))
         if config is None:
             print("Please enter the title of the article:")
-            title = input()
+            title = input().strip()
             if len(title) == 0:
-                print("The title can not be blank.")
+                console.log("Error", "The title can not be blank.")
                 exit(1)
             name = get.get_name(title)
             print("Please enter the slug [{}]:".format(name))
-            name2 = input()
+            name2 = input().strip()
             if len(name2) != 0:
                 name = get.filter_name(name2)
         if len(name) != 0 and len(title) != 0:
