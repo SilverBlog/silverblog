@@ -130,6 +130,7 @@ def use_text_mode(args):
             if install_dependency.lower() == 'yes' or install_dependency.lower() == 'y':
                 import os
                 os.system("python3 -m pip install qrcode-terminal")
+                import qrcode_terminal
         if len(system_config["API_Password"]) == 0 or len(system_config["Project_URL"]) == 0:
             console.log("Error", "Check the API_Password and Project_URL configuration items")
             exit(1)
