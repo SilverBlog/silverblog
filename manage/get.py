@@ -8,16 +8,15 @@ from common import file, console
 def get_name(name_input):
     p = Pinyin()
     name = name_input.replace(" ", "-").replace("。", ".").replace("，", ",")
-    name = re.sub('[/:*?,.<>|\'"\\\]', '', name)
-    name = filter_name(name)
+    name = filter_name(re.sub('[/:*?,.<>|\'"\\\]', '', name))
     return p.get_pinyin(name)
 
 def get_excerpt(filename):
     content = file.read_file(filename)
-    excerpt_output = re.sub('<.*>[\\s\\S]*?<.*>|<.*/>', '', content)
-    excerpt_output = re.sub('\[(.?)\].*(\(.*/.*\))', '\g<1>', excerpt_output)
+    excerpt_output = re.sub('<[\\s\\S]*?>[\\s\\S]*?<[\\s\\S]*?>|<[\\s\\S]*?/>', '', content)
+    excerpt_output = re.sub('\[(.?)\].*(\(.*/.*\))', '\<1>', excerpt_output)
     excerpt_output = re.sub('(!\[.*\]\([^)]*\))', '', excerpt_output)
-    excerpt_output = re.sub('\*+|`|#+|>+|~+|=+|-+|_+', '', excerpt_output)
+    excerpt_output = re.sub('\*+|`|#+|>+|~+|=+|-+|_', '', excerpt_output)
     excerpt = excerpt_output.replace("\n", "")
     if len(excerpt) > 140:
         split_index = 140

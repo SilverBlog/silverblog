@@ -65,6 +65,9 @@ def start_watch():
     if not args.debug:
         cmd.append("--logto")
         cmd.append("./logs/{}.log".format(job))
+        cmd.append("--threaded-logger")
+        cmd.append("--log-master")
+        cmd.append("--disable-logging")
     p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
     return_code = p.poll()
     while return_code is None:

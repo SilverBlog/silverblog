@@ -2,7 +2,7 @@ import asyncio
 import json
 import os.path
 
-from flask import Flask, abort, redirect, request
+from flask import Flask, abort, redirect
 
 from common import file, page, console, post_map
 
@@ -76,16 +76,12 @@ def load_config():
         page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
     console.log("Success", "load the configuration file successfully!")
 
-def check_proxy_ip(header):
-    if 'X-Real-Ip' in header:
-        console.log("ClientIP", "X-Real-IP is :" + header['X-Real-Ip'])
 
 app = Flask(__name__)
 load_config()
 
 @app.route("/rss/", strict_slashes=False)
 def result_rss():
-    check_proxy_ip(request.headers)
     if rss is None:
         abort(404)
     return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
@@ -109,7 +105,6 @@ def redirect_301(file_name, page_index=1):
 @app.route("/index", strict_slashes=False)
 @app.route('/index/<int:page_index>', strict_slashes=False)
 def index_route(page_index=1):
-    check_proxy_ip(request.headers)
     page_url = "/index/{0}/".format(page_index)
     if page_url in cache_index:
         console.log("info", "Get cache Success: {0}".format(page_url))
@@ -133,7 +128,6 @@ def index_route(page_index=1):
 @app.route("/post/<file_name>")
 @app.route("/post/<file_name>/")
 def post_route(file_name=None):
-    check_proxy_ip(request.headers)
     if file_name is None or not os.path.exists("./document/{0}.md".format(file_name)):
         abort(404)
     page_url = "/post/{0}/".format(file_name)
