@@ -33,7 +33,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlo
 
 china:
 
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog -c
+bash -c "$(curl -fsSL https://gitee.com/qwe7002/silverblog/raw/master/install/install.sh)" -n silverblog -c
 
 ```
 
@@ -135,7 +135,7 @@ git config user.name "your name"
 
 ## 切換到開發者預覽版本
 
-SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執行 `git checkout --track origin/nightly` 切換到開發者預覽版。該版本可能有未被發現的Bug，請慎重使用。
+SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執行 `git checkout --track -b origin/nightly` 切換到開發者預覽版。該版本可能有未被發現的Bug，請慎重使用。
 
 ## 參與開發
 

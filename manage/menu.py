@@ -6,7 +6,7 @@ import os
 import time
 
 from common import file, console
-from manage import whiptail, upgrade
+from manage import whiptail, upgrade, get
 
 dialog = whiptail.Whiptail()
 dialog.height = 15
@@ -103,20 +103,21 @@ def select_post():
     return page_list, page_title_list.index(post_title)
 
 def get_post_info(title_input="", name_input=""):
-    title = dialog.prompt("Please enter the title of the article:", title_input)
+    title = dialog.prompt("Please enter the title of the article:", title_input).strip()
     if len(title) == 0:
         dialog.alert("The title can not be blank.")
-        return
+        return {"title": None, "name": None}
     if name_input == "":
-        from manage import get
         name_input = get.get_name(title)
-    name = dialog.prompt("Please enter the slug:", name_input)
+    name = dialog.prompt("Please enter the slug:", name_input).strip()
     return {"title": title, "name": name}
 
 def new_post():
     from manage import new_post
     dialog.title = "New post"
-    new_post.new_post_init(get_post_info(), dialog.confirm("Is this an independent page?", "no"))
+    post_info = get_post_info()
+    if post_info["name"] is not None:
+        new_post.new_post_init(post_info, dialog.confirm("Is this an independent page?", "no"))
 
 def use_text_mode(args):
     if args.command == "qrcode":
@@ -129,6 +130,7 @@ def use_text_mode(args):
             if install_dependency.lower() == 'yes' or install_dependency.lower() == 'y':
                 import os
                 os.system("python3 -m pip install qrcode-terminal")
+                import qrcode_terminal
         if len(system_config["API_Password"]) == 0 or len(system_config["Project_URL"]) == 0:
             console.log("Error", "Check the API_Password and Project_URL configuration items")
             exit(1)
@@ -162,13 +164,15 @@ def use_text_mode(args):
             config = json.loads(file.read_file(args.config))
         if config is None:
             print("Please enter the title of the article:")
-            title = input()
-            if len(title) != 0:
-                name = get.get_name(title)
+            title = input().strip()
+            if len(title) == 0:
+                console.log("Error", "The title can not be blank.")
+                exit(1)
+            name = get.get_name(title)
             print("Please enter the slug [{}]:".format(name))
-            name2 = input()
+            name2 = input().strip()
             if len(name2) != 0:
-                name = name2
+                name = get.filter_name(name2)
         if len(name) != 0 and len(title) != 0:
             config = {"title": title, "name": name}
             new_post.new_post_init(config, args.independent)

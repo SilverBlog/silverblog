@@ -36,7 +36,9 @@ if [ ! -f "initialization.sh" ]; then
         echo "Cloning silverblog..."
         git clone ${repo_url} --depth=1 ${install_name}
     fi
-    cd ${install_name}/install
+    cd ${install_name}
+    git fetch
+    cd install
 fi
 
 echo "{\"install\":\"docker\"}" > install.lock
@@ -77,7 +79,10 @@ cat << EOF >manage.sh
 docker run -it --rm -v \$(pwd):/home/silverblog --name="${install_name}_manage" silverblog/silverblog python3 manage.py \$@
 EOF
 chmod +x manage.sh
+
+echo ""
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
 echo "./manage.sh setting"
+echo ""
 echo "You can add the following code to .bashrc to quickly launch SilverBlog."
-echo "alias ${install_name}=\"bash -c 'cd $(pwd)&&./manage.sh'\""
+echo "${install_name}() {(cd \"$(pwd)\"&&./manage.sh \$@)}"

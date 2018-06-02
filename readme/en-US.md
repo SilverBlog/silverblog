@@ -29,10 +29,6 @@ custom:
 
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog
 
-china:
-
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog -c
-
 ```
 
 Docker:
@@ -134,7 +130,7 @@ You can execute `./manage.py qrcode` to generate the automated configuration QR 
 
 ## Switch to developer preview
 
-SilverBlog is now available as a developer preview version. You can switch from `git checkout --track origin/develop` to the developer preview in the repository root directory. This version may have undiscovered bugs. Please use it with caution.
+SilverBlog is now available as a developer preview version. You can switch from `git checkout --track -b origin/develop` to the developer preview in the repository root directory. This version may have undiscovered bugs. Please use it with caution.
 
 ## Participate in development
 
