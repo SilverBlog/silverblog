@@ -71,7 +71,10 @@ def start_watch():
     p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
     return_code = p.poll()
     while return_code is None:
-        time.sleep(0.05)
+        sleep_time = 1
+        if args.debug:
+            sleep_time = 0.05
+        time.sleep(sleep_time)
         if not observer.is_alive():
             kill_progress()
             break
