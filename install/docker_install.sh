@@ -53,7 +53,6 @@ version: '3'
 services:
   ${install_name}:
     image: "${docker_image}"
-    tty: true
     container_name: "${install_name}"
     restart: on-failure:10
     command: python3 watch.py
@@ -63,7 +62,6 @@ services:
      - "127.0.0.1:5000:5000"
   ${install_name}_control:
     image: "${docker_image}"
-    tty: true
     container_name: "${install_name}_control"
     restart: on-failure:10
     command: python3 watch.py --control
