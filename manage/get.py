@@ -14,10 +14,10 @@ def get_name(name_input):
 def get_excerpt(filename):
     content = file.read_file(filename)
     excerpt_output = re.sub('<[\\s\\S]*?>[\\s\\S]*?<[\\s\\S]*?>|<[\\s\\S]*?/>', '', content)
-    excerpt_output = re.sub('\[(.*?)\].*(\(.*/.*\))', '\<1>', excerpt_output)
     excerpt_output = re.sub('(!\[.*\]\([^)]*\))', '', excerpt_output)
+    excerpt_output = re.sub('\[(.*)\].*(\(.*/.*\))', '\g<1>', excerpt_output)
     excerpt_output = re.sub('\*+|`|#+|>+|~+|=+|-+|_', '', excerpt_output)
-    excerpt = excerpt_output.replace("\n", "")
+    excerpt = excerpt_output.replace("\n", "").strip()
     if len(excerpt) > 140:
         split_index = 140
         excerpt_output_replace = excerpt_output.replace("。", ".").replace("，", ",")
@@ -30,7 +30,7 @@ def get_excerpt(filename):
             split_index = dot_index - 1
         if dot_index == -1 and comma_index != -1:
             split_index = comma_index - 1
-        excerpt = excerpt_output[:split_index].replace("\n", "")
+        excerpt = excerpt_output[:split_index].replace("\n", "").strip()
     return excerpt
 
 def get_gravatar(author_name):
