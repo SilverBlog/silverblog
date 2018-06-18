@@ -83,6 +83,29 @@ fi
 ./initialization.sh
 
 cd ..
+cat << EOF >pm2.json
+{
+  "apps": [
+    {
+      "name": "${install_name}",
+      "script": "/usr/bin/python3",
+      "args": "watch.py",
+      "merge_logs": true,
+      "cwd": "./"
+    },
+    {
+      "name": "${install_name}-control",
+      "script": "/usr/bin/python3",
+      "args": [
+        "watch.py",
+        "--control"
+      ],
+      "merge_logs": true,
+      "cwd": "./"
+    }
+  ]
+}
+EOF
 
 echo ""
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
