@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 apk add --no-cache ca-certificates bash git curl python3 uwsgi uwsgi-python3
 python3 -m pip install -U pip
 apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev
