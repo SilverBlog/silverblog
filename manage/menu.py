@@ -155,7 +155,6 @@ def use_text_mode(args):
         from manage import build_static_page
         build_static_page.publish()
         exit(0)
-
     from manage import build_rss
     if args.command == "new":
         from manage import new_post
