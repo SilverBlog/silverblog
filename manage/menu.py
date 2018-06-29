@@ -22,7 +22,7 @@ def use_whiptail_mode():
         if upgrade.upgrade_check(False):
             upgrade_text = "⚠ Upgrade"
             upgrade_check = True
-        if (time.time() - last_fetch_time) > 86400 and not upgrade_check:
+        if (time.time() - last_fetch_time) > 259200 and not upgrade_check:
             file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
             if upgrade.upgrade_check():
                 upgrade_text = "⚠ Upgrade"
@@ -155,7 +155,6 @@ def use_text_mode(args):
         from manage import build_static_page
         build_static_page.publish()
         exit(0)
-
     from manage import build_rss
     if args.command == "new":
         from manage import new_post
