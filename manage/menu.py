@@ -106,7 +106,7 @@ def menu_manager():
     if result == "Delete":
         menu_list, select_index = select_list("./config/menu.json")
         if menu_list and dialog.confirm(
-                "Are you sure you want to delete this article? (Warning! This operation is irreversible, please be careful!)",
+                "Are you sure you want to delete this item? (Warning! This operation is irreversible, please be careful!)",
                 "no"):
             menu_manage.delete_menu(menu_list, select_index)
         return
