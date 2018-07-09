@@ -76,6 +76,7 @@ if [ ! -f "initialization.sh" ]; then
     git fetch
     cd install
 fi
+
 ./check_python_version.py
 
 ./install_python_dependency.sh
