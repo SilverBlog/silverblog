@@ -98,9 +98,11 @@ def menu_manager():
         menu_item = menu_list[menu_index]
         if "name" in menu_item:
             address = menu_item["name"]
+            independent = True
         if "absolute" in menu_item:
             address = menu_item["absolute"]
-        menu_info = get_menu_info(menu_item["title"], address)
+            independent = False
+        menu_info = get_menu_info(menu_item["title"], address, independent)
         menu_manage.edit_menu(menu_list, menu_index, menu_info)
         return
     if result == "Delete":
@@ -112,9 +114,12 @@ def menu_manager():
         return
 
 
-def get_menu_info(title_input="", name_input=""):
+def get_menu_info(title_input="", name_input="", independent=False):
     title = dialog.prompt("Please enter the title of the menu:", title_input).strip()
-    type = dialog.confirm("Is this an independent page?", "no")
+    is_independent = "no"
+    if independent:
+        is_independent = "yes"
+    type = dialog.confirm("Is this an independent page?", is_independent)
     if not type and name_input == "":
         name_input = "https://"
     name = dialog.prompt("Please enter the address:", name_input).strip()
