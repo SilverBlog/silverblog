@@ -27,12 +27,14 @@ def use_whiptail_mode():
             if upgrade.upgrade_check():
                 upgrade_text = "⚠ Upgrade"
 
-        menu_list = ["Article manager", "Build static page", upgrade_text, "Setting", "Exit"]
+        menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
         if result == "Article manager":
             article_manager()
+        if result == "Menu manager":
+            menu_manager()
         if result == upgrade_text:
             upgrade_system()
         if result == "Build static page":
@@ -50,18 +52,84 @@ def article_manager():
     menu_list = ["New", "Update", "Edit", "Delete"]
     result = dialog.menu("Please select an action", menu_list)
     if result == "New":
-        new_post()
+        from manage import new_post
+        dialog.title = "New post"
+        post_info = get_post_info()
+        if post_info["name"] is not None:
+            new_post.new_post_init(post_info, dialog.confirm("Is this an independent page?", "no"))
     if result == "Edit":
-        edit_post()
+        from manage import edit_post
+        dialog.title = "Edit post"
+        page_list, post_index = select_list("./config/page.json")
+        if not page_list:
+            return
+        config = get_post_info(page_list[post_index]["title"], page_list[post_index]["name"])
+        system_info = json.loads(file.read_file("./config/system.json"))
+        edit_post.edit(page_list, post_index, config, system_info["Editor"])
         if not update_post.update():
             return
     if result == "Delete":
-        delete_post()
+        from manage import delete_post
+        page_list, post_index = select_list("./config/page.json")
+        if page_list and dialog.confirm(
+                "Are you sure you want to delete this article? (Warning! This operation is irreversible, please be careful!)",
+                "no"):
+            delete_post.delete(page_list, post_index)
     if result == "Update":
         if not update_post.update():
             return
     build_rss.build_rss()
 
+
+def menu_manager():
+    dialog.title = "Menu manager"
+    menu_list = ["New", "Edit", "Delete"]
+    result = dialog.menu("Please select an action", menu_list)
+    from manage import menu_manage
+    if result == "New":
+        menu_info = get_menu_info()
+        if menu_info["title"] is not None:
+            menu_manage.add_menu(menu_info)
+        return
+    if result == "Edit":
+        menu_list, menu_index = select_list("./config/menu.json")
+        if not menu_list:
+            return
+        menu_item = menu_list[menu_index]
+        if "name" in menu_item:
+            address = menu_item["name"]
+            independent = True
+        if "absolute" in menu_item:
+            address = menu_item["absolute"]
+            independent = False
+        menu_info = get_menu_info(menu_item["title"], address, independent)
+        menu_manage.edit_menu(menu_list, menu_index, menu_info)
+        return
+    if result == "Delete":
+        menu_list, select_index = select_list("./config/menu.json")
+        if menu_list and dialog.confirm(
+                "Are you sure you want to delete this item? (Warning! This operation is irreversible, please be careful!)",
+                "no"):
+            menu_manage.delete_menu(menu_list, select_index)
+        return
+
+
+def get_menu_info(title_input="", name_input="", independent=False):
+    title = dialog.prompt("Please enter the title of the menu:", title_input).strip()
+    is_independent = "no"
+    if independent:
+        is_independent = "yes"
+    type = dialog.confirm("Is this an independent page?", is_independent)
+    if not type and name_input == "":
+        name_input = "https://"
+    name = dialog.prompt("Please enter the address:", name_input).strip()
+    if len(title) == 0:
+        dialog.alert("The title can not be blank.")
+        return {"title": None, "name": None, "type": False}
+    if len(name) == 0:
+        dialog.alert("The name can not be blank.")
+        return {"title": None, "name": None, "type": False}
+    return {"title": title, "name": name, "type": type}
 
 def upgrade_system():
     from manage import upgrade
@@ -71,27 +139,10 @@ def upgrade_system():
         return
     dialog.alert("No upgrade found.")
 
-def edit_post():
-    from manage import edit_post
-    dialog.title = "Edit post"
-    page_list, post_index = select_post()
-    if not page_list:
-        return
-    config = get_post_info(page_list[post_index]["title"], page_list[post_index]["name"])
-    system_info = json.loads(file.read_file("./config/system.json"))
-    edit_post.edit(page_list, post_index, config, system_info["Editor"])
 
-def delete_post():
-    from manage import delete_post
-    page_list, post_index = select_post()
-    if page_list and dialog.confirm(
-            "Are you sure you want to delete this article? (Warning! This operation is irreversible, please be careful!)",
-            "no"):
-        delete_post.delete(page_list, post_index)
-
-def select_post():
+def select_list(list_name):
     page_title_list = list()
-    page_list = json.loads(file.read_file("./config/page.json"))
+    page_list = json.loads(file.read_file(list_name))
     i = 1
     if len(page_list) == 0:
         dialog.alert("The page list can not be blank.")
@@ -102,6 +153,7 @@ def select_post():
     post_title = dialog.menu("Please select the post to be operated:", page_title_list)
     return page_list, page_title_list.index(post_title)
 
+
 def get_post_info(title_input="", name_input=""):
     title = dialog.prompt("Please enter the title of the article:", title_input).strip()
     if len(title) == 0:
@@ -111,13 +163,6 @@ def get_post_info(title_input="", name_input=""):
         name_input = get.get_name(title)
     name = dialog.prompt("Please enter the slug:", name_input).strip()
     return {"title": title, "name": name}
-
-def new_post():
-    from manage import new_post
-    dialog.title = "New post"
-    post_info = get_post_info()
-    if post_info["name"] is not None:
-        new_post.new_post_init(post_info, dialog.confirm("Is this an independent page?", "no"))
 
 def use_text_mode(args):
     if args.command == "qrcode":
