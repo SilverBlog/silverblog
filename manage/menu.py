@@ -120,9 +120,14 @@ def get_menu_info(title_input="", name_input="", independent=False):
     if independent:
         is_independent = "yes"
     type = dialog.confirm("Is this an independent page?", is_independent)
-    if not type and name_input == "":
-        name_input = "https://"
-    name = dialog.prompt("Please enter the address:", name_input).strip()
+    name = None
+    if type and dialog.confirm("Does this article exist in the list of articles?", "no"):
+        page_list, page_index = select_list("./config/page.json")
+        name = page_list[page_index]["name"]
+    if name is None:
+        if not type and name_input == "":
+            name_input = "https://"
+        name = dialog.prompt("Please enter the address:", name_input).strip()
     if len(title) == 0:
         dialog.alert("The title can not be blank.")
         return {"title": None, "name": None, "type": False}
