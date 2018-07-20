@@ -6,16 +6,14 @@ from common import console
 
 
 def read_file(filename):
-    f = open(filename, newline=None, encoding="utf-8")
-    content = f.read()
-    f.close()
+    with open(filename, newline=None, encoding="utf-8", errors='ignore') as f:
+        content = f.read()
     return content
 
 def write_file(filename, content):
-    console.log("info", "Write the file: {0}".format(filename))
-    f = open(filename, "w", newline=None, encoding="utf-8")
-    f.write(content)
-    f.close()
+    with open(filename, "w", newline=None, encoding="utf-8") as f:
+        console.log("info", "Write the file: {0}".format(filename))
+        f.write(content)
     return True
 
 @asyncio.coroutine
