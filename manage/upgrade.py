@@ -24,8 +24,9 @@ def upgrade_check(fetch=True):
     repo, remote = git_init()
     if fetch:
         remote.fetch(repo.active_branch)
-    if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD") or current_data_version != new_data_version:
-        return True
+    if "FETCH_HEAD" in repo.heads:
+        if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD") or current_data_version != new_data_version:
+            return True
     return False
 
 def upgrade_pull():
