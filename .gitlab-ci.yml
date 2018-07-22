@@ -16,7 +16,7 @@ build_docker_demo:
   only:
   - nightly
   script:
-  - docker build -t docker.reallserver.cn/${docker_tag_name}-demo -f ./develop/demo/Dockerfile .
+  - docker build -t docker.reallserver.cn/${docker_tag_name}-demo -f ./.develop/demo/Dockerfile .
   - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
   - docker push docker.reallserver.cn/${docker_tag_name}-demo
   - docker rmi docker.reallserver.cn/${docker_tag_name}-demo
@@ -82,10 +82,10 @@ unit_test_develop:
   - cd install
   - bash install.sh
   - cd ..
-  - cp -f ./develop/demo/page.json ./config/page.json
-  - cp -f ./develop/demo/menu.json ./config/menu.json
-  - cp -f ./develop/demo/system.json ./config/system.json
-  - cp ./develop/demo/demo-article.md ./document/demo-article.md
+  - cp -f ./.develop/demo/page.json ./config/page.json
+  - cp -f ./.develop/demo/menu.json ./config/menu.json
+  - cp -f ./.develop/demo/system.json ./config/system.json
+  - cp ./.develop/demo/demo-article.md ./document/demo-article.md
   - python3 manage.py update
   - cd ./templates
   - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
@@ -95,5 +95,5 @@ unit_test_develop:
   - echo "{\"excerpt\":\"this is a test\",\"time\":0}" > ./document/demo-article.json
   - python3 ./manage.py update
   - python3 ./manage.py build-page
-  - python3 ./develop/unit_test/test.py
+  - python3 ./.develop/unit_test/test.py
 

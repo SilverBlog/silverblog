@@ -21,7 +21,7 @@ do
             ;;
         ?)
             echo "Unknown argument"
-            echo "use systemd_install.sh -u <user> -n <project name>"
+            echo "use ./systemd_install.sh -u <user> -n <project name>"
             exit 1
             ;;
     esac
@@ -48,7 +48,6 @@ if [  -f "/etc/systemd/system/silverblog_control.service" ]; then
     echo "Found old configuration file is being deleted."
     ${use_superuser} systemctl disable silverblog_control
     ${use_superuser} systemctl stop silverblog_control
-
     ${use_superuser} rm /etc/systemd/system/silverblog_control.service
 fi
 
