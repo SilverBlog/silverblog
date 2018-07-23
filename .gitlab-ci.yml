@@ -7,7 +7,6 @@ variables:
   docker_tag_name: "silverblog/silverblog"
 
 build_docker_demo:
-  retry: 2
   services:
   - docker:dind
   tags:
@@ -27,7 +26,6 @@ build_docker_demo:
   - ssh qwe7002@demo.silverblog.org "docker-compose down && docker pull docker.reallserver.cn/${docker_tag_name}-demo && docker-compose up -d"
 
 build_docker:
-  retry: 2
   services:
   - docker:dind
   tags:
@@ -50,7 +48,6 @@ build_docker:
 
 release_github:
   stage: deploy
-  retry: 2
   only:
   - master
   - nightly
@@ -71,7 +68,6 @@ release_github:
 unit_test_develop:
   image: ubuntu:latest
   stage: test
-  retry: 2
   only:
   - develop
   script:
