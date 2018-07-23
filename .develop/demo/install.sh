@@ -16,7 +16,7 @@ cp /home/silverblog/.develop/demo/demo-article.md /home/silverblog/document/demo
 python3 manage.py update
 cd /home/silverblog/templates
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
-cd /home/sivlerblog/
+cd /home/silverblog/
 cat << EOF >pm2.json
 {
   "apps": [
