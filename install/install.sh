@@ -86,25 +86,25 @@ fi
 cd ..
 cat << EOF >pm2.json
 {
-  "apps": [
-    {
-      "name": "${install_name}",
-      "script": "/usr/bin/python3",
-      "args": "watch.py",
-      "merge_logs": true,
-      "cwd": "./"
-    },
-    {
-      "name": "${install_name}-control",
-      "script": "/usr/bin/python3",
-      "args": [
-        "watch.py",
-        "--control"
-      ],
-      "merge_logs": true,
-      "cwd": "./"
-    }
-  ]
+    "apps": [
+        {
+        "name": "${install_name}",
+        "script": "/usr/bin/python3",
+        "args": "watch.py",
+        "merge_logs": true,
+        "cwd": "./"
+        },
+        {
+        "name": "${install_name}-control",
+        "script": "/usr/bin/python3",
+        "args": [
+            "watch.py",
+            "--control"
+        ],
+        "merge_logs": true,
+        "cwd": "./"
+        }
+    ]
 }
 EOF
 
