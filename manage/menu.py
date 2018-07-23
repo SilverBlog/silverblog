@@ -195,8 +195,9 @@ def use_text_mode(args):
     if args.command == "upgrade":
         from manage import upgrade
         if upgrade.upgrade_check():
-            start_to_pull = input('Find new version, do you want to upgrade? [y/N]')
-            if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y':
+            if not args.yes:
+                start_to_pull = input('Find new version, do you want to upgrade? [y/N]')
+            if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y' or args.yes:
                 upgrade.upgrade_pull()
                 exit(0)
         console.log("info", "No upgrade found")

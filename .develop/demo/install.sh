@@ -1,4 +1,6 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+set -o errexit
+
 apk add --no-cache ca-certificates bash git curl python3 uwsgi uwsgi-python3
 python3 -m pip install -U pip
 apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev
@@ -15,7 +17,7 @@ cp /home/silverblog/.develop/demo/demo-article.md /home/silverblog/document/demo
 python3 manage.py update
 cd /home/silverblog/templates
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
-cd /home/silverblog/
+cd /home/sivlerblog/
 cat << EOF >pm2.json
 {
   "apps": [
