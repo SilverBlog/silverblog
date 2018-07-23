@@ -78,7 +78,7 @@ unit_test_develop:
   - python3 -m pip install hoedown xpinyin gitpython
   - cd install
   - echo "{\"install\":\"docker\"}" > install.lock
-  - bash /home/silverblog/install/initialization.sh
+  - bash initialization.sh
   - cd ..
   - cp -f ./.develop/demo/page.json ./config/page.json
   - cp -f ./.develop/demo/menu.json ./config/menu.json
