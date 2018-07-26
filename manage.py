@@ -23,14 +23,15 @@ if __name__ == '__main__':
     parser.add_argument("command", help="The name of the function to execute.", )
 
     #new
-    group_new = parser.add_argument_group('new', "Create a new article.")
-    group_new.add_argument("-c", "--config", help="The configuration file location you want to load.", type=str)
-    group_new.add_argument("-i", "--independent", help="Generate an article that does not appear in the article list",
-                           action="store_true")
+    new_parser = parser.add_argument_group('new', "Create a new article.")
+    new_parser.add_argument("-c", "--config", help="The configuration file location you want to load.", type=str)
+    new_parser.add_argument("-i", "--independent", help="Generate an article that does not appear in the article list",
+                            action="store_true")
 
     parser.add_argument_group('update', "Update article metadata.")
 
-    parser.add_argument_group('upgrade', "Upgrade program")
+    upgrade_parser = parser.add_argument_group('upgrade', "Upgrade program")
+    upgrade_parser.add_argument("-y", "--yes", help="Assume yes for all questions, do not ask.", action="store_true")
     parser.add_argument_group('setting', "Setting program")
     parser.add_argument_group('qrcode', "Output client qrcode.")
     #build-gh-page

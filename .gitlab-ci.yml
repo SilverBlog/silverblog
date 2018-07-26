@@ -7,7 +7,6 @@ variables:
   docker_tag_name: "silverblog/silverblog"
 
 build_docker_demo:
-  retry: 2
   services:
   - docker:dind
   tags:
@@ -24,10 +23,9 @@ build_docker_demo:
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
-  - ssh qwe7002@demo.silverblog.org "docker-compose down && docker pull docker.reallserver.cn/${docker_tag_name}-demo && docker-compose up -d"
+  - ssh qwe7002@demo.silverblog.org "docker-compose down && docker pull docker.reallserver.cn/${docker_tag_name}-demo && bash /home/qwe7002/dockerclean.sh && docker-compose up -d"
 
 build_docker:
-  retry: 2
   services:
   - docker:dind
   tags:
@@ -50,7 +48,6 @@ build_docker:
 
 release_github:
   stage: deploy
-  retry: 2
   only:
   - master
   - nightly
@@ -71,16 +68,17 @@ release_github:
 unit_test_develop:
   image: ubuntu:latest
   stage: test
-  retry: 2
   only:
   - develop
   script:
   - export LANG="C.UTF-8"
   - sed -i '''s/deb-src/#deb-src/g' /etc/apt/sources.list
   - apt-get update
-  - apt-get -y install python3-socks
+  - apt-get -y install python3-socks nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl python3-flask python3-pyrss2gen python3-requests python3-watchdog
+  - python3 -m pip install hoedown xpinyin gitpython
   - cd install
-  - bash install.sh
+  - echo "{\"install\":\"docker\"}" > install.lock
+  - bash initialization.sh
   - cd ..
   - cp -f ./.develop/demo/page.json ./config/page.json
   - cp -f ./.develop/demo/menu.json ./config/menu.json
