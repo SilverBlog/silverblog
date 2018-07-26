@@ -86,6 +86,7 @@ unit_test_develop:
   - cp ./.develop/demo/demo-article.md ./document/demo-article.md
   - python3 manage.py update
   - cd ./templates
+  - git config --global http.https://github.com.proxy ${proxy}
   - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
   - cd ..
   - rm /etc/nginx/sites-enabled/default
