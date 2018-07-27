@@ -129,7 +129,7 @@ def create_post():
     if check_password(title, sign):
         file.write_file("./document/{0}.md".format(name), content)
         config = {"title": title, "name": name}
-        post_manage.new_post_init(config)
+        post_manage.new_post(config)
         status = True
         build_rss.build_rss()
     return json.dumps({"status": status, "name": name})
