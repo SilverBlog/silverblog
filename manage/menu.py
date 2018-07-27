@@ -54,6 +54,9 @@ def article_manager():
     if result == "New":
         dialog.title = "New post"
         post_info = get_post_info()
+        if os.path.exists("./document/{}.md".format(post_info["name"])):
+            console.log("Error", "File [./document/{}.md] already exists".format(post_info["name"]))
+            exit(1)
         if post_info["name"] is not None:
             post_manage.new_post(post_info, dialog.confirm("Is this an independent page?", "no"))
     if result == "Edit":
@@ -175,9 +178,11 @@ def use_text_mode(args):
             console.log("Error", "Please install the qrcode-terminal package to support this feature")
             install_dependency = input('Do you want to install qrcode-terminal now? [y/N]')
             if install_dependency.lower() == 'yes' or install_dependency.lower() == 'y':
-                import os
-                os.system("python3 -m pip install qrcode-terminal")
-                import qrcode_terminal
+                use_sudo = ""
+                if os.geteuid() != 0:
+                    use_sudo = "sudo "
+                os.system(use_sudo + "python3 -m pip install qrcode-terminal")
+                exit(0)
         if len(system_config["API_Password"]) == 0 or len(system_config["Project_URL"]) == 0:
             console.log("Error", "Check the API_Password and Project_URL configuration items")
             exit(1)
@@ -219,6 +224,9 @@ def use_text_mode(args):
             name2 = input().strip()
             if len(name2) != 0:
                 name = get.filter_name(name2)
+            if os.path.exists("./document/{}.md".format(name)):
+                console.log("Error", "File [./document/{}.md] already exists".format(name))
+                exit(1)
         if len(name) != 0 and len(title) != 0:
             config = {"title": title, "name": name}
             post_manage.new_post(config, args.independent)

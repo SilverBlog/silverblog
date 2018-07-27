@@ -21,7 +21,7 @@ def new_post(config, independent=False):
     post_info = {"name": name, "title": title, "time": time.time()}
     if not os.path.exists("./document/{}.md".format(name)):
         console.log("Error", "Cannot find [./document/{}.md]".format(name))
-        return
+        exit(1)
     if not independent:
         excerpt = get.get_excerpt("./document/{}.md".format(name))
         post_info["excerpt"] = excerpt
