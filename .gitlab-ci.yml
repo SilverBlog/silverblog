@@ -43,9 +43,6 @@ build_docker:
   - docker push ${docker_tag_name}
   - docker push docker.reallserver.cn/${docker_tag_name}
   - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
-  - docker container prune -f
-  - docker image prune -f
-
 release_github:
   stage: deploy
   only:
