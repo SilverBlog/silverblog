@@ -80,7 +80,7 @@ chmod +x manage.sh
 
 echo ""
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
-echo "./manage.sh setting"
+echo "./manage.sh install"
 echo ""
 echo "You can add the following code to .bashrc to quickly launch SilverBlog."
 echo "${install_name}() {(cd \"$(pwd)\"&&./manage.sh \$@)}"

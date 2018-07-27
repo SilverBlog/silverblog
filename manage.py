@@ -38,9 +38,14 @@ if __name__ == '__main__':
     group_build_gh_page = parser.add_argument_group("build-page", "Generate static pages.")
 
     args = parser.parse_args()
-    if args.command == "setting":
+    if args.command == "install":
         from manage import setting
         setting.setup_wizard()
+        exit(0)
+    if args.command == "setting":
+        from manage import setting
+
+        setting.setting_menu()
         exit(0)
     try:
         menu.use_text_mode(args)

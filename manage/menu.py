@@ -48,35 +48,35 @@ def use_whiptail_mode():
 
 def article_manager():
     dialog.title = "Article manager"
-    from manage import build_rss, update_post
+    from manage import build_rss, post_manage
     menu_list = ["New", "Update", "Edit", "Delete"]
     result = dialog.menu("Please select an action", menu_list)
     if result == "New":
-        from manage import new_post
         dialog.title = "New post"
         post_info = get_post_info()
+        if os.path.exists("./document/{}.md".format(post_info["name"])):
+            console.log("Error", "File [./document/{}.md] already exists".format(post_info["name"]))
+            exit(1)
         if post_info["name"] is not None:
-            new_post.new_post_init(post_info, dialog.confirm("Is this an independent page?", "no"))
+            post_manage.new_post(post_info, dialog.confirm("Is this an independent page?", "no"))
     if result == "Edit":
-        from manage import edit_post
         dialog.title = "Edit post"
         page_list, post_index = select_list("./config/page.json")
         if not page_list:
             return
         config = get_post_info(page_list[post_index]["title"], page_list[post_index]["name"])
         system_info = json.loads(file.read_file("./config/system.json"))
-        edit_post.edit(page_list, post_index, config, system_info["Editor"])
-        if not update_post.update():
+        post_manage.edit_post(page_list, post_index, config, system_info["Editor"])
+        if not post_manage.update_post():
             return
     if result == "Delete":
-        from manage import delete_post
         page_list, post_index = select_list("./config/page.json")
         if page_list and dialog.confirm(
                 "Are you sure you want to delete this article? (Warning! This operation is irreversible, please be careful!)",
                 "no"):
-            delete_post.delete(page_list, post_index)
+            post_manage.delete_post(page_list, post_index)
     if result == "Update":
-        if not update_post.update():
+        if not post_manage.update_post():
             return
     build_rss.build_rss()
 
@@ -178,9 +178,11 @@ def use_text_mode(args):
             console.log("Error", "Please install the qrcode-terminal package to support this feature")
             install_dependency = input('Do you want to install qrcode-terminal now? [y/N]')
             if install_dependency.lower() == 'yes' or install_dependency.lower() == 'y':
-                import os
-                os.system("python3 -m pip install qrcode-terminal")
-                import qrcode_terminal
+                use_sudo = ""
+                if os.geteuid() != 0:
+                    use_sudo = "sudo "
+                os.system(use_sudo + "python3 -m pip install qrcode-terminal")
+                exit(0)
         if len(system_config["API_Password"]) == 0 or len(system_config["Project_URL"]) == 0:
             console.log("Error", "Check the API_Password and Project_URL configuration items")
             exit(1)
@@ -206,9 +208,8 @@ def use_text_mode(args):
         from manage import build_static_page
         build_static_page.publish()
         exit(0)
-    from manage import build_rss
+    from manage import build_rss, post_manage
     if args.command == "new":
-        from manage import new_post
         config = None
         if args.config is not None:
             config = json.loads(file.read_file(args.config))
@@ -223,13 +224,15 @@ def use_text_mode(args):
             name2 = input().strip()
             if len(name2) != 0:
                 name = get.filter_name(name2)
+            if os.path.exists("./document/{}.md".format(name)):
+                console.log("Error", "File [./document/{}.md] already exists".format(name))
+                exit(1)
         if len(name) != 0 and len(title) != 0:
             config = {"title": title, "name": name}
-            new_post.new_post_init(config, args.independent)
+            post_manage.new_post(config, args.independent)
             build_rss.build_rss()
         exit(0)
     if args.command == "update":
-        from manage import update_post
-        if update_post.update():
+        if post_manage.update_post():
             build_rss.build_rss()
         exit(0)
