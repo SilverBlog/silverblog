@@ -1,6 +1,8 @@
+import asyncio
 import json
 import os
 import shutil
+import time
 
 from common import file, console
 from manage import get
@@ -10,7 +12,6 @@ page_list = list()
 
 
 def new_post(config, independent=False):
-    import time
     system_info = json.loads(file.read_file("./config/system.json"))
     title = config["title"]
     name = get.filter_name(config["name"])
@@ -80,7 +81,6 @@ def check_file(file_name):
 
 
 def update_post():
-    import asyncio
     global page_list, page_list_file
     page_list_file = json.loads(file.read_file("./config/page.json"))
     if len(page_list_file) == 0:
