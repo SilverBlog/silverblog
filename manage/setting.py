@@ -102,6 +102,8 @@ def setup_wizard():
     project_info()
     author_info()
     other_info()
+    # add save
+    save_config()
     if system_config["Theme"] == "":
         from manage import theme
         local_theme_list = theme.get_local_theme_list()
