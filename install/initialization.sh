@@ -11,11 +11,11 @@ server {
     listen 80;
     location / {
         include uwsgi_params;
-        uwsgi_pass 127.0.0.1:5000;
+        uwsgi_pass unix:$(pwd)/config/unix_socks/main.sock;
     }
     location /control {
         include uwsgi_params;
-        uwsgi_pass 127.0.0.1:5001;
+        uwsgi_pass unix:$(pwd)/config/unix_socks/control.sock;
         add_header 'Access-Control-Allow-Origin' "https://c.silverblog.org";
 	    add_header 'Access-Control-Allow-Credentials' "true";
         if (\$request_method = "OPTIONS") {
@@ -38,7 +38,7 @@ fi
 echo "Setup directories..."
 
 mkdir ./document
-mkdir ./config
+mkdir -p ./config/unix_socks
 mkdir -p ./templates/static
 mkdir ./templates/include
 

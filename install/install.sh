@@ -110,7 +110,7 @@ EOF
 
 echo ""
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
-echo "./manage.py install"
+echo "./manage.py"
 echo ""
 echo "You can add the following code to .bashrc to quickly launch SilverBlog:"
 echo ""
