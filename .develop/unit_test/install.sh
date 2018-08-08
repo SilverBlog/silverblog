@@ -4,7 +4,7 @@ apt-get update
 apt-get -y install python3-socks nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl python3-flask python3-pyrss2gen python3-requests python3-watchdog
 python3 -m pip install hoedown xpinyin gitpython
 cd install
-echo "{\"install\":\"docker\"}" > install.lock
+echo "{\"install\":\"apt-get\"}" > install.lock
 bash initialization.sh
 cd ..
 cp -f ./.develop/demo/page.json ./config/page.json
