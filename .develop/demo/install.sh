@@ -8,7 +8,8 @@ apk del --purge .build-deps
 echo "{\"install\":\"docker\"}" > /home/silverblog/install/install.lock
 
 bash /home/silverblog/install/initialization.sh
-sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
+sed -i '''s/.\/config\/unix_socks\/main.sock/0.0.0.0:5000/g' uwsgi.json
+sed -i '''s/.\/config\/unix_socks\/control.sock/0.0.0.0:5001/g' uwsgi.json
 cp -f /home/silverblog/.develop/demo/page.json /home/silverblog/config/page.json
 cp -f /home/silverblog/.develop/demo/menu.json /home/silverblog/config/menu.json
 cp -f /home/silverblog/.develop/demo/system.json /home/silverblog/config/system.json
