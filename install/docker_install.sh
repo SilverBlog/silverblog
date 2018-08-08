@@ -45,8 +45,39 @@ echo "{\"install\":\"docker\"}" > install.lock
 
 ./initialization.sh
 cd ..
-sed -i '''s/127.0.0.1/0.0.0.0/g' uwsgi.json
+echo "Generating Nginx configuration..."
 
+if [ ! -f "./nginx_config" ]; then
+cat << EOF >nginx_config
+server {
+    listen 80;
+    location / {
+        include uwsgi_params;
+        uwsgi_pass 127.0.0.1:5000;
+    }
+    location /control {
+        include uwsgi_params;
+        uwsgi_pass 127.0.0.1:5001;
+        add_header 'Access-Control-Allow-Origin' "https://c.silverblog.org";
+	    add_header 'Access-Control-Allow-Credentials' "true";
+        if (\$request_method = "OPTIONS") {
+            add_header 'Access-Control-Allow-Origin' "https://c.silverblog.org";
+            add_header 'Access-Control-Max-Age' 86400;
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE';
+            add_header 'Access-Control-Allow-Headers' 'reqid, nid, host, x-real-ip, x-forwarded-ip, event-type, event-id, accept, content-type';
+            add_header 'Content-Length' 0;
+            add_header 'Content-Type' 'text/plain, charset=utf-8';
+            return 204;
+        }
+    }
+    location /static {
+        alias $(pwd)/templates/static;
+    }
+}
+EOF
+fi
+sed -i '''s/.\/config\/unix_socks\/main.sock/0.0.0.0:5000/g' uwsgi.json
+sed -i '''s/.\/config\/unix_socks\/control.sock/0.0.0.0:5001/g' uwsgi.json
 if [ ! -f "./docker-compose.yml" ]; then
 cat << EOF > docker-compose.yml
 version: '3'
@@ -80,7 +111,7 @@ chmod +x manage.sh
 
 echo ""
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
-echo "./manage.sh install"
+echo "./manage.sh"
 echo ""
 echo "You can add the following code to .bashrc to quickly launch SilverBlog."
 echo "${install_name}() {(cd \"$(pwd)\"&&./manage.sh \$@)}"

@@ -1,6 +1,6 @@
 {
   "uwsgi": {
-    "socket": "127.0.0.1:5000",
+    "socket": "./config/unix_socks/main.sock",
     "processes": 2,
     "threads": 4,
     "plugins": "python3",
@@ -10,7 +10,7 @@
     "memory-report": true
   },
   "control": {
-    "socket": "127.0.0.1:5001",
+    "socket": "./config/unix_socks/control.sock",
     "processes": 1,
     "threads": 2,
     "plugins": "python3",
