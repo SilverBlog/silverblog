@@ -22,12 +22,22 @@ SilverBlog is a lightweight blog project based on Python3.
 
 You can install SilverBlog directly using the installation script:
 
+global:
+
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)"
+```
 
 custom:
 
+```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog
+```
+
+china:
+
+```
+bash -c "$(curl -fsSL https://gitee.com/qwe7002/silverblog/raw/master/install/install.sh)" -n silverblog -c
 
 ```
 
@@ -58,9 +68,11 @@ You can configure your server using the `systemd_install.sh` file in the install
 
 ```
 bash systemd_install.sh
+```
 
 custom:
 
+```
 bash systemd_install.sh -n silverblog -u silverblog
 ```
 
