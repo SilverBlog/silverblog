@@ -24,15 +24,21 @@ SilverBlog 是一個基於 Python3 的輕量級博客專案。
 
 您可以直接使用安裝腳本安裝 SilverBlog：
 
+global:
+
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)"
+```
 
 custom:
 
+```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog
+```
 
 china:
 
+```
 bash -c "$(curl -fsSL https://gitee.com/qwe7002/silverblog/raw/master/install/install.sh)" -n silverblog -c
 
 ```
@@ -65,9 +71,11 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlo
 
 ```
 bash systemd_install.sh
+```
 
 custom:
 
+```
 bash systemd_install.sh -n silverblog -u silverblog
 ```
 
