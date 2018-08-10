@@ -22,23 +22,22 @@ SilverBlog is a lightweight blog project based on Python3.
 
 You can install SilverBlog directly using the installation script:
 
-global:
+Global:
 
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)"
 ```
 
-custom:
+Custom:
 
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog
 ```
 
-china:
+China:
 
 ```
 bash -c "$(curl -fsSL https://gitee.com/qwe7002/silverblog/raw/master/install/install.sh)" -n silverblog -c
-
 ```
 
 Docker:
@@ -47,11 +46,24 @@ Docker:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
 ```
 
+If you are using a fresh install of Ubuntu 18.04, you may need to modify the `/etc/apt/source.list` file and add `universe` and `multiverse` software sources after `main`, which will ensure the installation will run smoothly. . A correct configuration is as follows:
+
+```
+deb http://archive.ubuntu.com/ubuntu bionic main restricted universe multiverse
+
+deb http://archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse
+
+deb http://archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe multiverse
+
+deb http://security.ubuntu.com/ubuntu bionic-security main restricted universe multiverse
+```
+
 You can select a theme in [SilverBlogTheme](https://github.com/SilverBlogTheme), then use `./manage.py` to install the configuration and configure it correctly in the configuration file below.
 
 This installation script uses the nginx + uwsgi execution mode by default. You can put the auto-generated `nginx_config` file into your nginx package's website configuration directory. If you need to use a third-party web client, don't forget to modify the CORS configuration in `nginx_config`.
 
 [wiki](https://github.com/SilverBlogTeam/silverblog/wiki)
+
 ## start operation
 
 You can run SilverBlog using tools such as Tmux or Screen. You just need to execute `python3 watch.py` to open your blog.
@@ -81,14 +93,7 @@ SilverBlog recommends using a NodeJS-based monitor: pm2
 
 For the installation of pm2 see [GitHub - tj/n: Node version management](https://github.com/tj/n) and [pm2 - Quick Start](http://pm2.keymetrics.io/docs/Usage/quick-start/)
 
-The preset profile is located at `. / example / pm2.json`, you can use the following command to copy it to the root directory and use:
-
-```
-cp ./exmaple/pm2.json pm2.json
-```
-
-
-Then, you just have to run:
+you just have to run:
 
 ```
 pm2 start pm2.json
@@ -151,6 +156,16 @@ We welcome you to report issue or pull request on GitHub of the SilverBlog proje
 If you are not yet familiar with GitHub's Fork and Pull development model, you can read the [GitHub Documentation](https://help.github.com/articles/using-pull-requests) for more information.
 
 We recommend that you use the Chinese language to raise an issue, and attach an English translation below to make it easier for non-Chinese native language developers to read and understand.
+
+## About access acceleration in Asia
+
+You can replace your repository source by executing the following command, which will speed up your update: (Asian region service is provided by gitee.com)
+
+```
+git remote set-url origin https://gitee.com/qwe7002/silverblog.git
+```
+
+You can use the registry accelerator provided by Alibaba Cloud to speed up the image download, and modify the image to `registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog`
 
 ## Thanks
 
