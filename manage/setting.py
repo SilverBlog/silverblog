@@ -81,6 +81,9 @@ def theme_manage():
                     setting_theme_config(theme_name)
         return
     directories = theme.get_local_theme_list()
+    if len(directories) == 0:
+        dialog.alert("The Theme list can not be blank.")
+        return
     theme_name = dialog.menu("Please select the theme to be operated:", directories)
     if result == "Use the existing theme":
         system_config["Theme"] = theme_name
