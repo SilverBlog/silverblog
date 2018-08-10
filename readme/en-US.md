@@ -46,7 +46,7 @@ Docker:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
 ```
 
-If you are using a fresh install of Ubuntu 18.04, you may need to modify the `/etc/apt/source.list` file and add `universe` and `multiverse` software sources after `main`, which will ensure the installation will run smoothly. . A correct configuration is as follows:
+If you are using a new install of Ubuntu 18.04, you may need to modify the `/etc/apt/source.list` file and add `universe` and `multiverse` software sources after `main`, which will ensure the installation will run smoothly. . A correct configuration is as follows:
 
 ```
 deb http://archive.ubuntu.com/ubuntu bionic main restricted universe multiverse
