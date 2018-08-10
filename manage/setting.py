@@ -77,6 +77,8 @@ def theme_manage():
                 system_config["Theme"] = theme_name
                 if os.path.exists("./templates/{}/i18n".format(theme_name)):
                     system_config["i18n"] = setting_i18n(theme_name)
+                if os.path.exists("./templates/{}/config.json".format(theme_name)):
+                    setting_theme_config(theme_name)
         return
     directories = theme.get_local_theme_list()
     theme_name = dialog.menu("Please select the theme to be operated:", directories)
@@ -84,11 +86,32 @@ def theme_manage():
         system_config["Theme"] = theme_name
         if os.path.exists("./templates/{}/i18n".format(theme_name)):
             system_config["i18n"] = setting_i18n(theme_name)
+        if os.path.exists("./templates/{}/config.json".format(theme_name)):
+            setting_theme_config(theme_name)
     if result == "Upgrade existing Theme":
         theme.upgrade_theme(theme_name)
     if result == "Remove existing Theme":
         theme.remove_theme(theme_name)
 
+
+def setting_theme_config(theme_name):
+    theme_config = json.loads(file.read_file("./templates/{}/config.json".format(theme_name)))
+    for item in theme_config:
+        if type(theme_config[item]) == bool:
+            status = "no"
+            if theme_config[item]:
+                status = "yes"
+            theme_config[item] = dialog.confirm("Please choose Boolean item [{}]:".format(item), status)
+        if type(theme_config[item]) == int:
+            theme_config[item] = int(
+                dialog.prompt("Please enter Number item [{}]:".format(item), str(theme_config[item])))
+        if type(theme_config[item]) == float:
+            theme_config[item] = float(
+                dialog.prompt("Please enter Number item [{}]:".format(item), str(theme_config[item])))
+        if type(theme_config[item]) == str:
+            theme_config[item] = str(dialog.prompt("Please enter String item [{}]:".format(item), theme_config[item]))
+    file.write_file("./templates/{}/config.json".format(theme_name), file.json_format_dump(theme_config))
+    return
 
 def setting_i18n(theme_name):
     dir_list = os.listdir("./templates/{0}/i18n".format(theme_name))
