@@ -38,18 +38,24 @@ echo "Installing Dependency..."
 if command -v apt-get >/dev/null 2>&1; then
     echo "Updating software source..."
     ${use_superuser} apt-get update
-    ${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl
+    ${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git curl
     echo "{\"install\":\"apt-get\"}" > install.lock
 fi
 
 if command -v pacman >/dev/null 2>&1; then
-    ${use_superuser} pacman -Sy nginx uwsgi python libnewt uwsgi-plugin-python python-pip python-wheel git gcc curl
+    ${use_superuser} pacman -Sy nginx uwsgi python python-pip python-wheel libnewt uwsgi-plugin-python git gcc curl
     echo "{\"install\":\"pacman\"}" > install.lock
 fi
 
 if command -v dnf >/dev/null 2>&1; then
     ${use_superuser} dnf -y update
-    ${use_superuser} dnf -y install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl gcc redhat-rpm-config python3-devel
+    ${use_superuser} dnf -y install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-devel python3-wheel git curl gcc redhat-rpm-config
+    echo "{\"install\":\"dnf\"}" > install.lock
+fi
+
+if command -v apk >/dev/null 2>&1; then
+    ${use_superuser} apk upgrade --no-cache
+    ${use_superuser} apk add --no-cache python3 python3-dev git curl nano vim bash uwsgi uwsgi-python3 newt ca-certificates
     echo "{\"install\":\"dnf\"}" > install.lock
 fi
 
