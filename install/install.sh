@@ -48,7 +48,6 @@ if command -v pacman >/dev/null 2>&1; then
 fi
 
 if command -v dnf >/dev/null 2>&1; then
-    ${use_superuser} dnf -y update
     ${use_superuser} dnf -y install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-devel python3-wheel git curl gcc redhat-rpm-config
     echo "{\"install\":\"dnf\"}" > install.lock
 fi
