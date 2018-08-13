@@ -57,7 +57,6 @@ if command -v apk >/dev/null 2>&1; then
     echo "{\"install\":\"apk\"}" > install.lock
 fi
 
-if command -v pkg
 
 if [ ! -f "install.lock" ]; then
     echo "The current system does not support local deployment. Please use Docker deployment."
