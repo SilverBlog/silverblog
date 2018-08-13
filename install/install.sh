@@ -36,7 +36,6 @@ fi
 echo "Installing Dependency..."
 
 if command -v apt-get >/dev/null 2>&1; then
-    echo "Updating software source..."
     ${use_superuser} apt-get update
     ${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git curl
     echo "{\"install\":\"apt-get\"}" > install.lock
