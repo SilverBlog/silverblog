@@ -53,10 +53,11 @@ if command -v dnf >/dev/null 2>&1; then
 fi
 
 if command -v apk >/dev/null 2>&1; then
-    ${use_superuser} apk upgrade --no-cache
     ${use_superuser} apk add --no-cache python3 python3-dev git curl nano vim bash uwsgi uwsgi-python3 newt ca-certificates
-    echo "{\"install\":\"dnf\"}" > install.lock
+    echo "{\"install\":\"apk\"}" > install.lock
 fi
+
+if command -v pkg
 
 if [ ! -f "install.lock" ]; then
     echo "The current system does not support local deployment. Please use Docker deployment."
