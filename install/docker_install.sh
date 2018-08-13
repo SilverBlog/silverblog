@@ -43,7 +43,7 @@ fi
 
 echo "{\"install\":\"docker\"}" > install.lock
 
-./initialization.sh
+bash ./initialization.sh
 cd ..
 echo "Generating Nginx configuration..."
 
