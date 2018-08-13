@@ -81,11 +81,11 @@ if [ ! -f "initialization.sh" ]; then
     cd install
 fi
 
-./check_python_version.py
+python3 ./check_python_version.py
 
-./install_python_dependency.sh
+bash ./install_python_dependency.sh
 
-./initialization.sh
+bash ./initialization.sh
 
 cd ..
 
