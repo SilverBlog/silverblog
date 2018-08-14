@@ -36,7 +36,7 @@ def install_theme(theme_name, orgs_list=None):
     if not has_theme:
         console.log("Error", "Can not find this theme.")
         return
-    if os.path.exists(name):
+    if os.path.exists("./templates/" + name):
         console.log("Error", "This theme has been installed")
         return
     console.log("info", "Getting the theme installation script...")
