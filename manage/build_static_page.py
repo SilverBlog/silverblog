@@ -91,13 +91,11 @@ def publish():
     os.system("cd ./static_page && rm -r static post index && rm *.html *.xml")
 
     page_row = page.get_page_row(system_config["Paging"], len(page_list))
-
+    os.mkdir("./static_page/index/")
     console.log("Build", "Processing file: ./static_page/index.html")
     content = page.build_index(1, page_row, system_config, page_list, menu_list, template_config, i18n)
     file.write_file("./static_page/index.html", content)
-
     if page_row != 1:
-        os.mkdir("./static_page/index/")
         file.write_file("./static_page/index/1.html", "<meta http-equiv='refresh' content='0.1; url=/'>")
         for page_id in range(2, page_row + 1):
             console.log("Build", "Processing file: ./static_page/index/{0}.html".format(str(page_id)))
@@ -113,8 +111,11 @@ def publish():
     if len(tasks) != 0:
         loop.run_until_complete(asyncio.wait(tasks))
         loop.close()
-    if os.path.exists("./document/rss.xml"):
-        shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
+
+    if not os.path.exists("./document/rss.xml"):
+        from manage import build_rss
+        build_rss.build_rss()
+    shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
 
     shutil.copytree("./templates/{0}/static".format(system_config["Theme"]),
                     "./static_page/static/{0}/".format(system_config["Theme"]))
