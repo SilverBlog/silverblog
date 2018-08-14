@@ -3,6 +3,7 @@
 
 import json
 import os
+
 import time
 
 from common import file
@@ -30,12 +31,14 @@ if os.path.exists("./config/system.json"):
 
 def setting_menu():
     while True:
-        menu_list = ["Use the Setup Wizard", "Set up basic information", "Set up author information",
+        menu_list = ["« Back", "Use the Setup Wizard", "Set up basic information", "Set up author information",
                      "Theme package manager", "Other settings",
-                     "Exit"]
+                     "× Exit"]
         result = dialog.menu("Please select an action", menu_list)
-        if result == "Exit":
+        if result == "× Exit":
             exit(0)
+        if result == "« Back":
+            break
         if result == "Use the Setup Wizard":
             setup_wizard()
             exit(0)
@@ -55,48 +58,56 @@ def save_config():
 def theme_manage():
     from manage import theme
     dialog.title = "Theme package manager"
-    menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing Theme",
-                 "Remove existing Theme"]
-    result = dialog.menu("Please select an action", menu_list)
-    theme_name = ""
-    org_list = None
-    if result == "Install the theme":
-        install_menu = ["View list", "Enter the theme package name"]
-        result = dialog.menu("Please select an action", install_menu)
-        if result == "View list":
-            org_list = theme.get_orgs_list()
-            item_list = list()
-            for item in org_list:
-                item_list.append(item["name"])
-            theme_name = dialog.menu("Please select the theme you want to install:", item_list)
-        if result == "Enter the theme package name":
-            theme_name = dialog.prompt("Please enter the theme package name:")
-        if len(theme_name) != 0:
-            theme_name = theme.install_theme(theme_name, org_list)
-            if theme_name is not None and dialog.confirm("Do you want to enable this theme now?", "no"):
-                system_config["Theme"] = theme_name
-                if os.path.exists("./templates/{}/i18n".format(theme_name)):
-                    system_config["i18n"] = setting_i18n(theme_name)
-                if os.path.exists("./templates/{}/config.json".format(theme_name)):
-                    setting_theme_config(theme_name)
-        return
+    while True:
+        menu_list = ["« Back", "Install the theme", "Use the existing theme", "Upgrade existing Theme",
+                     "Remove existing Theme", "× Exit"]
+        result = dialog.menu("Please select an action", menu_list)
+        theme_name = ""
+        org_list = None
+        if result == "× Exit":
+            exit(0)
+        if result == "« Back":
+            break
+        if result == "Install the theme":
+            install_menu = ["View list", "Enter the theme package name"]
+            result = dialog.menu("Please select an action", install_menu)
+            if result == "View list":
+                org_list = theme.get_orgs_list()
+                item_list = list()
+                for item in org_list:
+                    item_list.append(item["name"])
+                theme_name = dialog.menu("Please select the theme you want to install:", item_list)
+            if result == "Enter the theme package name":
+                theme_name = dialog.prompt("Please enter the theme package name:")
+            if len(theme_name) != 0:
+                theme_name = theme.install_theme(theme_name, org_list)
+                if theme_name is not None and dialog.confirm("Do you want to enable this theme now?", "no"):
+                    system_config["Theme"] = theme_name
+                    if os.path.exists("./templates/{}/i18n".format(theme_name)):
+                        system_config["i18n"] = setting_i18n(theme_name)
+                    if os.path.exists("./templates/{}/config.json".format(theme_name)):
+                        setting_theme_config(theme_name)
+        if result == "Use the existing theme":
+            theme_name = select_theme()
+            system_config["Theme"] = theme_name
+            if os.path.exists("./templates/{}/i18n".format(theme_name)):
+                system_config["i18n"] = setting_i18n(theme_name)
+            if os.path.exists("./templates/{}/config.json".format(theme_name)):
+                setting_theme_config(theme_name)
+        if result == "Upgrade existing Theme":
+            theme.upgrade_theme(select_theme())
+        if result == "Remove existing Theme":
+            theme.remove_theme(select_theme())
+        time.sleep(0.5)
+
+
+def select_theme():
+    from manage import theme
     directories = theme.get_local_theme_list()
-    if len(directories)==0:
+    if len(directories) == 0:
         dialog.alert("The Theme list can not be blank.")
         return
-    theme_name = dialog.menu("Please select the theme to be operated:", directories)
-    if result == "Use the existing theme":
-        system_config["Theme"] = theme_name
-        if os.path.exists("./templates/{}/i18n".format(theme_name)):
-            system_config["i18n"] = setting_i18n(theme_name)
-        if os.path.exists("./templates/{}/config.json".format(theme_name)):
-            setting_theme_config(theme_name)
-    if result == "Upgrade existing Theme":
-        theme.upgrade_theme(theme_name)
-    if result == "Remove existing Theme":
-        theme.remove_theme(theme_name)
-
-
+    return dialog.menu("Please select the theme to be operated:", directories)
 def setting_theme_config(theme_name):
     theme_config = json.loads(file.read_file("./templates/{}/config.json".format(theme_name)))
     for item in theme_config:
