@@ -36,6 +36,9 @@ def install_theme(theme_name, orgs_list=None):
     if not has_theme:
         console.log("Error", "Can not find this theme.")
         return
+    if os.path.exists(name):
+        console.log("Error", "This theme has been installed")
+        return
     console.log("info", "Getting the theme installation script...")
     try:
         r = requests.get("https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).text
