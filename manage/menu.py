@@ -21,16 +21,16 @@ def use_whiptail_mode():
         if os.path.exists("./upgrade/last_fetch_time.json"):
             last_fetch_time = json.loads(file.read_file("./upgrade/last_fetch_time.json"))["last_fetch_time"]
         if upgrade.upgrade_check(False):
-            upgrade_text = "⚠ Upgrade"
+            upgrade_text = "⚠Upgrade"
             upgrade_check = True
         if (time.time() - last_fetch_time) > 259200 and not upgrade_check:
             file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
             if upgrade.upgrade_check():
-                upgrade_text = "⚠ Upgrade"
+                upgrade_text = "⚠Upgrade"
 
-        menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting", "× Exit"]
+        menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting", "×Exit"]
         result = dialog.menu("Please select an action", menu_list)
-        if result == "× Exit":
+        if result == "×Exit":
             exit(0)
         if result == "Article manager":
             article_manager()
@@ -51,11 +51,11 @@ def article_manager():
     dialog.title = "Article manager"
     while True:
         from manage import build_rss, post_manage
-        menu_list = ["« Back", "New", "Update", "Edit", "Delete", "× Exit"]
+        menu_list = ["«Back", "New", "Update", "Edit", "Delete", "×Exit"]
         result = dialog.menu("Please select an action", menu_list)
-        if result == "× Exit":
+        if result == "×Exit":
             exit(0)
-        if result == "« Back":
+        if result == "«Back":
             break
         if result == "New":
             dialog.title = "New post"
@@ -86,10 +86,10 @@ def article_manager():
 
 def menu_manager():
     dialog.title = "Menu manager"
-    menu_list = ["« Back", "New", "Edit", "Delete", "× Exit"]
+    menu_list = ["«Back", "New", "Edit", "Delete", "×Exit"]
     result = dialog.menu("Please select an action", menu_list)
     while True:
-        if result == "× Exit":
+        if result == "×Exit":
             exit(0)
         if result == "« Back":
             break

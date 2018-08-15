@@ -31,13 +31,13 @@ if os.path.exists("./config/system.json"):
 
 def setting_menu():
     while True:
-        menu_list = ["« Back", "Use the Setup Wizard", "Set up basic information", "Set up author information",
+        menu_list = ["«Back", "Use the Setup Wizard", "Set up basic information", "Set up author information",
                      "Theme package manager", "Other settings",
-                     "× Exit"]
+                     "×Exit"]
         result = dialog.menu("Please select an action", menu_list)
-        if result == "× Exit":
+        if result == "×Exit":
             exit(0)
-        if result == "« Back":
+        if result == "«Back":
             break
         if result == "Use the Setup Wizard":
             setup_wizard()
@@ -59,14 +59,14 @@ def theme_manage():
     from manage import theme
     dialog.title = "Theme package manager"
     while True:
-        menu_list = ["« Back", "Install the theme", "Use the existing theme", "Upgrade existing Theme",
-                     "Remove existing Theme", "× Exit"]
+        menu_list = ["«Back", "Install the theme", "Use the existing theme", "Upgrade existing Theme",
+                     "Remove existing Theme", "×Exit"]
         result = dialog.menu("Please select an action", menu_list)
         theme_name = ""
         org_list = None
-        if result == "× Exit":
+        if result == "×Exit":
             exit(0)
-        if result == "« Back":
+        if result == "«Back":
             break
         if result == "Install the theme":
             install_menu = ["View list", "Enter the theme package name"]
