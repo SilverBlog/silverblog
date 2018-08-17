@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
 import argparse
 import os
+
 import sys
 
 from manage import menu
@@ -16,6 +16,15 @@ if lang is not None:
     print("The current locale is: {} .Some characters may not be displayed and processed.".format(lang))
     input("Press enter to continue.")
 if __name__ == '__main__':
+    if not os.path.exists("./config/page.json") or not os.path.exists("./config/menu.json"):
+        print("Please execute the installation wizard first.")
+        exit(1)
+    if not os.path.exists("./config/system.json"):
+        from manage import setting
+
+        setting.setup_wizard()
+        exit(0)
+
     if len(sys.argv) == 1:
         menu.use_whiptail_mode()
         exit(0)
@@ -40,7 +49,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.command == "setting":
         from manage import setting
-        setting.setup_wizard()
+        setting.setting_menu()
         exit(0)
     try:
         menu.use_text_mode(args)

@@ -1,6 +1,18 @@
 [
   {
+    "title": "Home Page",
+    "absolute": "https://silverblog.org"
+  },
+  {
     "title": "Github",
     "absolute": "https://github.com/silverblogteam"
+  },
+  {
+    "title": "Client",
+    "absolute": "https://play.google.com/store/apps/details?id=org.SilverBlog.client"
+  },
+  {
+    "title": "SilverCreate",
+    "absolute": "https://c.silverblog.org"
   }
 ]

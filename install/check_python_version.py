@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 import os
+
 import sys
 
 print("Current python version information:")

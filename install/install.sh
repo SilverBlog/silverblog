@@ -36,22 +36,26 @@ fi
 echo "Installing Dependency..."
 
 if command -v apt-get >/dev/null 2>&1; then
-    echo "Updating software source..."
     ${use_superuser} apt-get update
-    ${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl
+    ${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git curl
     echo "{\"install\":\"apt-get\"}" > install.lock
 fi
 
 if command -v pacman >/dev/null 2>&1; then
-    ${use_superuser} pacman -Sy nginx uwsgi python libnewt uwsgi-plugin-python python-pip python-wheel git gcc curl
+    ${use_superuser} pacman -Sy nginx uwsgi python python-pip python-wheel libnewt uwsgi-plugin-python git gcc curl
     echo "{\"install\":\"pacman\"}" > install.lock
 fi
 
 if command -v dnf >/dev/null 2>&1; then
-    ${use_superuser} dnf -y update
-    ${use_superuser} dnf -y install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl gcc redhat-rpm-config python3-devel
+    ${use_superuser} dnf -y install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-devel python3-wheel git curl gcc redhat-rpm-config
     echo "{\"install\":\"dnf\"}" > install.lock
 fi
+
+if command -v apk >/dev/null 2>&1; then
+    ${use_superuser} apk add --no-cache python3 python3-dev git curl nano vim bash uwsgi uwsgi-python3 newt ca-certificates
+    echo "{\"install\":\"apk\"}" > install.lock
+fi
+
 
 if [ ! -f "install.lock" ]; then
     echo "The current system does not support local deployment. Please use Docker deployment."
@@ -77,13 +81,45 @@ if [ ! -f "initialization.sh" ]; then
     cd install
 fi
 
-./check_python_version.py
+python3 ./check_python_version.py
 
-./install_python_dependency.sh
+bash ./install_python_dependency.sh
 
-./initialization.sh
+bash ./initialization.sh
 
 cd ..
+
+echo "Generating Nginx configuration..."
+
+if [ ! -f "./nginx_config" ]; then
+cat << EOF >nginx_config
+server {
+    listen 80;
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:$(pwd)/config/unix_socks/main.sock;
+    }
+    location /control {
+        include uwsgi_params;
+        uwsgi_pass unix:$(pwd)/config/unix_socks/control.sock;
+        add_header 'Access-Control-Allow-Origin' "https://c.silverblog.org";
+	    add_header 'Access-Control-Allow-Credentials' "true";
+        if (\$request_method = "OPTIONS") {
+            add_header 'Access-Control-Allow-Origin' "https://c.silverblog.org";
+            add_header 'Access-Control-Max-Age' 86400;
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE';
+            add_header 'Access-Control-Allow-Headers' 'reqid, nid, host, x-real-ip, x-forwarded-ip, event-type, event-id, accept, content-type';
+            add_header 'Content-Length' 0;
+            add_header 'Content-Type' 'text/plain, charset=utf-8';
+            return 204;
+        }
+    }
+    location /static {
+        alias $(pwd)/templates/static;
+    }
+}
+EOF
+fi
 cat << EOF >pm2.json
 {
     "apps": [
@@ -110,7 +146,7 @@ EOF
 
 echo ""
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
-echo "./manage.py setting"
+echo "./manage.py"
 echo ""
 echo "You can add the following code to .bashrc to quickly launch SilverBlog:"
 echo ""

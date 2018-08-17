@@ -43,9 +43,6 @@ build_docker:
   - docker push ${docker_tag_name}
   - docker push docker.reallserver.cn/${docker_tag_name}
   - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
-  - docker container prune -f
-  - docker image prune -f
-
 release_github:
   stage: deploy
   only:
@@ -72,27 +69,7 @@ unit_test_develop:
   - develop
   script:
   - export LANG="C.UTF-8"
-  - sed -i '''s/deb-src/#deb-src/g' /etc/apt/sources.list
-  - apt-get update
-  - apt-get -y install python3-socks nginx uwsgi uwsgi-plugin-python3 python3-pip python3-wheel git curl python3-flask python3-pyrss2gen python3-requests python3-watchdog
-  - python3 -m pip install hoedown xpinyin gitpython
-  - cd install
-  - echo "{\"install\":\"docker\"}" > install.lock
-  - bash initialization.sh
-  - cd ..
-  - cp -f ./.develop/demo/page.json ./config/page.json
-  - cp -f ./.develop/demo/menu.json ./config/menu.json
-  - cp -f ./.develop/demo/system.json ./config/system.json
-  - cp ./.develop/demo/demo-article.md ./document/demo-article.md
-  - python3 manage.py update
-  - cd ./templates
-  - git config --global http.https://github.com.proxy ${proxy}
-  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
-  - cd ..
-  - rm /etc/nginx/sites-enabled/default
-  - cp ./nginx_config /etc/nginx/sites-enabled/silverblog
-  - echo "{\"excerpt\":\"this is a test\",\"time\":0}" > ./document/demo-article.json
+  - bash ./.develop/unit_test/install.sh
   - python3 ./manage.py update
   - python3 ./manage.py build-page
   - python3 ./.develop/unit_test/test.py
-

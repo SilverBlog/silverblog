@@ -32,22 +32,26 @@ def setting_menu():
     while True:
         menu_list = ["Use the Setup Wizard", "Set up basic information", "Set up author information",
                      "Theme package manager", "Other settings",
-                     "Exit"]
+                     "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
+        if result == "Back":
+            break
         if result == "Use the Setup Wizard":
             setup_wizard()
-            exit(0)
+            save_config()
         if result == "Set up basic information":
             project_info()
+            save_config()
         if result == "Set up author information":
             author_info()
+            save_config()
         if result == "Theme package manager":
             theme_manage()
         if result == "Other settings":
             other_info()
-        save_config()
+            save_config()
         time.sleep(0.5)
 def save_config():
     file.write_file("./config/system.json", file.json_format_dump(system_config))
@@ -55,40 +59,89 @@ def save_config():
 def theme_manage():
     from manage import theme
     dialog.title = "Theme package manager"
-    menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing Theme",
-                 "Remove existing Theme"]
-    result = dialog.menu("Please select an action", menu_list)
-    theme_name = ""
-    org_list = None
-    if result == "Install the theme":
-        install_menu = ["View list", "Enter the theme package name"]
-        result = dialog.menu("Please select an action", install_menu)
-        if result == "View list":
-            org_list = theme.get_orgs_list()
-            item_list = list()
-            for item in org_list:
-                item_list.append(item["name"])
-            theme_name = dialog.menu("Please select the theme you want to install:", item_list)
-        if result == "Enter the theme package name":
-            theme_name = dialog.prompt("Please enter the theme package name:")
-        if len(theme_name) != 0:
-            theme_name = theme.install_theme(theme_name, org_list)
-            if theme_name is not None and dialog.confirm("Do you want to enable this theme now?", "no"):
-                system_config["Theme"] = theme_name
-                if os.path.exists("./templates/{}/i18n".format(theme_name)):
-                    system_config["i18n"] = setting_i18n(theme_name)
-        return
-    directories = theme.get_local_theme_list()
-    theme_name = dialog.menu("Please select the theme to be operated:", directories)
-    if result == "Use the existing theme":
-        system_config["Theme"] = theme_name
-        if os.path.exists("./templates/{}/i18n".format(theme_name)):
-            system_config["i18n"] = setting_i18n(theme_name)
-    if result == "Upgrade existing Theme":
-        theme.upgrade_theme(theme_name)
-    if result == "Remove existing Theme":
-        theme.remove_theme(theme_name)
+    while True:
+        menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing theme",
+                     "Remove existing theme", "Set template insertion point", "Back", "Exit"]
+        result = dialog.menu("Please select an action", menu_list)
+        theme_name = ""
+        org_list = None
+        if result == "Exit":
+            exit(0)
+        if result == "Back":
+            break
+        if result == "Install the theme":
+            install_menu = ["View list", "Enter the theme package name"]
+            result = dialog.menu("Please select an action", install_menu)
+            if result == "View list":
+                org_list = theme.get_orgs_list()
+                item_list = list()
+                for item in org_list:
+                    item_list.append(item["name"])
+                theme_name = dialog.menu("Please select the theme you want to install:", item_list)
+            if result == "Enter the theme package name":
+                theme_name = dialog.prompt("Please enter the theme package name:")
+            if len(theme_name) != 0:
+                theme_name = theme.install_theme(theme_name, org_list)
+                if theme_name is not None and dialog.confirm("Do you want to enable this theme now?", "no"):
+                    system_config["Theme"] = theme_name
+                    if os.path.exists("./templates/{}/i18n".format(theme_name)):
+                        system_config["i18n"] = setting_i18n(theme_name)
+                    if os.path.exists("./templates/{}/config.json".format(theme_name)):
+                        setting_theme_config(theme_name)
+                save_config()
+        if result == "Use the existing theme":
+            theme_name = select_theme()
+            system_config["Theme"] = theme_name
+            if os.path.exists("./templates/{}/i18n".format(theme_name)):
+                system_config["i18n"] = setting_i18n(theme_name)
+            if os.path.exists("./templates/{}/config.json".format(theme_name)):
+                setting_theme_config(theme_name)
+            save_config()
+        if result == "Upgrade existing theme":
+            theme.upgrade_theme(select_theme())
+        if result == "Remove existing theme":
+            theme.remove_theme(select_theme())
+        if result == "Set template insertion point":
+            setting_template_insertion()
 
+
+        time.sleep(0.5)
+
+
+def setting_template_insertion():
+    menu_list = ["head", "comment", "foot"]
+    result = dialog.menu("Please select an action", menu_list)
+    if result == "head":
+        os.system("{} ./templates/include/head.html".format(system_config["Editor"]))
+    if result == "comment":
+        os.system("{} ./templates/include/comment.html".format(system_config["Editor"]))
+    if result == "foot":
+        os.system("{} ./templates/include/foot.html".format(system_config["Editor"]))
+def select_theme():
+    from manage import theme
+    directories = theme.get_local_theme_list()
+    if len(directories) == 0:
+        dialog.alert("The Theme list can not be blank.")
+        return
+    return dialog.menu("Please select the theme to be operated:", directories)
+def setting_theme_config(theme_name):
+    theme_config = json.loads(file.read_file("./templates/{}/config.json".format(theme_name)))
+    for item in theme_config:
+        if type(theme_config[item]) == bool:
+            status = "no"
+            if theme_config[item]:
+                status = "yes"
+            theme_config[item] = dialog.confirm("Please choose Boolean item [{}]:".format(item), status)
+        if type(theme_config[item]) == int:
+            theme_config[item] = int(
+                dialog.prompt("Please enter Number item [{}]:".format(item), str(theme_config[item])))
+        if type(theme_config[item]) == float:
+            theme_config[item] = float(
+                dialog.prompt("Please enter Number item [{}]:".format(item), str(theme_config[item])))
+        if type(theme_config[item]) == str:
+            theme_config[item] = str(dialog.prompt("Please enter String item [{}]:".format(item), theme_config[item]))
+    file.write_file("./templates/{}/config.json".format(theme_name), file.json_format_dump(theme_config))
+    return
 
 def setting_i18n(theme_name):
     dir_list = os.listdir("./templates/{0}/i18n".format(theme_name))
@@ -102,6 +155,8 @@ def setup_wizard():
     project_info()
     author_info()
     other_info()
+    # add save
+    save_config()
     if system_config["Theme"] == "":
         from manage import theme
         local_theme_list = theme.get_local_theme_list()

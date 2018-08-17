@@ -5,7 +5,7 @@ import os.path
 from flask import Flask, request, abort
 
 from common import file, console, post_map
-from manage import new_post, build_rss, update_post, delete_post, edit_post, get
+from manage import post_manage, build_rss, get
 
 app = Flask(__name__)
 api_version = 2
@@ -91,9 +91,9 @@ def edit(request_type):
     if check_password(title, sign):
         status = True
         config = {"name": name, "title": title}
-        edit_post.edit(page_list, post_id, config, None, is_menu)
+        post_manage.edit_post(page_list, post_id, config, None, is_menu)
         file.write_file("./document/{0}.md".format(name), content)
-        update_post.update()
+        post_manage.update_post()
         build_rss.build_rss()
     return json.dumps({"status": status, "name": name})
 
@@ -109,7 +109,7 @@ def delete():
         return json.dumps({"status": False})
     if check_password(str(post_id) + page_list[post_id]["title"], sign):
         status = True
-        delete_post.delete(page_list, post_id)
+        post_manage.delete_post(page_list, post_id)
         build_rss.build_rss()
     return json.dumps({"status": status})
 
@@ -129,7 +129,7 @@ def create_post():
     if check_password(title, sign):
         file.write_file("./document/{0}.md".format(name), content)
         config = {"title": title, "name": name}
-        new_post.new_post_init(config)
+        post_manage.new_post(config)
         status = True
         build_rss.build_rss()
     return json.dumps({"status": status, "name": name})

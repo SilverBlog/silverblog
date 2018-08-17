@@ -24,23 +24,40 @@ SilverBlog 是一個基於 Python3 的輕量級博客專案。
 
 您可以直接使用安裝腳本安裝 SilverBlog：
 
+Global:
+
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)"
+```
 
-custom:
+Custom:
 
+```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog
+```
 
-china:
+China:
 
+```
 bash -c "$(curl -fsSL https://gitee.com/qwe7002/silverblog/raw/master/install/install.sh)" -n silverblog -c
-
 ```
 
 Docker:
 
 ```
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
+```
+
+如果您在使用一個全新安裝的Ubuntu 18.04，你可能需要修改`/etc/apt/source.list`文件，在`main`後添加`universe`和`multiverse`軟件源，這將保證安裝能夠順利執行。一個正確的配置如下：
+
+```
+deb http://archive.ubuntu.com/ubuntu bionic main restricted universe multiverse
+
+deb http://archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse
+
+deb http://archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe multiverse
+
+deb http://security.ubuntu.com/ubuntu bionic-security main restricted universe multiverse
 ```
 
 您可以在 [SilverBlogTheme](https://github.com/SilverBlogTheme) 中選擇一個主題，然後使用 `./manage.py` 來安裝配置 ，並在下面的配置文件中正確配置它。
@@ -65,9 +82,11 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlo
 
 ```
 bash systemd_install.sh
+```
 
 custom:
 
+```
 bash systemd_install.sh -n silverblog -u silverblog
 ```
 
@@ -75,13 +94,7 @@ SilverBlog 推薦您使用基於 NodeJS 的監控程序： PM2
 
 有關PM2的安裝請查看 [GitHub - tj/n: Node version management](https://github.com/tj/n) 和 [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
 
-预置配置档位于 `./example/pm2.json` ,您可以执行以下命令将它拷贝到根目录下使用：
-
-```
-cp ./exmaple/pm2.json pm2.json
-```
-
-然後，您只需要運行：
+您只需要運行：
 
 ```
 pm2 start pm2.json
