@@ -20,12 +20,12 @@ def use_whiptail_mode():
         if os.path.exists("./upgrade/last_fetch_time.json"):
             last_fetch_time = json.loads(file.read_file("./upgrade/last_fetch_time.json"))["last_fetch_time"]
         if upgrade.upgrade_check(False):
-            upgrade_text = "⚠ Upgrade"
+            upgrade_text = "⚠Upgrade"
             upgrade_check = True
         if (time.time() - last_fetch_time) > 259200 and not upgrade_check:
             file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
             if upgrade.upgrade_check():
-                upgrade_text = "⚠ Upgrade"
+                upgrade_text = "⚠Upgrade"
 
         menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
@@ -48,70 +48,74 @@ def use_whiptail_mode():
 
 def article_manager():
     dialog.title = "Article manager"
-    from manage import build_rss, post_manage
-    menu_list = ["New", "Update", "Edit", "Delete"]
-    result = dialog.menu("Please select an action", menu_list)
-    if result == "New":
-        dialog.title = "New post"
-        post_info = get_post_info()
-        if os.path.exists("./document/{}.md".format(post_info["name"])):
-            console.log("Error", "File [./document/{}.md] already exists".format(post_info["name"]))
-            exit(1)
-        if post_info["name"] is not None:
-            post_manage.new_post(post_info, dialog.confirm("Is this an independent page?", "no"))
-    if result == "Edit":
-        dialog.title = "Edit post"
-        page_list, post_index = select_list("./config/page.json")
-        if not page_list:
-            return
-        config = get_post_info(page_list[post_index]["title"], page_list[post_index]["name"])
-        system_info = json.loads(file.read_file("./config/system.json"))
-        post_manage.edit_post(page_list, post_index, config, system_info["Editor"])
-        if not post_manage.update_post():
-            return
-    if result == "Delete":
-        page_list, post_index = select_list("./config/page.json")
-        if page_list and dialog.confirm(
-                "Are you sure you want to delete this article? (Warning! This operation is irreversible, please be careful!)",
-                "no"):
-            post_manage.delete_post(page_list, post_index)
-    if result == "Update":
-        if not post_manage.update_post():
-            return
-    build_rss.build_rss()
-
+    while True:
+        from manage import build_rss, post_manage
+        menu_list = ["New", "Update", "Edit", "Delete", "Back", "Exit"]
+        result = dialog.menu("Please select an action", menu_list)
+        if result == "Exit":
+            exit(0)
+        if result == "Back":
+            break
+        if result == "New":
+            dialog.title = "New post"
+            post_info = get_post_info()
+            if os.path.exists("./document/{}.md".format(post_info["name"])):
+                console.log("Error", "File [./document/{}.md] already exists".format(post_info["name"]))
+                exit(1)
+            if post_info["name"] is not None:
+                post_manage.new_post(post_info, dialog.confirm("Is this an independent page?", "no"))
+        if result == "Edit":
+            dialog.title = "Edit post"
+            page_list, post_index = select_list("./config/page.json")
+            if page_list:
+                config = get_post_info(page_list[post_index]["title"], page_list[post_index]["name"])
+                system_info = json.loads(file.read_file("./config/system.json"))
+                post_manage.edit_post(page_list, post_index, config, system_info["Editor"])
+            post_manage.update_post()
+        if result == "Delete":
+            page_list, post_index = select_list("./config/page.json")
+            if page_list and dialog.confirm(
+                    "Are you sure you want to delete this article? (Warning! This operation is irreversible, please be careful!)",
+                    "no"):
+                post_manage.delete_post(page_list, post_index)
+        if result == "Update":
+            post_manage.update_post()
+        build_rss.build_rss()
+        time.sleep(0.5)
 
 def menu_manager():
     dialog.title = "Menu manager"
-    menu_list = ["New", "Edit", "Delete"]
+    menu_list = ["New", "Edit", "Delete", "Back", "Exit"]
     result = dialog.menu("Please select an action", menu_list)
-    from manage import menu_manage
-    if result == "New":
-        menu_info = get_menu_info()
-        if menu_info["title"] is not None:
-            menu_manage.add_menu(menu_info)
-        return
-    if result == "Edit":
-        menu_list, menu_index = select_list("./config/menu.json")
-        if not menu_list:
-            return
-        menu_item = menu_list[menu_index]
-        if "name" in menu_item:
-            address = menu_item["name"]
-            independent = True
-        if "absolute" in menu_item:
-            address = menu_item["absolute"]
-            independent = False
-        menu_info = get_menu_info(menu_item["title"], address, independent)
-        menu_manage.edit_menu(menu_list, menu_index, menu_info)
-        return
-    if result == "Delete":
-        menu_list, select_index = select_list("./config/menu.json")
-        if menu_list and dialog.confirm(
-                "Are you sure you want to delete this item? (Warning! This operation is irreversible, please be careful!)",
-                "no"):
-            menu_manage.delete_menu(menu_list, select_index)
-        return
+    while True:
+        if result == "Exit":
+            exit(0)
+        if result == "Back":
+            break
+        from manage import menu_manage
+        if result == "New":
+            menu_info = get_menu_info()
+            if menu_info["title"] is not None:
+                menu_manage.add_menu(menu_info)
+        if result == "Edit":
+            menu_list, menu_index = select_list("./config/menu.json")
+            if menu_list:
+                menu_item = menu_list[menu_index]
+                if "name" in menu_item:
+                    address = menu_item["name"]
+                    independent = True
+                if "absolute" in menu_item:
+                    address = menu_item["absolute"]
+                    independent = False
+                menu_info = get_menu_info(menu_item["title"], address, independent)
+                menu_manage.edit_menu(menu_list, menu_index, menu_info)
+        if result == "Delete":
+            menu_list, select_index = select_list("./config/menu.json")
+            if menu_list and dialog.confirm(
+                    "Are you sure you want to delete this item? (Warning! This operation is irreversible, please be careful!)",
+                    "no"):
+                menu_manage.delete_menu(menu_list, select_index)
+        time.sleep(0.5)
 
 
 def get_menu_info(title_input="", name_input="", independent=False):
