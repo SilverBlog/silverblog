@@ -40,16 +40,18 @@ def setting_menu():
             break
         if result == "Use the Setup Wizard":
             setup_wizard()
-            exit(0)
+            save_config()
         if result == "Set up basic information":
             project_info()
+            save_config()
         if result == "Set up author information":
             author_info()
+            save_config()
         if result == "Theme package manager":
             theme_manage()
         if result == "Other settings":
             other_info()
-        save_config()
+            save_config()
         time.sleep(0.5)
 def save_config():
     file.write_file("./config/system.json", file.json_format_dump(system_config))
@@ -58,8 +60,8 @@ def theme_manage():
     from manage import theme
     dialog.title = "Theme package manager"
     while True:
-        menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing Theme",
-                     "Remove existing Theme", "Back", "Exit"]
+        menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing theme",
+                     "Remove existing theme", "Set template insertion point", "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         theme_name = ""
         org_list = None
@@ -86,6 +88,7 @@ def theme_manage():
                         system_config["i18n"] = setting_i18n(theme_name)
                     if os.path.exists("./templates/{}/config.json".format(theme_name)):
                         setting_theme_config(theme_name)
+                save_config()
         if result == "Use the existing theme":
             theme_name = select_theme()
             system_config["Theme"] = theme_name
@@ -93,13 +96,27 @@ def theme_manage():
                 system_config["i18n"] = setting_i18n(theme_name)
             if os.path.exists("./templates/{}/config.json".format(theme_name)):
                 setting_theme_config(theme_name)
-        if result == "Upgrade existing Theme":
+            save_config()
+        if result == "Upgrade existing theme":
             theme.upgrade_theme(select_theme())
-        if result == "Remove existing Theme":
+        if result == "Remove existing theme":
             theme.remove_theme(select_theme())
+        if result == "Set template insertion point":
+            setting_template_insertion()
+
+
         time.sleep(0.5)
 
 
+def setting_template_insertion():
+    menu_list = ["head", "comment", "foot"]
+    result = dialog.menu("Please select an action", menu_list)
+    if result == "head":
+        os.system("{} ./templates/include/head.html".format(system_config["Editor"]))
+    if result == "comment":
+        os.system("{} ./templates/include/comment.html".format(system_config["Editor"]))
+    if result == "foot":
+        os.system("{} ./templates/include/foot.html".format(system_config["Editor"]))
 def select_theme():
     from manage import theme
     directories = theme.get_local_theme_list()

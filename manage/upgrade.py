@@ -19,7 +19,8 @@ def git_init():
 
 def upgrade_check(fetch=True):
     if not os.path.exists("./.git"):
-        console.log("Error", "Not a git repository.")
+        if fetch:
+            console.log("Error", "Not a git repository.")
         return False
     repo, remote = git_init()
     if fetch:
