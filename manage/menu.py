@@ -3,7 +3,6 @@
 
 import json
 import os
-
 import time
 
 from common import file, console
@@ -28,9 +27,9 @@ def use_whiptail_mode():
             if upgrade.upgrade_check():
                 upgrade_text = "⚠Upgrade"
 
-        menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting", "×Exit"]
+        menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
-        if result == "×Exit":
+        if result == "Exit":
             exit(0)
         if result == "Article manager":
             article_manager()
@@ -51,11 +50,11 @@ def article_manager():
     dialog.title = "Article manager"
     while True:
         from manage import build_rss, post_manage
-        menu_list = ["«Back", "New", "Update", "Edit", "Delete", "×Exit"]
+        menu_list = ["New", "Update", "Edit", "Delete", "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
-        if result == "×Exit":
+        if result == "Exit":
             exit(0)
-        if result == "«Back":
+        if result == "Back":
             break
         if result == "New":
             dialog.title = "New post"
@@ -86,12 +85,12 @@ def article_manager():
 
 def menu_manager():
     dialog.title = "Menu manager"
-    menu_list = ["«Back", "New", "Edit", "Delete", "×Exit"]
+    menu_list = ["New", "Edit", "Delete", "Back", "Exit"]
     result = dialog.menu("Please select an action", menu_list)
     while True:
-        if result == "×Exit":
+        if result == "Exit":
             exit(0)
-        if result == "« Back":
+        if result == "Back":
             break
         from manage import menu_manage
         if result == "New":
