@@ -88,7 +88,7 @@ def theme_manage():
                         system_config["i18n"] = setting_i18n(theme_name)
                     if os.path.exists("./templates/{}/config.json".format(theme_name)):
                         setting_theme_config(theme_name)
-            save_config()
+                save_config()
         if result == "Use the existing theme":
             theme_name = select_theme()
             system_config["Theme"] = theme_name
