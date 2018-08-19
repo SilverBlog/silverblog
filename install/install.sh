@@ -35,6 +35,14 @@ fi
 
 echo "Installing Dependency..."
 
+if command -v pkg >/dev/null 2>&1; then
+    ${use_superuser} pkg install -y newt nginx uwsgi git curl python3
+    curl https://bootstrap.pypa.io/get-pip.py
+    ${use_superuser} python3 get-pip.py
+    rm get-pip.py
+    echo "{\"install\":\"pkg\"}" > install.lock
+fi
+
 if command -v apt-get >/dev/null 2>&1; then
     ${use_superuser} apt-get update
     ${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git curl
