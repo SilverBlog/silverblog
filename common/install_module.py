@@ -1,5 +1,5 @@
 import importlib
-
+import os
 
 def install_and_import(package):
     try:
@@ -13,6 +13,10 @@ def install_and_import(package):
                 from pip._internal import main
             except Exception:
                 from pip import main
-            main(['install', package])
+            install_command = ['install']
+            if os.geteuid() != 0:
+                install_command.append("--user")
+            install_command.append(package)
+            main(install_command)
     finally:
         globals()[package] = importlib.import_module(package)
