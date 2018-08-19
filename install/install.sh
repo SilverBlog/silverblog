@@ -36,7 +36,17 @@ fi
 echo "Installing Dependency..."
 
 if command -v pkg >/dev/null 2>&1; then
-    ${use_superuser} pkg install -y newt nginx uwsgi git curl python3
+    ${use_superuser} pkg install -y newt nginx git curl python3 jansson nano
+    echo "Downloading latest uWSGI tarball..."
+    curl -o uwsgi_latest_from_installer.tar.gz http://projects.unbit.it/downloads/uwsgi-latest.tar.gz
+    mkdir uwsgi_latest_from_installer
+    tar zvxC uwsgi_latest_from_installer --strip-components=1 -f uwsgi_latest_from_installer.tar.gz
+    rm uwsgi_latest_from_installer.tar.gz
+    cd uwsgi_latest_from_installer
+    python3 uwsgiconfig.py --build
+    ${use_superuser} sudo mv uwsgi /usr/local/bin/uwsgi
+    cd ..
+    rm -r uwsgi_latest_from_installer
     curl https://bootstrap.pypa.io/get-pip.py
     ${use_superuser} python3 get-pip.py
     rm get-pip.py
