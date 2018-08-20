@@ -151,14 +151,14 @@ cat << EOF >pm2.json
     "apps": [
         {
         "name": "${install_name}",
-        "script": "/usr/bin/python3",
+        "script": "python3",
         "args": "watch.py",
         "merge_logs": true,
         "cwd": "./"
         },
         {
         "name": "${install_name}-control",
-        "script": "/usr/bin/python3",
+        "script": "python3",
         "args": [
             "watch.py",
             "--control"
