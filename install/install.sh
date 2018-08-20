@@ -37,22 +37,24 @@ echo "Installing Dependency..."
 
 if command -v pkg >/dev/null 2>&1; then
     ${use_superuser} pkg install -y newt nginx git python3 nano
-    ${use_superuser} portsnap fetch extract update
-    set +o
-    cd /usr/ports/devel/jansson/
-    ${use_superuser} make install clean
-    cd -
-    set -o errexit
-    echo "Downloading latest uWSGI tarball..."
-    curl -o uwsgi_latest_from_installer.tar.gz http://projects.unbit.it/downloads/uwsgi-latest.tar.gz
-    mkdir uwsgi_latest_from_installer
-    tar zvxC uwsgi_latest_from_installer --strip-components=1 -f uwsgi_latest_from_installer.tar.gz
-    rm uwsgi_latest_from_installer.tar.gz
-    cd uwsgi_latest_from_installer
-    ${use_superuser} python3 uwsgiconfig.py --build
-    ${use_superuser} sudo mv uwsgi /usr/local/bin/uwsgi
-    cd ..
-    rm -r uwsgi_latest_from_installer
+    if [ ! -f "/usr/local/bin/uwsgi" ]; then
+        ${use_superuser} portsnap fetch extract update
+        set +o errexit
+        cd /usr/ports/devel/jansson/
+        ${use_superuser} make install clean
+        cd -
+        set -o errexit
+        echo "Downloading latest uWSGI tarball..."
+        curl -o uwsgi_latest_from_installer.tar.gz http://projects.unbit.it/downloads/uwsgi-latest.tar.gz
+        mkdir uwsgi_latest_from_installer
+        tar zvxC uwsgi_latest_from_installer --strip-components=1 -f uwsgi_latest_from_installer.tar.gz
+        rm uwsgi_latest_from_installer.tar.gz
+        cd uwsgi_latest_from_installer
+        ${use_superuser} python3 uwsgiconfig.py --build
+        ${use_superuser} sudo mv uwsgi /usr/local/bin/uwsgi
+        cd ..
+        rm -rf uwsgi_latest_from_installer
+    fi
     curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py
     ${use_superuser} python3 get-pip.py
     rm get-pip.py
