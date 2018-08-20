@@ -51,7 +51,7 @@ if command -v pkg >/dev/null 2>&1; then
     ${use_superuser} sudo mv uwsgi /usr/local/bin/uwsgi
     cd ..
     rm -r uwsgi_latest_from_installer
-    curl https://bootstrap.pypa.io/get-pip.py
+    curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py
     ${use_superuser} python3 get-pip.py
     rm get-pip.py
     echo "{\"install\":\"pkg\"}" > install.lock
