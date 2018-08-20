@@ -47,7 +47,7 @@ if command -v pkg >/dev/null 2>&1; then
     tar zvxC uwsgi_latest_from_installer --strip-components=1 -f uwsgi_latest_from_installer.tar.gz
     rm uwsgi_latest_from_installer.tar.gz
     cd uwsgi_latest_from_installer
-    python3 uwsgiconfig.py --build
+    ${use_superuser} python3 uwsgiconfig.py --build
     ${use_superuser} sudo mv uwsgi /usr/local/bin/uwsgi
     cd ..
     rm -r uwsgi_latest_from_installer
