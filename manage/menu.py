@@ -176,17 +176,9 @@ def get_post_info(title_input="", name_input=""):
 def use_text_mode(args):
     if args.command == "qrcode":
         system_config = json.loads(file.read_file("./config/system.json"))
-        try:
-            import qrcode_terminal
-        except ImportError:
-            console.log("Error", "Please install the qrcode-terminal package to support this feature")
-            install_dependency = input('Do you want to install qrcode-terminal now? [y/N]')
-            if install_dependency.lower() == 'yes' or install_dependency.lower() == 'y':
-                use_sudo = ""
-                if os.geteuid() != 0:
-                    use_sudo = "sudo "
-                os.system(use_sudo + "python3 -m pip install qrcode-terminal")
-                exit(0)
+        from common import install_module
+        install_module.install_and_import("qrcode_terminal")
+        import qrcode_terminal
         if len(system_config["API_Password"]) == 0 or len(system_config["Project_URL"]) == 0:
             console.log("Error", "Check the API_Password and Project_URL configuration items")
             exit(1)

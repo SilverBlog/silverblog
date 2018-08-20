@@ -35,24 +35,50 @@ fi
 
 echo "Installing Dependency..."
 
+if command -v pkg >/dev/null 2>&1; then
+    ${use_superuser} pkg install -y newt nginx git python3 nano
+    if [ ! -f "/usr/local/bin/uwsgi" ]; then
+        ${use_superuser} portsnap fetch extract update
+        set +o errexit
+        cd /usr/ports/devel/jansson/
+        ${use_superuser} make install clean
+        cd -
+        set -o errexit
+        echo "Downloading latest uWSGI tarball..."
+        curl -o uwsgi_latest_from_installer.tar.gz http://projects.unbit.it/downloads/uwsgi-latest.tar.gz
+        mkdir uwsgi_latest_from_installer
+        tar zvxC uwsgi_latest_from_installer --strip-components=1 -f uwsgi_latest_from_installer.tar.gz
+        rm uwsgi_latest_from_installer.tar.gz
+        cd uwsgi_latest_from_installer
+        ${use_superuser} python3 uwsgiconfig.py --build
+        ${use_superuser} sudo mv uwsgi /usr/local/bin/uwsgi
+        cd ..
+        rm -rf uwsgi_latest_from_installer
+    fi
+    curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py
+    ${use_superuser} python3 get-pip.py
+    rm get-pip.py
+    echo "{\"install\":\"pkg\"}" > install.lock
+fi
+
 if command -v apt-get >/dev/null 2>&1; then
     ${use_superuser} apt-get update
-    ${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git curl
+    ${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git
     echo "{\"install\":\"apt-get\"}" > install.lock
 fi
 
 if command -v pacman >/dev/null 2>&1; then
-    ${use_superuser} pacman -Sy nginx uwsgi python python-pip python-wheel libnewt uwsgi-plugin-python git gcc curl
+    ${use_superuser} pacman -Sy nginx uwsgi python python-pip python-wheel libnewt uwsgi-plugin-python git gcc
     echo "{\"install\":\"pacman\"}" > install.lock
 fi
 
 if command -v dnf >/dev/null 2>&1; then
-    ${use_superuser} dnf -y install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-devel python3-wheel git curl gcc redhat-rpm-config
+    ${use_superuser} dnf -y install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-devel python3-wheel git gcc redhat-rpm-config
     echo "{\"install\":\"dnf\"}" > install.lock
 fi
 
 if command -v apk >/dev/null 2>&1; then
-    ${use_superuser} apk add --no-cache python3 python3-dev git curl nano vim bash uwsgi uwsgi-python3 newt ca-certificates
+    ${use_superuser} apk add --no-cache python3 python3-dev git nano vim bash uwsgi uwsgi-python3 newt ca-certificates
     echo "{\"install\":\"apk\"}" > install.lock
 fi
 
@@ -125,14 +151,14 @@ cat << EOF >pm2.json
     "apps": [
         {
         "name": "${install_name}",
-        "script": "/usr/bin/python3",
+        "script": "python3",
         "args": "watch.py",
         "merge_logs": true,
         "cwd": "./"
         },
         {
         "name": "${install_name}-control",
-        "script": "/usr/bin/python3",
+        "script": "python3",
         "args": [
             "watch.py",
             "--control"

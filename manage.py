@@ -1,17 +1,15 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import argparse
 import os
-
 import sys
 
 from manage import menu
 
 lang = None
-if "LANG" not in os.environ:
-    lang = "None"
-if "UTF-8" not in os.environ["LANG"] and "UTF.8" not in os.environ["LANG"]:
-    lang = os.environ["LANG"]
+if "LANG" in os.environ:
+    if "UTF-8" not in os.environ["LANG"] and "UTF.8" not in os.environ["LANG"]:
+        lang = os.environ["LANG"]
 if lang is not None:
     print("The current locale is: {} .Some characters may not be displayed and processed.".format(lang))
     input("Press enter to continue.")
