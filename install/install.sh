@@ -38,9 +38,11 @@ echo "Installing Dependency..."
 if command -v pkg >/dev/null 2>&1; then
     ${use_superuser} pkg install -y newt nginx git python3 nano
     ${use_superuser} portsnap fetch extract update
+    set +o
     cd /usr/ports/devel/jansson/
     ${use_superuser} make install clean
     cd -
+    set -o errexit
     echo "Downloading latest uWSGI tarball..."
     curl -o uwsgi_latest_from_installer.tar.gz http://projects.unbit.it/downloads/uwsgi-latest.tar.gz
     mkdir uwsgi_latest_from_installer
