@@ -27,7 +27,7 @@ while getopts "n:c" arg; do
     esac
 done
 
-function build_install(){
+function build_uwsgi_install(){
     if [ ! -f "/usr/local/bin/uwsgi" ]; then
         ${use_superuser} portsnap fetch extract update
         set +o errexit
@@ -46,6 +46,10 @@ function build_install(){
         cd ..
         rm -rf uwsgi_latest_from_installer
     fi
+
+}
+
+function build_pip_install(){
     curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py
     ${use_superuser} python3 get-pip.py
     rm get-pip.py
@@ -61,13 +65,15 @@ echo "Installing Dependency..."
 
 if command -v pkg >/dev/null 2>&1; then
     ${use_superuser} pkg install -y newt nginx git python3
-    build_install
+    build_uwsgi_install
+    build_pip_install
     echo "{\"install\":\"pkg\"}" > install.lock
 fi
 
 if command -v pkgin >/dev/null 2>&1; then
     ${use_superuser} pkgin install -y newt nginx git python3
-    build_install
+    build_uwsgi_install
+    build_pip_install
     echo "{\"install\":\"pkgin\"}" > install.lock
 fi
 
