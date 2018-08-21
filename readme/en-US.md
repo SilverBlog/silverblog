@@ -19,6 +19,7 @@ SilverBlog is a lightweight blog project based on Python3.
 * Full [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) support
 
 ## how to install
+We support `freebsd`, `netbsd`, `debian`, `ubuntu`, `fedora`, `alpine`, `arch linux` to deploy directly, and other systems use Docker deployment.
 
 You can install SilverBlog directly using the installation script:
 

@@ -21,6 +21,8 @@ SilverBlog 是一個基於 Python3 的輕量級博客專案。
 * 完整的 [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) 支持
 
 ## 如何安裝
+我们支持`freebsd`,`netbsd`,`debian`,`ubuntu`,`fedora`,`alpine`,`arch linux`直接部署，其他系统清使用Docker部署。
+
 
 您可以直接使用安裝腳本安裝 SilverBlog：
 

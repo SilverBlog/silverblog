@@ -163,6 +163,7 @@ server {
 }
 EOF
 fi
+
 cat << EOF >pm2.json
 {
     "apps": [
