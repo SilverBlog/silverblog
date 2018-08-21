@@ -27,16 +27,7 @@ while getopts "n:c" arg; do
     esac
 done
 
-use_superuser=""
-if [ $UID -ne 0 ]; then
-    echo "Superuser privileges are required to run this script."
-    use_superuser="sudo"
-fi
-
-echo "Installing Dependency..."
-
-if command -v pkg >/dev/null 2>&1; then
-    ${use_superuser} pkg install -y newt nginx git python3 nano
+function build_uwsgi_install(){
     if [ ! -f "/usr/local/bin/uwsgi" ]; then
         ${use_superuser} portsnap fetch extract update
         set +o errexit
@@ -55,11 +46,37 @@ if command -v pkg >/dev/null 2>&1; then
         cd ..
         rm -rf uwsgi_latest_from_installer
     fi
+
+}
+
+function build_pip_install(){
     curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py
     ${use_superuser} python3 get-pip.py
     rm get-pip.py
+}
+
+use_superuser=""
+if [ $UID -ne 0 ]; then
+    echo "Superuser privileges are required to run this script."
+    use_superuser="sudo"
+fi
+
+echo "Installing Dependency..."
+
+if command -v pkg >/dev/null 2>&1; then
+    ${use_superuser} pkg install -y newt nginx git python3
+    build_uwsgi_install
+    build_pip_install
     echo "{\"install\":\"pkg\"}" > install.lock
 fi
+
+if command -v pkgin >/dev/null 2>&1; then
+    ${use_superuser} pkgin install -y newt nginx git python3
+    build_uwsgi_install
+    build_pip_install
+    echo "{\"install\":\"pkgin\"}" > install.lock
+fi
+
 
 if command -v apt-get >/dev/null 2>&1; then
     ${use_superuser} apt-get update
@@ -78,7 +95,7 @@ if command -v dnf >/dev/null 2>&1; then
 fi
 
 if command -v apk >/dev/null 2>&1; then
-    ${use_superuser} apk add --no-cache python3 python3-dev git nano vim bash uwsgi uwsgi-python3 newt ca-certificates
+    ${use_superuser} apk add --no-cache python3 python3-dev git uwsgi uwsgi-python3 newt ca-certificates
     echo "{\"install\":\"apk\"}" > install.lock
 fi
 
