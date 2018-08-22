@@ -19,7 +19,7 @@ SilverBlog is a lightweight blog project based on Python3.
 * Full [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) support
 
 ## how to install
-
+We support `freebsd`, `netbsd`, `debian`, `ubuntu`, `fedora`, `alpine`, `arch linux` for direct deployment. For other systems, please use Docker deployment.
 You can install SilverBlog directly using the installation script:
 
 Global:
@@ -91,7 +91,7 @@ bash systemd_install.sh -n silverblog -u silverblog
 
 SilverBlog recommends using a NodeJS-based monitor: pm2
 
-For the installation of pm2 see [GitHub - tj/n: Node version management](https://github.com/tj/n) and [pm2 - Quick Start](http://pm2.keymetrics.io/docs/Usage/quick-start/)
+For the installation of pm2 see [tj/n: Node version management](https://github.com/tj/n) and [pm2 - Quick Start](http://pm2.keymetrics.io/docs/Usage/quick-start/)
 
 you just have to run:
 
@@ -141,7 +141,7 @@ You can download the latest android client at https://github.com/SilverBlogTeam/
 
 You can compile and deploy the https://github.com/SilverBlogTeam/silverblog_ios IOS client yourself.
 
-You can use Silver Create (https://c.silverblog.org) to manage your blog.
+You can use SilverCreator (https://c.silverblog.org) to manage your blog.
 
 You can execute `./manage.py qrcode` to generate the automated configuration QR code.
 
