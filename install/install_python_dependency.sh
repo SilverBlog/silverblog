@@ -5,13 +5,12 @@ if test $(ps h -o comm -p $$) = "sh"; then
     exit 1
 fi
 
-use_superuser=""
+use_user=""
 
 if [ $UID -ne 0 ]; then
-    echo "Superuser privileges are required to run this script."
-    use_superuser="sudo"
+    use_user="--user"
 fi
 
-${use_superuser} /usr/bin/python3 -m pip install -U pip
+python3 -m pip install ${use_user} -U pip
 
-${use_superuser} /usr/bin/python3 -m pip install -U Flask hoedown xpinyin pyrss2gen gitpython requests watchdog
+python3 -m pip install ${use_user} -U Flask hoedown xpinyin pyrss2gen gitpython requests watchdog

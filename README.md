@@ -21,6 +21,8 @@ SilverBlog 是一個基於 Python3 的輕量級博客專案。
 * 完整的 [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) 支持
 
 ## 如何安裝
+我們支持`freebsd`,`netbsd`,`debian`,`ubuntu`,`fedora`,`alpine`,`arch linux`直接部署，其他系統請使用Docker部署。
+
 
 您可以直接使用安裝腳本安裝 SilverBlog：
 
@@ -92,7 +94,7 @@ bash systemd_install.sh -n silverblog -u silverblog
 
 SilverBlog 推薦您使用基於 NodeJS 的監控程序： PM2
 
-有關PM2的安裝請查看 [GitHub - tj/n: Node version management](https://github.com/tj/n) 和 [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
+有關PM2的安裝請查看 [tj/n: Node version management](https://github.com/tj/n) 和 [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
 
 您只需要運行：
 
@@ -115,7 +117,7 @@ pm2 save
 
 您可以隨時使用 `./manage.py -h` 來獲取 SilverBlog 管理模組的幫助信息。
 
-直接輸入 `./manage.py` 將進入whiptail構建的圖形化環境。
+直接輸入 `./manage.py` 將進入 whiptail 構建的圖形化環境。
 
 ## 使用 github page 功能
 
@@ -129,7 +131,7 @@ git config user.email "youremail@google.com"
 git config user.name "your name"
 ```
 
-接下來，您只需要執行 `Build static page` 命令，系統就會自動生成靜態頁面並且提交到 github page。
+接下來，您只需要執行 `./manage.py build_page` 命令，系統就會自動生成靜態頁面並且提交到 github page。
 
 您可以嘗試使用 `/example/.travis.yml` 腳本，實現自動化提交。
 
@@ -142,7 +144,7 @@ git config user.name "your name"
 
 您可以自己編譯部署 https://github.com/SilverBlogTeam/silverblog_ios IOS客戶端。
 
-您可以使用 Silver Create(https://c.silverblog.org) 來管理你的博客。
+您可以使用 SilverCreator(https://c.silverblog.org) 來管理你的博客。
 
 您可以執行 `./manage.py qrcode` 生成自動化配置二維碼。
 
