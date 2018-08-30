@@ -1,0 +1,6 @@
+FROM silverblog/silverblog
+WORKDIR /home/silverblog/
+ADD ./ ./
+RUN apk add --no-cache nginx supervisor && rm /etc/nginx/conf.d/default.conf && echo "{\"install\":\"docker\"}" > install/install.lock
+RUN bash ./install/initialization.sh && cp nginx_config /etc/nginx/conf.d/default.conf && cp example/supervisor.conf supervisor.conf
+CMD [ "/usr/bin/supervisord","-c","/home/silverblog/supervisor.conf" ]

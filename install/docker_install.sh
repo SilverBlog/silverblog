@@ -43,12 +43,11 @@ fi
 
 echo "{\"install\":\"docker\"}" > install.lock
 
-bash ./initialization.sh
 cd ..
-echo "Generating Nginx configuration..."
 
-if [ ! -f "./nginx_config" ]; then
-cat << EOF >nginx_config
+if [ ! -f "../nginx_config" ]; then
+echo "Generating Nginx configuration..."
+cat << EOF >../nginx_config
 server {
     listen 80;
     location / {
@@ -76,6 +75,7 @@ server {
 }
 EOF
 fi
+bash install/initialization.sh
 sed -i '''s/.\/config\/unix_socks\/main.sock/0.0.0.0:5000/g' uwsgi.json
 sed -i '''s/.\/config\/unix_socks\/control.sock/0.0.0.0:5001/g' uwsgi.json
 if [ ! -f "./docker-compose.yml" ]; then

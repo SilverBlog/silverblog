@@ -132,37 +132,6 @@ bash ./initialization.sh
 
 cd ..
 
-echo "Generating Nginx configuration..."
-
-if [ ! -f "./nginx_config" ]; then
-cat << EOF >nginx_config
-server {
-    listen 80;
-    location / {
-        include uwsgi_params;
-        uwsgi_pass unix:$(pwd)/config/unix_socks/main.sock;
-    }
-    location /control {
-        include uwsgi_params;
-        uwsgi_pass unix:$(pwd)/config/unix_socks/control.sock;
-        add_header 'Access-Control-Allow-Origin' "https://c.silverblog.org";
-	    add_header 'Access-Control-Allow-Credentials' "true";
-        if (\$request_method = "OPTIONS") {
-            add_header 'Access-Control-Allow-Origin' "https://c.silverblog.org";
-            add_header 'Access-Control-Max-Age' 86400;
-            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE';
-            add_header 'Access-Control-Allow-Headers' 'reqid, nid, host, x-real-ip, x-forwarded-ip, event-type, event-id, accept, content-type';
-            add_header 'Content-Length' 0;
-            add_header 'Content-Type' 'text/plain, charset=utf-8';
-            return 204;
-        }
-    }
-    location /static {
-        alias $(pwd)/templates/static;
-    }
-}
-EOF
-fi
 
 cat << EOF >pm2.json
 {
