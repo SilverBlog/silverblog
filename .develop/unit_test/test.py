@@ -25,12 +25,14 @@ get_list = ["", "post/demo-article", "rss"]
 for item in get_list:
     if not get(item):
         print("ERROR:" + item)
+        print(r.status_code)
         exit(1)
 
 post_list = ["control/system_info", "control/get_list/post", "control/get_list/menu"]
 for item in post_list:
     if not post(item):
         print("ERROR:" + item)
+        print(r.status_code)
         exit(1)
 
 r = requests.post(host + "/control/get_content/post", json={"post_id": 0})
