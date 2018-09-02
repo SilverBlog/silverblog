@@ -45,7 +45,7 @@ echo "{\"install\":\"docker\"}" > install.lock
 
 cd ..
 
-if [ ! -f "../nginx_config" ]; then
+if [ ! -f "./nginx_config" ]; then
 echo "Generating Nginx configuration..."
 cat << EOF >../nginx_config
 server {
