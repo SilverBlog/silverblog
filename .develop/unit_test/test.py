@@ -13,26 +13,26 @@ def get(url):
     if r.status_code == 200:
         print(url + ":" + r.text)
         return True
+    print(r.status_code)
     return False
 def post(url):
     r = requests.post(host + url)
     if r.status_code == 200:
         print(url + ":" + r.text)
         return True
+    print(r.status_code)
     return False
 
 get_list = ["", "post/demo-article", "rss"]
 for item in get_list:
     if not get(item):
         print("ERROR:" + item)
-        print(r.status_code)
         exit(1)
 
 post_list = ["control/system_info", "control/get_list/post", "control/get_list/menu"]
 for item in post_list:
     if not post(item):
         print("ERROR:" + item)
-        print(r.status_code)
         exit(1)
 
 r = requests.post(host + "/control/get_content/post", json={"post_id": 0})
