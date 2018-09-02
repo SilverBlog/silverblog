@@ -95,7 +95,7 @@ if command -v dnf >/dev/null 2>&1; then
 fi
 
 if command -v apk >/dev/null 2>&1; then
-    ${use_superuser} apk add --no-cache python3 python3-dev git uwsgi uwsgi-python3 newt ca-certificates
+    ${use_superuser} apk add --no-cache python3 python3-dev git uwsgi uwsgi-python3 newt ca-certificates musl-dev gcc python3-dev
     echo "{\"install\":\"apk\"}" > install.lock
 fi
 
