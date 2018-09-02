@@ -73,7 +73,7 @@ unit_test_develop:
   - cp -f .develop/demo/menu.json ./config/menu.json
   - cp -f .develop/demo/system.json ./config/system.json
   - cp .develop/demo/demo-article.md ./document/demo-article.md
-  - cd templates && bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)" && cd -
+  - cd templates && bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)" && cd ..
   - rm /etc/nginx/conf.d/default.conf && cp nginx_config /etc/nginx/conf.d/default.conf
   - mkdir /run/nginx/
   - python3 ./manage.py update
