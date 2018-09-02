@@ -6,7 +6,7 @@ stages:
 variables:
   docker_tag_name: "silverblog/silverblog"
 
-build_docker_demo:
+build_demo:
   services:
   - docker:dind
   tags:
