@@ -113,8 +113,7 @@ services:
     restart: on-failure:10
     command: python3 watch.py
     networks:
-      ${install_name}_net:
-        ipv4_address: 172.18.0.1
+     - ${install_name}_net
     volumes:
      - $(pwd):/home/silverblog/
   ${install_name}_control:
@@ -123,29 +122,25 @@ services:
     restart: on-failure:10
     command: python3 watch.py --control
     networks:
-      ${install_name}_net:
-        ipv4_address: 172.18.0.2
+     - ${install_name}_net
     volumes:
      - $(pwd):/home/silverblog/
   ${install_name}_nginx:
     image: "nginx:alpine"
     container_name: "${install_name}_nginx"
     restart: on-failure:10
-    command: cp $(pwd)/nginx_config /etc/nginx/conf.d/default.conf && sed -i '''s/127.0.0.1:5000/172.18.0.1/g' && sed -i '''s/127.0.0.1:5001/172.18.0.2/g' && nginx -g daemon off;
+    command: sh -c "cp \"$(pwd)/nginx_config\" /etc/nginx/conf.d/default.conf && sed -i '''s/127.0.0.1:5000/${install_name}:5000/g' /etc/nginx/conf.d/default.conf && sed -i '''s/127.0.0.1:5001/${install_name}_control:5001/g' /etc/nginx/conf.d/default.conf && nginx -g \"daemon off;\""
     networks:
-      ${install_name}_net:
-        ipv4_address: 172.18.0.3
+      - ${install_name}_net
+    depends_on:
+      - ${install_name}
+      - ${install_name}_control
     ports:
       - 80:80
     volumes:
       - $(pwd):$(pwd)
 networks:
   ${install_name}_net:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.18.0.0/24
 EOF
 fi
 
