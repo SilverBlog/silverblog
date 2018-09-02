@@ -26,7 +26,7 @@ done
 docker_image="silverblog/silverblog"
 repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
 
-if [ -n ${china_install} ];then
+if [ ${china_install} = true ];then
     docker_image="registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog"
     repo_url=https://gitee.com/qwe7002/silverblog.git
 fi
@@ -128,7 +128,7 @@ services:
     volumes:
      - $(pwd):/home/silverblog/
   ${install_name}_nginx:
-    image:"nginx:alpine"
+    image: "nginx:alpine"
     container_name: "${install_name}_nginx"
     restart: on-failure:10
     command: cp $(pwd)/nginx_config /etc/nginx/conf.d/default.conf && sed -i '''s/127.0.0.1:5000/172.18.0.1/g' && sed -i '''s/127.0.0.1:5001/172.18.0.2/g' && nginx -g daemon off;
@@ -145,7 +145,7 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.16.0.0/24
+        - subnet: 172.18.0.0/24
 EOF
 fi
 
