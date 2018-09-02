@@ -69,7 +69,7 @@ unit_test_develop:
   script:
   - export LANG="C.UTF-8"
   - cd install && bash ./install.sh && cd -
-  - echo "{\"install\":\"docker\"}" > ./install/install.lock
+  - echo "{\"install\":\"docker-buildin\"}" > ./install/install.lock
   - cp -f ./.develop/demo/page.json ./config/page.json
   - cp -f ./.develop/demo/menu.json ./config/menu.json
   - cp -f ./.develop/demo/system.json ./config/system.json

@@ -18,8 +18,9 @@ if os.path.exists("./install/install.lock"):
 
     f = open("./install/install.lock", newline=None)
     install_info = json.loads(f.read())
-    if install_info["install"] == "docker":
-        docker_mode = True
+    if install_info["install"] == "docker" or install_info["install"] == "docker-buildin":
+        if install_info["install"] == "docker":
+            docker_mode = True
         console.log("info", "Observer performed by polling method.")
         from watchdog.observers.polling import PollingObserver as Observer
 p = None
