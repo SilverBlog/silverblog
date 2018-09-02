@@ -69,6 +69,7 @@ unit_test_develop:
   script:
   - export LANG="C.UTF-8"
   - cd install
+  - apk add --no-cache --update procps
   - bash ./install.sh && echo "{\"install\":\"docker-buildin\"}" > install.lock
   - cd ..
   - cp -f .develop/demo/page.json ./config/page.json
