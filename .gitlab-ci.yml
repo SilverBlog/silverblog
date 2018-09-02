@@ -63,13 +63,20 @@ release_github:
 
 
 unit_test_develop:
-  image: ubuntu:latest
   stage: test
   only:
   - develop
   script:
   - export LANG="C.UTF-8"
-  - bash ./.develop/unit_test/install.sh
+  - cd install && bash ./install.sh && cd -
+  - echo "{\"install\":\"docker\"}" > ./install/install.lock
+  - cp -f ./.develop/demo/page.json ./config/page.json
+  - cp -f ./.develop/demo/menu.json ./config/menu.json
+  - cp -f ./.develop/demo/system.json ./config/system.json
+  - cp ./.develop/demo/demo-article.md ./document/demo-article.md
+  - cd ./templates && bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)" && cd -
+  - rm /etc/nginx/conf.d/default.conf && cp nginx_config /etc/nginx/conf.d/default.conf
+  - echo "{\"excerpt\":\"this is a test\",\"time\":0}" > ./document/demo-article.json
   - python3 ./manage.py update
   - python3 ./manage.py build-page
   - python3 ./.develop/unit_test/test.py
