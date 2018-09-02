@@ -132,7 +132,9 @@ bash ./initialization.sh
 
 cd ..
 
+read -p "Create a pm2 configuration file? (Y/N) :" yn
 
+if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
 cat << EOF >pm2.json
 {
     "apps": [
@@ -156,7 +158,7 @@ cat << EOF >pm2.json
     ]
 }
 EOF
-
+fi
 echo ""
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
 echo "./manage.py"
