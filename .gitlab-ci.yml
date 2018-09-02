@@ -80,7 +80,4 @@ unit_test_develop:
   - python3 ./manage.py update
   - python3 ./manage.py build-page
   - python3 ./.develop/unit_test/test.py
-  artifacts:
-    paths:
-    - logs/
-    expire_in: 1 week
+
