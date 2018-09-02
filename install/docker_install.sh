@@ -47,7 +47,7 @@ cd ..
 
 if [ ! -f "./nginx_config" ]; then
 echo "Generating Nginx configuration..."
-cat << EOF >../nginx_config
+cat << EOF >nginx_config
 server {
     listen 80;
     location / {
