@@ -103,6 +103,52 @@ services:
 EOF
 fi
 
+if [ ! -f "./docker-compose-with-nginx.yml" ]; then
+cat << EOF > docker-compose-with-nginx.yml
+version: '3'
+services:
+  ${install_name}:
+    image: "${docker_image}"
+    container_name: "${install_name}"
+    restart: on-failure:10
+    command: python3 watch.py
+    networks:
+      ${install_name}_net:
+        ipv4_address: 172.18.0.1
+    volumes:
+     - $(pwd):/home/silverblog/
+  ${install_name}_control:
+    image: "${docker_image}"
+    container_name: "${install_name}_control"
+    restart: on-failure:10
+    command: python3 watch.py --control
+    networks:
+      ${install_name}_net:
+        ipv4_address: 172.18.0.2
+    volumes:
+     - $(pwd):/home/silverblog/
+  ${install_name}_nginx:
+    image:"nginx:alpine"
+    container_name: "${install_name}_nginx"
+    restart: on-failure:10
+    command: cp $(pwd)/nginx_config /etc/nginx/conf.d/default.conf && sed -i '''s/127.0.0.1:5000/172.18.0.1/g' && sed -i '''s/127.0.0.1:5001/172.18.0.2/g' && nginx -g daemon off;
+    networks:
+      ${install_name}_net:
+        ipv4_address: 172.18.0.3
+    ports:
+      - 80:80
+    volumes:
+      - $(pwd):$(pwd)
+networks:
+  ${install_name}_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.0.0/24
+EOF
+fi
+
 cat << EOF >manage.sh
 #!/usr/bin/env bash
 docker run -it --rm -v \$(pwd):/home/silverblog --name="${install_name}_manage" silverblog/silverblog python3 manage.py \$@
