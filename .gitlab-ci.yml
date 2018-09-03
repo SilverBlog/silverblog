@@ -84,6 +84,7 @@ unit_test_develop:
   script:
   - cd install
   - bash initialization.sh
+  - cd ..
   - cp -f .develop/demo/page.json ./config/page.json
   - cp -f .develop/demo/menu.json ./config/menu.json
   - cp -f .develop/demo/system.json ./config/system.json
