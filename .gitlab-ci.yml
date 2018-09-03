@@ -72,7 +72,7 @@ build_test_env:
   - develop
   script:
   - docker pull docker.reallserver.cn/${docker_tag_name}:test_env || true
-  - echo "RUN apk install --no-cache nginx" >> ./example/Dockerfile
+  - echo -e >> ./example/Dockerfile && echo "RUN apk install --no-cache nginx" >> ./example/Dockerfile
   - docker build --cache-from docker.reallserver.cn/${docker_tag_name}:test_env -t docker.reallserver.cn/${docker_tag_name}:test_env -f ./example/Dockerfile .
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN docker.reallserver.cn
   - docker push docker.reallserver.cn/${docker_tag_name}:test_env
