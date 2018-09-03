@@ -19,6 +19,7 @@ templates
 /manage.sh
 /upgrade/*.json
 /docker-compose.yml
+/docker-compose-with-nginx.yml
 static_page
 trash
 logs

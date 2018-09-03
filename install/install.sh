@@ -95,6 +95,7 @@ if command -v dnf >/dev/null 2>&1; then
 fi
 
 if command -v apk >/dev/null 2>&1; then
+    ${use_superuser} apk add --no-cache --update procps
     ${use_superuser} apk add --no-cache python3 python3-dev git uwsgi uwsgi-python3 newt ca-certificates musl-dev gcc python3-dev nginx
     echo "{\"install\":\"apk\"}" > install.lock
 fi
@@ -111,7 +112,7 @@ if [ ! -f "initialization.sh" ]; then
 
         repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
 
-        if [ -n ${china_install} ];then
+        if [ ${china_install} = true ];then
             repo_url=https://gitee.com/qwe7002/silverblog.git
         fi
 
@@ -132,7 +133,9 @@ bash ./initialization.sh
 
 cd ..
 
+read -p "Create a pm2 configuration file? (Y/N) :" yn
 
+if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
 cat << EOF >pm2.json
 {
     "apps": [
@@ -156,7 +159,7 @@ cat << EOF >pm2.json
     ]
 }
 EOF
-
+fi
 echo ""
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
 echo "./manage.py"

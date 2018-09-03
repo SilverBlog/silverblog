@@ -39,6 +39,8 @@ def install_theme(theme_name, orgs_list=None):
     if os.path.exists("./templates/" + name):
         console.log("Error", "This theme has been installed")
         return
+    if not os.path.exists("./templates/static"):
+        os.mkdir("./templates/static")
     console.log("info", "Getting the theme installation script...")
     try:
         r = requests.get("https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).text
