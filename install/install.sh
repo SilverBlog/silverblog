@@ -113,7 +113,7 @@ if [ ! -f "initialization.sh" ]; then
         repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
 
         if [ ${china_install} = true ];then
-            repo_url=https://gitee.com/qwe7002/silverblog.git
+            repo_url=https://code.aliyun.com/silverblogteam/silverblog.git
         fi
 
         git clone ${repo_url} --depth=1 ${install_name}
