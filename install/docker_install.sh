@@ -28,7 +28,7 @@ repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
 
 if [ ${china_install} = true ];then
     docker_image="registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog"
-    repo_url=https://gitee.com/qwe7002/silverblog.git
+    repo_url=https://code.aliyun.com/silverblogteam/silverblog.git
 fi
 
 if [ ! -f "initialization.sh" ]; then
