@@ -131,6 +131,11 @@ bash ./install_python_dependency.sh
 
 bash ./initialization.sh
 
+if [ ${china_install} = true ]; then
+china_option="-c"
+fi
+
+bash ./nginx_gen.sh ${china_option}
 cd ..
 
 read -p "Create a pm2 configuration file? (Y/N) :" yn
