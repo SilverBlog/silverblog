@@ -110,10 +110,10 @@ if [ ! -f "initialization.sh" ]; then
     if [ ! -d ${install_name} ]; then
         echo "Cloning silverblog..."
 
-        repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
+        repo_url=https://github.com/silverblogteam/silverblog.git
 
         if [ ${china_install} = true ];then
-            repo_url=https://gitee.com/qwe7002/silverblog.git
+            repo_url=https://code.aliyun.com/silverblogteam/silverblog.git
         fi
 
         git clone ${repo_url} --depth=1 ${install_name}
@@ -140,7 +140,7 @@ cat << EOF >pm2.json
 {
     "apps": [
         {
-        "name": "${install_name}",
+        "name": "${install_name}-main",
         "script": "python3",
         "args": "watch.py",
         "merge_logs": true,
@@ -159,6 +159,22 @@ cat << EOF >pm2.json
     ]
 }
 EOF
+fi
+if [ "$yn" == "N" ] || [ "$yn" == "n" ]; then
+read -p "Create a supervisord configuration file? (Y/N) :" yn
+if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
+cat << EOF >supervisord.conf
+[program:${install_name}-main]
+command=./watch.py
+directory=$(pwd)
+autorestart=true
+
+[program:${install_name}-control]
+directory=$(pwd)
+command=./watch.py --control
+autorestart=true
+EOF
+fi
 fi
 echo ""
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"

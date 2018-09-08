@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 set -o errexit
 
-python3 -m pip install -U pip
-apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev
-python3 -m pip install flask hoedown xpinyin pyrss2gen gitpython watchdog requests
-apk del --purge .build-deps
-echo "{\"install\":\"docker\"}" > /home/silverblog/install/install.lock
-
 bash /home/silverblog/install/initialization.sh
 sed -i '''s/.\/config\/unix_socks\/main.sock/0.0.0.0:5000/g' uwsgi.json
 sed -i '''s/.\/config\/unix_socks\/control.sock/0.0.0.0:5001/g' uwsgi.json
