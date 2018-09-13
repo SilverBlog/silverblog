@@ -1,34 +1,4 @@
 #!/usr/bin/env bash
-china_install=false
-while getopts "n:c" arg; do
-    case ${arg} in
-         c)
-            china_install=true
-            ;;
-         ?)
-            echo "Unknown argument"
-            echo "use ./nginx_gen.sh [-c]"
-            exit 1
-            ;;
-    esac
-done
-
-if [ -f "nginx_gen.sh" ]; then
-    cd ..
-fi
-
-
-if [ ! -f "./nginx_config" ]; then
-echo "Generating Nginx configuration..."
-if [ ${china_install} = false ];then
-gen_default_nginx
-fi
-
-if [ ${china_install} = true ];then
-gen_china_nginx
-fi
-fi
-
 function gen_default_nginx(){
 cat << EOF >nginx_config
 server {
@@ -85,3 +55,34 @@ server {
 }
 EOF
 }
+
+
+china_install=false
+while getopts "n:c" arg; do
+    case ${arg} in
+         c)
+            china_install=true
+            ;;
+         ?)
+            echo "Unknown argument"
+            echo "use ./nginx_gen.sh [-c]"
+            exit 1
+            ;;
+    esac
+done
+
+if [ -f "nginx_gen.sh" ]; then
+    cd ..
+fi
+
+
+if [ ! -f "./nginx_config" ]; then
+echo "Generating Nginx configuration..."
+if [ ${china_install} = false ];then
+gen_default_nginx
+fi
+
+if [ ${china_install} = true ];then
+gen_china_nginx
+fi
+fi
