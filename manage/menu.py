@@ -13,7 +13,8 @@ dialog.height = 15
 dialog.title = "SilverBlog management tool"
 def use_whiptail_mode():
     dialog.title = "SilverBlog management tool"
-    while True:
+    menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "Exit"]
+    if os.path.exists("./.git"):
         upgrade_text = "Upgrade"
         upgrade_check = False
         last_fetch_time = 0
@@ -26,8 +27,8 @@ def use_whiptail_mode():
             file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
             if upgrade.upgrade_check():
                 upgrade_text = "⚠ Upgrade"
-
         menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting", "Exit"]
+    while True:
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
