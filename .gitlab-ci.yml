@@ -6,7 +6,7 @@ stages:
 variables:
   docker_tag_name: "silverblog/silverblog"
 
-build_docker_demo:
+build_demo:
   services:
   - docker:dind
   tags:
@@ -15,15 +15,14 @@ build_docker_demo:
   only:
   - nightly
   script:
-  - docker build -t docker.reallserver.cn/${docker_tag_name}-demo -f ./.develop/demo/Dockerfile .
-  - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
-  - docker push docker.reallserver.cn/${docker_tag_name}-demo
-  - docker rmi docker.reallserver.cn/${docker_tag_name}-demo
+  - docker build -t docker.reallserver.cn/${docker_tag_name}:demo -f ./.develop/demo/Dockerfile .
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN docker.reallserver.cn
+  - docker push docker.reallserver.cn/${docker_tag_name}:demo
   - eval $(ssh-agent -s)
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
-  - ssh qwe7002@demo.silverblog.org "docker-compose down && docker pull docker.reallserver.cn/${docker_tag_name}-demo && bash /home/qwe7002/dockerclean.sh && docker-compose up -d"
+  - ssh qwe7002@demo.silverblog.org "docker-compose down && docker pull docker.reallserver.cn/${docker_tag_name}:demo && bash /home/qwe7002/dockerclean.sh && docker-compose up -d"
 
 build_docker:
   services:
@@ -35,14 +34,15 @@ build_docker:
   - master
   script:
   - docker build -t ${docker_tag_name} -f ./example/Dockerfile .
+  - docker build -t ${docker_tag_name}:buildin -f ./example/Dockerfile .
   - docker login -u qwe7002 -p ${docker_hub_passwd}
-  - docker login -u gitlab -p ${docker_passwd} docker.reallserver.cn
   - docker login -u qwe7002@hotmail.com -p ${docker_hub_passwd} registry.cn-hangzhou.aliyuncs.com
-  - docker tag ${docker_tag_name} docker.reallserver.cn/${docker_tag_name}
   - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
+  - docker tag ${docker_tag_name}:buildin registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}:buildin
   - docker push ${docker_tag_name}
-  - docker push docker.reallserver.cn/${docker_tag_name}
   - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
+  - docker push ${docker_tag_name}:buildin
+  - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}:buildin
 release_github:
   stage: deploy
   only:
@@ -53,23 +53,48 @@ release_github:
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
-  - git config --global http.https://github.com.proxy ${proxy}
-  - git push --set-upstream https://${github_key}@github.com/SilverBlogTeam/silverblog.git HEAD:$CI_COMMIT_REF_NAME
-  - git push --set-upstream git@gitee.com:qwe7002/silverblog.git HEAD:$CI_COMMIT_REF_NAME
+  - git push --set-upstream git@github.com:SilverBlogTeam/silverblog.git HEAD:refs/heads/$CI_COMMIT_REF_NAME
+  - git push --set-upstream git@code.aliyun.com:silverblogteam/silverblog.git HEAD:refs/heads/$CI_COMMIT_REF_NAME
   - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
   - cd wiki
-  - git push -f --set-upstream https://${github_key}@github.com/SilverBlogTeam/silverblog.wiki.git HEAD:master
-  - git push -f --set-upstream git@gitee.com:qwe7002/silverblog.wiki.git HEAD:master
+  - git push -f --set-upstream git@github.com:SilverBlogTeam/silverblog.wiki.git HEAD:refs/heads/master
+  - git push -f --set-upstream git@code.aliyun.com:silverblogteam/silverblog.wiki.git HEAD:refs/heads/master
 
+
+build_test_env:
+  services:
+  - docker:dind
+  tags:
+  - docker-build
+  stage: build
+  only:
+  - develop
+  script:
+  - docker pull docker.reallserver.cn/${docker_tag_name}:test_env || true
+  - echo " && apk add --no-cache nginx" >> ./example/Dockerfile
+  - docker build --cache-from docker.reallserver.cn/${docker_tag_name}:test_env -t docker.reallserver.cn/${docker_tag_name}:test_env -f ./example/Dockerfile .
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN docker.reallserver.cn
+  - docker push docker.reallserver.cn/${docker_tag_name}:test_env
 
 unit_test_develop:
-  image: ubuntu:latest
+  image: docker.reallserver.cn/silverblog/silverblog:test_env
   stage: test
   only:
   - develop
   script:
-  - export LANG="C.UTF-8"
-  - bash ./.develop/unit_test/install.sh
+  - cd install
+  - bash initialization.sh
+  - cd ..
+  - cp -f .develop/demo/page.json ./config/page.json
+  - cp -f .develop/demo/menu.json ./config/menu.json
+  - cp -f .develop/demo/system.json ./config/system.json
+  - cp -f .develop/demo/demo-article.md ./document/demo-article.md
+  - cd templates
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
+  - cd ..
+  - rm /etc/nginx/conf.d/default.conf && cp nginx_config /etc/nginx/conf.d/default.conf
+  - mkdir /run/nginx/
   - python3 ./manage.py update
   - python3 ./manage.py build-page
   - python3 ./.develop/unit_test/test.py
+

@@ -20,12 +20,12 @@ def use_whiptail_mode():
         if os.path.exists("./upgrade/last_fetch_time.json"):
             last_fetch_time = json.loads(file.read_file("./upgrade/last_fetch_time.json"))["last_fetch_time"]
         if upgrade.upgrade_check(False):
-            upgrade_text = "⚠Upgrade"
+            upgrade_text = "⚠ Upgrade"
             upgrade_check = True
         if (time.time() - last_fetch_time) > 259200 and not upgrade_check:
             file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
             if upgrade.upgrade_check():
-                upgrade_text = "⚠Upgrade"
+                upgrade_text = "⚠ Upgrade"
 
         menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting", "Exit"]
         result = dialog.menu("Please select an action", menu_list)

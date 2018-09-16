@@ -95,7 +95,8 @@ if command -v dnf >/dev/null 2>&1; then
 fi
 
 if command -v apk >/dev/null 2>&1; then
-    ${use_superuser} apk add --no-cache python3 python3-dev git uwsgi uwsgi-python3 newt ca-certificates
+    ${use_superuser} apk add --no-cache --update procps
+    ${use_superuser} apk add --no-cache python3 python3-dev git uwsgi uwsgi-python3 newt ca-certificates musl-dev gcc python3-dev nginx
     echo "{\"install\":\"apk\"}" > install.lock
 fi
 
@@ -109,10 +110,10 @@ if [ ! -f "initialization.sh" ]; then
     if [ ! -d ${install_name} ]; then
         echo "Cloning silverblog..."
 
-        repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
+        repo_url=https://github.com/silverblogteam/silverblog.git
 
-        if [ -n ${china_install} ];then
-            repo_url=https://gitee.com/qwe7002/silverblog.git
+        if [ ${china_install} = true ];then
+            repo_url=https://code.aliyun.com/silverblogteam/silverblog.git
         fi
 
         git clone ${repo_url} --depth=1 ${install_name}
@@ -132,43 +133,14 @@ bash ./initialization.sh
 
 cd ..
 
-echo "Generating Nginx configuration..."
+read -p "Create a pm2 configuration file? (Y/N) :" yn
 
-if [ ! -f "./nginx_config" ]; then
-cat << EOF >nginx_config
-server {
-    listen 80;
-    location / {
-        include uwsgi_params;
-        uwsgi_pass unix:$(pwd)/config/unix_socks/main.sock;
-    }
-    location /control {
-        include uwsgi_params;
-        uwsgi_pass unix:$(pwd)/config/unix_socks/control.sock;
-        add_header 'Access-Control-Allow-Origin' "https://c.silverblog.org";
-	    add_header 'Access-Control-Allow-Credentials' "true";
-        if (\$request_method = "OPTIONS") {
-            add_header 'Access-Control-Allow-Origin' "https://c.silverblog.org";
-            add_header 'Access-Control-Max-Age' 86400;
-            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE';
-            add_header 'Access-Control-Allow-Headers' 'reqid, nid, host, x-real-ip, x-forwarded-ip, event-type, event-id, accept, content-type';
-            add_header 'Content-Length' 0;
-            add_header 'Content-Type' 'text/plain, charset=utf-8';
-            return 204;
-        }
-    }
-    location /static {
-        alias $(pwd)/templates/static;
-    }
-}
-EOF
-fi
-
+if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
 cat << EOF >pm2.json
 {
     "apps": [
         {
-        "name": "${install_name}",
+        "name": "${install_name}-main",
         "script": "python3",
         "args": "watch.py",
         "merge_logs": true,
@@ -187,7 +159,23 @@ cat << EOF >pm2.json
     ]
 }
 EOF
+fi
+if [ "$yn" == "N" ] || [ "$yn" == "n" ]; then
+read -p "Create a supervisord configuration file? (Y/N) :" yn
+if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
+cat << EOF >supervisord.conf
+[program:${install_name}-main]
+command=./watch.py
+directory=$(pwd)
+autorestart=true
 
+[program:${install_name}-control]
+directory=$(pwd)
+command=./watch.py --control
+autorestart=true
+EOF
+fi
+fi
 echo ""
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
 echo "./manage.py"

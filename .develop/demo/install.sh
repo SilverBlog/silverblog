@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 set -o errexit
 
-python3 -m pip install -U pip
-apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev
-python3 -m pip install flask hoedown xpinyin pyrss2gen gitpython watchdog requests
-apk del --purge .build-deps
-echo "{\"install\":\"docker\"}" > /home/silverblog/install/install.lock
-
 bash /home/silverblog/install/initialization.sh
 sed -i '''s/.\/config\/unix_socks\/main.sock/0.0.0.0:5000/g' uwsgi.json
 sed -i '''s/.\/config\/unix_socks\/control.sock/0.0.0.0:5001/g' uwsgi.json
@@ -18,26 +12,24 @@ python3 manage.py update
 cd /home/silverblog/templates
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
 cd /home/silverblog/
-cat << EOF >pm2.json
-{
-  "apps": [
-    {
-      "name": "silverblog",
-      "script": "/usr/bin/python3",
-      "args": "watch.py",
-      "merge_logs": true,
-      "cwd": "./"
-    },
-    {
-      "name": "silverblog-control",
-      "script": "/usr/bin/python3",
-      "args": [
-        "watch.py",
-        "--control"
-      ],
-      "merge_logs": true,
-      "cwd": "./"
-    }
-  ]
-}
+cat << EOF >supervisor.conf
+[supervisord]
+nodaemon=true
+
+[program:nginx]
+command=/usr/sbin/nginx -g "daemon off;"
+stdout_logfile=/var/log/nginx.stdout.log
+stderr_logfile=/var/log/nginx.stderr.log
+
+[program:main]
+command=/home/silverblog/watch.py
+autorestart=true
+stdout_logfile=/var/log/silverblog-main.stdout.log
+stderr_logfile=/var/log/silverblog-main.stderr.log
+
+[program:control]
+command=/home/silverblog/watch.py --control
+autorestart=true
+stdout_logfile=/var/log/silverblog-control.stdout.log
+stderr_logfile=/var/log/silverblog-control.stderr.log
 EOF
