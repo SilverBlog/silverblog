@@ -34,7 +34,7 @@ build_docker:
   - master
   script:
   - docker build -t ${docker_tag_name} -f ./example/Dockerfile .
-  - docker build -t ${docker_tag_name}:buildin -f ./example/Dockerfile .
+  - docker build -t ${docker_tag_name}:buildin -f ./example/Dockerfile-buildin .
   - docker login -u qwe7002 -p ${docker_hub_passwd}
   - docker login -u qwe7002@hotmail.com -p ${docker_hub_passwd} registry.cn-hangzhou.aliyuncs.com
   - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
