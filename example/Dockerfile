@@ -6,7 +6,7 @@ WORKDIR /home/silverblog/
 
 RUN apk upgrade --no-cache \
 && apk add --no-cache --update procps \
-&& apk add --no-cache python3 git curl nano vim bash uwsgi uwsgi-python3 newt ca-certificates
+&& apk add --no-cache python3 git curl nano vim bash uwsgi uwsgi-python3 newt ca-certificates openssh-client
 
 RUN python3 -m pip install -U pip \
 && apk add --no-cache --virtual .build-deps musl-dev gcc python3-dev \

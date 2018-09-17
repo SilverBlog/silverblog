@@ -34,7 +34,7 @@ build_docker:
   - master
   script:
   - docker build -t ${docker_tag_name} -f ./example/Dockerfile .
-  - docker build -t ${docker_tag_name}:buildin -f ./example/Dockerfile .
+  - docker build -t ${docker_tag_name}:buildin -f ./example/Dockerfile-buildin .
   - docker login -u qwe7002 -p ${docker_hub_passwd}
   - docker login -u qwe7002@hotmail.com -p ${docker_hub_passwd} registry.cn-hangzhou.aliyuncs.com
   - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
@@ -82,9 +82,8 @@ unit_test_develop:
   only:
   - develop
   script:
-  - cd install
-  - bash initialization.sh
-  - cd ..
+  - bash install/initialization.sh
+  - bash install/nginx_gen.sh
   - cp -f .develop/demo/page.json ./config/page.json
   - cp -f .develop/demo/menu.json ./config/menu.json
   - cp -f .develop/demo/system.json ./config/system.json

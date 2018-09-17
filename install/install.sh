@@ -131,6 +131,14 @@ bash ./install_python_dependency.sh
 
 bash ./initialization.sh
 
+if [ ${china_install} = true ]; then
+china_option="-c"
+fi
+
+if [ ! -f "./nginx_config" ]; then
+bash ./nginx_gen.sh ${china_option}
+fi
+
 cd ..
 
 read -p "Create a pm2 configuration file? (Y/N) :" yn
@@ -160,7 +168,7 @@ cat << EOF >pm2.json
 }
 EOF
 fi
-if [ "$yn" == "N" ] || [ "$yn" == "n" ]; then
+if [ "$yn" != "Y" ] || [ "$yn" != "y" ]; then
 read -p "Create a supervisord configuration file? (Y/N) :" yn
 if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
 cat << EOF >supervisord.conf
@@ -183,4 +191,4 @@ echo ""
 echo "You can add the following code to .bashrc to quickly launch SilverBlog:"
 echo ""
 echo "${install_name}() {(cd \"$(pwd)\"&&./manage.py \$@)}"
-
+echo ""

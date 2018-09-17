@@ -6,9 +6,16 @@ import git
 from common import file, console
 
 new_data_version = 3
+new_env_version = 1
+current_data_version = 3
+current_env_version = 1
 if not os.path.exists("./upgrade/current_version.json"):
-    file.write_file("./upgrade/current_version.json", json.dumps({"current_data_version": new_data_version}))
-current_data_version = json.loads(file.read_file("./upgrade/current_version.json"))["current_data_version"]
+    file.write_file("./upgrade/current_version.json",
+                    json.dumps({"current_data_version": new_data_version, "current_env_version": new_env_version}))
+current_version_json = json.loads(file.read_file("./upgrade/current_version.json"))
+current_data_version = current_version_json["current_data_version"]
+if "current_env_version" in current_version_json:
+    current_env_version = current_version_json["current_env_version"]
 
 
 def git_init():
@@ -48,13 +55,15 @@ def upgrade_pull():
             repo.index.checkout(force=True)
         if repo.is_dirty():
             exit(1)
-    diff = repo.git.diff('FETCH_HEAD..HEAD', name_only=True)
     remote.pull()
-    if "install/install_python_dependency.py" in diff:
+    if current_env_version != new_env_version:
         os.system("cd ./install && bash install_python_dependency.sh")
+        file.write_file("./upgrade/current_version.json",
+                        json.dumps({"current_data_version": new_data_version, "current_env_version": new_env_version}))
     if current_data_version != new_data_version and os.path.exists(
             "./upgrade/upgrade_from_{}.py".format(current_data_version)):
         os.system("python3 ./upgrade/upgrade_from_{}.py".format(current_data_version))
-        file.write_file("./upgrade/current_version.json", json.dumps({"current_data_version": new_data_version}))
+        file.write_file("./upgrade/current_version.json",
+                        json.dumps({"current_data_version": new_data_version, "current_env_version": new_env_version}))
     console.log("Success", "Upgrade Successful!")
     exit(0)
