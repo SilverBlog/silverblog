@@ -45,32 +45,14 @@ echo "{\"install\":\"docker\"}" > install.lock
 
 cd ..
 
-if [ ! -f "./nginx_config" ]; then
-echo "Generating Nginx configuration..."
-cat << EOF >nginx_config
-server {
-    listen 80;
-    location / {
-        include uwsgi_params;
-        uwsgi_pass 127.0.0.1:5000;
-    }
-    location /control {
-        include uwsgi_params;
-        uwsgi_pass 127.0.0.1:5001;
-        add_header 'Access-Control-Allow-Origin' "https://c.silverblog.org";
-	    add_header 'Access-Control-Allow-Credentials' "true";
-	    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE';
-        add_header 'Access-Control-Allow-Headers' 'reqid, nid, host, x-real-ip, x-forwarded-ip, event-type, event-id, accept, content-type';
-        if (\$request_method = "OPTIONS") {
-            return 204;
-        }
-    }
-    location /static {
-        alias $(pwd)/templates/static;
-    }
-}
-EOF
+if [ ${china_install} = true ]; then
+china_option="-c"
 fi
+
+if [ ! -f "./nginx_config" ]; then
+bash ./nginx_gen.sh -t ${china_option}
+fi
+
 bash install/initialization.sh
 sed -i '''s/.\/config\/unix_socks\/main.sock/0.0.0.0:5000/g' uwsgi.json
 sed -i '''s/.\/config\/unix_socks\/control.sock/0.0.0.0:5001/g' uwsgi.json

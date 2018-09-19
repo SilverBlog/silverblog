@@ -20,7 +20,7 @@ while getopts "n:c" arg; do
             ;;
          ?)
             echo "Unknown argument"
-            echo "use ./install.sh -n <project name> [-c]"
+            echo "use ./install.sh [-n <project name>] [-c]"
             echo "[-c] option represents using a Chinese image source."
             exit 1
             ;;
