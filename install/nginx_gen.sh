@@ -2,7 +2,7 @@
 
 china_install=false
 tcp_install=false
-while getopts "c:t" arg; do
+while getopts "ct" arg; do
     case ${arg} in
          t)
             tcp_install=true
@@ -23,13 +23,11 @@ if [ -f "nginx_gen.sh" ]; then
 fi
 
 
-if [ ! -f "./nginx_config" ]; then
 echo "Generating Nginx configuration..."
-if [ ${china_install} = false ];then
-gen_default_nginx
+
+if [ -f "nginx_config" ]; then
+rm nginx_config
 fi
-
-
 cors_setting="https://c.silverblog.org"
 if [ ${china_install} = true ];then
 cat << EOF >nginx_config
@@ -72,4 +70,3 @@ server {
     }
 }
 EOF
-fi
