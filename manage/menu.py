@@ -14,6 +14,7 @@ dialog.title = "SilverBlog management tool"
 def use_whiptail_mode():
     dialog.title = "SilverBlog management tool"
     menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "Exit"]
+    upgrade_text = None
     if os.path.exists("./.git"):
         upgrade_text = "Upgrade"
         upgrade_check = False
@@ -36,8 +37,9 @@ def use_whiptail_mode():
             article_manager()
         if result == "Menu manager":
             menu_manager()
-        if result == upgrade_text:
-            upgrade_system()
+        if upgrade_text is not None:
+            if result == upgrade_text:
+                upgrade_system()
         if result == "Build static page":
             from manage import build_static_page
             dialog.title = "Build static page"
