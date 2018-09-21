@@ -42,6 +42,7 @@ fi
 
 uwsgi_pass_main="unix:$(pwd)/config/unix_socks/main.sock"
 uwsgi_pass_control="unix:$(pwd)/config/unix_socks/control.sock"
+
 if [ ${tcp_install} = true ];then
 uwsgi_pass_main="127.0.0.1:5000"
 uwsgi_pass_control="127.0.0.1:5001"

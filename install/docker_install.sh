@@ -18,6 +18,7 @@ while getopts "n:c" arg; do
             ;;
          ?)
             echo "Unknown argument"
+            echo "use ./docker_install.sh [-n <project name> [-t]"
             exit 1
             ;;
     esac
