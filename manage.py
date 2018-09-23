@@ -21,6 +21,7 @@ if __name__ == '__main__':
         from manage import setting
 
         setting.setup_wizard()
+        setting.theme_manage()
         exit(0)
 
     if len(sys.argv) == 1:
