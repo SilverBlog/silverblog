@@ -25,6 +25,7 @@ def use_whiptail_mode():
             upgrade_text = "⚠ Upgrade"
             upgrade_check = True
         if (time.time() - last_fetch_time) > 259200 and not upgrade_check:
+            console.log("info", "Checking for updates...")
             file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
             if upgrade.upgrade_check():
                 upgrade_text = "⚠ Upgrade"

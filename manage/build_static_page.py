@@ -3,7 +3,6 @@ import glob
 import json
 import os
 import shutil
-
 import time
 
 from common import console, file, page, post_map
@@ -86,9 +85,11 @@ def load_config():
 def publish():
     load_config()
 
+    if os.path.isdir("./static_page"):
+        os.system("cd ./static_page && rm -r static post index && rm *.html *.xml")
+
     if not os.path.isdir("./static_page"):
         os.mkdir("./static_page")
-    os.system("cd ./static_page && rm -r static post index && rm *.html *.xml")
 
     page_row = page.get_page_row(system_config["Paging"], len(page_list))
     os.mkdir("./static_page/index/")
