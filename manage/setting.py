@@ -44,7 +44,6 @@ def setting_menu():
             manual_setup_list()
         if result == "Theme package manage":
             theme_manage()
-        time.sleep(0.5)
 
 def save_config():
     file.write_file("./config/system.json", file.json_format_dump(system_config))

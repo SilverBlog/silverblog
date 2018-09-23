@@ -46,10 +46,11 @@ def use_whiptail_mode():
             from manage import build_static_page
             dialog.title = "Build static page"
             build_static_page.publish()
+            time.sleep(0.5)
         if result == "Setting":
             from manage import setting
             setting.setting_menu()
-        time.sleep(0.5)
+
 
 def article_manager():
     dialog.title = "Article manager"
