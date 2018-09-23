@@ -31,7 +31,7 @@ if os.path.exists("./config/system.json"):
 def setting_menu():
     while True:
         menu_list = ["Using Setup Wizard", "Using Manual setup",
-                     "Theme package manager",
+                     "Theme package manage", "=========================",
                      "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
@@ -42,7 +42,7 @@ def setting_menu():
             setup_wizard()
         if result == "Using Manual setup":
             manual_setup_list()
-        if result == "Theme package manager":
+        if result == "Theme package manage":
             theme_manage()
         time.sleep(0.5)
 
@@ -54,7 +54,7 @@ def theme_manage():
     dialog.title = "Theme package manager"
     while True:
         menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing theme",
-                     "Remove existing theme", "Set template insertion point", "Back", "Exit"]
+                     "Remove existing theme", "Set insertion point", "=========================", "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         theme_name = ""
         if result == "Exit":
@@ -105,7 +105,7 @@ def theme_manage():
             theme.upgrade_theme(select_theme())
         if result == "Remove existing theme":
             theme.remove_theme(select_theme())
-        if result == "Set template insertion point":
+        if result == "Set insertion point":
             setting_template_insertion()
         time.sleep(0.5)
 
@@ -113,7 +113,8 @@ def theme_manage():
 def manual_setup_list():
     while True:
         menu_list = ["Project name", "Project description", "Access URL", "Remote API password", "Author name",
-                     "Author introduction", "Author avatar", "Paging", "Time format", "Editor", "Back", "Exit"]
+                     "Author introduction", "Author avatar", "Paging", "Time format", "Editor",
+                     "=========================", "Back", "Exit"]
         result = dialog.menu("Please select the item you want to configure", menu_list)
         if result == "Exit":
             exit(0)

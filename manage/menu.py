@@ -13,7 +13,7 @@ dialog.height = 15
 dialog.title = "SilverBlog management tool"
 def use_whiptail_mode():
     dialog.title = "SilverBlog management tool"
-    menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "Exit"]
+    menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "=========================", "Exit"]
     upgrade_text = None
     if os.path.exists("./.git"):
         upgrade_text = "Upgrade"
@@ -28,7 +28,8 @@ def use_whiptail_mode():
             file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
             if upgrade.upgrade_check():
                 upgrade_text = "⚠ Upgrade"
-        menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting", "Exit"]
+        menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting",
+                     "=========================", "Exit"]
     while True:
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
@@ -53,7 +54,7 @@ def article_manager():
     dialog.title = "Article manager"
     while True:
         from manage import build_rss, post_manage
-        menu_list = ["New", "Update", "Edit", "Delete", "Back", "Exit"]
+        menu_list = ["New", "Update", "Edit", "Delete", "=========================", "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
@@ -88,7 +89,7 @@ def article_manager():
 
 def menu_manager():
     dialog.title = "Menu manager"
-    menu_list = ["New", "Edit", "Delete", "Back", "Exit"]
+    menu_list = ["New", "Edit", "Delete", "=========================", "Back", "Exit"]
     result = dialog.menu("Please select an action", menu_list)
     while True:
         if result == "Exit":
