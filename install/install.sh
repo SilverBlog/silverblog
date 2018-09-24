@@ -70,14 +70,6 @@ if command -v pkg >/dev/null 2>&1; then
     echo "{\"install\":\"pkg\"}" > install.lock
 fi
 
-if command -v pkgin >/dev/null 2>&1; then
-    ${use_superuser} pkgin install -y newt nginx git python3
-    build_uwsgi_install
-    build_pip_install
-    echo "{\"install\":\"pkgin\"}" > install.lock
-fi
-
-
 if command -v apt-get >/dev/null 2>&1; then
     ${use_superuser} apt-get update
     ${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git
@@ -184,11 +176,27 @@ autorestart=true
 EOF
 fi
 fi
+
+if test $(ps h -o comm -p $$) = "bash"; then
+if [ ! -f "~/.bashrc" ]; then
+shell_config_file="~/.bashrc"
+fi
+if [ ! -f "~/.bash_profile" ]; then
+shell_config_file="~/.bash_profile"
+fi
+fi
+
+if test $(ps h -o comm -p $$) = "zsh"; then
+if [ ! -f "~/.zshrc" ]; then
+shell_config_file="~/.zshrc"
+fi
+fi
+
 echo ""
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
 echo "./manage.py"
 echo ""
 echo "You can add the following code to .bashrc to quickly launch SilverBlog:"
 echo ""
-echo "${install_name}() {(cd \"$(pwd)\"&&./manage.py \$@)}"
+echo "echo \"${install_name}() {(cd \"$(pwd)\"&&./manage.py \$@)}\" >> ${shell_config_file}"
 echo ""
