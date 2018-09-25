@@ -138,15 +138,10 @@ EOF
 fi
 fi
 
-cat << EOF >manage.sh
-#!/usr/bin/env bash
-docker run -it --rm -v \$(pwd):/home/silverblog --name="${install_name}_manage" silverblog/silverblog python3 manage.py \$@
-EOF
-chmod +x manage.sh
 
 echo ""
 echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
 echo "./manage.sh"
 echo ""
 echo "You can add the following code to .bashrc to quickly launch SilverBlog."
-echo "${install_name}() {(cd \"$(pwd)\"&&./manage.sh \$@)}"
+echo "${install_name}() {(cd \"$(pwd)\"&&./manage.py \$@)}"

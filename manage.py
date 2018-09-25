@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 
 import argparse
+import json
 import os
 import sys
 
-from manage import menu
+from common import file
 
+if json.loads(file.read_file("./install/install.lock"))["install"] == "docker":
+    if not os.environ.get('DOCKER_CONTAINER', False):
+        args = ""
+        for arg in sys.argv[1:]:
+            args = args + " " + arg
+        os.system("docker run -it --rm -v {0}:/home/silverblog silverblog/silverblog python3 manage.py{1}'".format(
+            os.getcwd(), args))
+        exit(0)
 lang = None
 if "LANG" in os.environ:
     if "UTF-8" not in os.environ["LANG"] and "UTF.8" not in os.environ["LANG"]:
@@ -14,6 +23,7 @@ if lang is not None:
     print("The current locale is: {} .Some characters may not be displayed and processed.".format(lang))
     input("Press enter to continue.")
 if __name__ == '__main__':
+    from manage import menu
     if not os.path.exists("./config/page.json") or not os.path.exists("./config/menu.json"):
         print("Please execute the installation wizard first.")
         exit(1)

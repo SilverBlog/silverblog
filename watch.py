@@ -13,16 +13,11 @@ from watchdog.observers import Observer
 from common import console
 
 docker_mode = False
-if os.path.exists("./install/install.lock"):
-    import json
+if os.environ.get('DOCKER_CONTAINER', False):
+    docker_mode = True
+console.log("info", "Observer performed by polling method.")
+from watchdog.observers.polling import PollingObserver as Observer
 
-    f = open("./install/install.lock", newline=None)
-    install_info = json.loads(f.read())
-    if install_info["install"] == "docker" or install_info["install"] == "docker-buildin":
-        if install_info["install"] == "docker":
-            docker_mode = True
-        console.log("info", "Observer performed by polling method.")
-        from watchdog.observers.polling import PollingObserver as Observer
 p = None
 control = False
 
