@@ -7,14 +7,15 @@ import sys
 
 from common import file
 
-if json.loads(file.read_file("./install/install.lock"))["install"] == "docker":
-    if not os.environ.get('DOCKER_CONTAINER', False):
-        args = ""
-        for arg in sys.argv[1:]:
-            args = args + " " + arg
-        os.system("docker run -it --rm -v {0}:/home/silverblog silverblog/silverblog python3 manage.py{1}'".format(
-            os.getcwd(), args))
-        exit(0)
+if os.path.exists("./install/install.lock"):
+    if json.loads(file.read_file("./install/install.lock"))["install"] == "docker":
+        if not os.environ.get('DOCKER_CONTAINER', False):
+            args = ""
+            for arg in sys.argv[1:]:
+                args = args + " " + arg
+            os.system("docker run -it --rm -v {0}:/home/silverblog silverblog/silverblog python3 manage.py{1}'".format(
+                os.getcwd(), args))
+            exit(0)
 lang = None
 if "LANG" in os.environ:
     if "UTF-8" not in os.environ["LANG"] and "UTF.8" not in os.environ["LANG"]:
