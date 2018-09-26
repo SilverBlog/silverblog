@@ -57,9 +57,8 @@ def start_watch():
     observer.schedule(event_handler, path=os.getcwd(), recursive=True)
     observer.start()
     global p, job_name, job, args
-    cmd = ["uwsgi", "--json", job_name]
+    cmd = ["uwsgi", "--json", job_name, "--chmod-socket=666"]
     if not args.debug:
-        cmd.append("--chmod-socket=666")
         cmd.append("--logto")
         cmd.append("./logs/{}.log".format(job))
         cmd.append("--threaded-logger")
