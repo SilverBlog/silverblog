@@ -12,11 +12,9 @@ from watchdog.observers import Observer
 
 from common import console
 
-docker_mode = False
 if os.environ.get('DOCKER_CONTAINER', False):
-    docker_mode = True
-console.log("info", "Observer performed by polling method.")
-from watchdog.observers.polling import PollingObserver as Observer
+    console.log("info", "Observer performed by polling method.")
+    from watchdog.observers.polling import PollingObserver as Observer
 
 p = None
 control = False
@@ -60,9 +58,8 @@ def start_watch():
     observer.start()
     global p, job_name, job, args
     cmd = ["uwsgi", "--json", job_name]
-    if not docker_mode:
-        cmd.append("--chmod-socket=666")
     if not args.debug:
+        cmd.append("--chmod-socket=666")
         cmd.append("--logto")
         cmd.append("./logs/{}.log".format(job))
         cmd.append("--threaded-logger")
