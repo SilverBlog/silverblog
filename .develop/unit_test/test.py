@@ -7,18 +7,15 @@ main_progress = subprocess.Popen(["python3", "watch.py", "--debug"])
 control_progress = subprocess.Popen(["python3", "watch.py", "--control", "--debug"])
 nginx_progress = subprocess.Popen("nginx")
 host = "http://127.0.0.1/"
-time.sleep(10)
+time.sleep(2)
 def get(url):
     r = requests.get(host + url)
     if r.status_code == 200:
-        print(url + ":" + r.text)
         return True
-    print(r.status_code)
     return False
 def post(url):
     r = requests.post(host + url)
     if r.status_code == 200:
-        print(url + ":" + r.text)
         return True
     print(r.status_code)
     return False
