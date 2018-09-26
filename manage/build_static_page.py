@@ -133,7 +133,7 @@ def publish():
         repo.git.add("--all")
         if not repo.is_dirty():
             console.log("Success", "Build complete,No changes found.")
-            return True
+            return False
         repo.git.commit("-m Release time：{0}".format(localtime))
     except git.exc.GitCommandError as e:
         console.log("Error", e.args[2].decode())
