@@ -43,7 +43,6 @@ function build_uwsgi_install(){
         cd uwsgi_latest_from_installer
         ${use_superuser} python3 uwsgiconfig.py --build
         ${use_superuser} mv uwsgi /usr/local/bin/uwsgi
-        ${use_superuser} mv uwsgi /usr/local/bin/uwsgi
         cd ..
         rm -rf uwsgi_latest_from_installer
     fi
