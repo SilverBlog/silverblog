@@ -53,9 +53,9 @@ def use_whiptail_mode():
 
 
 def article_manager():
-    dialog.title = "Article manager"
+    from manage import build_rss, post_manage
     while True:
-        from manage import build_rss, post_manage
+        dialog.title = "Article manager"
         menu_list = ["New", "Update", "Edit", "Delete", "=========================", "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
@@ -90,10 +90,10 @@ def article_manager():
         time.sleep(0.5)
 
 def menu_manager():
-    dialog.title = "Menu manager"
-    menu_list = ["New", "Edit", "Delete", "=========================", "Back", "Exit"]
-    result = dialog.menu("Please select an action", menu_list)
     while True:
+        dialog.title = "Menu manager"
+        menu_list = ["New", "Edit", "Delete", "=========================", "Back", "Exit"]
+        result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
         if result == "Back":

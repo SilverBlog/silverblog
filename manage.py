@@ -8,12 +8,13 @@ import sys
 from common import file
 
 if os.path.exists("./install/install.lock"):
-    if json.loads(file.read_file("./install/install.lock"))["install"] == "docker":
-        if not os.environ.get('DOCKER_CONTAINER', False):
+    if json.loads(file.read_file("./install/install.lock"))["install"] == "docker" and not os.environ.get(
+            'DOCKER_CONTAINER', False):
             args = ""
             for arg in sys.argv[1:]:
                 args = args + " " + arg
-            os.system("docker run -it --rm -v {0}:/home/silverblog silverblog/silverblog python3 manage.py{1}'".format(
+
+            os.system("docker run -it --rm -v {0}:/home/silverblog silverblog/silverblog ./manage.py{1}".format(
                 os.getcwd(), args))
             exit(0)
 lang = None
