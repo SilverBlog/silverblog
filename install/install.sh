@@ -42,7 +42,8 @@ function build_uwsgi_install(){
         rm uwsgi_latest_from_installer.tar.gz
         cd uwsgi_latest_from_installer
         ${use_superuser} python3 uwsgiconfig.py --build
-        ${use_superuser} sudo mv uwsgi /usr/local/bin/uwsgi
+        ${use_superuser} mv uwsgi /usr/local/bin/uwsgi
+        ${use_superuser} mv uwsgi /usr/local/bin/uwsgi
         cd ..
         rm -rf uwsgi_latest_from_installer
     fi
@@ -64,7 +65,7 @@ fi
 echo "Installing Dependency..."
 
 if command -v pkg >/dev/null 2>&1; then
-    ${use_superuser} pkg install -y newt nginx git python3
+    ${use_superuser} pkg install newt nginx git python3
     build_uwsgi_install
     build_pip_install
     echo "{\"install\":\"pkg\"}" > install.lock
@@ -72,17 +73,17 @@ fi
 
 if command -v apt-get >/dev/null 2>&1; then
     ${use_superuser} apt-get update
-    ${use_superuser} apt-get install -y nginx uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git
+    ${use_superuser} apt-get install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git
     echo "{\"install\":\"apt-get\"}" > install.lock
 fi
 
 if command -v pacman >/dev/null 2>&1; then
-    ${use_superuser} pacman -Sy nginx uwsgi python python-pip python-wheel libnewt uwsgi-plugin-python git gcc
+    ${use_superuser} pacman -S nginx uwsgi python python-pip python-wheel libnewt uwsgi-plugin-python git gcc
     echo "{\"install\":\"pacman\"}" > install.lock
 fi
 
 if command -v dnf >/dev/null 2>&1; then
-    ${use_superuser} dnf -y install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-devel python3-wheel git gcc redhat-rpm-config
+    ${use_superuser} dnf install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-devel python3-wheel git gcc redhat-rpm-config
     echo "{\"install\":\"dnf\"}" > install.lock
 fi
 
