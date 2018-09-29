@@ -95,9 +95,7 @@ parser.add_argument("--debug", action="store_true",
 args = parser.parse_args()
 job_name = "uwsgi.json"
 job = "main"
-if not args.debug:
-    if not os.path.exists("./logs"):
-        os.mkdir("./logs")
+
 if args.control:
     job_name = "uwsgi.json:control"
     job = "control"
@@ -107,6 +105,8 @@ console.log("info", "Started SilverBlog {} server".format(job))
 
 cmd = ["uwsgi", "--json", job_name, "--chmod-socket=666"]
 if not args.debug:
+    if not os.path.exists("./logs"):
+        os.mkdir("./logs")
     cmd.append("--logto")
     cmd.append("./logs/{}.log".format(job))
     cmd.append("--threaded-logger")
