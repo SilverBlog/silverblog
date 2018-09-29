@@ -76,6 +76,7 @@ services:
     restart: on-failure:10
     command: python3 watch.py
     volumes:
+     - /etc/localtime:/etc/localtime:ro
      - $(pwd):/home/silverblog/
     ports:
      - "127.0.0.1:5000:5000"
@@ -85,6 +86,7 @@ services:
     restart: on-failure:10
     command: python3 watch.py --control
     volumes:
+     - /etc/localtime:/etc/localtime:ro
      - $(pwd):/home/silverblog/
     ports:
      - "127.0.0.1:5001:5001"
@@ -108,6 +110,7 @@ services:
     networks:
      - ${install_name}_net
     volumes:
+     - /etc/localtime:/etc/localtime:ro
      - $(pwd):/home/silverblog/
   ${install_name}_control:
     image: "${docker_image}"
@@ -117,6 +120,7 @@ services:
     networks:
      - ${install_name}_net
     volumes:
+     - /etc/localtime:/etc/localtime:ro
      - $(pwd):/home/silverblog/
   ${install_name}_nginx:
     image: "nginx:alpine"
