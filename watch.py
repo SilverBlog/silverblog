@@ -53,11 +53,11 @@ def kill_progress():
 
 
 def start_watch(cmd, debug):
+    global p
     event_handler = when_file_chanage(kill_progress, harakiri)
     observer = Observer(timeout=1)
     observer.schedule(event_handler, path=os.getcwd(), recursive=True)
     observer.start()
-    global p, args
     p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
     return_code = p.poll()
     while return_code is None:
