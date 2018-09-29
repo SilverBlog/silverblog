@@ -30,8 +30,9 @@ for filename in os.listdir("./document/"):
         write_json = json.loads(read_file("./document/" + filename))
         write_json = change_time_fomart(write_json)
         write_file("./document/" + filename, file.json_format_dump(write_json))
-print("You can now remove the pypinyin support library")
+
 os.system("cd ./install && bash install_python_dependency.sh")
+print("You can now remove the pypinyin support library")
 uninstall_dependency = input('Do you want to uninstall pypinyin now? [y/N]')
 if uninstall_dependency.lower() == 'yes' or uninstall_dependency.lower() == 'y':
     os.system("sudo python3 -m pip uninstall pypinyin")

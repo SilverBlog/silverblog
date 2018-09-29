@@ -22,35 +22,24 @@ def get_local_theme_list():
             dir_list.append(item)
     return dir_list
 
-def install_theme(theme_name, orgs_list=None):
-    if orgs_list is None:
-        orgs_list = get_orgs_list()
-    has_theme = False
-    full_name = None
-    name = None
-    for item in orgs_list:
-        if item["name"].lower() == theme_name.lower():
-            has_theme = True
-            full_name = item["full_name"]
-            name = item["name"]
-    if not has_theme:
-        console.log("Error", "Can not find this theme.")
-        return
-    if os.path.exists("./templates/" + name):
-        console.log("Error", "This theme has been installed")
-        return
+
+def install_theme(name, custom):
     if not os.path.exists("./templates/static"):
         os.mkdir("./templates/static")
     console.log("info", "Getting the theme installation script...")
+    install_script_url = "https://raw.githubusercontent.com/silverblogtheme/{}/master/install.sh".format(name)
+    if custom:
+        install_script_url = name
     try:
-        r = requests.get("https://raw.githubusercontent.com/{}/master/install.sh".format(full_name)).text
+        r = requests.get(install_script_url).text
     except requests.exceptions.RequestException:
         console.log("Error", "Get the theme installation script error.")
         exit(1)
-    os.system("cd ./templates \n" + r)
-
+    result_code = os.system("cd ./templates \n" + r)
+    if (result_code >> 8) != 0:
+        console.log("Error", "An error occurred while executing the install script.")
+        exit(1)
     console.log("Success", "The theme is install successfully!")
-    return name
 
 def remove_theme(theme_name):
     import shutil

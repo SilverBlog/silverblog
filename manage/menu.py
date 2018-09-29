@@ -13,7 +13,8 @@ dialog.height = 15
 dialog.title = "SilverBlog management tool"
 def use_whiptail_mode():
     dialog.title = "SilverBlog management tool"
-    menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "Exit"]
+    menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "=========================", "Exit"]
+    upgrade_text = None
     if os.path.exists("./.git"):
         upgrade_text = "Upgrade"
         upgrade_check = False
@@ -24,10 +25,12 @@ def use_whiptail_mode():
             upgrade_text = "⚠ Upgrade"
             upgrade_check = True
         if (time.time() - last_fetch_time) > 259200 and not upgrade_check:
+            console.log("info", "Checking for updates...")
             file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
             if upgrade.upgrade_check():
                 upgrade_text = "⚠ Upgrade"
-        menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting", "Exit"]
+        menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting",
+                     "=========================", "Exit"]
     while True:
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
@@ -36,22 +39,24 @@ def use_whiptail_mode():
             article_manager()
         if result == "Menu manager":
             menu_manager()
-        if result == upgrade_text:
-            upgrade_system()
+        if upgrade_text is not None:
+            if result == upgrade_text:
+                upgrade_system()
         if result == "Build static page":
             from manage import build_static_page
             dialog.title = "Build static page"
             build_static_page.publish()
+            time.sleep(0.5)
         if result == "Setting":
             from manage import setting
             setting.setting_menu()
-        time.sleep(0.5)
+
 
 def article_manager():
-    dialog.title = "Article manager"
+    from manage import build_rss, post_manage
     while True:
-        from manage import build_rss, post_manage
-        menu_list = ["New", "Update", "Edit", "Delete", "Back", "Exit"]
+        dialog.title = "Article manager"
+        menu_list = ["New", "Update", "Edit", "Delete", "=========================", "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
@@ -85,10 +90,10 @@ def article_manager():
         time.sleep(0.5)
 
 def menu_manager():
-    dialog.title = "Menu manager"
-    menu_list = ["New", "Edit", "Delete", "Back", "Exit"]
-    result = dialog.menu("Please select an action", menu_list)
     while True:
+        dialog.title = "Menu manager"
+        menu_list = ["New", "Edit", "Delete", "=========================", "Back", "Exit"]
+        result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
         if result == "Back":

@@ -30,29 +30,21 @@ if os.path.exists("./config/system.json"):
 
 def setting_menu():
     while True:
-        menu_list = ["Use the Setup Wizard", "Set up basic information", "Set up author information",
-                     "Theme package manager", "Other settings",
+        menu_list = ["Using Setup Wizard", "Using Manual setup",
+                     "Theme package manage", "=========================",
                      "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
         if result == "Back":
             break
-        if result == "Use the Setup Wizard":
+        if result == "Using Setup Wizard":
             setup_wizard()
-            save_config()
-        if result == "Set up basic information":
-            project_info()
-            save_config()
-        if result == "Set up author information":
-            author_info()
-            save_config()
-        if result == "Theme package manager":
+        if result == "Using Manual setup":
+            manual_setup_list()
+        if result == "Theme package manage":
             theme_manage()
-        if result == "Other settings":
-            other_info()
-            save_config()
-        time.sleep(0.5)
+
 def save_config():
     file.write_file("./config/system.json", file.json_format_dump(system_config))
 
@@ -61,10 +53,9 @@ def theme_manage():
     dialog.title = "Theme package manager"
     while True:
         menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing theme",
-                     "Remove existing theme", "Set template insertion point", "Back", "Exit"]
+                     "Remove existing theme", "Set insertion point", "=========================", "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         theme_name = ""
-        org_list = None
         if result == "Exit":
             exit(0)
         if result == "Back":
@@ -80,15 +71,27 @@ def theme_manage():
                 theme_name = dialog.menu("Please select the theme you want to install:", item_list)
             if result == "Enter the theme package name":
                 theme_name = dialog.prompt("Please enter the theme package name:")
-            if len(theme_name) != 0:
-                theme_name = theme.install_theme(theme_name, org_list)
-                if theme_name is not None and dialog.confirm("Do you want to enable this theme now?", "no"):
-                    system_config["Theme"] = theme_name
-                    if os.path.exists("./templates/{}/i18n".format(theme_name)):
-                        system_config["i18n"] = setting_i18n(theme_name)
-                    if os.path.exists("./templates/{}/config.json".format(theme_name)):
-                        setting_theme_config(theme_name)
-                save_config()
+            if len(theme_name) == 0:
+                dialog.alert("Theme name cannot be empty")
+                continue
+            if os.path.exists("./templates/" + theme_name):
+                dialog.alert("This theme has been installed.")
+                continue
+            has_theme = False
+            for item in org_list:
+                if item["name"].lower() == theme_name.lower():
+                    has_theme = True
+            if not has_theme:
+                dialog.alert("Can not find this theme.")
+                continue
+            theme.install_theme(theme_name, False)
+            if theme_name is not None and dialog.confirm("Do you want to enable this theme now?", "no"):
+                system_config["Theme"] = theme_name
+                if os.path.exists("./templates/{}/i18n".format(theme_name)):
+                    system_config["i18n"] = setting_i18n(theme_name)
+                if os.path.exists("./templates/{}/config.json".format(theme_name)):
+                    setting_theme_config(theme_name)
+            save_config()
         if result == "Use the existing theme":
             theme_name = select_theme()
             system_config["Theme"] = theme_name
@@ -101,10 +104,42 @@ def theme_manage():
             theme.upgrade_theme(select_theme())
         if result == "Remove existing theme":
             theme.remove_theme(select_theme())
-        if result == "Set template insertion point":
+        if result == "Set insertion point":
             setting_template_insertion()
+        time.sleep(0.5)
 
 
+def manual_setup_list():
+    while True:
+        menu_list = ["Project name", "Project description", "Access URL", "Remote API password", "Author name",
+                     "Author introduction", "Author avatar", "Paging", "Time format", "Editor",
+                     "=========================", "Back", "Exit"]
+        result = dialog.menu("Please select the item you want to configure", menu_list)
+        if result == "Exit":
+            exit(0)
+        if result == "Back":
+            break
+        if result == "Project name":
+            project_name()
+        if result == "Project description":
+            project_description()
+        if result == "Access URL":
+            project_url()
+        if result == "Remote API password":
+            remote_api_password()
+        if result == "Author name":
+            author_name()
+        if result == "Author introduction":
+            author_introduction()
+        if result == "Author avatar":
+            author_avatar()
+        if result == "Paging":
+            paging()
+        if result == "Time format":
+            time_format()
+        if result == "Editor":
+            editor()
+        save_config()
         time.sleep(0.5)
 
 
@@ -117,6 +152,8 @@ def setting_template_insertion():
         os.system("{} ./templates/include/comment.html".format(system_config["Editor"]))
     if result == "foot":
         os.system("{} ./templates/include/foot.html".format(system_config["Editor"]))
+
+
 def select_theme():
     from manage import theme
     directories = theme.get_local_theme_list()
@@ -152,57 +189,79 @@ def setting_i18n(theme_name):
     return dialog.menu("Please select the i18n to be operated:", show_list)
 
 def setup_wizard():
-    project_info()
-    author_info()
-    other_info()
-    # add save
-    save_config()
-    if system_config["Theme"] == "":
-        from manage import theme
-        local_theme_list = theme.get_local_theme_list()
-        if len(local_theme_list) != 0:
-            system_config["Theme"] = dialog.menu("Please select the theme to be operated:", local_theme_list)
-            save_config()
-            return
-        org_list = theme.get_orgs_list()
-        item_list = list()
-        for item in org_list:
-            item_list.append(item["name"])
-        theme_name = dialog.menu("Please select the theme you want to install:", item_list)
-        system_config["Theme"] = theme.install_theme(theme_name, org_list)
+    project_name()
+    project_description()
+    project_url()
+    remote_api_password()
+    author_name()
+    author_introduction()
+    author_avatar()
+    paging()
+    time_format()
+    editor()
     save_config()
 
-def show_prompt(items):
-    for item in items:
-        system_config[item["name"]] = dialog.prompt("Please enter the {}:".format(item["info"]),
-                                                    system_config[item["name"]])
 
-def project_info():
-    items = [{"name": "Project_Name", "info": "blog name"}, {"name": "Project_Description", "info": "blog description"},
-             {"name": "Project_URL", "info": "blog access URL"}]
-    show_prompt(items)
+def project_name():
+    item = "Project_Name"
+    system_config[item] = dialog.prompt("Please enter the project name:", system_config[item])
+
+
+def project_description():
+    item = "Project_Description"
+    system_config[item] = dialog.prompt("Please enter the project description:", system_config[item])
+
+
+def project_url():
+    item = "Project_URL"
+    system_config[item] = dialog.prompt("Please enter the access URL:", system_config[item])
+
+
+def remote_api_password():
     notice = ""
     if system_config["API_Password"] is not "":
         notice = "\n(Leave blank does not change)"
-    new_password = dialog.prompt("Please enter the remote management tool password:" + notice, "",
+    new_password = dialog.prompt("Please enter the remote api password:" + notice, "",
                                  True)
     if len(new_password) != 0:
         import hashlib
         system_config["API_Password"] = json.dumps(
             {"hash_password": hashlib.md5(new_password.encode('utf-8')).hexdigest()})
 
-def author_info():
-    items = [{"name": "Author_Name", "info": "author name"},
-             {"name": "Author_Introduction", "info": "author introduction"}]
-    show_prompt(items)
+
+def author_name():
+    item = "Author_Name"
+    system_config[item] = dialog.prompt("Please enter the author name:", system_config[item])
+
+
+def author_introduction():
+    item = "Author_Introduction"
+    system_config[item] = dialog.prompt("Please enter the author introduction:", system_config[item])
+
+
+def author_avatar():
+    item = "Author_Image"
     if dialog.confirm("Use Gravatar?", "no"):
         from manage import get
-        system_config["Author_Image"] = get.get_gravatar(system_config["Author_Name"])
-        return
-    system_config["Author_Image"] = dialog.prompt("Please enter the author image:", system_config["Author_Image"])
+        system_config[item] = get.get_gravatar(system_config["Author_Name"])
+    system_config[item] = dialog.prompt("Please enter the author image:", system_config[item])
 
-def other_info():
-    system_config["Paging"] = int(dialog.prompt("Please enter the paging:", str(system_config["Paging"])))
-    items = [{"name": "Time_Format", "info": "time format"},
-             {"name": "Editor", "info": "editor"}]
-    show_prompt(items)
+
+def paging():
+    item = "Paging"
+    system_config[item] = int(dialog.prompt("Please enter the paging:", str(system_config[item])))
+
+
+def time_format():
+    item = "Time_Format"
+    system_config[item] = dialog.prompt("Please enter the time format:", system_config[item])
+
+
+def editor():
+    item = "Editor"
+    editor_name = dialog.prompt("Please enter the editor:", system_config[item])
+    result = os.system("which {}".format(editor_name))
+    result_code = result >> 8
+    if result_code != 0:
+        dialog.alert("Warning! This editor may not be installed.")
+    system_config[item] = editor_name
