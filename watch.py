@@ -51,31 +51,25 @@ def kill_progress():
     global p
     p.kill()
 
-def start_watch():
+
+def start_watch(cmd, debug):
     event_handler = when_file_chanage(kill_progress, harakiri)
     observer = Observer(timeout=1)
     observer.schedule(event_handler, path=os.getcwd(), recursive=True)
     observer.start()
-    global p, job_name, job, args
-    cmd = ["uwsgi", "--json", job_name, "--chmod-socket=666"]
-    if not args.debug:
-        cmd.append("--logto")
-        cmd.append("./logs/{}.log".format(job))
-        cmd.append("--threaded-logger")
-        cmd.append("--log-master")
-        cmd.append("--disable-logging")
+    global p, args
     p = subprocess.Popen(cmd, stderr=subprocess.PIPE)
     return_code = p.poll()
     while return_code is None:
         sleep_time = 1
-        if args.debug:
+        if debug:
             sleep_time = 0.05
         time.sleep(sleep_time)
         if not observer.is_alive():
             kill_progress()
             break
         return_code = p.poll()
-        if args.debug:
+        if debug:
             line_byte = p.stderr.readline()
             line = line_byte.decode("UTF-8")
             line = line.strip()
@@ -111,12 +105,20 @@ if args.control:
 
 console.log("info", "Started SilverBlog {} server".format(job))
 
+cmd = ["uwsgi", "--json", job_name, "--chmod-socket=666"]
+if not args.debug:
+    cmd.append("--logto")
+    cmd.append("./logs/{}.log".format(job))
+    cmd.append("--threaded-logger")
+    cmd.append("--log-master")
+    cmd.append("--disable-logging")
+
 signal.signal(signal.SIGINT, KILL_handler)
 signal.signal(signal.SIGTERM, KILL_handler)
 signal.signal(signal.SIGQUIT, KILL_handler)
 signal.signal(signal.SIGHUP, HUP_handler)
 result_code = 0
 while result_code != 1:
-    result_code = start_watch()
+    result_code = start_watch(cmd, args.debug)
 console.log("Error", "Received 1 signal,exited.")
 exit(1)
