@@ -13,10 +13,12 @@ if os.path.exists("./install/install.lock"):
             args = ""
             for arg in sys.argv[1:]:
                 args = args + " " + arg
-
-            os.system("docker run -it --rm -v {0}:/home/silverblog silverblog/silverblog ./manage.py{1}".format(
+            result_code = os.system(
+                "docker run -it --rm -v {0}:/home/silverblog silverblog/silverblog ./manage.py{1}".format(
                 os.getcwd(), args))
-            exit(0)
+            if (result_code >> 8) == 127:
+                print("Please install docker or upgrade the current docker image and try again.")
+            exit(result_code)
 lang = None
 if "LANG" in os.environ:
     if "UTF-8" not in os.environ["LANG"] and "UTF.8" not in os.environ["LANG"]:

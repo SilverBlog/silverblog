@@ -35,9 +35,8 @@ def install_theme(name, custom):
     except requests.exceptions.RequestException:
         console.log("Error", "Get the theme installation script error.")
         exit(1)
-    result_code_raw = os.system("cd ./templates \n" + r)
-    result_code = result_code_raw >> 8
-    if result_code != 0:
+    result_code = os.system("cd ./templates \n" + r)
+    if (result_code >> 8) != 0:
         console.log("Error", "An error occurred while executing the install script.")
         exit(1)
     console.log("Success", "The theme is install successfully!")
