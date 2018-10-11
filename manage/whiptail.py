@@ -4,6 +4,7 @@
 # Reall Computer modified 20171210
 
 import itertools
+import os
 import shlex
 import sys
 from collections import namedtuple
