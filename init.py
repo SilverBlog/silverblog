@@ -17,6 +17,7 @@ cache_index = dict()
 cache_post = dict()
 i18n = dict()
 last_build_year = time.localtime(time.time())[0]
+
 @asyncio.coroutine
 def async_json_loads(text):
     return json.loads(text)
@@ -30,7 +31,7 @@ def get_system_config():
     if len(system_config["Theme"]) == 0:
         console.log("Error",
                     "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
-        exit(1)
+        exit(78)
     if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
         template_config_file = yield from file.async_read_file(
             "./templates/{0}/config.json".format(system_config["Theme"]))

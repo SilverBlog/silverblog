@@ -15,6 +15,15 @@ def flatten(data):
     return list(itertools.chain.from_iterable(data))
 
 
+command = None
+if os.system("command -v whiptail > /dev/null 2>&1") << 8 == 0:
+    command = 'whiptail'
+if os.system("command -v dialog > /dev/null 2>&1") << 8 == 0:
+    command = 'dialog'
+if command is None:
+    print("Please check if newt or dialog is installed.")
+    exit(1)
+
 class Whiptail(object):
     def __init__(self, title='', backtitle='', height=0, width=0,
                  auto_exit=True):
@@ -25,8 +34,9 @@ class Whiptail(object):
         self.auto_exit = auto_exit
 
     def run(self, control, msg, extra=(), exit_on=(1, 255)):
+        global command
         cmd = [
-            'whiptail', '--title', self.title, '--backtitle', self.backtitle,
+            command, '--title', self.title, '--backtitle', self.backtitle,
             '--' + control, msg, str(self.height), str(self.width)
         ]
         cmd += list(extra)
@@ -42,7 +52,7 @@ class Whiptail(object):
         return self.run(control, msg, [default]).value.decode("utf-8")
 
     def confirm(self, msg, default='yes'):
-        defaultno = '--defaultno' if default == 'no' else ''
+        defaultno = '--defaultno' if default.lower() == 'no' else ''
         return self.run('yesno', msg, [defaultno], [255]).returncode == 0
 
     def alert(self, msg):

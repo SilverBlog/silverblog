@@ -118,7 +118,12 @@ signal.signal(signal.SIGTERM, KILL_handler)
 signal.signal(signal.SIGQUIT, KILL_handler)
 signal.signal(signal.SIGHUP, HUP_handler)
 result_code = 0
-while result_code != 1:
+
+while True:
     result_code = start_watch(cmd, args.debug)
-console.log("Error", "Received 1 signal,exited.")
-exit(1)
+    if result_code == 1:
+        console.log("Error", "Received 1 signal,exited.")
+        exit(1)
+    if result_code == 78:
+        console.log("Error", "Configuration Error,exited.")
+        exit(78)
