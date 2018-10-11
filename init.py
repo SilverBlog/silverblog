@@ -110,7 +110,6 @@ def index_route(page_index=1):
     page_url = "/index/{0}/".format(page_index)
     localtime = time.localtime(time.time())
     if last_build_year != localtime[0]:
-        global last_build_year
         last_build_year = localtime[0]
         cache_index.clear()
         cache_post.clear()
@@ -141,7 +140,6 @@ def post_route(file_name=None):
     page_url = "/post/{0}/".format(file_name)
     localtime = time.localtime(time.time())
     if last_build_year != localtime[0]:
-        global last_build_year
         last_build_year = localtime[0]
         cache_index.clear()
         cache_post.clear()
