@@ -26,6 +26,10 @@ def get_local_theme_list():
 def install_theme(name, custom):
     if not os.path.exists("./templates/static"):
         os.mkdir("./templates/static")
+    if os.geteuid() == 0:
+        running_in_root = input('Running this script as root can damage your system. Continue to execute? [y/N]')
+        if running_in_root.lower() != 'y':
+            exit(0)
     console.log("info", "Getting the theme installation script...")
     install_script_url = "https://raw.githubusercontent.com/silverblogtheme/{}/master/install.sh".format(name)
     if custom:

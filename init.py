@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os.path
+import time
 
 from flask import Flask, abort, redirect
 
@@ -15,7 +16,7 @@ page_name_list = list()
 cache_index = dict()
 cache_post = dict()
 i18n = dict()
-
+last_build_year = time.localtime(time.time())[0]
 @asyncio.coroutine
 def async_json_loads(text):
     return json.loads(text)
@@ -106,6 +107,12 @@ def redirect_301(file_name, page_index=1):
 @app.route('/index/<int:page_index>', strict_slashes=False)
 def index_route(page_index=1):
     page_url = "/index/{0}/".format(page_index)
+    localtime = time.localtime(time.time())
+    if last_build_year != localtime[0]:
+        global last_build_year
+        last_build_year = localtime[0]
+        cache_index.clear()
+        cache_post.clear()
     if page_url in cache_index:
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_index[page_url]
@@ -131,6 +138,12 @@ def post_route(file_name=None):
     if file_name is None or not os.path.exists("./document/{0}.md".format(file_name)):
         abort(404)
     page_url = "/post/{0}/".format(file_name)
+    localtime = time.localtime(time.time())
+    if last_build_year != localtime[0]:
+        global last_build_year
+        last_build_year = localtime[0]
+        cache_index.clear()
+        cache_post.clear()
     if page_url in cache_post:
         console.log("info", "Get cache Success: {0}".format(page_url))
         return cache_post[page_url]

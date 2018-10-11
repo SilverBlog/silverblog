@@ -4,7 +4,12 @@ if test $(ps h -o comm -p $$) = "sh"; then
     echo "Please use bash to execute this script."
     exit 1
 fi
-
+if [ $UID -eq 0 ]; then
+    read -p "Running this script as root can damage your system. Continue to execute? (y/N) :" yn
+    if [ "$yn" != "Y" ] || [ "$yn" != "y" ]; then
+        exit 0
+    fi
+fi
 china_install=false
 install_name="silverblog"
 
@@ -71,6 +76,7 @@ cat << EOF > docker-compose.yml
 version: '3'
 services:
   ${install_name}:
+    user: user_docker
     image: "${docker_image}"
     container_name: "${install_name}"
     restart: on-failure:10

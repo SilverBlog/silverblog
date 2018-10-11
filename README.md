@@ -20,7 +20,7 @@ SilverBlog is a lightweight blog project based on Python3.
 * Has Android, IOS, WEB client.
 * Full [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) support
 
-## how to install
+## How to install
 We support `freebsd`,`debian(ubuntu)`, `fedora`, `alpine`, `arch linux` for direct deployment. For other systems, please use Docker deployment.
 You can install SilverBlog directly using the installation script:
 
@@ -66,7 +66,7 @@ This installation script uses the nginx + uwsgi execution mode by default. You c
 
 [wiki](https://github.com/SilverBlogTeam/silverblog/wiki)
 
-## start operation
+## Start operation
 
 You can run SilverBlog using tools such as Tmux or Screen. You just need to execute `python3 watch.py` to open your blog.
 

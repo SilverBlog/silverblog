@@ -26,3 +26,15 @@ def install_package(package):
         install_command.append("--user")
     install_command.append(package)
     main(install_command)
+
+
+def uninstall_package(package):
+    try:
+        from pip._internal import main
+    except Exception:
+        from pip import main
+    install_command = ['uninstall']
+    if os.geteuid() != 0:
+        install_command.append("--user")
+    install_command.append(package)
+    main(install_command)
