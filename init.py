@@ -109,6 +109,7 @@ def redirect_301(file_name, page_index=1):
 def index_route(page_index=1):
     page_url = "/index/{0}/".format(page_index)
     localtime = time.localtime(time.time())
+    global last_build_year
     if last_build_year != localtime[0]:
         last_build_year = localtime[0]
         cache_index.clear()
@@ -138,6 +139,7 @@ def post_route(file_name=None):
     if file_name is None or not os.path.exists("./document/{0}.md".format(file_name)):
         abort(404)
     page_url = "/post/{0}/".format(file_name)
+    global last_build_year
     localtime = time.localtime(time.time())
     if last_build_year != localtime[0]:
         last_build_year = localtime[0]
