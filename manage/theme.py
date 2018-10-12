@@ -6,7 +6,7 @@ from common import console
 
 
 def get_orgs_list():
-    console.log("info", "Getting the list of theme...")
+    console.log("Info", "Getting the list of theme...")
     try:
         return requests.get("https://api.github.com/orgs/silverblogtheme/repos").json()
     except  requests.exceptions.RequestException:
@@ -30,7 +30,7 @@ def install_theme(name, custom):
         running_in_root = input('Running this script as root can damage your system. Continue to execute? [y/N]')
         if running_in_root.lower() != 'y':
             exit(0)
-    console.log("info", "Getting the theme installation script...")
+    console.log("Info", "Getting the theme installation script...")
     install_script_url = "https://raw.githubusercontent.com/silverblogtheme/{}/master/install.sh".format(name)
     if custom:
         install_script_url = name
@@ -53,7 +53,7 @@ def remove_theme(theme_name):
     console.log("Success", "The theme is removed successfully!")
 
 def upgrade_theme(theme_name):
-    console.log("info", "Updating theme, please wait...")
+    console.log("Info", "Updating theme, please wait...")
     import git
     repo = git.Repo("./templates/" + theme_name)
     remote = repo.remote()

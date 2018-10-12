@@ -13,7 +13,7 @@ from watchdog.observers import Observer
 from common import console
 
 if os.environ.get('DOCKER_CONTAINER', False):
-    console.log("info", "Observer performed by polling method.")
+    console.log("Info", "Observer performed by polling method.")
     from watchdog.observers.polling import PollingObserver as Observer
 
 p = None
@@ -101,7 +101,7 @@ if args.control:
     job = "control"
     control = True
 
-console.log("info", "Started SilverBlog {} server".format(job))
+console.log("Info", "Started SilverBlog {} server".format(job))
 
 cmd = ["uwsgi", "--json", job_name, "--chmod-socket=666"]
 if not args.debug:

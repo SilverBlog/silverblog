@@ -63,7 +63,7 @@ def get_rss_file():
     if os.path.exists("./document/rss.xml"):
         rss = yield from file.async_read_file("./document/rss.xml")
 def load_config():
-    console.log("info", "Loading configuration...")
+    console.log("Info", "Loading configuration...")
     if not os.path.exists("./config/system.json"):
         console.log("Error", "system.json file not found.")
         exit(1)
@@ -115,19 +115,19 @@ def index_route(page_index=1):
         cache_index.clear()
         cache_post.clear()
     if page_url in cache_index:
-        console.log("info", "Get cache Success: {0}".format(page_url))
+        console.log("Success", "Get cache Success: {0}".format(page_url))
         return cache_index[page_url]
-    console.log("info", "Trying to build: {0}".format(page_url))
+    console.log("Info", "Trying to build: {0}".format(page_url))
     page_row = page.get_page_row(system_config["Paging"], len(page_list))
     if page_index == 0 or page_index > page_row:
         abort(404)
     result = page.build_index(page_index, page_row, system_config, page_list, menu_list, template_config, i18n)
     if result is None:
         abort(404)
-    console.log("info", "Writing to cache: {0}".format(page_url))
+    console.log("Info", "Writing to cache: {0}".format(page_url))
     if len(cache_index) >= 50:
         page_keys = sorted(cache_index.keys())
-        console.log("info", "Delete cache: {0}".format(page_keys[0]))
+        console.log("Info", "Delete cache: {0}".format(page_keys[0]))
         del cache_index[page_keys[0]]
     cache_index[page_url] = result
     console.log("Success", "Get success: {0}".format(page_url))
@@ -142,11 +142,12 @@ def post_route(file_name=None):
     global last_build_year
     localtime = time.localtime(time.time())
     if last_build_year != localtime[0]:
+        console.log("Info", "Found a year change, cache cleanup.")
         last_build_year = localtime[0]
         cache_index.clear()
         cache_post.clear()
     if page_url in cache_post:
-        console.log("info", "Get cache Success: {0}".format(page_url))
+        console.log("Success", "Get cache Success: {0}".format(page_url))
         return cache_post[page_url]
     page_info = None
     if file_name in page_name_list:
@@ -154,10 +155,10 @@ def post_route(file_name=None):
         page_info = page_list[this_page_index]
     result = page.build_page(file_name, system_config, page_info, menu_list,
                              template_config, i18n)
-    console.log("info", "Writing to cache: {0}".format(page_url))
+    console.log("Info", "Writing to cache: {0}".format(page_url))
     if len(cache_post) >= 50:
         page_keys = sorted(cache_post.keys())
-        console.log("info", "Delete cache: {0}".format(page_keys[0]))
+        console.log("Info", "Delete cache: {0}".format(page_keys[0]))
         del cache_post[page_keys[0]]
     cache_post[page_url] = result
     console.log("Success", "Get success: {0}".format(page_url))

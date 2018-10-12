@@ -11,7 +11,7 @@ app = Flask(__name__)
 api_version = 2
 system_config = json.loads(file.read_file("./config/system.json"))
 
-console.log("info", "Loading configuration...")
+console.log("Info", "Loading configuration...")
 try:
     password_md5 = json.loads(system_config["API_Password"])["hash_password"]
 except (ValueError, KeyError, TypeError):
