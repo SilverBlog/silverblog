@@ -12,6 +12,8 @@ Thumbs.db
 .idea
 config
 document
+!/.develop/demo/config
+!/.develop/demo/document
 /uwsgi.json
 /pm2.json
 templates
