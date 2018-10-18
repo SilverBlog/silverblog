@@ -84,10 +84,8 @@ unit_test_develop:
   script:
   - bash install/initialization.sh
   - bash install/nginx_gen.sh
-  - cp -f .develop/demo/page.json ./config/page.json
-  - cp -f .develop/demo/menu.json ./config/menu.json
-  - cp -f .develop/demo/system.json ./config/system.json
-  - cp -f .develop/demo/demo-article.md ./document/demo-article.md
+  - cp -rf /home/silverblog/.develop/demo/config /home/silverblog/
+  - cp -rf /home/silverblog/.develop/demo/document /home/silverblog/
   - cd templates
   - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
   - cd ..
