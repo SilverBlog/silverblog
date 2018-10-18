@@ -13,7 +13,7 @@ from watchdog.observers import Observer
 from common import console
 
 if os.environ.get('DOCKER_CONTAINER', False):
-    console.log("info", "Observer performed by polling method.")
+    console.log("Info", "Observer performed by polling method.")
     from watchdog.observers.polling import PollingObserver as Observer
 
 p = None
@@ -101,7 +101,7 @@ if args.control:
     job = "control"
     control = True
 
-console.log("info", "Started SilverBlog {} server".format(job))
+console.log("Info", "Started SilverBlog {} server".format(job))
 
 cmd = ["uwsgi", "--json", job_name, "--chmod-socket=666"]
 if not args.debug:
@@ -118,7 +118,12 @@ signal.signal(signal.SIGTERM, KILL_handler)
 signal.signal(signal.SIGQUIT, KILL_handler)
 signal.signal(signal.SIGHUP, HUP_handler)
 result_code = 0
-while result_code != 1:
+
+while True:
     result_code = start_watch(cmd, args.debug)
-console.log("Error", "Received 1 signal,exited.")
-exit(1)
+    if result_code == 1:
+        console.log("Error", "Received 1 signal,exited.")
+        exit(1)
+    if result_code == 78:
+        console.log("Error", "Configuration Error,exited.")
+        exit(78)

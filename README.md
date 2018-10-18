@@ -4,27 +4,25 @@
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog?ref=badge_shield)
 
-[Click here for English version](https://github.com/SilverBlogTeam/silverblog/blob/master/readme/en-US.md)
+[中文版本](https://github.com/SilverBlogTeam/silverblog/blob/master/readme/zh-TW.md)
 
-SilverBlog 是一個基於 Python3 的輕量級博客專案。
+SilverBlog is a lightweight blog project based on Python3.
 
-## 為什麼選擇 SilverBlog
+## Why SilverBlog
 
-* 簡單、小巧的博客系統。
-* 易於安裝部署。
-* 完整的 Rss 支持。
-* 模組化設計，方便自行添加，刪除。
-* 無數據庫化設計。
-* 擁有媲美 Hexo 的靜態頁面生成模組，只需一行命令，就可在 Github Page 上運行。
-* 原生支持 Linux，可以通過 Docker 部署在任意平台。
-* 擁有 Android，IOS，WEB 用戶端。
-* 完整的 [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) 支持
+* Simple, compact blog system.
+* Easy to install and deploy.
+* Complete Rss support.
+* Modular design, easy to add, delete.
+* No database design.
+* With a static page generation module comparable to Hexo, you can run on Github Page with only one line of commands.
+* Native support for Linux can be deployed on any platform through Docker.
+* Has Android, IOS, WEB client.
+* Full [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) support
 
-## 如何安裝
-我們支持`freebsd`,`debian(ubuntu)`,`fedora`,`alpine`,`arch linux`直接部署，其他系統請使用Docker部署。
-
-
-您可以直接使用安裝腳本安裝 SilverBlog：
+## How to install
+We support `freebsd`,`debian(ubuntu)`, `fedora`, `alpine`, `arch linux` for direct deployment. For other systems, please use Docker deployment.
+You can install SilverBlog directly using the installation script:
 
 Global:
 
@@ -41,7 +39,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlo
 China:
 
 ```
-bash -c "$(curl -fsSL https://gitee.com/qwe7002/silverblog/raw/master/install/install.sh)" -n silverblog -c
+bash -c "$(curl -fsSL https://code.aliyun.com/silverblogteam/silverblog/raw/master/install/install.sh)" -n silverblog -c
 ```
 
 Docker:
@@ -50,7 +48,7 @@ Docker:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
 ```
 
-如果您在使用一個全新安裝的Ubuntu 18.04，你可能需要修改`/etc/apt/source.list`文件，在`main`後添加`universe`和`multiverse`軟件源，這將保證安裝能夠順利執行。一個正確的配置如下：
+If you are using a new install of Ubuntu 18.04, you may need to modify the `/etc/apt/source.list` file and add `universe` and `multiverse` software sources after `main`, which will ensure the installation will run smoothly. A correct configuration is as follows:
 
 ```
 deb http://archive.ubuntu.com/ubuntu bionic main restricted universe multiverse
@@ -62,25 +60,25 @@ deb http://archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe 
 deb http://security.ubuntu.com/ubuntu bionic-security main restricted universe multiverse
 ```
 
-您可以在 [SilverBlogTheme](https://github.com/SilverBlogTheme) 中選擇一個主題，然後使用 `./manage.py` 來安裝配置 ，並在下面的配置文件中正確配置它。
+You can select a theme in [SilverBlogTheme](https://github.com/SilverBlogTheme), then use `./manage.py` to install the configuration and configure it correctly in the configuration file below.
 
-本安裝腳本默認使用 nginx + uwsgi 執行模式，您可以將程序自動生成的 `nginx_config` 文件放到您的 nginx 軟件包的網站配置目錄下。如果您需要使用第三方網頁用戶端，別忘了修改 `nginx_config` 中的CORS配置。
+This installation script uses the nginx + uwsgi execution mode by default. You can put the auto-generated `nginx_config` file into your nginx package's website configuration directory. If you need to use a third-party web client, don't forget to modify the CORS configuration in `nginx_config`.
 
-[更多文檔](https://github.com/SilverBlogTeam/silverblog/wiki)
+[wiki](https://github.com/SilverBlogTeam/silverblog/wiki)
 
-## 開始運行
+## Start operation
 
-您可以使用 Tmux 或者 Screen 等工具運行 SilverBlog 。您只需要執行 `python3 watch.py​​` 就可以打開您的博客。
+You can run SilverBlog using tools such as Tmux or Screen. You just need to execute `python3 watch.py` to open your blog.
 
-您可以使用 `--control` 參數運行管理伺服器。
+You can use the `--control` parameter to run the management server.
 
-如果您需要在容器中同時運行博客以及管理伺服器，請使用 `python3 watch.py --control --docker` 這個命令。在條件允許的情況下，我們不推薦這個運行方法。
+If you need to run blogs and manage servers simultaneously in a container, use the `python3 watch.py ​​--control --docker` command. We do not recommend this method of operation if conditions permit.
 
-## 持續運行並監控您的博客
+## Keep running and monitoring your blog
 
-使用 docker-compose 啟動的容器帶有自動重啟執行的功能，您只要確保 Docker 服務在開機啟動的時候能夠自動啟動即可。
+Containers started with docker-compose are automatically restarted. You just need to ensure that the Docker service starts automatically when it starts up.
 
-您可以使用 install 目錄下的 `systemd_startup_install.sh` 文件配置您的伺服器，這需要root權限。它和下面推薦的方法效果一致。
+You can configure your server using the `systemd_install.sh` file in the install directory, which requires root privileges. It is consistent with the recommended method below.
 
 ```
 bash systemd_install.sh
@@ -92,38 +90,39 @@ custom:
 bash systemd_install.sh -n silverblog -u silverblog
 ```
 
-SilverBlog 推薦您使用基於 NodeJS 的監控程序： PM2
 
-有關PM2的安裝請查看 [tj/n: Node version management](https://github.com/tj/n) 和 [PM2 - Quick Start](http://pm2.keymetrics.io/docs/usage/quick-start/)
+SilverBlog recommends using a NodeJS-based monitor: pm2
 
-您只需要運行：
+For the installation of pm2 see [tj/n: Node version management](https://github.com/tj/n) and [pm2 - Quick Start](http://pm2.keymetrics.io/docs/Usage/quick-start/)
+
+you just have to run:
 
 ```
 pm2 start pm2.json
 ```
 
-就可以實現在更新文件或者程序錯誤之後，自動重啟 SilverBlog。
+It is possible to automatically restart SilverBlog after updating files or program errors.
 
-您還可以使用：
+You can also use:
 
 ```
 pm2 startup
 pm2 save
 ```
 
-使得您的 SilverBlog 能夠在系統開機的時候，自動啟動。
+Enables your SilverBlog to start automatically when the system is powered on.
 
-## 如何使用管理腳本
+## How to use administrative scripts
 
-您可以隨時使用 `./manage.py -h` 來獲取 SilverBlog 管理模組的幫助信息。
+You can use `./manage.py -h` at any time to get the help information for the SilverBlog management module.
 
-直接輸入 `./manage.py` 將進入 whiptail 構建的圖形化環境。
+Directly typing `./manage.py` will enter the whiptail build's graphical environment.
 
-## 使用 github page 功能
+## Using the github page feature
 
-您可以使用 `git clone https://${personal_access_tokens}@github.com/${your_repo} static_page` 來初始化您的 Github Page 倉庫。
+You can use `git clone https://${personal_access_tokens}@github.com/${your_repo} static_page` to initialize your Github Page repository.
 
-別忘了使用以下命令初始化您的提交用戶信息：
+Don't forget to initialize your submit user information using the following command:
 
 ```
 cd static_page
@@ -131,47 +130,47 @@ git config user.email "youremail@google.com"
 git config user.name "your name"
 ```
 
-接下來，您只需要執行 `./manage.py build_page` 命令，系統就會自動生成靜態頁面並且提交到 github page。
+Next, you just need to execute the Build static page command. The system will automatically generate a static page and submit it to the github page.
 
-您可以嘗試使用 `/example/.travis.yml` 腳本，實現自動化提交。
+You can try using the `/example/.travis.yml` script for automated submission.
 
 
-## 使用用戶端管理伺服器
+## Use client management server
 
-注意！您如果需要使用 SilverBlog 用戶端，請確保您使用了https安全協定。使用http如同將密碼告訴黑客！這將可能危害您的伺服器安全！
+Warning! If you need to use the SilverBlog client, make sure you use the https security protocol. Using http is like telling a password to a hacker! This may compromise your server security!
 
-您可以訪問 https://github.com/SilverBlogTeam/SilverBlog_Android/releases 下載最新android用戶端。
+You can download the latest android client at https://github.com/SilverBlogTeam/SilverBlog_Android/releases.
 
-您可以自己編譯部署 https://github.com/SilverBlogTeam/silverblog_ios IOS客戶端。
+You can compile and deploy the https://github.com/SilverBlogTeam/silverblog_ios IOS client yourself.
 
-您可以使用 SilverCreator(https://c.silverblog.org) 來管理你的博客。
+You can use SilverCreator (https://c.silverblog.org) to manage your blog.
 
-您可以執行 `./manage.py qrcode` 生成自動化配置二維碼。
+You can execute `./manage.py qrcode` to generate the automated configuration QR code.
 
-## 切換到開發者預覽版本
+## Switch to developer preview
 
-SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執行 `git checkout --track -b origin/nightly` 切換到開發者預覽版。該版本可能有未被發現的Bug，請慎重使用。
+SilverBlog is now available as a developer preview version. You can switch from `git checkout --track -b origin/develop` to the developer preview in the repository root directory. This version may have undiscovered bugs. Please use it with caution.
 
-## 參與開發
+## Participate in development
 
-我們歡迎您在 SilverBlog 項目的 GitHub 上報告 issue 或者 pull request。
+We welcome you to report issue or pull request on GitHub of the SilverBlog project.
 
-如果您還不熟悉 GitHub 的 Fork and Pull 開發模式，您可以閱讀 [GitHub的文檔](https://help.github.com/articles/using-pull-requests) 獲得更多的信息。
+If you are not yet familiar with GitHub's Fork and Pull development model, you can read the [GitHub Documentation](https://help.github.com/articles/using-pull-requests) for more information.
 
-我們建議您在使用中文提出issue的同時，在下方附上英語翻譯版本，以便非中文母語地區開發者的閱讀和理解。
+We recommend that you use the Chinese language to raise an issue, and attach an English translation below to make it easier for non-Chinese native language developers to read and understand.
 
-## 關於亞洲地區的訪問加速
+## About access acceleration in Asia
 
-您可以執行以下命令來更換您的倉庫源，這將加速您的更新：(亚洲地区服务由碼雲提供)
+You can replace your repository source by executing the following command, which will speed up your update: (Asian region service is provided by gitee.com)
 
 ```
 git remote set-url origin https://gitee.com/qwe7002/silverblog.git
 ```
 
-您可以使用阿里雲提供的registry加速器來加快鏡像下載，修改image爲 `registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog` 即可
+You can use the registry accelerator provided by Alibaba Cloud to speed up the image download, and modify the image to `registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog`
 
-## 鳴謝
+## Thanks
 
-感謝 [@Liqueur Librazy](https://github.com/Librazy) 為本項目提供Demo程式伺服器。
+Thanks to [@Liqueur Librazy](https://github.com/Librazy) for providing the demo program server for this project.
 
-感謝 [Jetbrains](https://www.jetbrains.com/) 為本項目提供免費的全套IDE支持
+Thanks [Jetbrains](https://www.jetbrains.com/) for providing a free All product IDE for this project

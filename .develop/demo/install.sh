@@ -2,12 +2,10 @@
 set -o errexit
 
 bash /home/silverblog/install/initialization.sh
-sed -i '''s/.\/config\/unix_socks\/main.sock/0.0.0.0:5000/g' uwsgi.json
-sed -i '''s/.\/config\/unix_socks\/control.sock/0.0.0.0:5001/g' uwsgi.json
-cp -f /home/silverblog/.develop/demo/page.json /home/silverblog/config/page.json
-cp -f /home/silverblog/.develop/demo/menu.json /home/silverblog/config/menu.json
-cp -f /home/silverblog/.develop/demo/system.json /home/silverblog/config/system.json
-cp /home/silverblog/.develop/demo/demo-article.md /home/silverblog/document/demo-article.md
+sed -i '''s@./config/unix_socks/main.sock@0.0.0.0:5000@g' uwsgi.json
+sed -i '''s@./config/unix_socks/control.sock@0.0.0.0:5001@g' uwsgi.json
+cp -rf /home/silverblog/.develop/demo/config /home/silverblog/
+cp -rf /home/silverblog/.develop/demo/document /home/silverblog/
 python3 manage.py update
 cd /home/silverblog/templates
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"

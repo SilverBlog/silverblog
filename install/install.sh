@@ -133,7 +133,7 @@ fi
 
 cd ..
 
-read -p "Create a pm2 configuration file? (Y/N) :" yn
+read -p "Create a pm2 configuration file? (y/N) :" yn
 
 if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
 cat << EOF >pm2.json
@@ -161,7 +161,7 @@ cat << EOF >pm2.json
 EOF
 fi
 if [ "$yn" != "Y" ] || [ "$yn" != "y" ]; then
-read -p "Create a supervisord configuration file? (Y/N) :" yn
+read -p "Create a supervisord configuration file? (y/N) :" yn
 if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
 cat << EOF >supervisord.conf
 [program:${install_name}-main]

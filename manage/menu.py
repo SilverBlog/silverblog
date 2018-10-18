@@ -25,7 +25,7 @@ def use_whiptail_mode():
             upgrade_text = "⚠ Upgrade"
             upgrade_check = True
         if (time.time() - last_fetch_time) > 259200 and not upgrade_check:
-            console.log("info", "Checking for updates...")
+            console.log("Info", "Checking for updates...")
             file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
             if upgrade.upgrade_check():
                 upgrade_text = "⚠ Upgrade"
@@ -204,7 +204,7 @@ def use_text_mode(args):
             if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y' or args.yes:
                 upgrade.upgrade_pull()
                 exit(0)
-        console.log("info", "No upgrade found")
+        console.log("Info", "No upgrade found")
         exit(0)
     if args.command == "build-page":
         from manage import build_static_page
