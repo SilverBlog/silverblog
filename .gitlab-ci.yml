@@ -35,8 +35,8 @@ build_docker:
   script:
   - docker build -t ${docker_tag_name} -f ./example/Dockerfile .
   - docker build -t ${docker_tag_name}:buildin -f ./example/Dockerfile-buildin .
-  - docker login -u qwe7002 -p ${docker_hub_passwd}
-  - docker login -u qwe7002@hotmail.com -p ${docker_hub_passwd} registry.cn-hangzhou.aliyuncs.com
+  - echo ${docker_hub_passwd} | docker login -u qwe7002 --password-stdin
+  - echo ${docker_hub_passwd} | docker login -u qwe7002@hotmail.com registry.cn-hangzhou.aliyuncs.com --password-stdin
   - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
   - docker tag ${docker_tag_name}:buildin registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}:buildin
   - docker push ${docker_tag_name}
@@ -73,7 +73,7 @@ build_test_env:
   - docker pull docker.reallserver.cn/${docker_tag_name}:test_env || true
   - echo " && apk add --no-cache nginx" >> ./example/Dockerfile
   - docker build --cache-from docker.reallserver.cn/${docker_tag_name}:test_env -t docker.reallserver.cn/${docker_tag_name}:test_env -f ./example/Dockerfile .
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN docker.reallserver.cn
+  - echo $CI_BUILD_TOKEN | docker login -u gitlab-ci-token docker.reallserver.cn --password-stdin
   - docker push docker.reallserver.cn/${docker_tag_name}:test_env
 
 unit_test_develop:
