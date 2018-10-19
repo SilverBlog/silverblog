@@ -3,7 +3,14 @@
     "excerpt": "",
     "time": 0,
     "name": "demo-article",
-    "title": "Demo Article | 演示文章",
+    "title": "Demo Article",
+    "lock": true
+  },
+  {
+    "excerpt": "",
+    "time": 0,
+    "name": "demo-article-zh",
+    "title": "演示文章",
     "lock": true
   }
 ]
