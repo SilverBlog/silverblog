@@ -19,13 +19,6 @@ if os.path.exists("./install/install.lock"):
             if (result_code >> 8) == 127:
                 print("Please install docker or upgrade the current docker image and try again.")
             exit(result_code)
-lang = None
-if "LANG" in os.environ:
-    if "UTF-8" not in os.environ["LANG"] and "UTF.8" not in os.environ["LANG"]:
-        lang = os.environ["LANG"]
-if lang is not None:
-    print("The current locale is: {} .Some characters may not be displayed and processed.".format(lang))
-    input("Press enter to continue.")
 if __name__ == '__main__':
     from manage import menu
     if not os.path.exists("./config/page.json") or not os.path.exists("./config/menu.json"):
