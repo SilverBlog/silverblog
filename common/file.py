@@ -12,7 +12,7 @@ def read_file(filename):
 
 def write_file(filename, content):
     with open(filename, "w", newline=None, encoding="utf-8") as f:
-        console.log("info", "Write the file: {0}".format(filename))
+        console.log("Info", "Write the file: {0}".format(filename))
         f.write(content)
     return True
 

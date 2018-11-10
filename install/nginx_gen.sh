@@ -1,71 +1,18 @@
 #!/usr/bin/env bash
-function gen_default_nginx(){
-cat << EOF >nginx_config
-server {
-    listen 80;
-    location / {
-        include uwsgi_params;
-        uwsgi_pass unix:$(pwd)/config/unix_socks/main.sock;
-    }
-    location /control {
-        include uwsgi_params;
-        uwsgi_pass unix:$(pwd)/config/unix_socks/control.sock;
-        add_header 'Access-Control-Allow-Origin' "https://c.silverblog.org";
-	    add_header 'Access-Control-Allow-Credentials' "true";
-        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE';
-        add_header 'Access-Control-Allow-Headers' 'reqid, nid, host, x-real-ip, x-forwarded-ip, event-type, event-id, accept, content-type';
-        if (\$request_method = "OPTIONS") {
-            return 204;
-        }
-    }
-    location /static {
-        alias $(pwd)/templates/static;
-    }
-}
-EOF
-}
-
-function gen_china_nginx(){
-cat << EOF >nginx_config
-map \$http_origin \$cors_origin {
-        https://c.silverblog.org \$http_origin;
-        https://silvercreator.reallct.com \$http_origin;
-        default null;
-    }
-server {
-    listen 80;
-    location / {
-        include uwsgi_params;
-        uwsgi_pass unix:$(pwd)/config/unix_socks/main.sock;
-    }
-    location /control {
-        include uwsgi_params;
-        uwsgi_pass unix:$(pwd)/config/unix_socks/control.sock;
-        add_header 'Access-Control-Allow-Origin' \$cors_origin;
-	    add_header 'Access-Control-Allow-Credentials' "true";
-        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE';
-        add_header 'Access-Control-Allow-Headers' 'reqid, nid, host, x-real-ip, x-forwarded-ip, event-type, event-id, accept, content-type';
-        if (\$request_method = "OPTIONS") {
-            return 204;
-        }
-    }
-    location /static {
-        alias $(pwd)/templates/static;
-    }
-}
-EOF
-}
-
 
 china_install=false
-while getopts "n:c" arg; do
+tcp_install=false
+while getopts "ct" arg; do
     case ${arg} in
+         t)
+            tcp_install=true
+            ;;
          c)
             china_install=true
             ;;
          ?)
             echo "Unknown argument"
-            echo "use ./nginx_gen.sh [-c]"
+            echo "use ./nginx_gen.sh [-c] [-t]"
             exit 1
             ;;
     esac
@@ -76,13 +23,51 @@ if [ -f "nginx_gen.sh" ]; then
 fi
 
 
-if [ ! -f "./nginx_config" ]; then
 echo "Generating Nginx configuration..."
-if [ ${china_install} = false ];then
-gen_default_nginx
+
+if [ -f "nginx_config" ]; then
+rm nginx_config
+fi
+cors_setting="https://c.silverblog.org"
+if [ ${china_install} = true ];then
+cat << EOF >nginx_config
+map \$http_origin \$cors_origin {
+        https://c.silverblog.org \$http_origin;
+        https://silvercreator.reallct.com \$http_origin;
+        default null;
+    }
+EOF
+cors_setting="\$cors_origin"
 fi
 
-if [ ${china_install} = true ];then
-gen_china_nginx
+uwsgi_pass_main="unix:$(pwd)/config/unix_socks/main.sock"
+uwsgi_pass_control="unix:$(pwd)/config/unix_socks/control.sock"
+
+if [ ${tcp_install} = true ];then
+uwsgi_pass_main="127.0.0.1:5000"
+uwsgi_pass_control="127.0.0.1:5001"
 fi
-fi
+
+cat << EOF >>nginx_config
+server {
+    listen 80;
+    location / {
+        include uwsgi_params;
+        uwsgi_pass ${uwsgi_pass_main};
+    }
+    location /control {
+        include uwsgi_params;
+        uwsgi_pass ${uwsgi_pass_control};
+        add_header 'Access-Control-Allow-Origin' ${cors_setting};
+	    add_header 'Access-Control-Allow-Credentials' "true";
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE';
+        add_header 'Access-Control-Allow-Headers' 'reqid, nid, host, x-real-ip, x-forwarded-ip, event-type, event-id, accept, content-type';
+        if (\$request_method = "OPTIONS") {
+            return 204;
+        }
+    }
+    location /static {
+        alias $(pwd)/templates/static;
+    }
+}
+EOF

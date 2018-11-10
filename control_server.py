@@ -11,7 +11,7 @@ app = Flask(__name__)
 api_version = 2
 system_config = json.loads(file.read_file("./config/system.json"))
 
-console.log("info", "Loading configuration...")
+console.log("Info", "Loading configuration...")
 try:
     password_md5 = json.loads(system_config["API_Password"])["hash_password"]
 except (ValueError, KeyError, TypeError):
@@ -86,7 +86,7 @@ def edit(request_type):
     content = str(request.json["content"])
     sign = str(request.json["sign"])
     status = False
-    if page_list[post_id].get("protection", False):
+    if page_list[post_id].get("lock", False):
         return json.dumps({"status": False})
     if check_password(title, sign):
         status = True
@@ -105,7 +105,7 @@ def delete():
     post_id = int(request.json["post_id"])
     sign = str(request.json["sign"])
     status = False
-    if page_list[post_id].get("protection", False):
+    if page_list[post_id].get("lock", False):
         return json.dumps({"status": False})
     if check_password(str(post_id) + page_list[post_id]["title"], sign):
         status = True

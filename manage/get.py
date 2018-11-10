@@ -35,7 +35,7 @@ def get_excerpt(filename):
 
 def get_gravatar(author_name):
     import requests
-    console.log("info", "Get Gravatar URL...")
+    console.log("Info", "Get Gravatar URL...")
     gravatar_hash = ""
     try:
         r = requests.get("https://en.gravatar.com/{0}.json".format(author_name)).json()
