@@ -7,7 +7,7 @@ fi
 
 use_user=""
 
-if [ $UID -ne 0 ]; then
+if [[ $UID -ne 0 ]]; then
     use_user="--user"
 fi
 
