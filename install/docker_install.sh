@@ -4,9 +4,9 @@ if test $(ps h -o comm -p $$) = "sh"; then
     echo "Please use bash to execute this script."
     exit 1
 fi
-if [ $UID -eq 0 ]; then
+if [[ $UID -eq 0 ]]; then
     read -p "Running this script as root can damage your system. Continue to execute? (y/N) :" yn
-    if [ "$yn" != "Y" ] || [ "$yn" != "y" ]; then
+    if [[ "$yn" != "Y" ]] || [[ "$yn" != "y" ]]; then
         exit 0
     fi
 fi
@@ -32,13 +32,13 @@ done
 docker_image="silverblog/silverblog"
 repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
 
-if [ ${china_install} = true ];then
+if [[ ${china_install} = true ]];then
     docker_image="registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog"
     repo_url=https://code.aliyun.com/silverblogteam/silverblog.git
 fi
 
-if [ ! -f "initialization.sh" ]; then
-    if [ ! -d ${install_name} ]; then
+if [[ ! -f "initialization.sh" ]]; then
+    if [[ ! -d ${install_name} ]]; then
         echo "Cloning silverblog..."
         git clone ${repo_url} --depth=1 ${install_name}
     fi
@@ -49,11 +49,11 @@ fi
 
 echo "{\"install\":\"docker\"}" > install.lock
 
-if [ ${china_install} = true ]; then
+if [[ ${china_install} = true ]]; then
 china_option="-c"
 fi
 
-if [ ! -f "./nginx_config" ]; then
+if [[ ! -f "./nginx_config" ]]; then
 bash nginx_gen.sh -t ${china_option}
 fi
 
@@ -63,15 +63,15 @@ bash install/initialization.sh
 
 embedded_nginx=false
 read -p "Use embedded nginx? (Y/N) :" yn
-if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
+if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
 embedded_nginx=true
 fi
 
 sed -i '''s@./config/unix_socks/main.sock@0.0.0.0:5000@g' uwsgi.json
 sed -i '''s@./config/unix_socks/control.sock@0.0.0.0:5001@g' uwsgi.json
 
-if [ ${embedded_nginx} == false ];then
-if [ ! -f "./docker-compose.yml" ]; then
+if [[ ${embedded_nginx} == false ]];then
+if [[ ! -f "./docker-compose.yml" ]]; then
 cat << EOF > docker-compose.yml
 version: '3'
 services:
@@ -100,11 +100,11 @@ EOF
 fi
 fi
 
-if [ ${embedded_nginx} == true ];then
+if [[ ${embedded_nginx} == true ]];then
 sed -i ''"s/127.0.0.1:5000/${install_name}:5000/g" nginx_config
 sed -i ''"s/127.0.0.1:5001/${install_name}_control:5001/g" nginx_config
 sed -i ''"s@$(pwd)@/home/silverblog@g" nginx_config
-if [ ! -f "./docker-compose.yml" ]; then
+if [[ ! -f "./docker-compose.yml" ]]; then
 cat << EOF > docker-compose.yml
 version: '3'
 services:

@@ -18,18 +18,18 @@ while getopts "ct" arg; do
     esac
 done
 
-if [ -f "nginx_gen.sh" ]; then
+if [[ -f "nginx_gen.sh" ]]; then
     cd ..
 fi
 
 
 echo "Generating Nginx configuration..."
 
-if [ -f "nginx_config" ]; then
+if [[ -f "nginx_config" ]]; then
 rm nginx_config
 fi
 cors_setting="https://c.silverblog.org"
-if [ ${china_install} = true ];then
+if [[ ${china_install} = true ]];then
 cat << EOF >nginx_config
 map \$http_origin \$cors_origin {
         https://c.silverblog.org \$http_origin;
@@ -43,7 +43,7 @@ fi
 uwsgi_pass_main="unix:$(pwd)/config/unix_socks/main.sock"
 uwsgi_pass_control="unix:$(pwd)/config/unix_socks/control.sock"
 
-if [ ${tcp_install} = true ];then
+if [[ ${tcp_install} = true ]];then
 uwsgi_pass_main="127.0.0.1:5000"
 uwsgi_pass_control="127.0.0.1:5001"
 fi
