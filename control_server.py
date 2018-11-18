@@ -10,7 +10,7 @@ from manage import post_manage, build_rss, get
 app = Flask(__name__)
 api_version = 2
 system_config = json.loads(file.read_file("./config/system.json"))
-
+password_error_counter = 0
 console.log("Info", "Loading configuration...")
 try:
     password_md5 = json.loads(system_config["API_Password"])["hash_password"]
@@ -20,9 +20,18 @@ except (ValueError, KeyError, TypeError):
 console.log("Success", "load the configuration file successfully!")
 
 def check_password(title, sign):
-    hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
-    if sign == hash_md5:
-        return True
+    global password_error_counter
+    if len(sign) != 0:
+        hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
+        if sign == hash_md5:
+            password_error_counter = 0
+            return True
+        if password_error_counter == 50:
+            console.log("Error", "Too many invalid password attempts.")
+            abort(403)
+            return False
+        password_error_counter = password_error_counter + 1
+
     return False
 
 @app.route('/control/system_info', methods=['POST'])
@@ -86,8 +95,6 @@ def edit(request_type):
     content = str(request.json["content"])
     sign = str(request.json["sign"])
     status = False
-    if page_list[post_id].get("lock", False):
-        return json.dumps({"status": False})
     if check_password(title, sign):
         status = True
         config = {"name": name, "title": title}
@@ -105,8 +112,6 @@ def delete():
     post_id = int(request.json["post_id"])
     sign = str(request.json["sign"])
     status = False
-    if page_list[post_id].get("lock", False):
-        return json.dumps({"status": False})
     if check_password(str(post_id) + page_list[post_id]["title"], sign):
         status = True
         post_manage.delete_post(page_list, post_id)
