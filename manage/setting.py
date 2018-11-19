@@ -28,11 +28,16 @@ system_config = {
 if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
 
-def setting_menu():
+
+def setting_menu(main_run=False):
     while True:
         menu_list = ["Using Setup Wizard", "Using Manual setup",
                      "Theme package manage", "=========================",
-                     "Back", "Exit"]
+                     ]
+        if not main_run:
+            menu_list.append("Back")
+        menu_list.append("Exit")
+
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)

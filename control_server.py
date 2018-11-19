@@ -19,14 +19,15 @@ except (ValueError, KeyError, TypeError):
     exit(1)
 console.log("Success", "load the configuration file successfully!")
 
-def check_password(title, sign):
+
+def check_password(salt, sign):
     global password_error_counter
     if len(sign) != 0:
-        hash_md5 = hashlib.md5(str(title + password_md5).encode('utf-8')).hexdigest()
+        hash_md5 = hashlib.md5(str(salt + password_md5).encode('utf-8')).hexdigest()
         if sign == hash_md5:
             password_error_counter = 0
             return True
-        if password_error_counter == 50:
+        if password_error_counter >= 50:
             console.log("Error", "Too many invalid password attempts.")
             abort(403)
             return False

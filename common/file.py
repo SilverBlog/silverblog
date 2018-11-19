@@ -29,4 +29,4 @@ def list_dirs(folder):
 
 
 def json_format_dump(obj):
-    return json.dumps(obj, indent=4, sort_keys=False, ensure_ascii=False)
+    return json.dumps(obj, indent=4, sort_keys=True, ensure_ascii=False)
