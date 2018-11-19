@@ -32,7 +32,6 @@ def check_password(salt, sign):
             abort(403)
             return False
         password_error_counter = password_error_counter + 1
-
     return False
 
 @app.route('/control/system_info', methods=['POST'])
