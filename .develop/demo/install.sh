@@ -11,16 +11,7 @@ cd /home/silverblog/templates
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
 cd /home/silverblog/
 cat << EOF >supervisor.conf
-[supervisord]
-nodaemon=true
-
-[program:nginx]
-command=/usr/sbin/nginx -g "daemon off;"
-stdout_logfile=/var/log/nginx.stdout.log
-stderr_logfile=/var/log/nginx.stderr.log
-
-[program:main]
-command=/home/silverblog/watch.py
+[supervisord] log/watch.py
 autorestart=true
 stdout_logfile=/var/log/silverblog-main.stdout.log
 stderr_logfile=/var/log/silverblog-main.stderr.log
