@@ -5,9 +5,9 @@ import git
 
 from common import file, console
 
-new_data_version = 3
+new_data_version = 4
 new_env_version = 1
-current_data_version = 3
+current_data_version = new_data_version
 current_env_version = 1
 if not os.path.exists("./upgrade/current_version.json"):
     file.write_file("./upgrade/current_version.json",
@@ -46,24 +46,29 @@ def upgrade_pull():
         console.log("Error", "Not a git repository.")
         return False
     repo, remote = git_init()
-    console.log("Info", "On branch {}".format(repo.active_branch))
+    console.log("Info", "Current upgrade channel: {}".format(repo.active_branch))
     if repo.is_dirty():
-        console.log("Error",
-                    "The current warehouse is modified and can not be upgraded automatically.")
-        checkout_repo = input('Do you want to restore these changes? [y/N]')
-        if checkout_repo.lower() == 'yes' or checkout_repo.lower() == 'y':
-            repo.index.checkout(force=True)
-        if repo.is_dirty():
-            exit(1)
+        console.log("Error", "The current warehouse is modified and can not be upgraded automatically.")
+        exit(1)
     remote.pull()
+    console.log("Success", "Upgrade code Successful!")
+
+
+def upgrade_env():
     if current_env_version != new_env_version:
         os.system("cd ./install && bash install_python_dependency.sh")
         file.write_file("./upgrade/current_version.json",
                         json.dumps({"current_data_version": new_data_version, "current_env_version": new_env_version}))
-    if current_data_version != new_data_version and os.path.exists(
-            "./upgrade/upgrade_from_{}.py".format(current_data_version)):
-        os.system("python3 ./upgrade/upgrade_from_{}.py".format(current_data_version))
+        console.log("Success", "Upgrade data Successful!")
+
+
+def upgrade_data():
+    if current_data_version != new_data_version:
+        import importlib
+        for index in range(current_data_version, new_data_version):
+            if os.path.exists("./upgrade/upgrade_from_{}.py".format(index)):
+                upgrade_item = importlib.import_module("upgrade.upgrade_from_{}".format(index), __package__)
+                upgrade_item.main()
         file.write_file("./upgrade/current_version.json",
                         json.dumps({"current_data_version": new_data_version, "current_env_version": new_env_version}))
-    console.log("Success", "Upgrade Successful!")
-    exit(0)
+        console.log("Success", "Upgrade data Successful!")
