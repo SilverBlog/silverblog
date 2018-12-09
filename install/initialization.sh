@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ -f "initialization.sh" ]; then
+if [[ -f "initialization.sh" ]]; then
     cd ..
 fi
 
@@ -17,15 +17,15 @@ touch ./templates/include/foot.html
 
 echo "Setup missing configuration files..."
 
-if [ ! -f "./config/menu.json" ]; then
+if [[ ! -f "./config/menu.json" ]]; then
     echo "[]" > ./config/menu.json
 fi
 
-if [ ! -f "./config/page.json" ]; then
+if [[ ! -f "./config/page.json" ]]; then
     echo "[]" > ./config/page.json
 fi
 
-if [ ! -f "./uwsgi.json" ]; then
+if [[ ! -f "./uwsgi.json" ]]; then
     cp -i ./example/uwsgi.json ./uwsgi.json
 fi
 

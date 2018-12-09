@@ -135,7 +135,7 @@ cd ..
 
 read -p "Create a pm2 configuration file? (y/N) :" yn
 
-if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
+if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
 cat << EOF >pm2.json
 {
     "apps": [
