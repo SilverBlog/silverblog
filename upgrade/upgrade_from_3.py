@@ -1,0 +1,32 @@
+import hashlib
+import json
+import shutil
+import uuid
+
+from common import file
+
+
+def add_id(list_item):
+    list_item["uuid"] = str(uuid.uuid4())
+    return list_item
+
+
+def main():
+    shutil.copyfile("./config/page.json", "./config/page.json.bak")
+    page_list = json.loads(file.read_file("./config/page.json"))
+    page_list = list(map(add_id, page_list))
+    file.write_file("./config/page.json", file.json_format_dump(page_list))
+
+    system_config = json.loads(file.read_file("./config/system.json"))
+    control_config = dict()
+    try:
+        old_password_hash = json.loads(system_config["API_Password"])["hash_password"]
+    except (ValueError, KeyError, TypeError):
+
+        return
+    control_config["password"] = hashlib.sha512(str(old_password_hash + "SiLvErBlOg").encode('utf-8')).hexdigest()
+    del system_config["API_Password"]
+    shutil.copyfile("./config/system.json", "./config/system.json.bak")
+    file.write_file("./config/system.json", file.json_format_dump(system_config))
+    shutil.copyfile("./config/control.json", "./config/control.json.bak")
+    file.write_file("./config/control.json", file.json_format_dump(control_config))
