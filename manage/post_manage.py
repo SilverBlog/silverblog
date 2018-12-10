@@ -15,10 +15,11 @@ def new_post(config, independent=False):
     system_info = json.loads(file.read_file("./config/system.json"))
     title = config["title"]
     name = get.filter_name(config["name"])
+    uuid = uuid.uuid5(uuid.NAMESPACE_URL, name)
     if not os.path.exists("./document/{}.md".format(name)):
         editor = system_info["Editor"]
         os.system("{0} ./document/{1}.md".format(editor, name))
-    post_info = {"name": name, "title": title, "time": time.time()}
+    post_info = {"uuid": uuid, "name": name, "title": title, "time": time.time()}
     if not os.path.exists("./document/{}.md".format(name)):
         console.log("Error", "Cannot find [./document/{}.md]".format(name))
         exit(1)

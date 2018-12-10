@@ -7,7 +7,7 @@ from common import file
 
 
 def add_id(list_item):
-    list_item["uuid"] = str(uuid.uuid4())
+    list_item["uuid"] = str(uuid.uuid5(uuid.NAMESPACE_URL, list_item["name"]))
     return list_item
 
 
