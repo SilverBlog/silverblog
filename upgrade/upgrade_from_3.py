@@ -6,16 +6,26 @@ import uuid
 from common import file
 
 
-def add_id(list_item):
+def add_page_id(list_item):
     list_item["uuid"] = str(uuid.uuid5(uuid.NAMESPACE_URL, list_item["name"]))
     return list_item
 
 
+def add_menu_id(list_item):
+    if "name" in list_item:
+        return add_page_id(list_item)
+    return list_item
+
 def main():
     shutil.copyfile("./config/page.json", "./config/page.json.bak")
+    shutil.copyfile("./config/menu.json", "./config/menu.json.bak")
     page_list = json.loads(file.read_file("./config/page.json"))
-    page_list = list(map(add_id, page_list))
+    page_list = list(map(add_page_id, page_list))
+    menu_list = json.loads(file.read_file("./config/page.json"))
+    menu_list = list(map(add_menu_id, menu_list))
+
     file.write_file("./config/page.json", file.json_format_dump(page_list))
+    file.write_file("./config/menu.json", file.json_format_dump(menu_list))
 
     system_config = json.loads(file.read_file("./config/system.json"))
     control_config = dict()
