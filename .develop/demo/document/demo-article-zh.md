@@ -1,7 +1,3 @@
-
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/LICENSE)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog?ref=badge_shield)
-
 这里是 SilverBlog 的官方演示服务器。在这里你可以尝试添加、修改、删除文章以体验SilverBlog的便捷与迅速。
 
 本文章已被设置为保护模式，请不要尝试修改，删除这篇文章。
