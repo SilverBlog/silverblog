@@ -11,7 +11,11 @@ cd /home/silverblog/templates
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
 cd /home/silverblog/
 cat << EOF >supervisor.conf
-[supervisord] log/watch.py
+[supervisord]
+nodaemon=true
+
+[program:main]
+command=/home/silverblog/watch.py
 autorestart=true
 stdout_logfile=/var/log/silverblog-main.stdout.log
 stderr_logfile=/var/log/silverblog-main.stderr.log
@@ -21,4 +25,5 @@ command=/home/silverblog/watch.py --control
 autorestart=true
 stdout_logfile=/var/log/silverblog-control.stdout.log
 stderr_logfile=/var/log/silverblog-control.stderr.log
+
 EOF
