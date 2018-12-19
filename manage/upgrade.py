@@ -24,10 +24,16 @@ def git_init():
     return repo, remote
 
 
+def check_is_git():
+    if os.system('git rev-parse 2> /dev/null > /dev/null') == 0:
+        return True
+    return False
+
 def upgrade_check(fetch=True):
-    if not os.path.exists("./.git"):
+    if not check_is_git():
         if fetch:
             console.log("Error", "Not a git repository.")
+            exit(1)
         return False
     repo, remote = git_init()
     if fetch:
@@ -42,7 +48,7 @@ def upgrade_check(fetch=True):
     return False
 
 def upgrade_pull():
-    if not os.path.exists("./.git"):
+    if not check_is_git():
         console.log("Error", "Not a git repository.")
         return False
     repo, remote = git_init()

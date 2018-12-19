@@ -40,7 +40,6 @@ def get_system_config():
     global system_config, template_config, i18n
     load_file = yield from file.async_read_file("./config/system.json")
     system_config = yield from async_json_loads(load_file)
-    del system_config["API_Password"]
     if len(system_config["Theme"]) == 0:
         console.log("Error",
                     "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
@@ -124,8 +123,9 @@ def publish():
         shutil.copytree("./templates/static/user_file", "./static_page/static/user_file")
     console.log("Success", "Create page success!")
 
+    # todo
     if not os.path.exists("./static_page/.git"):
-        return False
+        return True
     import git
     localtime = time.asctime(time.localtime(time.time()))
     try:
@@ -133,7 +133,7 @@ def publish():
         repo.git.add("--all")
         if not repo.is_dirty():
             console.log("Success", "Build complete,No changes found.")
-            return False
+            return True
         repo.git.commit("-m Release time：{0}".format(localtime))
     except git.exc.GitCommandError as e:
         console.log("Error", e.args[2].decode())

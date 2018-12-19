@@ -27,7 +27,6 @@ def get_system_config():
     global system_config, template_config, i18n
     load_file = yield from file.async_read_file("./config/system.json")
     system_config = yield from async_json_loads(load_file)
-    del system_config["API_Password"]
     if len(system_config["Theme"]) == 0:
         console.log("Error",
                     "If you do not get the Theme you installed, check your configuration file and the Theme installation.")

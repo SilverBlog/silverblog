@@ -224,14 +224,17 @@ def project_url():
 
 def remote_api_password():
     notice = ""
-    if system_config["API_Password"] is not "":
+    if os.path.exists("./config/control.json"):
+        control_config = json.loads(file.read_file("./config/control.json"))
         notice = "\n(Leave blank does not change)"
+
     new_password = dialog.prompt("Please enter the remote api password:" + notice, "",
                                  True)
     if len(new_password) != 0:
         import hashlib
-        system_config["API_Password"] = json.dumps(
-            {"hash_password": hashlib.md5(new_password.encode('utf-8')).hexdigest()})
+        md5_new_password = hashlib.md5(new_password.encode('utf-8')).hexdigest()
+        sha256_new_password = hashlib.sha256(str(md5_new_password + "SiLvErBlOg").encode('utf-8')).hexdigest()
+        file.write_file("./config/control.json", json.dumps({"password": sha256_new_password}))
 
 
 def author_name():

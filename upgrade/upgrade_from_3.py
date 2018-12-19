@@ -34,7 +34,7 @@ def main():
     except (ValueError, KeyError, TypeError):
 
         return
-    control_config["password"] = hashlib.sha512(str(old_password_hash + "SiLvErBlOg").encode('utf-8')).hexdigest()
+    control_config["password"] = hashlib.sha256(str(old_password_hash + "SiLvErBlOg").encode('utf-8')).hexdigest()
     del system_config["API_Password"]
     shutil.copyfile("./config/system.json", "./config/system.json.bak")
     file.write_file("./config/system.json", file.json_format_dump(system_config))

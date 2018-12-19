@@ -15,7 +15,7 @@ def use_whiptail_mode():
     dialog.title = "SilverBlog management tool"
     menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "=========================", "Exit"]
     upgrade_text = None
-    if os.path.exists("./.git"):
+    if upgrade.check_is_git():
         upgrade_text = "Upgrade"
         upgrade_check = False
         last_fetch_time = 0
@@ -149,11 +149,13 @@ def get_menu_info(title_input="", name_input="", independent=False):
 def upgrade_system():
     from manage import upgrade
     dialog.title = "Upgrade"
-    if upgrade.upgrade_check() and dialog.confirm("Find new version, do you want to upgrade?", "no"):
+    upgrade_check = upgrade.upgrade_check()
+    if upgrade_check and dialog.confirm("Find new version, do you want to upgrade?", "no"):
         upgrade.upgrade_pull()
-        return
-    dialog.alert("No upgrade found.")
-
+    if not upgrade_check:
+        dialog.alert("No upgrade found.")
+    upgrade.upgrade_env()
+    upgrade.upgrade_data()
 
 def select_list(list_name):
     page_title_list = list()
@@ -185,15 +187,15 @@ def use_text_mode(args):
         from common import install_module
         install_module.install_and_import("qrcode_terminal")
         import qrcode_terminal
-        if len(system_config["API_Password"]) == 0 or len(system_config["Project_URL"]) == 0:
+        control_config = json.loads(file.read_file("./config/control.json"))
+
+        if len(control_config["password"]) == 0 or len(system_config["Project_URL"]) == 0:
             console.log("Error", "Check the API_Password and Project_URL configuration items")
             exit(1)
-        try:
-            password_md5 = json.loads(system_config["API_Password"])["hash_password"]
-        except (ValueError, KeyError, TypeError):
-            exit(1)
+        password = control_config["password"]
         console.log("Info", "Please use the client to scan the following QR Code")
-        config_json = json.dumps({"url": system_config["Project_URL"], "password": password_md5})
+        url = system_config["Project_URL"].replace("https://", "").replace("http://", "")
+        config_json = json.dumps({"H": url, "P": password})
         qrcode_terminal.draw(config_json)
         exit(0)
     if args.command == "upgrade":
@@ -205,6 +207,8 @@ def use_text_mode(args):
                 upgrade.upgrade_pull()
                 exit(0)
         console.log("Info", "No upgrade found")
+        upgrade.upgrade_env()
+        upgrade.upgrade_data()
         exit(0)
     if args.command == "build-page":
         from manage import build_static_page
