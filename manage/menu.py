@@ -11,6 +11,7 @@ from manage import whiptail, upgrade, get
 dialog = whiptail.Whiptail()
 dialog.height = 15
 dialog.title = "SilverBlog management tool"
+system_config = json.loads(file.read_file("./config/system.json"))
 def use_whiptail_mode():
     dialog.title = "SilverBlog management tool"
     menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "=========================", "Exit"]
@@ -156,6 +157,8 @@ def upgrade_system():
         dialog.alert("No upgrade found.")
     upgrade.upgrade_env()
     upgrade.upgrade_data()
+    from manage import theme
+    theme.upgrade_theme(system_config["Theme"])
 
 def select_list(list_name):
     page_title_list = list()
@@ -183,7 +186,6 @@ def get_post_info(title_input="", name_input=""):
 
 def use_text_mode(args):
     if args.command == "qrcode":
-        system_config = json.loads(file.read_file("./config/system.json"))
         from common import install_module
         install_module.install_and_import("qrcode_terminal")
         import qrcode_terminal
@@ -209,6 +211,8 @@ def use_text_mode(args):
         console.log("Info", "No upgrade found")
         upgrade.upgrade_env()
         upgrade.upgrade_data()
+        from manage import theme
+        theme.upgrade_theme(system_config["Theme"])
         exit(0)
     if args.command == "build-page":
         from manage import build_static_page

@@ -108,7 +108,15 @@ def theme_manage():
         if result == "Upgrade existing theme":
             theme.upgrade_theme(select_theme())
         if result == "Remove existing theme":
-            theme.remove_theme(select_theme())
+            theme_name = select_theme()
+            if theme_name is None:
+                continue
+            can_remove = True
+            if system_config["Theme"] == theme_name:
+                can_remove = False
+                dialog.alert("This theme is in use and cannot be removed.")
+                continue
+            theme.remove_theme(theme_name)
         if result == "Set insertion point":
             setting_template_insertion()
         time.sleep(0.5)
@@ -164,7 +172,7 @@ def select_theme():
     directories = theme.get_local_theme_list()
     if len(directories) == 0:
         dialog.alert("The Theme list can not be blank.")
-        return
+        return None
     return dialog.menu("Please select the theme to be operated:", directories)
 def setting_theme_config(theme_name):
     theme_config = json.loads(file.read_file("./templates/{}/config.json".format(theme_name)))
