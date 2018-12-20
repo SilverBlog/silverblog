@@ -13,7 +13,9 @@ app = Flask(__name__)
 api_version = 3
 version = "v2"
 password_error_counter = 0
-first_error_time = 0
+total_error_counter = 0
+error_time = 0
+submit_lock = False
 console.log("Info", "Loading configuration...")
 system_config = json.loads(file.read_file("./config/system.json"))
 control_config = json.loads(file.read_file("./config/control.json"))
@@ -29,31 +31,35 @@ def get_index(post_list, post_uuid):
 
 
 def check_password(content, sign, send_time):
-    global password_error_counter, first_error_time
+    global password_error_counter, error_time, submit_lock, total_error_counter
     timestamp = time.time()
     timestamp_ms = int(round(timestamp * 1000))
     elapsed_time = timestamp_ms - send_time
     if elapsed_time > 120000 or elapsed_time < -120000:
         console.log("Error", "Timestamp expired.")
         return False
-
-    error_expired_time = first_error_time + 120
     if password_error_counter >= 5:
-        if error_expired_time >= timestamp:
+        submit_lock = True
+        if total_error_counter <= 10:
+            total_error_counter += 1
+        password_error_counter = 0
+        error_time = timestamp + (120 * total_error_counter)
+
+    if submit_lock:
+        if error_time < timestamp:
+            submit_lock = False
+        if error_time >= timestamp:
             console.log("Error", "Too many invalid password attempts.")
             abort(403)
-        if error_expired_time < timestamp:
-            password_error_counter = 0
 
     hash_sign = hmac.new(str(password + str(send_time)).encode('utf-8'), str(content).encode('utf-8'),
                          digestmod=hashlib.sha512).hexdigest()
     if sign == hash_sign:
         password_error_counter = 0
+        total_error_counter = 0
         return True
     console.log("Error", "Hash error.")
-    if password_error_counter == 0:
-        first_error_time = timestamp
-    password_error_counter = password_error_counter + 1
+    password_error_counter += 1
     return False
 
 
