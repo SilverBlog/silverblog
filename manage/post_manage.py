@@ -17,6 +17,8 @@ def new_post(config, independent=False):
     title = config["title"]
     name = get.filter_name(config["name"])
     post_uuid = uuid.uuid5(uuid.NAMESPACE_URL, name)
+    if "uuid" in config:
+        post_uuid = config["uuid"]
     if not os.path.exists("./document/{}.md".format(name)):
         editor = system_info["Editor"]
         os.system("{0} ./document/{1}.md".format(editor, name))

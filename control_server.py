@@ -156,7 +156,7 @@ def delete():
     sign = str(request.json["sign"])
     send_time = int(request.json["send_time"])
     status = False
-    hash_content = page_list[post_index]["title"] + page_list[post_index]["name"]
+    hash_content = page_list[post_index]["title"] + page_list[post_index]["name"] + page_list[post_index]["uuid"]
     if check_password(hash_content, sign, send_time):
         status = True
         post_manage.delete_post(page_list, post_index)
@@ -180,12 +180,13 @@ def create_post():
             name = get.get_name(title)
         while os.path.exists("./document/{0}.md".format(name)):
             name = "{}-repeat".format(name)
+        post_uuid = uuid.uuid5(uuid.NAMESPACE_URL, name)
         file.write_file("./document/{0}.md".format(name), content)
-        config = {"title": title, "name": name}
+        config = {"title": title, "name": name, "uuid": post_uuid}
         post_manage.new_post(config)
         status = True
         build_rss.build_rss()
-    return json.dumps({"status": status, "name": name})
+    return json.dumps({"status": status, "name": name, "uuid": post_uuid})
 
 
 @app.route("/control/" + version + "/git_page_publish", strict_slashes=False, methods=['POST'])
