@@ -124,7 +124,7 @@ def publish():
     console.log("Success", "Create page success!")
 
     # todo
-    if not os.path.exists("./static_page/.git"):
+    if os.system('git rev-parse 2> /dev/null > /dev/null') != 0:
         return True
     import git
     localtime = time.asctime(time.localtime(time.time()))

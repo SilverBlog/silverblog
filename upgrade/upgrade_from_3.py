@@ -1,4 +1,6 @@
+
 import hashlib
+import hmac
 import json
 import shutil
 import uuid
@@ -32,9 +34,10 @@ def main():
     try:
         old_password_hash = json.loads(system_config["API_Password"])["hash_password"]
     except (ValueError, KeyError, TypeError):
-
         return
-    control_config["password"] = hashlib.sha256(str(old_password_hash + "SiLvErBlOg").encode('utf-8')).hexdigest()
+
+    control_config["password"] = hmac.new(str("SiLvErBlOg").encode('utf-8'), str(old_password_hash).encode('utf-8'),
+                                          hashlib.sha256).hexdigest()
     del system_config["API_Password"]
     shutil.copyfile("./config/system.json", "./config/system.json.bak")
     file.write_file("./config/system.json", file.json_format_dump(system_config))

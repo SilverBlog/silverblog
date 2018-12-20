@@ -232,8 +232,10 @@ def remote_api_password():
                                  True)
     if len(new_password) != 0:
         import hashlib
+        import hmac
         md5_new_password = hashlib.md5(new_password.encode('utf-8')).hexdigest()
-        sha256_new_password = hashlib.sha256(str(md5_new_password + "SiLvErBlOg").encode('utf-8')).hexdigest()
+        sha256_new_password = hmac.new(str("SiLvErBlOg").encode('utf-8'), str(md5_new_password).encode('utf-8'),
+                                       hashlib.sha256).hexdigest()
         file.write_file("./config/control.json", json.dumps({"password": sha256_new_password}))
 
 
