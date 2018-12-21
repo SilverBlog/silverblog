@@ -1,4 +1,3 @@
-
 import hashlib
 import hmac
 import json
@@ -41,5 +40,4 @@ def main():
     del system_config["API_Password"]
     shutil.copyfile("./config/system.json", "./config/system.json.bak")
     file.write_file("./config/system.json", file.json_format_dump(system_config))
-    shutil.copyfile("./config/control.json", "./config/control.json.bak")
     file.write_file("./config/control.json", file.json_format_dump(control_config))
