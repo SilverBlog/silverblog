@@ -162,7 +162,7 @@ def setting_template_insertion():
     if result == "head":
         os.system("{} ./templates/include/head.html".format(system_config["Editor"]))
     if result == "comment":
-        os.system("{} ./templates/include/comment.html".format(system_config["Editor"]))
+        os.system("{} ./templates/include/comment_box.html".format(system_config["Editor"]))
     if result == "foot":
         os.system("{} ./templates/include/foot.html".format(system_config["Editor"]))
 
