@@ -16,6 +16,7 @@ page_name_list = list()
 cache_index = dict()
 cache_post = dict()
 i18n = dict()
+static_file_list = dict()
 last_build_year = time.localtime(time.time())[0]
 
 @asyncio.coroutine
@@ -24,22 +25,32 @@ def async_json_loads(text):
 
 @asyncio.coroutine
 def get_system_config():
-    global system_config, template_config, i18n
+    global system_config, template_config, i18n, static_file_list
     load_file = yield from file.async_read_file("./config/system.json")
     system_config = yield from async_json_loads(load_file)
     if len(system_config["Theme"]) == 0:
         console.log("Error",
                     "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
         exit(78)
-    if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
-        template_config_file = yield from file.async_read_file(
-            "./templates/{0}/config.json".format(system_config["Theme"]))
+    template_location = "./templates/{0}/".format(system_config["Theme"])
+    if os.path.exists(template_location + "config.json"):
+        template_config_file = yield from file.async_read_file(template_location + "config.json")
         template_config = yield from async_json_loads(template_config_file)
-    if os.path.exists("./templates/{}/i18n".format(system_config["Theme"])):
+
+    if "use_cdn" in template_config:
+        cdn_config_file = template_location + "cdn/local.json"
+        if template_config["use_cdn"]:
+            cdn_config_file = template_location + "cdn/cdn.json"
+            if os.path.exists(template_location + "cdn/custom.json"):
+                cdn_config_file = template_location + "cdn/custom.json"
+        cdn_file = yield from file.async_read_file(cdn_config_file)
+        static_file_list = yield from async_json_loads(cdn_file)
+
+    if os.path.exists(template_location + "i18n"):
         i18n_name = "en-US"
         if "i18n" in system_config and len(system_config["i18n"]) != 0:
             i18n_name = system_config["i18n"]
-        i18n_filename = "./templates/{0}/i18n/{1}.json".format(system_config["Theme"], i18n_name)
+        i18n_filename = "{0}i18n/{1}.json".format(template_location, i18n_name)
         if os.path.exists(i18n_filename):
             i18n_file = yield from file.async_read_file(i18n_filename)
             i18n = yield from async_json_loads(i18n_file)
@@ -120,7 +131,8 @@ def index_route(page_index=1):
     page_row = page.get_page_row(system_config["Paging"], len(page_list))
     if page_index == 0 or page_index > page_row:
         abort(404)
-    result = page.build_index(page_index, page_row, system_config, page_list, menu_list, template_config, i18n)
+    result = page.build_index(page_index, page_row, system_config, page_list, menu_list, template_config, i18n,
+                              static_file_list)
     if result is None:
         abort(404)
     console.log("Info", "Writing to cache: {0}".format(page_url))
@@ -153,7 +165,7 @@ def post_route(file_name=None):
         this_page_index = page_name_list.index(file_name)
         page_info = page_list[this_page_index]
     result = page.build_page(file_name, system_config, page_info, menu_list,
-                             template_config, i18n)
+                             template_config, i18n, static_file_list)
     console.log("Info", "Writing to cache: {0}".format(page_url))
     if len(cache_post) >= 50:
         page_keys = sorted(cache_post.keys())

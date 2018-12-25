@@ -36,7 +36,8 @@ def check_password(content, sign, send_time):
     timestamp_ms = int(round(timestamp * 1000))
     elapsed_time = timestamp_ms - send_time
     if elapsed_time > 300000 or elapsed_time < -300000:
-        console.log("Error", "Timestamp expired.")
+        console.log("Error",
+                    "Token expired. Time delta between now and expected timestamp is {} ms.".format(elapsed_time))
         abort(408)
     if password_error_counter >= 5:
         submit_lock = True
