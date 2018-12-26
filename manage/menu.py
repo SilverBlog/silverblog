@@ -11,7 +11,8 @@ from manage import whiptail, upgrade, get
 dialog = whiptail.Whiptail()
 dialog.height = 15
 dialog.title = "SilverBlog management tool"
-system_config = json.loads(file.read_file("./config/system.json"))
+if os.path.exists("./config/system.json"):
+    system_config = json.loads(file.read_file("./config/system.json"))
 def use_whiptail_mode():
     dialog.title = "SilverBlog management tool"
     menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "=========================", "Exit"]

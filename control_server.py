@@ -30,10 +30,18 @@ def get_index(post_list, post_uuid):
     return None
 
 
+def sec_to_ms(timestamp):
+    return int(round(timestamp * 1000))
+
+
+def convert_timestamp(item):
+    item["time"] = sec_to_ms(item["time"])
+    return item
+
 def check_password(content, sign, send_time):
     global password_error_counter, error_time, submit_lock, total_error_counter
     timestamp = time.time()
-    timestamp_ms = int(round(timestamp * 1000))
+    timestamp_ms = sec_to_ms(timestamp)
     elapsed_time = timestamp_ms - send_time
     if elapsed_time > 300000 or elapsed_time < -300000:
         console.log("Error",
@@ -45,14 +53,12 @@ def check_password(content, sign, send_time):
             total_error_counter += 1
         password_error_counter = 0
         error_time = timestamp + (120 * total_error_counter)
-
     if submit_lock:
         if error_time < timestamp:
             submit_lock = False
         if error_time >= timestamp:
             console.log("Error", "Too many invalid password attempts.")
             abort(403)
-
     hash_sign = hmac.new(str(password + str(send_time)).encode('utf-8'), str(content).encode('utf-8'),
                          digestmod=hashlib.sha512).hexdigest()
     if sign == hash_sign:
@@ -90,7 +96,7 @@ def get_post_list(request_type):
     file_url = select_type(request_type)
     if file_url is None:
         abort(404)
-    page_list = json.loads(file.read_file(file_url))
+    page_list = list(map(convert_timestamp, json.loads(file.read_file(file_url))))
     return json.dumps(page_list)
 
 
@@ -134,7 +140,7 @@ def edit(request_type):
     sign = str(request.json["sign"])
     send_time = int(request.json["send_time"])
     status = False
-    hash_content = title + name + hashlib.sha512(str(content).encode('utf-8')).hexdigest()
+    hash_content = post_uuid + title + name + hashlib.sha512(str(content).encode('utf-8')).hexdigest()
     if check_password(hash_content, sign, send_time):
         status = True
         config = {"name": name, "title": title}

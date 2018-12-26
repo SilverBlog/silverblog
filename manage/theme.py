@@ -55,11 +55,12 @@ def remove_theme(theme_name):
 def upgrade_theme(theme_name):
     console.log("Info", "Updating theme, please wait...")
     import git
-    repo = git.Repo("./templates/" + theme_name)
-    remote = repo.remote()
-    remote.fetch(repo.active_branch)
-    if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
-        remote.pull()
-        console.log("Success", "The theme is upgrade successfully!")
-        return
+    if os.system('cd ./templates/{} && git rev-parse 2> /dev/null > /dev/null'.format(theme_name)) == 0:
+        repo = git.Repo("./templates/" + theme_name)
+        remote = repo.remote()
+        remote.fetch(repo.active_branch)
+        if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
+            remote.pull()
+            console.log("Success", "The theme is upgrade successfully!")
+            return
     console.log("Info", "No upgrade found.")
