@@ -3,6 +3,7 @@ import hmac
 import json
 import os.path
 import time
+import uuid
 
 from flask import Flask, request, abort
 
@@ -175,6 +176,7 @@ def delete():
 def create_post():
     if request.json is None:
         abort(400)
+
     title = str(request.json["title"]).strip()
     name = str(request.json["name"]).replace('/', "").strip()
     content = str(request.json["content"])
@@ -187,7 +189,7 @@ def create_post():
             name = get.get_name(title)
         while os.path.exists("./document/{0}.md".format(name)):
             name = "{}-repeat".format(name)
-        post_uuid = uuid.uuid5(uuid.NAMESPACE_URL, name)
+        post_uuid = str(uuid.uuid5(uuid.NAMESPACE_URL, name))
         file.write_file("./document/{0}.md".format(name), content)
         config = {"title": title, "name": name, "uuid": post_uuid}
         post_manage.new_post(config)
