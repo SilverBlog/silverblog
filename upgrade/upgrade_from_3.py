@@ -41,3 +41,7 @@ def main():
     shutil.copyfile("./config/system.json", "./config/system.json.bak")
     file.write_file("./config/system.json", file.json_format_dump(system_config))
     file.write_file("./config/control.json", file.json_format_dump(control_config))
+
+
+if __name__ == '__main__':
+    main()

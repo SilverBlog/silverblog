@@ -8,3 +8,7 @@ def main():
         install_module.uninstall_package("pypinyin")
     print("We modified the startup script, please redeploy the startup script.")
     print("The template format has been modified. Please upgrade the template.")
+
+
+if __name__ == '__main__':
+    main()
