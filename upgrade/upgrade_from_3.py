@@ -22,7 +22,7 @@ def main():
     shutil.copyfile("./config/menu.json", "./config/menu.json.bak")
     page_list = json.loads(file.read_file("./config/page.json"))
     page_list = list(map(add_page_id, page_list))
-    menu_list = json.loads(file.read_file("./config/page.json"))
+    menu_list = json.loads(file.read_file("./config/menu.json"))
     menu_list = list(map(add_menu_id, menu_list))
 
     file.write_file("./config/page.json", file.json_format_dump(page_list))
