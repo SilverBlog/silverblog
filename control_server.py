@@ -97,8 +97,10 @@ def get_post_list(request_type):
     file_url = select_type(request_type)
     if file_url is None:
         abort(404)
-    page_list = list(map(convert_timestamp, json.loads(file.read_file(file_url))))
-    return json.dumps(page_list)
+    result_list = json.loads(file.read_file(file_url))
+    if request_type == "post":
+        result_list = json.dumps(list(map(convert_timestamp, result_list)))
+    return result_list
 
 
 @app.route('/control/' + version + '/get/content/<request_type>', strict_slashes=False, methods=['POST'])
