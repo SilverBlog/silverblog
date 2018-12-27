@@ -17,7 +17,6 @@ def get_i18n_value(i18n, value):
     return value
 
 env.filters["get_i18n_value"] = get_i18n_value
-# env.filters["get_static_url"] =
 env.filters['format_datetime'] = format_datetime
 
 def get_page_row(paging, page_list_len):

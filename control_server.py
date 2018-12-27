@@ -163,7 +163,7 @@ def delete():
     sign = str(request.json["sign"])
     send_time = int(request.json["send_time"])
     status = False
-    hash_content = page_list[post_index]["title"] + page_list[post_index]["name"] + page_list[post_index]["uuid"]
+    hash_content = page_list[post_index]["uuid"] + page_list[post_index]["title"] + page_list[post_index]["name"]
     if check_password(hash_content, sign, send_time):
         status = True
         post_manage.delete_post(page_list, post_index)
