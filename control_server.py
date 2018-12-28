@@ -97,9 +97,9 @@ def get_post_list(request_type):
     file_url = select_type(request_type)
     if file_url is None:
         abort(404)
-    result_list = json.loads(file.read_file(file_url))
+    result_list = file.read_file(file_url)
     if request_type == "post":
-        result_list = json.dumps(list(map(convert_timestamp, result_list)))
+        result_list = json.dumps(list(map(convert_timestamp, json.loads(result_list))))
     return result_list
 
 

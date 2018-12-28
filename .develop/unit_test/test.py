@@ -25,34 +25,34 @@ for item in get_list:
     if not get(item):
         print("ERROR:" + item)
         exit(1)
-
-post_list = ["control/system_info", "control/get_list/post", "control/get_list/menu"]
+# password =
+post_list = ["control/system_info", "control/v2/get/list/post", "control/get_list/menu"]
 for item in post_list:
     if not post(item):
         print("ERROR:" + item)
         exit(1)
 
-r = requests.post(host + "/control/get_content/post", json={"post_id": 0})
+r = requests.post(host + "/control/v2/get/content/post", json={"post_id": 0})
 print("get_content:" + r.text)
 if not r.json()["status"]:
     print("ERROR:get_content")
     exit(1)
 
-r = requests.post(host + "/control/new", json={"content": "test", "name": "test", "title": "title",
+r = requests.post(host + "/control/v2/new", json={"content": "test", "name": "test", "title": "title",
                                                         "sign": "bd35db586ff3f4617d90511546aa6e3b"})
 print("new:" + r.text)
 if not r.json()["status"]:
     print("ERROR:new")
     exit(1)
 
-r = requests.post(host + "/control/edit/post",
+r = requests.post(host + "/control/v2/edit/post",
                   json={"post_id": 0, "content": "test2", "name": "test", "title": "title",
                         "sign": "bd35db586ff3f4617d90511546aa6e3b"})
 print("edit:" + r.text)
 if not r.json()["status"]:
     print("ERROR:edit")
     exit(1)
-r = requests.post(host + "/control/delete", json={"post_id": 0, "sign": "f48659e554318cf884d0edbc7038c52c"})
+r = requests.post(host + "/control/v2/delete", json={"post_id": 0, "sign": "f48659e554318cf884d0edbc7038c52c"})
 print("delete:" + r.text)
 if not r.json()["status"]:
     print("ERROR:delete")
