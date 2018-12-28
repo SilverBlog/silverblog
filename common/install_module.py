@@ -13,7 +13,7 @@ def install_and_import(package):
         if install_dependency.lower() == 'yes' or install_dependency.lower() == 'y':
             install_package(package)
     finally:
-        globals()[package] = importlib.import_module(package)
+        globals()[package] = importlib.import_module(package, __package__)
 
 
 def install_package(package):
