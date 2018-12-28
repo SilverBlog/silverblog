@@ -235,9 +235,15 @@ def remote_api_password():
     if os.path.exists("./config/control.json"):
         control_config = json.loads(file.read_file("./config/control.json"))
         notice = "\n(Leave blank does not change)"
-
-    new_password = dialog.prompt("Please enter the remote api password:" + notice, "",
+    new_password = ""
+    while True:
+        new_password = dialog.prompt("Please enter the remote api password:" + notice, "",
                                  True)
+        if len(notice) != 0 and len(new_password) == 0:
+            break
+        if len(new_password) >= 8:
+            break
+        dialog.alert("The new password is too weak. Please retry with a stronger combination.")
     if len(new_password) != 0:
         import hashlib
         import hmac
