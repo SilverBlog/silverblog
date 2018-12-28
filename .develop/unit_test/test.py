@@ -1,46 +1,28 @@
 import hashlib
 import hmac
-import subprocess
 import time
 
 import requests
 
-main_progress = subprocess.Popen(["python3", "watch.py", "--debug"])
-control_progress = subprocess.Popen(["python3", "watch.py", "--control", "--debug"])
-nginx_progress = subprocess.Popen("nginx")
 host = "http://127.0.0.1/"
 time.sleep(2)
 def get(url):
     r = requests.get(host + url)
-    if r.status_code == 200:
-        return True
-    print(r.status_code)
-    return False
-def post(url):
-    r = requests.post(host + url)
-    if r.status_code == 200:
-        return True
-    print(r.status_code)
-    return False
+    if r.status_code != 200:
+        print(r.status_code)
+        exit(1)
 
 
 def build_hash(password, content, send_time):
     return hmac.new(str(password + str(send_time)).encode('utf-8'), str(content).encode('utf-8'),
                     digestmod=hashlib.sha512).hexdigest()
 
-get_list = ["", "post/demo-article", "rss"]
+
+get_list = ["", "post/demo-article", "rss", "control/system_info", "control/v2/get/list/post",
+            "control/v2/get/list/menu"]
 for item in get_list:
-    if not get(item):
-        print("ERROR:" + item)
-        exit(1)
+    get(item)
 
-
-
-post_list = ["control/system_info", "control/v2/get/list/post", "control/v2/get/list/menu"]
-for item in post_list:
-    if not get(item):
-        print("ERROR:" + item)
-        exit(1)
 password_hash = "a238f3ead3fcf2df15e43e0558b5cc374ede284e17a6f03c396a5014606e6901"
 r = requests.post(host + "control/v2/get/content/post", json={"post_uuid": "c3472075-440f-42d9-9421-3e83d46568d4"})
 print("get_content:" + r.text)
@@ -86,8 +68,4 @@ print("delete:" + r.text)
 if not r.json()["status"]:
     print("ERROR:delete")
     exit(1)
-
-nginx_progress.kill()
-main_progress.kill()
-control_progress.kill()
 exit(0)
