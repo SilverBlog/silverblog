@@ -123,8 +123,7 @@ def publish():
         shutil.copytree("./templates/static/user_file", "./static_page/static/user_file")
     console.log("Success", "Create page success!")
 
-    # todo
-    if os.system('git rev-parse 2> /dev/null > /dev/null') != 0:
+    if os.system('cd static_page && git rev-parse 2> /dev/null > /dev/null') != 0:
         return True
     import git
     localtime = time.asctime(time.localtime(time.time()))
