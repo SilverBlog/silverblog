@@ -9,7 +9,7 @@ time.sleep(2)
 def get(url):
     r = requests.get(host + url)
     if r.status_code != 200:
-        print(r.status_code)
+        print("{}:{}".format(url, r.status_code))
         exit(1)
 
 
@@ -25,8 +25,7 @@ for item in get_list:
 
 password_hash = "a238f3ead3fcf2df15e43e0558b5cc374ede284e17a6f03c396a5014606e6901"
 r = requests.post(host + "control/v2/get/content/post", json={"post_uuid": "c3472075-440f-42d9-9421-3e83d46568d4"})
-print("get_content:" + r.text)
-if not r.json()["status"]:
+if r.status_code != 200:
     print("ERROR:get_content")
     exit(1)
 
