@@ -186,6 +186,7 @@ def create_post():
     send_time = int(request.json["send_time"])
     status = False
     hash_content = title + name + hashlib.sha512(str(content).encode('utf-8')).hexdigest()
+    post_uuid = ""
     if check_password(hash_content, sign, send_time):
         if len(name) == 0:
             name = get.get_name(title)
