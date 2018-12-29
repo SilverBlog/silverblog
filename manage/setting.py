@@ -231,7 +231,7 @@ def project_url():
 
 
 def remote_api_password():
-    notice = ""
+    notice = None
     if os.path.exists("./config/control.json"):
         control_config = json.loads(file.read_file("./config/control.json"))
         notice = "\n(Leave blank does not change)"
@@ -239,7 +239,7 @@ def remote_api_password():
     while True:
         new_password = dialog.prompt("Please enter the remote api password:" + notice, "",
                                  True)
-        if len(notice) != 0 and len(new_password) == 0:
+        if notice is not None and len(new_password) == 0:
             break
         if len(new_password) >= 8:
             break
