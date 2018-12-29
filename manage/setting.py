@@ -14,7 +14,7 @@ dialog.title = "SilverBlog settings tool"
 system_config = {
     "Project_Name": "",
     "Project_Description": "",
-    "Project_URL": "",
+    "Project_URL": "https://",
     "Author_Image": "",
     "Author_Name": "",
     "Author_Introduction": "",
