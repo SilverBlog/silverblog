@@ -28,7 +28,7 @@ while getopts "n:c" arg; do
 done
 
 function build_uwsgi_install(){
-    if [ ! -f "/usr/local/bin/uwsgi" ]; then
+    if [[ ! -f "/usr/local/bin/uwsgi" ]]; then
         ${use_superuser} portsnap fetch extract update
         set +o errexit
         cd /usr/ports/devel/jansson/
@@ -56,7 +56,7 @@ function build_pip_install(){
 }
 
 use_superuser=""
-if [ $UID -ne 0 ]; then
+if [[ $UID -ne 0 ]]; then
     echo "Superuser privileges are required to run this script."
     use_superuser="sudo"
 fi
@@ -93,18 +93,18 @@ if command -v apk >/dev/null 2>&1; then
 fi
 
 
-if [ ! -f "install.lock" ]; then
+if [[ ! -f "install.lock" ]]; then
     echo "The current system does not support local deployment. Please use Docker deployment."
     exit 1
 fi
 
-if [ ! -f "initialization.sh" ]; then
-    if [ ! -d ${install_name} ]; then
+if [[ ! -f "initialization.sh" ]]; then
+    if [[ ! -d ${install_name} ]]; then
         echo "Cloning silverblog..."
 
         repo_url=https://github.com/silverblogteam/silverblog.git
 
-        if [ ${china_install} = true ];then
+        if [[ ${china_install} = true ]];then
             repo_url=https://code.aliyun.com/silverblogteam/silverblog.git
         fi
 
@@ -123,11 +123,11 @@ bash ./install_python_dependency.sh
 
 bash ./initialization.sh
 
-if [ ${china_install} = true ]; then
+if [[ ${china_install} = true ]]; then
 china_option="-c"
 fi
 
-if [ ! -f "./nginx_config" ]; then
+if [[ ! -f "./nginx_config" ]]; then
 bash ./nginx_gen.sh ${china_option}
 fi
 
@@ -160,9 +160,9 @@ cat << EOF >pm2.json
 }
 EOF
 fi
-if [ "$yn" != "Y" ] || [ "$yn" != "y" ]; then
+if [[ "$yn" != "Y" ]] || [[ "$yn" != "y" ]]; then
 read -p "Create a supervisord configuration file? (y/N) :" yn
-if [ "$yn" == "Y" ] || [ "$yn" == "y" ]; then
+if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
 cat << EOF >supervisord.conf
 [program:${install_name}-main]
 command=./watch.py
@@ -178,16 +178,16 @@ fi
 fi
 
 if test $(ps h -o comm -p $$) = "bash"; then
-if [ ! -f "~/.bashrc" ]; then
+if [[ ! -f "~/.bashrc" ]]; then
 shell_config_file="~/.bashrc"
 fi
-if [ ! -f "~/.bash_profile" ]; then
+if [[ ! -f "~/.bash_profile" ]]; then
 shell_config_file="~/.bash_profile"
 fi
 fi
 
 if test $(ps h -o comm -p $$) = "zsh"; then
-if [ ! -f "~/.zshrc" ]; then
+if [[ ! -f "~/.zshrc" ]]; then
 shell_config_file="~/.zshrc"
 fi
 fi

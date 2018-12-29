@@ -14,11 +14,6 @@ cat << EOF >supervisor.conf
 [supervisord]
 nodaemon=true
 
-[program:nginx]
-command=/usr/sbin/nginx -g "daemon off;"
-stdout_logfile=/var/log/nginx.stdout.log
-stderr_logfile=/var/log/nginx.stderr.log
-
 [program:main]
 command=/home/silverblog/watch.py
 autorestart=true
@@ -30,4 +25,5 @@ command=/home/silverblog/watch.py --control
 autorestart=true
 stdout_logfile=/var/log/silverblog-control.stdout.log
 stderr_logfile=/var/log/silverblog-control.stderr.log
+
 EOF
