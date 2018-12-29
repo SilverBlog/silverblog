@@ -97,7 +97,11 @@ if [[ ! -f "install.lock" ]]; then
     echo "The current system does not support local deployment. Please use Docker deployment."
     exit 1
 fi
-
+if [[ -f "README.md" ]]; then
+    if [[ -d "install" ]]; then
+        cd install
+    fi
+fi
 if [[ ! -f "initialization.sh" ]]; then
     if [[ ! -d ${install_name} ]]; then
         echo "Cloning silverblog..."
@@ -115,6 +119,7 @@ if [[ ! -f "initialization.sh" ]]; then
     cd ${install_name}
     git fetch
     cd install
+
 fi
 
 python3 ./check_python_version.py
