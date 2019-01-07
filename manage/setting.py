@@ -23,7 +23,8 @@ system_config = {
     "Paging": 10,
     "Time_Format": "%Y-%m-%d",
     "Editor": "nano",
-    "i18n": "en-US"
+    "i18n": "en-US",
+    "Pinyin": False
 }
 if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
@@ -104,6 +105,7 @@ def theme_manage():
                 system_config["i18n"] = setting_i18n(theme_name)
             if os.path.exists("./templates/{}/config.json".format(theme_name)):
                 setting_theme_config(theme_name)
+            theme.download_static_file(theme_name)
             save_config()
         if result == "Upgrade existing theme":
             theme.upgrade_theme(select_theme())
@@ -126,6 +128,7 @@ def manual_setup_list():
     while True:
         menu_list = ["Project name", "Project description", "Access URL", "Remote API password", "Author name",
                      "Author introduction", "Author avatar", "Paging", "Time format", "Editor",
+                     "Automatically convert Chinese characters to pinyin",
                      "=========================", "Back", "Exit"]
         result = dialog.menu("Please select the item you want to configure", menu_list)
         if result == "Exit":
@@ -152,18 +155,22 @@ def manual_setup_list():
             time_format()
         if result == "Editor":
             editor()
+        if result == "Automatically convert Chinese characters to pinyin":
+            use_pinyin()
         save_config()
         time.sleep(0.5)
 
 
 def setting_template_insertion():
-    menu_list = ["head", "comment", "foot"]
+    menu_list = ["head", "comment", "footer", "Page foot"]
     result = dialog.menu("Please select an action", menu_list)
     if result == "head":
         os.system("{} ./templates/include/head.html".format(system_config["Editor"]))
     if result == "comment":
         os.system("{} ./templates/include/comment_box.html".format(system_config["Editor"]))
-    if result == "foot":
+    if result == "footer":
+        os.system("{} ./templates/include/footer.html".format(system_config["Editor"]))
+    if result == "Page foot":
         os.system("{} ./templates/include/foot.html".format(system_config["Editor"]))
 
 
@@ -174,6 +181,7 @@ def select_theme():
         dialog.alert("The Theme list can not be blank.")
         return None
     return dialog.menu("Please select the theme to be operated:", directories)
+
 def setting_theme_config(theme_name):
     theme_config = json.loads(file.read_file("./templates/{}/config.json".format(theme_name)))
     for item in theme_config:
@@ -212,8 +220,17 @@ def setup_wizard():
     paging()
     time_format()
     editor()
+    use_pinyin()
     save_config()
 
+
+def use_pinyin():
+    item = "Pinyin"
+    status = "no"
+    if system_config[item]:
+        status = "yes"
+    system_config[item] = dialog.confirm("Use automatic conversion of Chinese characters to Pinyin?".format(item),
+                                         status)
 
 def project_name():
     item = "Project_Name"
@@ -231,15 +248,14 @@ def project_url():
 
 
 def remote_api_password():
-    notice = None
+    notice = ""
     if os.path.exists("./config/control.json"):
         control_config = json.loads(file.read_file("./config/control.json"))
         notice = "\n(Leave blank does not change)"
     new_password = ""
     while True:
-        new_password = dialog.prompt("Please enter the remote api password:" + notice, "",
-                                 True)
-        if notice is not None and len(new_password) == 0:
+        new_password = dialog.prompt("Please enter the remote api password:" + notice, "", True)
+        if notice != "" and len(new_password) == 0:
             break
         if len(new_password) >= 8:
             break

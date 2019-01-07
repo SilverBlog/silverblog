@@ -43,21 +43,21 @@ if [[ ! -f "initialization.sh" ]]; then
         git clone ${repo_url} --depth=1 ${install_name}
     fi
     cd ${install_name}
+    echo "Change directory to $(pwd)"
     git fetch
     cd install
+    echo "Change directory to $(pwd)"
 fi
 
 echo "{\"install\":\"docker\"}" > install.lock
 
-if [[ ${china_install} = true ]]; then
-china_option="-c"
-fi
 
 if [[ ! -f "./nginx_config" ]]; then
-bash nginx_gen.sh -t ${china_option}
+python nginx_gen.py --tcp
 fi
 
 cd ..
+echo "Change directory to $(pwd)"
 
 bash install/initialization.sh
 
@@ -148,10 +148,20 @@ EOF
 fi
 fi
 
+if test $(ps h -o comm -p $$) = "bash"; then
+shell_config_file="$HOME/.bashrc"
+if [[ -f "$HOME/.bash_profile" ]]; then
+shell_config_file="~/.bash_profile"
+fi
+fi
 
-echo ""
-echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
-echo "./manage.sh"
-echo ""
-echo "You can add the following code to .bashrc to quickly launch SilverBlog."
-echo "${install_name}() {(cd \"$(pwd)\"&&./manage.py \$@)}"
+if test $(ps h -o comm -p $$) = "zsh"; then
+if [[ -f "$HOME/.zshrc" ]]; then
+shell_config_file="$HOME/.zshrc"
+fi
+fi
+
+echo -e "\nYou need to perform [./manage.py] to initialize your silverblog environment."
+echo -e "\nYou can add the following code to [${shell_config_file}] to quickly launch SilverBlog."
+echo -e "\necho \"${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}\" >> ${shell_config_file}"
+echo -e "\nYou can generate an nginx configuration file using ./install/gen_nginx.py."

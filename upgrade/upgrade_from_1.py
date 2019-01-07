@@ -1,6 +1,5 @@
 import json
 import os
-import shutil
 
 from common import file
 
@@ -14,7 +13,12 @@ def change_time_fomart(list_item):
 
 
 def main():
-    shutil.copyfile("./config/page.json", "./config/page.json.bak")
+    if not os.path.exists("./backup"):
+        os.mkdir("./backup")
+    shutil.copytree("./config", "./backup/config")
+    shutil.copytree("./document", "./backup/document")
+    if os.path.exists("./templates/static/user_file"):
+        shutil.copytree("./templates/static/user_file", "./backup/static/user_file")
     write_json = json.loads(file.read_file("./config/page.json"))
     write_json = list(map(change_time_fomart, write_json))
     file.write_file("./config/page.json", file.json_format_dump(write_json))

@@ -32,17 +32,23 @@ def get_system_config():
         console.log("Error",
                     "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
         exit(78)
+
     template_location = "./templates/{0}/".format(system_config["Theme"])
     if os.path.exists(template_location + "config.json"):
         template_config_file = yield from file.async_read_file(template_location + "config.json")
         template_config = yield from async_json_loads(template_config_file)
 
-    if "use_cdn" in template_config:
-        cdn_config_file = template_location + "cdn/local.json"
-        if template_config["use_cdn"]:
-            cdn_config_file = template_location + "cdn/cdn.json"
-            if os.path.exists(template_location + "cdn/custom.json"):
-                cdn_config_file = template_location + "cdn/custom.json"
+        if "use_cdn" in template_config:
+            cdn_config_file = template_location + "cdn/local.json"
+            if template_config["use_cdn"]:
+                cdn_config_file = template_location + "cdn/cdn.json"
+                if os.path.exists(template_location + "cdn/custom.json"):
+                    cdn_config_file = template_location + "cdn/custom.json"
+            cdn_file = yield from file.async_read_file(cdn_config_file)
+            static_file_list = yield from async_json_loads(cdn_file)
+
+    if not os.path.exists(template_location + "config.json") and os.path.exists(template_location + "cdn/cdn.json"):
+        cdn_config_file = template_location + "cdn/cdn.json"
         cdn_file = yield from file.async_read_file(cdn_config_file)
         static_file_list = yield from async_json_loads(cdn_file)
 

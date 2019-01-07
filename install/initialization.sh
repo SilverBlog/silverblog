@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-if [[ -f "initialization.sh" ]]; then
+if [[ -f "install.sh" ]]; then
     cd ..
+    echo "Change directory to $(pwd)"
 fi
 
 echo "Setup directories..."
@@ -10,10 +11,6 @@ mkdir ./document
 mkdir -p ./config/unix_socks
 mkdir -p ./templates/static
 mkdir ./templates/include
-
-touch ./templates/include/comment.html
-touch ./templates/include/head.html
-touch ./templates/include/foot.html
 
 echo "Setup missing configuration files..."
 

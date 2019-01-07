@@ -158,8 +158,7 @@ def upgrade_system():
         dialog.alert("No upgrade found.")
     upgrade.upgrade_env()
     upgrade.upgrade_data()
-    from manage import theme
-    theme.upgrade_theme(system_config["Theme"])
+    exit(0)
 
 def select_list(list_name):
     page_title_list = list()
@@ -181,7 +180,7 @@ def get_post_info(title_input="", name_input=""):
         dialog.alert("The title can not be blank.")
         return {"title": None, "name": None}
     if name_input == "":
-        name_input = get.get_name(title)
+        name_input = get.get_name(title, system_config["Pinyin"])
     name = dialog.prompt("Please enter the slug:", name_input).strip()
     return {"title": title, "name": name}
 
@@ -212,8 +211,6 @@ def use_text_mode(args):
         console.log("Info", "No upgrade found")
         upgrade.upgrade_env()
         upgrade.upgrade_data()
-        from manage import theme
-        theme.upgrade_theme(system_config["Theme"])
         exit(0)
     if args.command == "build-page":
         from manage import build_static_page
@@ -230,7 +227,7 @@ def use_text_mode(args):
             if len(title) == 0:
                 console.log("Error", "The title can not be blank.")
                 exit(1)
-            name = get.get_name(title)
+            name = get.get_name(title, system_config["Pinyin"])
             print("Please enter the slug [{}]:".format(name))
             name2 = input().strip()
             if len(name2) != 0:

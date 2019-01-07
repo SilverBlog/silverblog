@@ -1,22 +1,19 @@
+import importlib
 import json
 import os
+import shutil
 
 import git
 
 from common import file, console
 
 new_data_version = 4
-new_env_version = 1
 current_data_version = new_data_version
-current_env_version = 1
 if not os.path.exists("./upgrade/current_version.json"):
     file.write_file("./upgrade/current_version.json",
-                    json.dumps({"current_data_version": new_data_version, "current_env_version": new_env_version}))
+                    json.dumps({"current_data_version": new_data_version}))
 current_version_json = json.loads(file.read_file("./upgrade/current_version.json"))
 current_data_version = current_version_json["current_data_version"]
-if "current_env_version" in current_version_json:
-    current_env_version = current_version_json["current_env_version"]
-
 
 def git_init():
     repo = git.Repo("./")
@@ -61,20 +58,23 @@ def upgrade_pull():
 
 
 def upgrade_env():
-    if current_env_version != new_env_version:
-        os.system("cd ./install && bash install_python_dependency.sh")
-        file.write_file("./upgrade/current_version.json",
-                        json.dumps({"current_data_version": new_data_version, "current_env_version": new_env_version}))
-        console.log("Success", "Upgrade data Successful!")
+    os.system("python3 ./install/install_denpendency.py")
+    console.log("Success", "Upgrade data Successful!")
 
 
 def upgrade_data():
     if current_data_version != new_data_version:
-        import importlib
+        console.log("Info", "The data is being backed up...")
+        if not os.path.exists("./backup"):
+            os.mkdir("./backup")
+        shutil.copytree("./config", "./backup/config")
+        shutil.copytree("./document", "./backup/document")
+        if os.path.exists("./templates/static/user_file"):
+            shutil.copytree("./templates/static/user_file", "./backup/static/user_file")
         for index in range(current_data_version, new_data_version):
             if os.path.exists("./upgrade/upgrade_from_{}.py".format(index)):
                 upgrade_item = importlib.import_module("upgrade.upgrade_from_{}".format(index), __package__)
                 upgrade_item.main()
         file.write_file("./upgrade/current_version.json",
-                        json.dumps({"current_data_version": new_data_version, "current_env_version": new_env_version}))
+                        json.dumps({"current_data_version": new_data_version}))
         console.log("Success", "Upgrade data Successful!")

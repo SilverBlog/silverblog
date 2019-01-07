@@ -1,8 +1,12 @@
+import asyncio
+import json
 import os
+import shutil
 
 import requests
 
 from common import console
+from common import file
 
 
 def get_orgs_list():
@@ -14,7 +18,6 @@ def get_orgs_list():
         exit(1)
 
 def get_local_theme_list():
-    from common import file
     directories = file.list_dirs("./templates")
     dir_list = list()
     for item in directories:
@@ -43,10 +46,10 @@ def install_theme(name, custom):
     if (result_code >> 8) != 0:
         console.log("Error", "An error occurred while executing the install script.")
         exit(1)
+    download_static_file(name)
     console.log("Success", "The theme is install successfully!")
 
 def remove_theme(theme_name):
-    import shutil
     shutil.rmtree("./templates/" + theme_name)
     if os.path.exists("./templates/static/" + theme_name):
         shutil.rmtree("./templates/static/" + theme_name)
@@ -61,6 +64,40 @@ def upgrade_theme(theme_name):
         if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
             console.log("Info", "Updating theme, please wait...")
             remote.pull()
+            download_static_file(theme_name)
             console.log("Success", "The theme is upgrade successfully!")
             return
     console.log("Info", "No upgrade found.")
+
+
+def download_static_file(theme_name):
+    download_list_file = "./templates/{}/cdn/download.json".format(theme_name)
+    download_file_location = "./templates/{}/static/library".format(theme_name)
+    if not os.path.exists(download_list_file):
+        return
+    if os.path.exists(download_file_location):
+        shutil.rmtree(download_file_location)
+    os.mkdir(download_file_location)
+    download_list = json.loads(file.read_file(download_list_file))
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    tasks = [download_file(item, download_file_location) for item in download_list]
+    loop.run_until_complete(asyncio.wait(tasks))
+    loop.close()
+
+
+@asyncio.coroutine
+def get_file(url):
+    console.log("info", "Downloading file:" + url)
+    return requests.get(url)
+
+
+@asyncio.coroutine
+def download_file(item, location):
+    result = yield from get_file(item["url"])
+    write_path = location
+    if "path" in item and item["path"] != "":
+        write_path = "{}/{}".format(location, item["path"])
+    if not os.path.exists(write_path):
+        os.mkdir(write_path)
+    yield from file.async_write_binary_file("{}/{}".format(write_path, item["filename"]), result.content)

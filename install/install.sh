@@ -32,8 +32,10 @@ function build_uwsgi_install(){
         ${use_superuser} portsnap fetch extract update
         set +o errexit
         cd /usr/ports/devel/jansson/
+        echo "Change directory to $(pwd)"
         ${use_superuser} make install clean
         cd -
+        echo "Change directory to $(pwd)"
         set -o errexit
         echo "Downloading latest uWSGI tarball..."
         curl -o uwsgi_latest_from_installer.tar.gz http://projects.unbit.it/downloads/uwsgi-latest.tar.gz
@@ -41,9 +43,11 @@ function build_uwsgi_install(){
         tar zvxC uwsgi_latest_from_installer --strip-components=1 -f uwsgi_latest_from_installer.tar.gz
         rm uwsgi_latest_from_installer.tar.gz
         cd uwsgi_latest_from_installer
+        echo "Change directory to $(pwd)"
         ${use_superuser} python3 uwsgiconfig.py --build
         ${use_superuser} mv uwsgi /usr/local/bin/uwsgi
         cd ..
+        echo "Change directory to $(pwd)"
         rm -rf uwsgi_latest_from_installer
     fi
 
@@ -61,9 +65,18 @@ if [[ $UID -ne 0 ]]; then
     use_superuser="sudo"
 fi
 
-echo "Installing Dependency..."
+if [[ -f "README.md" ]]; then
+    if [[ -d "install" ]]; then
+        cd install
+        echo "Change directory to $(pwd)"
+    fi
+fi
+
+echo -e "\nInstalling Dependency..."
 
 if command -v pkg >/dev/null 2>&1; then
+    echo "The current package manager is pkg"
+    echo "> ${use_superuser} pkg install newt nginx git python3"
     ${use_superuser} pkg install newt nginx git python3
     build_uwsgi_install
     build_pip_install
@@ -71,23 +84,33 @@ if command -v pkg >/dev/null 2>&1; then
 fi
 
 if command -v apt-get >/dev/null 2>&1; then
+    echo "The current package manager is apt-get"
+    echo "> ${use_superuser} apt-get update"
     ${use_superuser} apt-get update
+    echo "> ${use_superuser} apt-get install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git"
     ${use_superuser} apt-get install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git
     echo "{\"install\":\"apt-get\"}" > install.lock
 fi
 
 if command -v pacman >/dev/null 2>&1; then
+    echo "The current package manager is pacman"
+    echo "> ${use_superuser} pacman -S nginx uwsgi python python-pip python-wheel libnewt uwsgi-plugin-python git gcc"
     ${use_superuser} pacman -S nginx uwsgi python python-pip python-wheel libnewt uwsgi-plugin-python git gcc
     echo "{\"install\":\"pacman\"}" > install.lock
 fi
 
 if command -v dnf >/dev/null 2>&1; then
+    echo "The current package manager is dnf"
+    echo "> ${use_superuser} dnf install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-devel python3-wheel git gcc redhat-rpm-config"
     ${use_superuser} dnf install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-devel python3-wheel git gcc redhat-rpm-config
     echo "{\"install\":\"dnf\"}" > install.lock
 fi
 
 if command -v apk >/dev/null 2>&1; then
+    echo "The current package manager is apk"
+    echo "> ${use_superuser} apk add --no-cache --update procps"
     ${use_superuser} apk add --no-cache --update procps
+    echo "> ${use_superuser} apk add --no-cache python3 python3-dev git uwsgi uwsgi-python3 newt ca-certificates musl-dev gcc python3-dev nginx"
     ${use_superuser} apk add --no-cache python3 python3-dev git uwsgi uwsgi-python3 newt ca-certificates musl-dev gcc python3-dev nginx
     echo "{\"install\":\"apk\"}" > install.lock
 fi
@@ -97,14 +120,9 @@ if [[ ! -f "install.lock" ]]; then
     echo "The current system does not support local deployment. Please use Docker deployment."
     exit 1
 fi
-if [[ -f "README.md" ]]; then
-    if [[ -d "install" ]]; then
-        cd install
-    fi
-fi
 if [[ ! -f "initialization.sh" ]]; then
     if [[ ! -d ${install_name} ]]; then
-        echo "Cloning silverblog..."
+        echo -e "\nCloning silverblog..."
 
         repo_url=https://github.com/silverblogteam/silverblog.git
 
@@ -117,26 +135,19 @@ if [[ ! -f "initialization.sh" ]]; then
     mv install.lock ${install_name}/install/install.lock
 
     cd ${install_name}
+    echo "Change directory to $(pwd)"
     git fetch
     cd install
+    echo "Change directory to $(pwd)"
 
 fi
 
-python3 ./check_python_version.py
-
-bash ./install_python_dependency.sh
-
+echo -e "\n> ./install_denpendency.py"
+python3 ./install_denpendency.py
+echo -e "\n> ./initialization.sh"
 bash ./initialization.sh
-
-if [[ ${china_install} = true ]]; then
-china_option="-c"
-fi
-
-if [[ ! -f "./nginx_config" ]]; then
-bash ./nginx_gen.sh ${china_option}
-fi
-
 cd ..
+echo "Change directory to $(pwd)"
 
 read -p "Create a pm2 configuration file? (y/N) :" yn
 
@@ -183,25 +194,19 @@ fi
 fi
 
 if test $(ps h -o comm -p $$) = "bash"; then
-if [[ ! -f "~/.bashrc" ]]; then
-shell_config_file="~/.bashrc"
-fi
-if [[ ! -f "~/.bash_profile" ]]; then
+shell_config_file="$HOME/.bashrc"
+if [[ -f "$HOME/.bash_profile" ]]; then
 shell_config_file="~/.bash_profile"
 fi
 fi
 
 if test $(ps h -o comm -p $$) = "zsh"; then
-if [[ ! -f "~/.zshrc" ]]; then
-shell_config_file="~/.zshrc"
+if [[ -f "$HOME/.zshrc" ]]; then
+shell_config_file="$HOME/.zshrc"
 fi
 fi
 
-echo ""
-echo "Before you start SilverBlog for the first time, run the following command to initialize the configuration:"
-echo "./manage.py"
-echo ""
-echo "You can add the following code to .bashrc to quickly launch SilverBlog:"
-echo ""
-echo "echo \"${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}\" >> ${shell_config_file}"
-echo ""
+echo -e "\nYou need to perform [./manage.py] to initialize your silverblog environment."
+echo -e "\nYou can add the following code to [${shell_config_file}] to quickly launch SilverBlog:"
+echo -e "\necho \"${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}\" >> ${shell_config_file}"
+echo -e "\nYou can generate an nginx configuration file using [./install/gen_nginx.py]."

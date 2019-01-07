@@ -1,7 +1,6 @@
 import hashlib
 import hmac
 import json
-import shutil
 import uuid
 
 from common import file
@@ -18,8 +17,12 @@ def add_menu_id(list_item):
     return list_item
 
 def main():
-    shutil.copyfile("./config/page.json", "./config/page.json.bak")
-    shutil.copyfile("./config/menu.json", "./config/menu.json.bak")
+    if not os.path.exists("./backup"):
+        os.mkdir("./backup")
+    shutil.copytree("./config", "./backup/config")
+    shutil.copytree("./document", "./backup/document")
+    if os.path.exists("./templates/static/user_file"):
+        shutil.copytree("./templates/static/user_file", "./backup/static/user_file")
     page_list = json.loads(file.read_file("./config/page.json"))
     page_list = list(map(add_page_id, page_list))
     menu_list = json.loads(file.read_file("./config/menu.json"))
@@ -38,7 +41,8 @@ def main():
     control_config["password"] = hmac.new(str("SiLvErBlOg").encode('utf-8'), str(old_password_hash).encode('utf-8'),
                                           hashlib.sha256).hexdigest()
     del system_config["API_Password"]
-    shutil.copyfile("./config/system.json", "./config/system.json.bak")
+    system_config["Pinyin"] = True
+
     file.write_file("./config/system.json", file.json_format_dump(system_config))
     file.write_file("./config/control.json", file.json_format_dump(control_config))
 

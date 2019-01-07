@@ -30,3 +30,10 @@ def list_dirs(folder):
 
 def json_format_dump(obj):
     return json.dumps(obj, indent=4, sort_keys=True, ensure_ascii=False)
+
+
+@asyncio.coroutine
+def async_write_binary_file(filename, content):
+    with open(filename, 'wb') as f:
+        console.log("Info", "Write the binary file: {0}".format(filename))
+        f.write(content)

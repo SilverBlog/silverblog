@@ -15,14 +15,14 @@ build_demo:
   only:
   - nightly
   script:
-  - docker build -t docker.reallserver.cn/${docker_tag_name}:demo -f ./.develop/demo/Dockerfile .
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN docker.reallserver.cn
-  - docker push docker.reallserver.cn/${docker_tag_name}:demo
+    - docker build -t registry.git.reallserver.cn/${docker_tag_name}:demo -f ./.develop/demo/Dockerfile .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.git.reallserver.cn
+    - docker push registry.git.reallserver.cn/${docker_tag_name}:demo
   - eval $(ssh-agent -s)
   - echo "$SSH_PRIVATE_KEY" > deploy.key
   - chmod 0600 deploy.key
   - ssh-add deploy.key
-  - ssh qwe7002@demo.silverblog.org "docker-compose down && docker pull docker.reallserver.cn/${docker_tag_name}:demo && bash /home/qwe7002/dockerclean.sh && docker-compose up -d"
+    - ssh qwe7002@demo.silverblog.org "docker-compose down && docker pull registry.git.reallserver.cn/${docker_tag_name}:demo && bash /home/qwe7002/dockerclean.sh && docker-compose up -d"
 
 build_docker:
   services:
@@ -61,40 +61,33 @@ release_github:
   - git push -f --set-upstream git@code.aliyun.com:silverblogteam/silverblog.wiki.git HEAD:refs/heads/master
 
 
-build_test_env:
-  services:
-  - docker:dind
-  tags:
-  - docker-build
-  stage: build
-  only:
-  - develop
-  script:
-  - docker pull docker.reallserver.cn/${docker_tag_name}:test_env || true
-  - echo " && apk add --no-cache nginx" >> ./example/Dockerfile
-  - docker build --cache-from docker.reallserver.cn/${docker_tag_name}:test_env -t docker.reallserver.cn/${docker_tag_name}:test_env -f ./example/Dockerfile .
-  - echo $CI_BUILD_TOKEN | docker login -u gitlab-ci-token docker.reallserver.cn --password-stdin
-  - docker push docker.reallserver.cn/${docker_tag_name}:test_env
 
 unit_test_develop:
-  image: docker.reallserver.cn/silverblog/silverblog:test_env
+  tags:
+    - pi-test
   stage: test
   only:
   - develop
   script:
   - bash install/initialization.sh
-  - bash install/nginx_gen.sh
+  - python3 install/gen_nginx.py
   - cp -rf .develop/demo/config ./
   - cp -rf .develop/demo/document ./
   - cd templates
   - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
   - cd ..
   - rm /etc/nginx/conf.d/default.conf && cp nginx_config /etc/nginx/conf.d/default.conf
-  - mkdir /run/nginx/
-  - python3 ./watch.py --debug &
-  - python3 ./watch.py --debug --control &
-  - nginx
   - python3 ./manage.py update
   - python3 ./manage.py build-page
+  - mkdir /run/nginx/
+  - cp .develop/demo/supervisord.conf ./
+  - supervisord -c supervisord.conf
+  - chromium-browser --headless --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --window-size=1280,768 --screenshot http://127.0.0.1
   - python3 ./.develop/unit_test/test.py
+  - supervisorctl shutdown
+  artifacts:
+    paths:
+      - screenshot.png
+      - logs
+    expire_in: 1 week
 
