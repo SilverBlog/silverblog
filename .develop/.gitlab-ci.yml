@@ -63,9 +63,9 @@ release_github:
 
 
 unit_test_develop:
+  stage: test
   tags:
     - pi-test
-  stage: test
   only:
   - develop
   script:
