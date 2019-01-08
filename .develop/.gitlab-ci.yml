@@ -77,7 +77,7 @@ unit_test_develop:
     - cd templates
     - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
     - cd ..
-    - rm /etc/nginx/sites-enabled/default.conf && ln -s $(pwd)/nginx_config /etc/nginx/sites-enabled/default.conf
+    - rm /etc/nginx/sites-enabled/default && ln -s $(pwd)/nginx_config /etc/nginx/sites-enabled/default
     - python3 ./manage.py update
     - python3 ./manage.py build-page
     - cp .develop/demo/supervisord.conf ./
