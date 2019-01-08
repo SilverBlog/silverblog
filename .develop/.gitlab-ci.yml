@@ -69,6 +69,7 @@ unit_test_develop:
   only:
     - develop
   script:
+    - python3 install/install_dependency.py
     - bash install/initialization.sh
     - python3 install/gen_nginx.py
     - cp -rf .develop/demo/config ./
