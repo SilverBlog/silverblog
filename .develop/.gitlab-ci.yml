@@ -69,7 +69,7 @@ unit_test_develop:
   only:
     - develop
   script:
-    - python3 install/install_dependency.py
+    - python3 install/install_denpendency.py
     - bash install/initialization.sh
     - python3 install/gen_nginx.py
     - cp -rf .develop/demo/config ./
@@ -84,6 +84,7 @@ unit_test_develop:
     - cp .develop/demo/supervisord.conf ./
     - supervisord -c supervisord.conf
     - chromium-browser --headless --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --window-size=1280,768 --screenshot http://127.0.0.1
+    - chromium-browser --headless --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --window-size=1280,768 --screenshot http://127.0.0.1/post/demo-article
     - python3 ./.develop/unit_test/test.py
     - supervisorctl shutdown
   artifacts:

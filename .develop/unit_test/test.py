@@ -18,7 +18,7 @@ def build_hash(password, content, send_time):
                     digestmod=hashlib.sha512).hexdigest()
 
 
-get_list = ["index", "post/demo-article", "rss", "control/system_info", "control/v2/get/list/post",
+get_list = ["control/system_info", "control/v2/get/list/post",
             "control/v2/get/list/menu"]
 for item in get_list:
     get(item)
