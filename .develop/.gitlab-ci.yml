@@ -80,7 +80,6 @@ unit_test_develop:
     - rm /etc/nginx/sites-enabled/default.conf && ln -s $(pwd)/nginx_config /etc/nginx/sites-enabled/default.conf
     - python3 ./manage.py update
     - python3 ./manage.py build-page
-    - mkdir /run/nginx/
     - cp .develop/demo/supervisord.conf ./
     - supervisord -c supervisord.conf
     - chromium-browser --headless --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --window-size=1280,768 --screenshot http://127.0.0.1
