@@ -7,7 +7,7 @@ RUN bash /home/silverblog/install/initialization.sh \
 && sed -i '''s@./config/unix_socks/control.sock@0.0.0.0:5001@g' uwsgi.json \
 && cp -rf /home/silverblog/.develop/demo/config /home/silverblog/ \
 && cp -rf /home/silverblog/.develop/demo/document /home/silverblog/ \
-&& cp /home/silverblog/.develop/demo/supervisord.conf /home/silverblog/ \
+&& cp /home/silverblog/example/supervisor-buildin.conf /home/silverblog/ \
 && cd /home/silverblog/templates \
 && bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
 
