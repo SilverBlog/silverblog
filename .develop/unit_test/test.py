@@ -5,7 +5,7 @@ import time
 import requests
 
 host = "http://127.0.0.1/"
-time.sleep(2)
+time.sleep(10)
 def get(url):
     r = requests.get(host + url)
     if r.status_code != 200:

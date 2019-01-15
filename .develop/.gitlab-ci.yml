@@ -72,6 +72,8 @@ unit_test_develop:
     - python3 install/install_denpendency.py
     - bash install/initialization.sh
     - python3 install/gen_nginx.py
+    - ln -sf $(pwd)/nginx_config /etc/nginx/sites-enabled/default
+    - nginx -s reload
     - cp -rf .develop/demo/config ./
     - cp -rf .develop/demo/document ./
     - cd templates
