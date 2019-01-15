@@ -73,7 +73,7 @@ unit_test_develop:
     - bash install/initialization.sh
     - python3 install/gen_nginx.py
     - ln -sf $(pwd)/nginx_config /etc/nginx/sites-enabled/default
-    - nginx -s reload
+    - sudo nginx -s reload
     - cp -rf .develop/demo/config ./
     - cp -rf .develop/demo/document ./
     - cd templates
@@ -89,8 +89,9 @@ unit_test_develop:
     - python3 ./.develop/unit_test/test.py
     - supervisorctl shutdown
   artifacts:
+    when: on_failure
     paths:
-      - screenshot.png
       - logs
+      - screenshot.png
     expire_in: 1 week
 
