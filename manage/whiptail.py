@@ -16,14 +16,6 @@ def flatten(data):
     return list(itertools.chain.from_iterable(data))
 
 
-command = None
-if os.system("command -v whiptail > /dev/null 2>&1") << 8 == 0:
-    command = 'whiptail'
-if os.system("command -v dialog > /dev/null 2>&1") << 8 == 0:
-    command = 'dialog'
-if command is None:
-    print("Please check if newt or dialog is installed.")
-    exit(1)
 
 class Whiptail(object):
     def __init__(self, title='', backtitle='', height=0, width=0,
@@ -33,11 +25,17 @@ class Whiptail(object):
         self.height = height
         self.width = width
         self.auto_exit = auto_exit
+        self.command = None
+        if os.system("command -v whiptail > /dev/null 2>&1") << 8 == 0:
+            self.command = 'whiptail'
+        if self.command is None:
+            print("Please check if newt or dialog is installed.")
+            exit(1)
 
     def run(self, control, msg, extra=(), exit_on=(1, 255)):
-        global command
+
         cmd = [
-            command, '--title', self.title, '--backtitle', self.backtitle,
+            self.command, '--title', self.title, '--backtitle', self.backtitle,
             '--' + control, msg, str(self.height), str(self.width)
         ]
         cmd += list(extra)
@@ -58,6 +56,9 @@ class Whiptail(object):
 
     def alert(self, msg):
         self.run('msgbox', msg)
+
+    def alert_muilt_line(self, msg):
+        self.run('msgbox', msg, ['--scrolltext'])
 
     def view_file(self, path):
         self.run('textbox', path, ['--scrolltext'])

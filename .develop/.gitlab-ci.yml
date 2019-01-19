@@ -15,6 +15,7 @@ build_demo:
   only:
     - nightly
   script:
+    - rm -rf .git
     - docker build -t registry.git.reallserver.cn/${docker_tag_name}:demo -f ./.develop/demo/Dockerfile .
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.git.reallserver.cn
     - docker push registry.git.reallserver.cn/${docker_tag_name}:demo
@@ -22,7 +23,7 @@ build_demo:
     - echo "$SSH_PRIVATE_KEY" > deploy.key
     - chmod 0600 deploy.key
     - ssh-add deploy.key
-    - ssh qwe7002@demo.silverblog.org "docker-compose down && docker pull registry.git.reallserver.cn/${docker_tag_name}:demo && bash /home/qwe7002/dockerclean.sh && docker-compose up -d"
+    - ssh qwe7002@demo.silverblog.org "docker-compose down && docker pull registry.git.reallserver.cn/${docker_tag_name}:demo && docker-compose up -d"
 
 build_docker:
   services:

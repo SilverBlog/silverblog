@@ -26,23 +26,38 @@ def get_local_theme_list():
     return dir_list
 
 
+def get_readme(name):
+    readme_url = "https://raw.githubusercontent.com/silverblogtheme/{}/master/README.md".format(name)
+    try:
+        return requests.get(readme_url).text
+    except requests.exceptions.RequestException:
+        return None
+
 def install_theme(name, custom):
     if not os.path.exists("./templates/static"):
         os.mkdir("./templates/static")
     if os.geteuid() == 0:
-        running_in_root = input('Running this script as root can damage your system. Continue to execute? [y/N]')
-        if running_in_root.lower() != 'y':
-            exit(0)
+        running_in_root = console.log("Error",
+                                      'Running this script as root can damage your system.Please do not do this.')
+        exit(1)
+    if os.path.exists("./templates/" + name):
+        console.log("Error", "This theme has been installed.")
+        exit(1)
     console.log("Info", "Getting the theme installation script...")
     install_script_url = "https://raw.githubusercontent.com/silverblogtheme/{}/master/install.sh".format(name)
     if custom:
         install_script_url = name
     try:
-        r = requests.get(install_script_url).text
+        r = requests.get(install_script_url)
+        r.raise_for_status()
+        result_script = r.text
+    except requests.exceptions.HTTPError as err:
+        console.log("Error", err)
+        exit(1)
     except requests.exceptions.RequestException:
         console.log("Error", "Get the theme installation script error.")
         exit(1)
-    result_code = os.system("cd ./templates \n" + r)
+    result_code = os.system("cd ./templates \n" + result_script)
     if (result_code >> 8) != 0:
         console.log("Error", "An error occurred while executing the install script.")
         exit(1)

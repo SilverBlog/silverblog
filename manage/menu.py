@@ -10,12 +10,11 @@ from manage import whiptail, upgrade, get
 
 dialog = whiptail.Whiptail()
 dialog.height = 15
-dialog.title = "SilverBlog management tool"
+dialog.backtitle = "SilverBlog management tool"
 if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
 def use_whiptail_mode():
-    dialog.title = "SilverBlog management tool"
-    menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "=========================", "Exit"]
+    menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "=" * 25, "Exit"]
     upgrade_text = None
     if upgrade.check_is_git():
         upgrade_text = "Upgrade"
@@ -32,8 +31,9 @@ def use_whiptail_mode():
             if upgrade.upgrade_check():
                 upgrade_text = "⚠ Upgrade"
         menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting",
-                     "=========================", "Exit"]
+                     "=" * 25, "Exit"]
     while True:
+        dialog.title = "Home"
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
@@ -94,7 +94,7 @@ def article_manager():
 def menu_manager():
     while True:
         dialog.title = "Menu manager"
-        menu_list = ["New", "Edit", "Delete", "=========================", "Back", "Exit"]
+        menu_list = ["New", "Edit", "Delete", "=" * 25, "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
@@ -184,63 +184,3 @@ def get_post_info(title_input="", name_input=""):
     name = dialog.prompt("Please enter the slug:", name_input).strip()
     return {"title": title, "name": name}
 
-def use_text_mode(args):
-    if args.command == "qrcode":
-        from common import install_module
-        install_module.install_and_import("qrcode_terminal")
-        import qrcode_terminal
-        control_config = json.loads(file.read_file("./config/control.json"))
-
-        if len(control_config["password"]) == 0 or len(system_config["Project_URL"]) == 0:
-            console.log("Error", "Check the API_Password and Project_URL configuration items")
-            exit(1)
-        password = control_config["password"]
-        console.log("Info", "Please use the client to scan the following QR Code")
-        url = system_config["Project_URL"].replace("https://", "").replace("http://", "")
-        config_json = json.dumps({"H": url, "P": password})
-        qrcode_terminal.draw(config_json)
-        exit(0)
-    if args.command == "upgrade":
-        from manage import upgrade
-        if upgrade.upgrade_check():
-            if not args.yes:
-                start_to_pull = input('Find new version, do you want to upgrade? [y/N]')
-            if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y' or args.yes:
-                upgrade.upgrade_pull()
-                exit(0)
-        console.log("Info", "No upgrade found")
-        upgrade.upgrade_env()
-        upgrade.upgrade_data()
-        exit(0)
-    if args.command == "build-page":
-        from manage import build_static_page
-        build_static_page.publish()
-        exit(0)
-    from manage import build_rss, post_manage
-    if args.command == "new":
-        config = None
-        if args.config is not None:
-            config = json.loads(file.read_file(args.config))
-        if config is None:
-            print("Please enter the title of the article:")
-            title = input().strip()
-            if len(title) == 0:
-                console.log("Error", "The title can not be blank.")
-                exit(1)
-            name = get.get_name(title, system_config["Pinyin"])
-            print("Please enter the slug [{}]:".format(name))
-            name2 = input().strip()
-            if len(name2) != 0:
-                name = get.filter_name(name2)
-            if os.path.exists("./document/{}.md".format(name)):
-                console.log("Error", "File [./document/{}.md] already exists".format(name))
-                exit(1)
-        if len(name) != 0 and len(title) != 0:
-            config = {"title": title, "name": name}
-            post_manage.new_post(config, args.independent)
-            build_rss.build_rss()
-        exit(0)
-    if args.command == "update":
-        if post_manage.update_post():
-            build_rss.build_rss()
-        exit(0)

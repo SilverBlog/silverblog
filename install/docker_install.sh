@@ -51,11 +51,6 @@ fi
 
 echo "{\"install\":\"docker\"}" > install.lock
 
-
-if [[ ! -f "./nginx_config" ]]; then
-python nginx_gen.py --tcp
-fi
-
 cd ..
 echo "Change directory to $(pwd)"
 
@@ -101,9 +96,6 @@ fi
 fi
 
 if [[ ${embedded_nginx} == true ]];then
-sed -i ''"s/127.0.0.1:5000/${install_name}:5000/g" nginx_config
-sed -i ''"s/127.0.0.1:5001/${install_name}_control:5001/g" nginx_config
-sed -i ''"s@$(pwd)@/home/silverblog@g" nginx_config
 if [[ ! -f "./docker-compose.yml" ]]; then
 cat << EOF > docker-compose.yml
 version: '3'
@@ -132,7 +124,7 @@ services:
     image: "nginx:alpine"
     container_name: "${install_name}_nginx"
     restart: on-failure:10
-    command: sh -c "cp \"/home/silverblog/nginx_config\" /etc/nginx/conf.d/default.conf && nginx -g \"daemon off;\""
+    command: nginx -g \"daemon off;\"
     networks:
       - ${install_name}_net
     depends_on:
@@ -142,9 +134,11 @@ services:
       - 80:80
     volumes:
       - $(pwd):/home/silverblog
+      - $(pwd)/nginx_config:/etc/nginx/conf.d/default.conf
 networks:
   ${install_name}_net:
 EOF
+//todo
 fi
 fi
 

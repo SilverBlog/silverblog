@@ -10,7 +10,7 @@ from manage import whiptail
 
 dialog = whiptail.Whiptail()
 dialog.height = 15
-dialog.title = "SilverBlog settings tool"
+dialog.backtitle = "SilverBlog management tool"
 system_config = {
     "Project_Name": "",
     "Project_Description": "",
@@ -32,8 +32,9 @@ if os.path.exists("./config/system.json"):
 
 def setting_menu(main_run=False):
     while True:
+        dialog.title = "Setting"
         menu_list = ["Using Setup Wizard", "Using Manual setup",
-                     "Theme package manage", "=========================",
+                     "Theme package manage", "=" * 25,
                      ]
         if not main_run:
             menu_list.append("Back")
@@ -59,7 +60,7 @@ def theme_manage():
     dialog.title = "Theme package manager"
     while True:
         menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing theme",
-                     "Remove existing theme", "Set insertion point", "=========================", "Back", "Exit"]
+                     "Remove existing theme", "Set insertion point", "=" * 25, "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         theme_name = ""
         if result == "Exit":
@@ -80,9 +81,6 @@ def theme_manage():
             if len(theme_name) == 0:
                 dialog.alert("Theme name cannot be empty")
                 continue
-            if os.path.exists("./templates/" + theme_name):
-                dialog.alert("This theme has been installed.")
-                continue
             has_theme = False
             for item in org_list:
                 if item["name"].lower() == theme_name.lower():
@@ -90,6 +88,9 @@ def theme_manage():
             if not has_theme:
                 dialog.alert("Can not find this theme.")
                 continue
+            readme = theme.get_readme(theme_name)
+            if readme is not None:
+                dialog.alert_muilt_line(readme)
             theme.install_theme(theme_name, False)
             if theme_name is not None and dialog.confirm("Do you want to enable this theme now?", "no"):
                 system_config["Theme"] = theme_name
@@ -129,7 +130,7 @@ def manual_setup_list():
         menu_list = ["Project name", "Project description", "Access URL", "Remote API password", "Author name",
                      "Author introduction", "Author avatar", "Paging", "Time format", "Editor",
                      "Automatically convert Chinese characters to pinyin",
-                     "=========================", "Back", "Exit"]
+                     "=" * 50, "Back", "Exit"]
         result = dialog.menu("Please select the item you want to configure", menu_list)
         if result == "Exit":
             exit(0)

@@ -64,11 +64,11 @@ def check_password(content, sign, send_time):
         if error_time >= timestamp:
             console.log("Error", "Too many invalid password attempts.")
             abort(403)
-
+    sign_list_temp = sign_list
     for item in sign_list:
         if sign_list[item] < (int(timestamp) + 300):
-            del sign_list[item]
-
+            del sign_list_temp[item]
+    sign_list = sign_list_temp
     if sign in sign_list:
         console.log("Error", "Request is rejected since the signature has already been used.")
         abort(403)

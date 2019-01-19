@@ -1,22 +1,26 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 set -o errexit
 
 templates_name="your template name"
 
-if [[ $(basename `pwd`) != "templates" ]];then
+if [ $(basename `pwd`) != "templates" ];then
     echo "[Error] Please do this in the templates directory!"
     exit
 fi
 
-if [[ ! -d ${templates_name} ]]; then
-    git clone https://github.com/SilverBlogTheme/${templates_name}.git --depth=1
+if [ ! -d ${templates_name} ]; then
+    echo "Cloning ${templates_name}..."
+    git clone https://github.com/SilverBlogTheme/${templates_name}.git
 fi
 
-ln -sv ../${templates_name}/static ./static/${templates_name}
-
-cd ${templates_name}
-
-if [[ -f "config.example.json" ]]; then
-    cp config.example.json config.json
+if [ ! -L ./static/${templates_name} ]; then
+    echo "Create static file soft link..."
+    ln -sv ../${templates_name}/static ./static/${templates_name}
 fi
+
+if [ -f "config.example.json" ]; then
+    echo "Create a configuration file..."
+    cp ${templates_name}/config.example.json ${templates_name}/config.json
+fi
+
