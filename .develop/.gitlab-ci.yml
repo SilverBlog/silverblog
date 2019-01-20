@@ -87,7 +87,7 @@ unit_test_develop:
     - chromium-browser --headless --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --window-size=1280,768 --screenshot http://127.0.0.1 && mv screenshot.png index.png
     - chromium-browser --headless --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --window-size=1280,768 --screenshot http://127.0.0.1/post/demo-article && mv screenshot.png post.png
     - python3 ./.develop/unit_test/test.py
-    - kill `cat supervisord.log`
+    - kill `cat supervisord.pid`
   artifacts:
     when: on_failure
     paths:
