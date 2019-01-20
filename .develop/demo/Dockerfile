@@ -5,7 +5,7 @@ COPY ./ /home/silverblog
 
 RUN apt-get update \
 && apt-get install -y uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git gnupg curl \
-&& apt-key adv -v --keyserver keyserver.ubuntu.com --receive-key e411e711 \
+&& apt-key adv -v --keyserver pgp.mit.edu --receive-key e411e711 \
 && echo "deb https://nginx.reallct.com/nginx-reall /" >> /etc/apt/sources.list \
 && apt-get update \
 && apt-get install -y nginx-reall \
