@@ -21,7 +21,6 @@ RUN python3 install/gen_nginx.py --hsts --ocsp_must_staple --cert_key "/home/sil
 && cp -rf /home/silverblog/.develop/demo/config /home/silverblog/ \
 && cp -rf /home/silverblog/.develop/demo/document /home/silverblog/ \
 && python3 manage.py update \
-&& cd /home/silverblog/templates \
-&& bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
+&& python3 manage.py install_theme --name clearision
 
 CMD [ "/usr/bin/supervisord","-c","/home/silverblog/example/supervisor-buildin.conf" ]

@@ -77,9 +77,7 @@ unit_test_develop:
     - sudo nginx -s reload
     - cp -rf .develop/demo/config ./
     - cp -rf .develop/demo/document ./
-    - cd templates
-    - bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTheme/clearision/master/install.sh)"
-    - cd ..
+    - python3 manage.py install_theme --name clearision
     - rm /etc/nginx/sites-enabled/default && ln -s $(pwd)/nginx_config /etc/nginx/sites-enabled/default
     - python3 ./manage.py update
     - python3 ./manage.py build-page

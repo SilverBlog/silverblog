@@ -51,10 +51,6 @@ if __name__ == '__main__':
     parser.add_argument("--ocsp_must_staple", help="", action="store_true")
 
     args = parser.parse_args()
-    main(args)
-
-
-def main(args):
     pwd = None
     if args.pwd is not None:
         pwd = args.pwd
