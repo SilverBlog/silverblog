@@ -11,7 +11,9 @@ RUN apt-get update \
 RUN groupadd -r silverblog && useradd -r -g silverblog silverblog
 USER silverblog
 COPY ./ /home/silverblog
-RUN python3 install/install_denpendency.py && python3 install/gen_nginx.py --hsts --ocsp_must_staple --cert_key "/home/silverblog/.acme.sh/demo.silverblog.org/demo.silverblog.org.key" --cert_fullchain "/home/silverblog/.acme.sh/demo.silverblog.org/fullchain.cer" \
+RUN chown -R silverblog:silverblog /home/silverblog \
+&& python3 install/install_denpendency.py \
+&& python3 install/gen_nginx.py --hsts --ocsp_must_staple --cert_key "/home/silverblog/.acme.sh/demo.silverblog.org/demo.silverblog.org.key" --cert_fullchain "/home/silverblog/.acme.sh/demo.silverblog.org/fullchain.cer" \
 && mkdir -p /etc/nginx/sites-enabled && mkdir logs && mkdir /var/lib/nginx \
 && ln -s /home/silverblog/nginx_config /etc/nginx/sites-enabled/ \
 && echo "{\"install\":\"docker-buildin\"}" > install/install.lock \
