@@ -1,6 +1,3 @@
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/LICENSE)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog?ref=badge_shield)
-
 This is SilverBlog's official demo server. Here you can try to add, modify, and delete articles to experience SilverBlog's convenience and speed.
 
 This article has been set to protected mode, please do not attempt to modify, delete this article.
