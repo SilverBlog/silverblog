@@ -9,7 +9,7 @@ RUN apt-get update \
 && echo "deb https://nginx.reallct.com/nginx-reall /" >> /etc/apt/sources.list \
 && apt-get update \
 && apt-get install -y nginx-reall \
-&& pip3 install supervisor
+&& pip3 install supervisor \
 && python3 install/install_denpendency.py
 RUN groupadd -r silverblog && useradd -r -g silverblog silverblog
 USER silverblog
