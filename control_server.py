@@ -41,7 +41,7 @@ def convert_timestamp(item):
     return item
 
 def check_password(content, sign, send_time):
-    global password_error_counter, error_time, submit_lock, total_error_counter
+    global password_error_counter, error_time, submit_lock, total_error_counter, sign_list
     timestamp = time.time()
     timestamp_ms = sec_to_ms(timestamp)
     elapsed_time = timestamp_ms - send_time
@@ -68,6 +68,7 @@ def check_password(content, sign, send_time):
     for item in sign_list:
         if sign_list[item] < (int(timestamp) + 300):
             del sign_list_temp[item]
+
     sign_list = sign_list_temp
     if sign in sign_list:
         console.log("Error", "Request is rejected since the signature has already been used.")
