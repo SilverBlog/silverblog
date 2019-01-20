@@ -28,29 +28,36 @@ do
 done
 
 use_superuser=""
-if [ $UID -ne 0 ]; then
+if [[ $UID -ne 0 ]]; then
     echo "Superuser privileges are required to run this script."
     use_superuser="sudo"
 fi
 
-if [ -f "initialization.sh" ]; then
+if [[ -f "initialization.sh" ]]; then
     cd ..
 fi
 
-if [  -f "/etc/systemd/system/silverblog.service" ]; then
+if [[  -f "/etc/systemd/system/silverblog.service" ]]; then
     echo "Found old configuration file is being deleted."
     ${use_superuser} systemctl disable silverblog
     ${use_superuser} systemctl stop silverblog
     ${use_superuser} rm /etc/systemd/system/silverblog.service
 fi
 
-if [  -f "/etc/systemd/system/silverblog_control.service" ]; then
+if [[  -f "/etc/systemd/system/silverblog_control.service" ]]; then
     echo "Found old configuration file is being deleted."
     ${use_superuser} systemctl disable silverblog_control
     ${use_superuser} systemctl stop silverblog_control
     ${use_superuser} rm /etc/systemd/system/silverblog_control.service
 fi
 
+
+if [[  -f "/etc/systemd/system/${install_name}@.service" ]]; then
+    echo "Found old configuration file is being deleted."
+    ${use_superuser} systemctl disable ${install_name}@
+    ${use_superuser} systemctl stop ${install_name}@main
+    ${use_superuser} systemctl stop ${install_name}@control
+fi
 
 ${use_superuser} bash -c "cat << EOF >/etc/systemd/system/${install_name}@.service
 [Unit]

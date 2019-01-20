@@ -17,7 +17,7 @@ document
 /uwsgi.json
 /pm2.json
 templates
-/nginx_config
+nginx_config
 /manage.sh
 /upgrade/*.json
 /docker-compose.yml
@@ -26,3 +26,4 @@ static_page
 trash
 logs
 install/install.lock
+backup

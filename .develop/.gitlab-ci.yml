@@ -1,0 +1,97 @@
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  docker_tag_name: "silverblog/silverblog"
+
+build_demo:
+  services:
+    - docker:dind
+  tags:
+    - docker-build
+  stage: build
+  only:
+    - nightly
+  script:
+    - rm -rf .git
+    - docker build -t registry.git.reallserver.cn/${docker_tag_name}:demo -f ./.develop/demo/Dockerfile .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.git.reallserver.cn
+    - docker push registry.git.reallserver.cn/${docker_tag_name}:demo
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" > deploy.key
+    - chmod 0600 deploy.key
+    - ssh-add deploy.key
+    - ssh qwe7002@demo.silverblog.org "docker-compose down && docker pull registry.git.reallserver.cn/${docker_tag_name}:demo && docker-compose up -d"
+
+build_docker:
+  services:
+    - docker:dind
+  tags:
+    - docker-build
+  stage: build
+  only:
+    - master
+  script:
+    - docker build -t ${docker_tag_name} -f ./example/Dockerfile .
+    - docker build -t ${docker_tag_name}:buildin -f ./example/Dockerfile-buildin .
+    - echo ${docker_hub_passwd} | docker login -u qwe7002 --password-stdin
+    - echo ${docker_hub_passwd} | docker login -u qwe7002@hotmail.com registry.cn-hangzhou.aliyuncs.com --password-stdin
+    - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
+    - docker tag ${docker_tag_name}:buildin registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}:buildin
+    - docker push ${docker_tag_name}
+    - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
+    - docker push ${docker_tag_name}:buildin
+    - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}:buildin
+release_github:
+  stage: deploy
+  only:
+    - master
+    - nightly
+  script:
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" > deploy.key
+    - chmod 0600 deploy.key
+    - ssh-add deploy.key
+    - git push --set-upstream git@github.com:SilverBlogTeam/silverblog.git HEAD:refs/heads/$CI_COMMIT_REF_NAME
+    - git push --set-upstream git@code.aliyun.com:silverblogteam/silverblog.git HEAD:refs/heads/$CI_COMMIT_REF_NAME
+    - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
+    - cd wiki
+    - git push -f --set-upstream git@github.com:SilverBlogTeam/silverblog.wiki.git HEAD:refs/heads/master
+    - git push -f --set-upstream git@code.aliyun.com:silverblogteam/silverblog.wiki.git HEAD:refs/heads/master
+
+
+
+unit_test_develop:
+  stage: test
+  tags:
+    - pi-test
+  only:
+    - develop
+  script:
+    - python3 install/install_denpendency.py
+    - bash install/initialization.sh
+    - python3 install/gen_nginx.py
+    - ln -sf $(pwd)/nginx_config /etc/nginx/sites-enabled/default
+    - sudo nginx -s reload
+    - cp example/uwsgi.json uwsgi.json
+    - cp -rf .develop/demo/config ./
+    - cp -rf .develop/demo/document ./
+    - python3 manage.py install_theme --name clearision
+    - rm /etc/nginx/sites-enabled/default && ln -s $(pwd)/nginx_config /etc/nginx/sites-enabled/default
+    - python3 ./manage.py update
+    - python3 ./manage.py build-page
+    - cp .develop/unit_test/supervisord.conf ./
+    - supervisord -c supervisord.conf
+    - chromium-browser --headless --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --window-size=1280,768 --screenshot http://127.0.0.1 && mv screenshot.png index.png
+    - chromium-browser --headless --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --window-size=1280,768 --screenshot http://127.0.0.1/post/demo-article && mv screenshot.png post.png
+    - python3 ./.develop/unit_test/test.py
+  artifacts:
+    when: always
+    paths:
+      - logs/
+      - index.png
+      - post.png
+    expire_in: 1 week
+

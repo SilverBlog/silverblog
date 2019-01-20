@@ -1,20 +1,27 @@
 import re
 
-from xpinyin import Pinyin
-
 from common import file, console
 
 
-def get_name(name_input):
-    p = Pinyin()
+def get_name(name_input, convert_pinyin):
     name = name_input.replace(" ", "-").replace("。", ".").replace("，", ",")
     name = filter_name(re.sub('[/:*?,.<>|\'"\\\]', '', name))
-    return p.get_pinyin(name)
+    if convert_pinyin:
+        p = Pinyin()
+        name = p.get_pinyin(name)
+    return name
+
+
+def is_chinese(uchar):
+    if '\u4e00' <= uchar <= '\u9fff':
+        return True
+    else:
+        return False
 
 def get_excerpt(filename):
     content = file.read_file(filename)
     excerpt_output = re.sub('<[\\s\\S]*?>[\\s\\S]*?<[\\s\\S]*?>|<[\\s\\S]*?/>', '', content)
-    excerpt_output = re.sub('(!\[.*\]\([^)]*\))', '', excerpt_output)
+    excerpt_output = re.sub('(!\[(.*?)\]\([^)]*\))', '', excerpt_output)
     excerpt_output = re.sub('\[(.*?)\].*?(\(.*?/.*?\))', '\g<1>', excerpt_output)
     excerpt_output = re.sub('\*+|`|#+|>+|~+|=+|-+|_', '', excerpt_output)
     excerpt = excerpt_output.replace("\n", "").strip()

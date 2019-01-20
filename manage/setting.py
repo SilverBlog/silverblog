@@ -10,7 +10,7 @@ from manage import whiptail
 
 dialog = whiptail.Whiptail()
 dialog.height = 15
-dialog.title = "SilverBlog settings tool"
+dialog.backtitle = "SilverBlog management tool"
 system_config = {
     "Project_Name": "",
     "Project_Description": "",
@@ -23,16 +23,23 @@ system_config = {
     "Paging": 10,
     "Time_Format": "%Y-%m-%d",
     "Editor": "nano",
-    "i18n": "en-US"
+    "i18n": "en-US",
+    "Pinyin": False
 }
 if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
 
-def setting_menu():
+
+def setting_menu(main_run=False):
     while True:
+        dialog.title = "Setting"
         menu_list = ["Using Setup Wizard", "Using Manual setup",
-                     "Theme package manage", "=========================",
-                     "Back", "Exit"]
+                     "Theme package manage", "=" * 25,
+                     ]
+        if not main_run:
+            menu_list.append("Back")
+        menu_list.append("Exit")
+
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
@@ -53,7 +60,7 @@ def theme_manage():
     dialog.title = "Theme package manager"
     while True:
         menu_list = ["Install the theme", "Use the existing theme", "Upgrade existing theme",
-                     "Remove existing theme", "Set insertion point", "=========================", "Back", "Exit"]
+                     "Remove existing theme", "Set insertion point", "=" * 25, "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         theme_name = ""
         if result == "Exit":
@@ -74,9 +81,6 @@ def theme_manage():
             if len(theme_name) == 0:
                 dialog.alert("Theme name cannot be empty")
                 continue
-            if os.path.exists("./templates/" + theme_name):
-                dialog.alert("This theme has been installed.")
-                continue
             has_theme = False
             for item in org_list:
                 if item["name"].lower() == theme_name.lower():
@@ -84,6 +88,9 @@ def theme_manage():
             if not has_theme:
                 dialog.alert("Can not find this theme.")
                 continue
+            readme = theme.get_readme(theme_name)
+            if readme is not None:
+                dialog.alert_muilt_line(readme)
             theme.install_theme(theme_name, False)
             if theme_name is not None and dialog.confirm("Do you want to enable this theme now?", "no"):
                 system_config["Theme"] = theme_name
@@ -99,11 +106,20 @@ def theme_manage():
                 system_config["i18n"] = setting_i18n(theme_name)
             if os.path.exists("./templates/{}/config.json".format(theme_name)):
                 setting_theme_config(theme_name)
+            theme.download_static_file(theme_name)
             save_config()
         if result == "Upgrade existing theme":
             theme.upgrade_theme(select_theme())
         if result == "Remove existing theme":
-            theme.remove_theme(select_theme())
+            theme_name = select_theme()
+            if theme_name is None:
+                continue
+            can_remove = True
+            if system_config["Theme"] == theme_name:
+                can_remove = False
+                dialog.alert("This theme is in use and cannot be removed.")
+                continue
+            theme.remove_theme(theme_name)
         if result == "Set insertion point":
             setting_template_insertion()
         time.sleep(0.5)
@@ -113,7 +129,8 @@ def manual_setup_list():
     while True:
         menu_list = ["Project name", "Project description", "Access URL", "Remote API password", "Author name",
                      "Author introduction", "Author avatar", "Paging", "Time format", "Editor",
-                     "=========================", "Back", "Exit"]
+                     "Automatically convert Chinese characters to pinyin",
+                     "=" * 50, "Back", "Exit"]
         result = dialog.menu("Please select the item you want to configure", menu_list)
         if result == "Exit":
             exit(0)
@@ -139,18 +156,22 @@ def manual_setup_list():
             time_format()
         if result == "Editor":
             editor()
+        if result == "Automatically convert Chinese characters to pinyin":
+            use_pinyin()
         save_config()
         time.sleep(0.5)
 
 
 def setting_template_insertion():
-    menu_list = ["head", "comment", "foot"]
+    menu_list = ["head", "comment", "footer", "Page foot"]
     result = dialog.menu("Please select an action", menu_list)
     if result == "head":
         os.system("{} ./templates/include/head.html".format(system_config["Editor"]))
     if result == "comment":
-        os.system("{} ./templates/include/comment.html".format(system_config["Editor"]))
-    if result == "foot":
+        os.system("{} ./templates/include/comment_box.html".format(system_config["Editor"]))
+    if result == "footer":
+        os.system("{} ./templates/include/footer.html".format(system_config["Editor"]))
+    if result == "Page foot":
         os.system("{} ./templates/include/foot.html".format(system_config["Editor"]))
 
 
@@ -159,8 +180,9 @@ def select_theme():
     directories = theme.get_local_theme_list()
     if len(directories) == 0:
         dialog.alert("The Theme list can not be blank.")
-        return
+        return None
     return dialog.menu("Please select the theme to be operated:", directories)
+
 def setting_theme_config(theme_name):
     theme_config = json.loads(file.read_file("./templates/{}/config.json".format(theme_name)))
     for item in theme_config:
@@ -199,8 +221,17 @@ def setup_wizard():
     paging()
     time_format()
     editor()
+    use_pinyin()
     save_config()
 
+
+def use_pinyin():
+    item = "Pinyin"
+    status = "no"
+    if system_config[item]:
+        status = "yes"
+    system_config[item] = dialog.confirm("Use automatic conversion of Chinese characters to Pinyin?".format(item),
+                                         status)
 
 def project_name():
     item = "Project_Name"
@@ -219,14 +250,24 @@ def project_url():
 
 def remote_api_password():
     notice = ""
-    if system_config["API_Password"] is not "":
+    if os.path.exists("./config/control.json"):
+        control_config = json.loads(file.read_file("./config/control.json"))
         notice = "\n(Leave blank does not change)"
-    new_password = dialog.prompt("Please enter the remote api password:" + notice, "",
-                                 True)
+    new_password = ""
+    while True:
+        new_password = dialog.prompt("Please enter the remote api password:" + notice, "", True)
+        if notice != "" and len(new_password) == 0:
+            break
+        if len(new_password) >= 8:
+            break
+        dialog.alert("The new password is too weak. Please retry with a stronger combination.")
     if len(new_password) != 0:
         import hashlib
-        system_config["API_Password"] = json.dumps(
-            {"hash_password": hashlib.md5(new_password.encode('utf-8')).hexdigest()})
+        import hmac
+        md5_new_password = hashlib.md5(new_password.encode('utf-8')).hexdigest()
+        sha256_new_password = hmac.new(str("SiLvErBlOg").encode('utf-8'), str(md5_new_password).encode('utf-8'),
+                                       hashlib.sha256).hexdigest()
+        file.write_file("./config/control.json", json.dumps({"password": sha256_new_password}))
 
 
 def author_name():

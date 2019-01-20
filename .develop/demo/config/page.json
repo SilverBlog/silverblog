@@ -4,13 +4,13 @@
     "time": 0,
     "name": "demo-article",
     "title": "Demo Article",
-    "lock": true
+    "uuid": "c3472075-440f-42d9-9421-3e83d46568d4"
   },
   {
     "excerpt": "",
     "time": 0,
     "name": "demo-article-zh",
     "title": "演示文章",
-    "lock": true
+    "uuid": "54a8bf68-131c-442f-9543-efe63e5c80d5"
   }
 ]

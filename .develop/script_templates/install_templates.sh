@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 set -o errexit
 
@@ -10,13 +10,17 @@ if [ $(basename `pwd`) != "templates" ];then
 fi
 
 if [ ! -d ${templates_name} ]; then
-    git clone https://github.com/SilverBlogTheme/${templates_name}.git --depth=1
+    echo "Cloning ${templates_name}..."
+    git clone https://github.com/SilverBlogTheme/${templates_name}.git
 fi
 
-ln -sv ../${templates_name}/static ./static/${templates_name}
-
-cd ${templates_name}
+if [ ! -L ./static/${templates_name} ]; then
+    echo "Create static file soft link..."
+    ln -sv ../${templates_name}/static ./static/${templates_name}
+fi
 
 if [ -f "config.example.json" ]; then
-    cp config.example.json config.json
+    echo "Create a configuration file..."
+    cp ${templates_name}/config.example.json ${templates_name}/config.json
 fi
+
