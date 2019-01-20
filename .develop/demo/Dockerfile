@@ -8,11 +8,10 @@ RUN apt-get update \
 && echo "deb https://nginx.reallct.com/nginx-reall /" >> /etc/apt/sources.list \
 && apt-get update \
 && apt-get install -y nginx-reall
-RUN groupadd -r silverblog && useradd -r -g silverblog silverblog
+RUN groupadd -r silverblog && useradd -r -g silverblog silverblog && chown -R silverblog:silverblog /home/silverblog
 USER silverblog
 COPY ./ /home/silverblog
-RUN chown -R silverblog:silverblog /home/silverblog \
-&& python3 install/install_denpendency.py \
+RUN  python3 install/install_denpendency.py \
 && python3 install/gen_nginx.py --hsts --ocsp_must_staple --cert_key "/home/silverblog/.acme.sh/demo.silverblog.org/demo.silverblog.org.key" --cert_fullchain "/home/silverblog/.acme.sh/demo.silverblog.org/fullchain.cer" \
 && mkdir -p /etc/nginx/sites-enabled && mkdir logs && mkdir /var/lib/nginx \
 && ln -s /home/silverblog/nginx_config /etc/nginx/sites-enabled/ \
