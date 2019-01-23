@@ -52,8 +52,8 @@ if __name__ == '__main__':
     #build-gh-page
     parser.add_argument_group("build-page", "Generate static pages.")
     theme_group = parser.add_argument_group("install_theme")
-    theme_group.add_argument("--name", "Install the theme in the official repository", type=str)
-    theme_group.add_argument("--custom", "Install the theme of the custom repository", type=str)
+    theme_group.add_argument("--name", help="Install the theme in the official repository", type=str)
+    theme_group.add_argument("--custom", help="Install the theme of the custom repository", type=str)
     args = parser.parse_args()
     try:
         if args.command == "setting":
