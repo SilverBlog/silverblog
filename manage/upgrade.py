@@ -1,7 +1,6 @@
 import importlib
 import json
 import os
-import shutil
 
 import git
 
@@ -45,6 +44,7 @@ def upgrade_check(fetch=True):
     return False
 
 def upgrade_pull():
+
     if not check_is_git():
         console.log("Error", "Not a git repository.")
         return False
@@ -56,21 +56,14 @@ def upgrade_pull():
     remote.pull()
     console.log("Success", "Upgrade code Successful!")
 
-
 def upgrade_env():
     os.system("python3 ./install/install_denpendency.py")
     console.log("Success", "Upgrade data Successful!")
 
-
 def upgrade_data():
     if current_data_version != new_data_version:
-        console.log("Info", "The data is being backed up...")
-        if not os.path.exists("./backup"):
-            os.mkdir("./backup")
-        shutil.copytree("./config", "./backup/config")
-        shutil.copytree("./document", "./backup/document")
-        if os.path.exists("./templates/static/user_file"):
-            shutil.copytree("./templates/static/user_file", "./backup/static/user_file")
+        from manage import backup
+        backup.backup(str(current_data_version))
         for index in range(current_data_version, new_data_version):
             if os.path.exists("./upgrade/upgrade_from_{}.py".format(index)):
                 upgrade_item = importlib.import_module("upgrade.upgrade_from_{}".format(index), __package__)

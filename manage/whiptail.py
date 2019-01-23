@@ -29,7 +29,7 @@ class Whiptail(object):
         if os.system("command -v whiptail > /dev/null 2>&1") << 8 == 0:
             self.command = 'whiptail'
         if self.command is None:
-            print("Please check if newt or dialog is installed.")
+            print("Please check if newt is installed.")
             exit(1)
 
     def run(self, control, msg, extra=(), exit_on=(1, 255)):

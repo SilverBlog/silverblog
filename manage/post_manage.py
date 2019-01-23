@@ -22,7 +22,7 @@ def new_post(config, independent=False):
     if not os.path.exists("./document/{}.md".format(name)):
         editor = system_info["Editor"]
         os.system("{0} ./document/{1}.md".format(editor, name))
-    post_info = {"uuid": post_uuid, "name": name, "title": title, "time": time.time()}
+    post_info = {"uuid": post_uuid, "name": name, "title": title, "time": round(time.time())}
     if not os.path.exists("./document/{}.md".format(name)):
         console.log("Error", "Cannot find [./document/{}.md]".format(name))
         exit(1)
@@ -53,6 +53,8 @@ def edit_post(page_list, post_index, config, editor=None, is_menu=False):
                         "./document/{}.json".format(safe_name))
             config_file = json.loads(file.read_file("./document/{}.json".format(safe_name)))
             config_file["title"] = config["title"]
+            if "time" in config:
+                config_file = config["time"]
             file.write_file("./document/{}.json".format(safe_name),
                             file.json_format_dump(config_file))
         page_list[post_index]["name"] = safe_name

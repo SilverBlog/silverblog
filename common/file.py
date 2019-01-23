@@ -5,20 +5,21 @@ import os
 from common import console
 
 
-def read_file(filename):
-    with open(filename, newline=None, encoding="utf-8", errors='ignore') as f:
+def read_file(file_name):
+    with open(file_name, newline=None, encoding="utf-8", errors='ignore') as f:
         content = f.read()
     return content
 
-def write_file(filename, content):
-    with open(filename, "w", newline=None, encoding="utf-8") as f:
-        console.log("Info", "Write the file: {0}".format(filename))
+
+def write_file(file_name, content):
+    with open(file_name, "w", newline=None, encoding="utf-8") as f:
+        console.log("Info", "Write the file: {0}".format(file_name))
         f.write(content)
     return True
 
 @asyncio.coroutine
-def async_read_file(filename):
-    return read_file(filename)
+def async_read_file(file_name):
+    return read_file(file_name)
 
 @asyncio.coroutine
 def async_write_file(filename, content):

@@ -11,7 +11,7 @@ nginx_template = \
     }
     server {
         ${listen_port}
-        ${domain}
+        ${server_name}
         ${ssl_config}
         location / {
             include uwsgi_params;
@@ -36,19 +36,18 @@ nginx_template = \
     """
 
 if __name__ == '__main__':
-    # todo
     print("Generating Nginx configuration...")
     parser = argparse.ArgumentParser("Silverblog nginx profile creation tool")
-    parser.add_argument("--force", help="", action="store_true")
-    parser.add_argument("--domain", help="", type=str)
-    parser.add_argument("--pwd", help="", type=str)
-    parser.add_argument("--host", help="", type=str)
-    parser.add_argument("--main_port", help="", type=str)
-    parser.add_argument("--control_port", help="", type=str)
-    parser.add_argument("--cert_key", help="", type=str)
-    parser.add_argument("--cert_fullchain", help="", type=str)
-    parser.add_argument("--hsts", help="", action="store_true")
-    parser.add_argument("--ocsp_must_staple", help="", action="store_true")
+    parser.add_argument("--force", help="Force the generation of the nginx configuration file.", action="store_true")
+    parser.add_argument("--domain", help="The domain name of the website.", type=str)
+    parser.add_argument("--pwd", help="Current website directory.", type=str)
+    parser.add_argument("--host", help="uwsgi listens for the address.", type=str)
+    parser.add_argument("--main_port", help="The main service listening port.", type=str)
+    parser.add_argument("--control_port", help="The Control service listening port.", type=str)
+    parser.add_argument("--cert_key", help="SSL certificate key.", type=str)
+    parser.add_argument("--cert_fullchain", help="SSL certificate fullchain", type=str)
+    parser.add_argument("--hsts", help="Use HSTS.", action="store_true")
+    parser.add_argument("--ocsp_must_staple", help="Use OCSP Must-Staple", action="store_true")
 
     args = parser.parse_args()
     pwd = None
@@ -70,9 +69,9 @@ if __name__ == '__main__':
         uwsgi_pass_main = "{}:{}".format(args.host, args.main_port)
         uwsgi_pass_control = "{}:{}".format(args.host, args.control_port)
     listen_port = "listen 80;"
-    domain = ""
+    server_name = ""
     if args.domain is not None:
-        domain = "server_name {};".format(args.domain)
+        server_name = "server_name {};".format(args.domain)
     ssl_config = ""
     http_to_https = ""
     if args.cert_key is not None and args.cert_fullchain is not None:
@@ -98,18 +97,21 @@ if __name__ == '__main__':
         """
         ssl_config = ssl_config.replace("${ssl_fullchain}", args.cert_fullchain)
         ssl_config = ssl_config.replace("${ssl_key}", args.cert_key)
+        ssl_config = ssl_config.replace("${hsts}", hsts)
+        ssl_config = ssl_config.replace("${ocsp}", ocsp)
         http_to_https = """
         server {
             listen 80;
-            ${domain}
+            ${server_name}
             location / {
 	            return 301 https://${domain}$request_uri;
             }
         }
         """
-        http_to_https = http_to_https.replace("${domain}", domain)
+        http_to_https = http_to_https.replace("${domain}", args.domain)
+        http_to_https = http_to_https.replace("${server_name}", server_name)
     nginx_config = nginx_template.replace("${listen_port}", listen_port)
-    nginx_config = nginx_config.replace("${domain}", domain)
+    nginx_config = nginx_config.replace("${server_name}", server_name)
     nginx_config = nginx_config.replace("${ssl_config}", ssl_config)
     nginx_config = nginx_config.replace("${http_to_https}", http_to_https)
     nginx_config = nginx_config.replace("${uwsgi_pass_main}", uwsgi_pass_main)
