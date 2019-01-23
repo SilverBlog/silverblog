@@ -45,7 +45,11 @@ def install_theme(theme_name, custom):
     git_repo = "https://github.com/silverblog-theme/{}.git".format(theme_name)
     if custom:
         git_repo = theme_name
-    git.Repo.clone_from(url=git_repo, to_path=repo_dir, depth=1)
+    try:
+        git.Repo.clone_from(url=git_repo, to_path=repo_dir, depth=1)
+    except git.exc.GitCommandError as err:
+        console.log("Error", "Unable to clone theme repository.")
+        exit(1)
     config_example_file = "{}/config.example.json".format(repo_dir)
     static_symlink = "./templates/static/{}".format(theme_name)
 
