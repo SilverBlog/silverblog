@@ -12,7 +12,7 @@ from common import file
 def get_orgs_list():
     console.log("Info", "Getting the list of theme...")
     try:
-        return requests.get("https://api.github.com/orgs/silverblogtheme/repos").json()
+        return requests.get("https://api.github.com/orgs/silverblog-theme/repos").json()
     except  requests.exceptions.RequestException:
         console.log("Error", "Get the theme list error.")
         exit(1)
@@ -26,48 +26,49 @@ def get_local_theme_list():
     return dir_list
 
 
-def get_readme(name):
-    readme_url = "https://raw.githubusercontent.com/silverblogtheme/{}/master/README.md".format(name)
+def get_package_info(package_url):
     try:
-        return requests.get(readme_url).text
+        return requests.get(package_url).text
     except requests.exceptions.RequestException:
         return None
 
-def install_theme(name, custom):
+
+def install_theme(theme_name, custom):
+    import git
     if not os.path.exists("./templates/static"):
         os.mkdir("./templates/static")
-    if os.geteuid() == 0:
-        running_in_root = console.log("Error",
-                                      'Running this script as root can damage your system.Please do not do this.')
-        exit(1)
-    if os.path.exists("./templates/" + name):
+    repo_dir = "./templates/{}".format(theme_name)
+    if os.path.exists(repo_dir):
         console.log("Error", "This theme has been installed.")
         exit(1)
-    console.log("Info", "Getting the theme installation script...")
-    install_script_url = "https://raw.githubusercontent.com/silverblogtheme/{}/master/install.sh".format(name)
+    console.log("Info", "Get the theme repository...")
+    git_repo = "https://github.com/silverblog-theme/{}.git".format(theme_name)
     if custom:
-        install_script_url = name
+        git_repo = theme_name
     try:
-        r = requests.get(install_script_url)
-        r.raise_for_status()
-        result_script = r.text
-    except requests.exceptions.HTTPError as err:
-        console.log("Error", err)
+        git.Repo.clone_from(url=git_repo, to_path=repo_dir, depth=1)
+    except git.exc.GitCommandError as err:
+        console.log("Error", "Unable to clone theme repository.")
         exit(1)
-    except requests.exceptions.RequestException:
-        console.log("Error", "Get the theme installation script error.")
-        exit(1)
-    result_code = os.system("cd ./templates \n" + result_script)
-    if (result_code >> 8) != 0:
-        console.log("Error", "An error occurred while executing the install script.")
-        exit(1)
-    download_static_file(name)
+    config_example_file = "{}/config.example.json".format(repo_dir)
+    static_symlink = "./templates/static/{}".format(theme_name)
+
+    if not os.path.exists(static_symlink):
+        os.symlink("{}/templates/{}/static".format(os.getcwd(), theme_name), static_symlink)
+
+    if os.path.exists(config_example_file):
+        shutil.copyfile(config_example_file, "{}/config.json".format(repo_dir))
+
+    download_static_file(theme_name)
     console.log("Success", "The theme is install successfully!")
 
+
 def remove_theme(theme_name):
+    static_symlink = "./templates/static/{}".format(theme_name)
+    if os.path.exists(static_symlink):
+        os.remove(static_symlink)
+
     shutil.rmtree("./templates/" + theme_name)
-    if os.path.exists("./templates/static/" + theme_name):
-        shutil.rmtree("./templates/static/" + theme_name)
     console.log("Success", "The theme is removed successfully!")
 
 def upgrade_theme(theme_name):
@@ -86,14 +87,17 @@ def upgrade_theme(theme_name):
 
 
 def download_static_file(theme_name):
-    download_list_file = "./templates/{}/cdn/download.json".format(theme_name)
+    download_list_file = "./templates/{}/package.json".format(theme_name)
     download_file_location = "./templates/{}/static/library".format(theme_name)
-    if not os.path.exists(download_list_file):
-        return
     if os.path.exists(download_file_location):
         shutil.rmtree(download_file_location)
     os.mkdir(download_file_location)
-    download_list = json.loads(file.read_file(download_list_file))
+    package_info = json.loads(file.read_file(download_list_file))
+
+    download_list = list()
+    if "download" in package_info:
+        download_list = package_info["download"]
+
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     tasks = [download_file(item, download_file_location) for item in download_list]

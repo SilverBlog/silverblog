@@ -34,7 +34,7 @@ def setting_menu(main_run=False):
     while True:
         dialog.title = "Setting"
         menu_list = ["Using Setup Wizard", "Using Manual setup",
-                     "Theme package manage", "=" * 25,
+                     "Theme package manage", "Create a backup", "=" * 25,
                      ]
         if not main_run:
             menu_list.append("Back")
@@ -45,6 +45,10 @@ def setting_menu(main_run=False):
             exit(0)
         if result == "Back":
             break
+        if result == "Create a backup":
+            from manage import backup
+            backup.backup()
+            dialog.alert("The backup is complete.")
         if result == "Using Setup Wizard":
             setup_wizard()
         if result == "Using Manual setup":

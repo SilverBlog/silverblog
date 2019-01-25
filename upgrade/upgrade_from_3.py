@@ -8,6 +8,7 @@ from common import file
 
 def add_page_id(list_item):
     list_item["uuid"] = str(uuid.uuid5(uuid.NAMESPACE_URL, list_item["name"]))
+    list_item["time"] = round(list_item["time"])
     return list_item
 
 
@@ -16,13 +17,25 @@ def add_menu_id(list_item):
         return add_page_id(list_item)
     return list_item
 
+
+def add_tar_file(tar, dir_name):
+    for root, path, files in os.walk(dir_name):
+        for file in files:
+            fullpath = os.path.join(root, file)
+            tar.add(fullpath)
+
 def main():
     if not os.path.exists("./backup"):
         os.mkdir("./backup")
-    shutil.copytree("./config", "./backup/config")
-    shutil.copytree("./document", "./backup/document")
-    if os.path.exists("./templates/static/user_file"):
-        shutil.copytree("./templates/static/user_file", "./backup/static/user_file")
+    import tarfile
+    import time
+    tar = tarfile.open("./backup/backup-version_2-{}.tar.gz".format(time.strftime("%Y%m%d%H%M%S", time.localtime())),
+                       "w:gz")
+    add_tar_file(tar, "./config")
+    add_tar_file(tar, "./document")
+    add_tar_file(tar, "./templates")
+    add_tar_file(tar, "./static_file")
+    tar.close()
     page_list = json.loads(file.read_file("./config/page.json"))
     page_list = list(map(add_page_id, page_list))
     menu_list = json.loads(file.read_file("./config/menu.json"))

@@ -76,7 +76,8 @@ def article_manager():
             dialog.title = "Edit post"
             page_list, post_index = select_list("./config/page.json")
             if page_list:
-                config = get_post_info(page_list[post_index]["title"], page_list[post_index]["name"])
+                config = get_post_info(page_list[post_index]["title"], page_list[post_index]["name"],
+                                       page_list[post_index]["time"])
                 system_info = json.loads(file.read_file("./config/system.json"))
                 post_manage.edit_post(page_list, post_index, config, system_info["Editor"])
             post_manage.update_post()
@@ -174,7 +175,7 @@ def select_list(list_name):
     return page_list, page_title_list.index(post_title)
 
 
-def get_post_info(title_input="", name_input=""):
+def get_post_info(title_input="", name_input="", time_input=None):
     title = dialog.prompt("Please enter the title of the article:", title_input).strip()
     if len(title) == 0:
         dialog.alert("The title can not be blank.")
@@ -182,5 +183,11 @@ def get_post_info(title_input="", name_input=""):
     if name_input == "":
         name_input = get.get_name(title, system_config["Pinyin"])
     name = dialog.prompt("Please enter the slug:", name_input).strip()
-    return {"title": title, "name": name}
+    if time_input is not None:
+        time_format = "%Y-%m-%d %H:%M:%S"
+        time_input_format = time.strftime(time_format, time.localtime(time_input))
+        time_input = dialog.prompt("Please enter the time:(Current time zone:{})".format(time.tzname[0]),
+                                   time_input_format).strip()
+        time.strptime(time_input, time_format)
 
+    return {"title": title, "name": name, "time": time}

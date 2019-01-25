@@ -20,7 +20,6 @@ if os.path.exists("./install/install.lock"):
                 console.log("Error", "Please install docker or upgrade the current docker image and try again.")
             exit(result_code)
 if __name__ == '__main__':
-    from manage import menu
     if not os.path.exists("./config/page.json") or not os.path.exists("./config/menu.json"):
         console.log("Error", "Please execute the installation wizard first.")
         exit(1)
@@ -32,6 +31,7 @@ if __name__ == '__main__':
         exit(0)
 
     if len(sys.argv) == 1:
+        from manage import menu
         menu.use_whiptail_mode()
         exit(0)
     parser = argparse.ArgumentParser("SilverBlog management tool")
@@ -51,10 +51,9 @@ if __name__ == '__main__':
     parser.add_argument_group('qrcode', "Output client qrcode.")
     #build-gh-page
     parser.add_argument_group("build-page", "Generate static pages.")
-    # todo
     theme_group = parser.add_argument_group("install_theme")
-    theme_group.add_argument("--name", type=str)
-    theme_group.add_argument("--custom", type=str)
+    theme_group.add_argument("--name", help="Install the theme in the official repository", type=str)
+    theme_group.add_argument("--custom", help="Install the theme of the custom repository", type=str)
     args = parser.parse_args()
     try:
         if args.command == "setting":
@@ -103,11 +102,14 @@ if __name__ == '__main__':
 
             theme.install_theme(name, custom)
             exit(0)
-        from manage import build_rss, post_manage, get, build_static_page
+
 
         if args.command == "build-page":
+            from manage import build_static_page
             build_static_page.publish()
             exit(0)
+
+        from manage import build_rss, post_manage, get
         if args.command == "new":
             config = None
             if args.config is not None:
