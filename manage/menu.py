@@ -15,22 +15,8 @@ if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
 def use_whiptail_mode():
     menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "=" * 25, "Exit"]
-    upgrade_text = None
     if upgrade.check_is_git():
-        upgrade_text = "Upgrade"
-        upgrade_check = False
-        last_fetch_time = 0
-        if os.path.exists("./upgrade/last_fetch_time.json"):
-            last_fetch_time = json.loads(file.read_file("./upgrade/last_fetch_time.json"))["last_fetch_time"]
-        if upgrade.upgrade_check(False):
-            upgrade_text = "⚠ Upgrade"
-            upgrade_check = True
-        if (time.time() - last_fetch_time) > 259200 and not upgrade_check:
-            console.log("Info", "Checking for updates...")
-            file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
-            if upgrade.upgrade_check():
-                upgrade_text = "⚠ Upgrade"
-        menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting",
+        menu_list = ["Article manager", "Menu manager", "Build static page", "Upgrade", "Setting",
                      "=" * 25, "Exit"]
     while True:
         dialog.title = "Home"
@@ -41,9 +27,8 @@ def use_whiptail_mode():
             article_manager()
         if result == "Menu manager":
             menu_manager()
-        if upgrade_text is not None:
-            if result == upgrade_text:
-                upgrade_system()
+        if result == "Upgrade":
+            upgrade_system()
         if result == "Build static page":
             from manage import build_static_page
             dialog.title = "Build static page"

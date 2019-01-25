@@ -45,9 +45,9 @@ if __name__ == '__main__':
     parser.add_argument("--main_port", help="The main service listening port.", type=str)
     parser.add_argument("--control_port", help="The Control service listening port.", type=str)
     parser.add_argument("--cert_key", help="SSL certificate key.", type=str)
-    parser.add_argument("--cert_fullchain", help="SSL certificate fullchain", type=str)
-    parser.add_argument("--hsts", help="Use HSTS.", action="store_true")
-    parser.add_argument("--ocsp_must_staple", help="Use OCSP Must-Staple", action="store_true")
+    parser.add_argument("--cert_fullchain", help="SSL certificate fullchain.", type=str)
+    parser.add_argument("--hsts", help="Use HSTS.", action="store_true.")
+    parser.add_argument("--ocsp_must_staple", help="Use OCSP Must-Staple.", action="store_true")
 
     args = parser.parse_args()
     pwd = None

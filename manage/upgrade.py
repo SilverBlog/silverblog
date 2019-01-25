@@ -57,7 +57,8 @@ def upgrade_pull():
     console.log("Success", "Upgrade code Successful!")
 
 def upgrade_env():
-    os.system("python3 ./install/install_denpendency.py")
+    from install import install_denpendency
+    install_denpendency.main()
     console.log("Success", "Upgrade data Successful!")
 
 def upgrade_data():

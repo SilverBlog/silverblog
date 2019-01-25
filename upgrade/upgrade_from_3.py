@@ -1,6 +1,8 @@
 import hashlib
 import hmac
 import json
+import tarfile
+import time
 import uuid
 
 from common import file
@@ -27,8 +29,6 @@ def add_tar_file(tar, dir_name):
 def main():
     if not os.path.exists("./backup"):
         os.mkdir("./backup")
-    import tarfile
-    import time
     tar = tarfile.open("./backup/backup-version_2-{}.tar.gz".format(time.strftime("%Y%m%d%H%M%S", time.localtime())),
                        "w:gz")
     add_tar_file(tar, "./config")
@@ -58,7 +58,8 @@ def main():
 
     file.write_file("./config/system.json", file.json_format_dump(system_config))
     file.write_file("./config/control.json", file.json_format_dump(control_config))
-
+    if os.path.exists("./upgrade/last_fetch_time.json"):
+        os.remove("./upgrade/last_fetch_time.json")
 
 if __name__ == '__main__':
     main()
