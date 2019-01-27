@@ -133,7 +133,7 @@ def theme_manage():
 def manual_setup_list():
     while True:
         menu_list = ["Project name", "Project description", "Access URL", "Remote API password", "Author name",
-                     "Author introduction", "Author avatar", "Paging", "Time format", "Editor", "CDN"
+                     "Author introduction", "Author avatar", "Paging", "Time format", "Editor", "CDN",
                      "Automatically convert Chinese characters to pinyin",
                      "=" * 50, "Back", "Exit"]
         result = dialog.menu("Please select the item you want to configure", menu_list)
