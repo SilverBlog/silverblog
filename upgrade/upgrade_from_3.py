@@ -55,6 +55,7 @@ def main():
                                           hashlib.sha256).hexdigest()
     del system_config["API_Password"]
     system_config["Pinyin"] = True
+    system_config["Use_CDN"] = True
 
     file.write_file("./config/system.json", file.json_format_dump(system_config))
     file.write_file("./config/control.json", file.json_format_dump(control_config))

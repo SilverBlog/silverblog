@@ -24,7 +24,8 @@ system_config = {
     "Time_Format": "%Y-%m-%d",
     "Editor": "nano",
     "i18n": "en-US",
-    "Pinyin": False
+    "Pinyin": False,
+    "Use_CDN": False
 }
 if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
@@ -160,6 +161,8 @@ def manual_setup_list():
             time_format()
         if result == "Editor":
             editor()
+        if result == "Use CDN":
+            use_CDN()
         if result == "Automatically convert Chinese characters to pinyin":
             use_pinyin()
         save_config()
@@ -225,9 +228,17 @@ def setup_wizard():
     paging()
     time_format()
     editor()
+    use_CDN()
     use_pinyin()
     save_config()
 
+
+def use_CDN():
+    item = "Use_CDN"
+    status = "no"
+    if system_config[item]:
+        status = "yes"
+    system_config[item] = dialog.confirm("Use CDN?".format(item), status)
 
 def use_pinyin():
     item = "Pinyin"

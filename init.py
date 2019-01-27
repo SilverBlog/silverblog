@@ -38,19 +38,16 @@ def get_system_config():
         template_config_file = yield from file.async_read_file(template_location + "config.json")
         template_config = yield from async_json_loads(template_config_file)
 
-        if "use_cdn" in template_config:
-            cdn_config_file = template_location + "cdn/local.json"
-            if template_config["use_cdn"]:
-                cdn_config_file = template_location + "cdn/cdn.json"
-                if os.path.exists(template_location + "cdn/custom.json"):
-                    cdn_config_file = template_location + "cdn/custom.json"
+        if os.path.exists(template_location + "cdn"):
+            cdn_config_file = None
+            if os.path.exists(template_location + "cdn/custom.json"):
+                cdn_config_file = template_location + "cdn/custom.json"
+            if cdn_config_file is None:
+                cdn_config_file = template_location + "cdn/local.json"
+                if system_config["Use_CDN"]:
+                    cdn_config_file = template_location + "cdn/cdn.json"
             cdn_file = yield from file.async_read_file(cdn_config_file)
             static_file_list = yield from async_json_loads(cdn_file)
-
-    if not os.path.exists(template_location + "config.json") and os.path.exists(template_location + "cdn/cdn.json"):
-        cdn_config_file = template_location + "cdn/cdn.json"
-        cdn_file = yield from file.async_read_file(cdn_config_file)
-        static_file_list = yield from async_json_loads(cdn_file)
 
     if os.path.exists(template_location + "i18n"):
         i18n_name = "en-US"
