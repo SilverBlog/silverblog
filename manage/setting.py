@@ -19,7 +19,6 @@ system_config = {
     "Author_Name": "",
     "Author_Introduction": "",
     "Theme": "",
-    "API_Password": "",
     "Paging": 10,
     "Time_Format": "%Y-%m-%d",
     "Editor": "nano",
@@ -119,9 +118,7 @@ def theme_manage():
             theme_name = select_theme()
             if theme_name is None:
                 continue
-            can_remove = True
             if system_config["Theme"] == theme_name:
-                can_remove = False
                 dialog.alert("This theme is in use and cannot be removed.")
                 continue
             theme.remove_theme(theme_name)
@@ -133,7 +130,7 @@ def theme_manage():
 def manual_setup_list():
     while True:
         menu_list = ["Project name", "Project description", "Access URL", "Remote API password", "Author name",
-                     "Author introduction", "Author avatar", "Paging", "Time format", "Editor", "CDN",
+                     "Author introduction", "Author avatar", "Paging", "Time format", "Editor", "Use CDN",
                      "Automatically convert Chinese characters to pinyin",
                      "=" * 50, "Back", "Exit"]
         result = dialog.menu("Please select the item you want to configure", menu_list)
@@ -238,15 +235,14 @@ def use_CDN():
     status = "no"
     if system_config[item]:
         status = "yes"
-    system_config[item] = dialog.confirm("Use CDN?".format(item), status)
+    system_config[item] = dialog.confirm("Use CDN?", status)
 
 def use_pinyin():
     item = "Pinyin"
     status = "no"
     if system_config[item]:
         status = "yes"
-    system_config[item] = dialog.confirm("Use automatic conversion of Chinese characters to Pinyin?".format(item),
-                                         status)
+    system_config[item] = dialog.confirm("Use automatic conversion of Chinese characters to Pinyin?", status)
 
 def project_name():
     item = "Project_Name"
