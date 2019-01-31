@@ -20,6 +20,7 @@ def backup(version=None):
     add_tar_file(tar, "./templates")
     add_tar_file(tar, "./static_page")
     tar.close()
+    console.log("Success", "The backup is complete.")
 
 
 def add_tar_file(tar, dir_name):

@@ -40,20 +40,21 @@ if __name__ == '__main__':
     #new
     new_parser = parser.add_argument_group('new', "Create a new article.")
     new_parser.add_argument("-c", "--config", help="The configuration file location you want to load.", type=str)
-    new_parser.add_argument("-i", "--independent", help="Generate an article that does not appear in the article list",
+    new_parser.add_argument("-i", "--independent", help="Generate an article that does not appear in the article list.",
                             action="store_true")
 
     parser.add_argument_group('update', "Update article metadata.")
 
-    upgrade_parser = parser.add_argument_group('upgrade', "Upgrade program")
+    upgrade_parser = parser.add_argument_group('upgrade', "Upgrade program.")
     upgrade_parser.add_argument("-y", "--yes", help="Assume yes for all questions, do not ask.", action="store_true")
-    parser.add_argument_group('setting', "Setting program")
+    parser.add_argument_group('setting', "Setting program.")
     parser.add_argument_group('qrcode', "Output client qrcode.")
     #build-gh-page
     parser.add_argument_group("build-page", "Generate static pages.")
     theme_group = parser.add_argument_group("install_theme")
-    theme_group.add_argument("--name", help="Install the theme in the official repository", type=str)
-    theme_group.add_argument("--custom", help="Install the theme of the custom repository", type=str)
+    theme_group.add_argument("--name", help="Install the theme in the official repository.", type=str)
+    theme_group.add_argument("--custom", help="Install the theme of the custom repository.", type=str)
+    parser.add_argument_group("backup", "Back up the current data.")
     args = parser.parse_args()
     try:
         if args.command == "setting":
@@ -61,6 +62,7 @@ if __name__ == '__main__':
 
             setting.setting_menu(True)
             exit(0)
+
         if args.command == "qrcode":
             from common import install_module
 
@@ -78,18 +80,28 @@ if __name__ == '__main__':
             config_json = json.dumps({"H": url, "P": password})
             qrcode_terminal.draw(config_json)
             exit(0)
+
         if args.command == "upgrade":
             from manage import upgrade
 
-            if upgrade.upgrade_check():
-                if not args.yes:
-                    start_to_pull = input('Find new version, do you want to upgrade? [y/N]')
-                if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y' or args.yes:
-                    upgrade.upgrade_pull()
-                    exit(0)
-            console.log("Info", "No upgrade found")
+            is_git = False
+            if upgrade.check_is_git():
+                if upgrade.upgrade_check():
+                    if not args.yes:
+                        start_to_pull = input('Find new version, do you want to upgrade? [y/N]')
+                    if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y' or args.yes:
+                        upgrade.upgrade_pull()
+                is_git = True
+            if not is_git:
+                console.log("Info", "No upgrade found")
             upgrade.upgrade_env()
             upgrade.upgrade_data()
+            exit(0)
+
+        if args.command == "backup":
+            from manage import backup
+
+            backup.backup()
             exit(0)
 
         if args.command == "install_theme":
@@ -99,7 +111,6 @@ if __name__ == '__main__':
                 custom = True
                 name = args.custom
             from manage import theme
-
             theme.install_theme(name, custom)
             exit(0)
 
@@ -133,10 +144,12 @@ if __name__ == '__main__':
                 post_manage.new_post(config, args.independent)
                 build_rss.build_rss()
             exit(0)
+
         if args.command == "update":
             if post_manage.update_post():
                 build_rss.build_rss()
             exit(0)
+
     except KeyboardInterrupt:
         print("User cancelled operation.")
         exit(0)

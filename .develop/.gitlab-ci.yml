@@ -94,4 +94,3 @@ unit_test_develop:
       - index.png
       - post.png
     expire_in: 1 week
-

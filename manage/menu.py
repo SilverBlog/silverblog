@@ -15,22 +15,8 @@ if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
 def use_whiptail_mode():
     menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "=" * 25, "Exit"]
-    upgrade_text = None
     if upgrade.check_is_git():
-        upgrade_text = "Upgrade"
-        upgrade_check = False
-        last_fetch_time = 0
-        if os.path.exists("./upgrade/last_fetch_time.json"):
-            last_fetch_time = json.loads(file.read_file("./upgrade/last_fetch_time.json"))["last_fetch_time"]
-        if upgrade.upgrade_check(False):
-            upgrade_text = "⚠ Upgrade"
-            upgrade_check = True
-        if (time.time() - last_fetch_time) > 259200 and not upgrade_check:
-            console.log("Info", "Checking for updates...")
-            file.write_file("./upgrade/last_fetch_time.json", json.dumps({"last_fetch_time": time.time()}))
-            if upgrade.upgrade_check():
-                upgrade_text = "⚠ Upgrade"
-        menu_list = ["Article manager", "Menu manager", "Build static page", upgrade_text, "Setting",
+        menu_list = ["Article manager", "Menu manager", "Build static page", "Upgrade", "Setting",
                      "=" * 25, "Exit"]
     while True:
         dialog.title = "Home"
@@ -41,9 +27,8 @@ def use_whiptail_mode():
             article_manager()
         if result == "Menu manager":
             menu_manager()
-        if upgrade_text is not None:
-            if result == upgrade_text:
-                upgrade_system()
+        if result == "Upgrade":
+            upgrade_system()
         if result == "Build static page":
             from manage import build_static_page
             dialog.title = "Build static page"
@@ -104,8 +89,7 @@ def menu_manager():
         from manage import menu_manage
         if result == "New":
             menu_info = get_menu_info()
-            if menu_info["title"] is not None:
-                menu_manage.add_menu(menu_info)
+            menu_manage.add_menu(menu_info)
         if result == "Edit":
             menu_list, menu_index = select_list("./config/menu.json")
             if menu_list:
@@ -117,6 +101,7 @@ def menu_manager():
                     address = menu_item["absolute"]
                     independent = False
                 menu_info = get_menu_info(menu_item["title"], address, independent)
+                menu_info["editor"] = system_config["Editor"]
                 menu_manage.edit_menu(menu_list, menu_index, menu_info)
         if result == "Delete":
             menu_list, select_index = select_list("./config/menu.json")
@@ -129,21 +114,21 @@ def menu_manager():
 
 def get_menu_info(title_input="", name_input="", independent=False):
     title = dialog.prompt("Please enter the title of the menu:", title_input).strip()
+    if len(title) == 0:
+        dialog.alert("The title can not be blank.")
+        return {"title": None, "name": None, "type": False}
     is_independent = "no"
     if independent:
         is_independent = "yes"
     type = dialog.confirm("Is this an independent page?", is_independent)
     name = None
-    if type and dialog.confirm("Does this article exist in the list of articles?", "no"):
+    if type:
         page_list, page_index = select_list("./config/page.json")
         name = page_list[page_index]["name"]
-    if name is None:
-        if not type and name_input == "":
+    if not type:
+        if name_input == "":
             name_input = "https://"
         name = dialog.prompt("Please enter the address:", name_input).strip()
-    if len(title) == 0:
-        dialog.alert("The title can not be blank.")
-        return {"title": None, "name": None, "type": False}
     if len(name) == 0:
         dialog.alert("The name can not be blank.")
         return {"title": None, "name": None, "type": False}
