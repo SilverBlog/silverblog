@@ -89,8 +89,7 @@ def menu_manager():
         from manage import menu_manage
         if result == "New":
             menu_info = get_menu_info()
-            if menu_info["title"] is not None:
-                menu_manage.add_menu(menu_info)
+            menu_manage.add_menu(menu_info)
         if result == "Edit":
             menu_list, menu_index = select_list("./config/menu.json")
             if menu_list:
@@ -102,6 +101,7 @@ def menu_manager():
                     address = menu_item["absolute"]
                     independent = False
                 menu_info = get_menu_info(menu_item["title"], address, independent)
+                menu_info["editor"] = system_config["Editor"]
                 menu_manage.edit_menu(menu_list, menu_index, menu_info)
         if result == "Delete":
             menu_list, select_index = select_list("./config/menu.json")
@@ -114,21 +114,21 @@ def menu_manager():
 
 def get_menu_info(title_input="", name_input="", independent=False):
     title = dialog.prompt("Please enter the title of the menu:", title_input).strip()
+    if len(title) == 0:
+        dialog.alert("The title can not be blank.")
+        return {"title": None, "name": None, "type": False}
     is_independent = "no"
     if independent:
         is_independent = "yes"
     type = dialog.confirm("Is this an independent page?", is_independent)
     name = None
-    if type and dialog.confirm("Does this article exist in the list of articles?", "no"):
+    if type:
         page_list, page_index = select_list("./config/page.json")
         name = page_list[page_index]["name"]
-    if name is None:
-        if not type and name_input == "":
+    if not type:
+        if name_input == "":
             name_input = "https://"
         name = dialog.prompt("Please enter the address:", name_input).strip()
-    if len(title) == 0:
-        dialog.alert("The title can not be blank.")
-        return {"title": None, "name": None, "type": False}
     if len(name) == 0:
         dialog.alert("The name can not be blank.")
         return {"title": None, "name": None, "type": False}
