@@ -17,6 +17,7 @@ def get_orgs_list():
         console.log("Error", "Get the theme list error.")
         exit(1)
 
+
 def get_local_theme_list():
     directories = file.list_dirs("./templates")
     dir_list = list()
@@ -70,6 +71,7 @@ def remove_theme(theme_name):
 
     shutil.rmtree("./templates/" + theme_name)
     console.log("Success", "The theme is removed successfully!")
+
 
 def upgrade_theme(theme_name):
     import git

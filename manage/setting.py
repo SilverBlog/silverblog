@@ -129,6 +129,7 @@ def theme_manage():
 
 def manual_setup_list():
     while True:
+        dialog.title = "Manual setup"
         menu_list = ["Project name", "Project description", "Access URL", "Remote API password", "Author name",
                      "Author introduction", "Author avatar", "Paging", "Time format", "Editor", "Use CDN",
                      "Automatically convert Chinese characters to pinyin",
@@ -139,29 +140,29 @@ def manual_setup_list():
         if result == "Back":
             break
         if result == "Project name":
-            project_name()
+            set_string("Project_Name", "Please enter the project name:")
         if result == "Project description":
-            project_description()
+            set_string("Project_Description", "Please enter the project description:")
         if result == "Access URL":
-            project_url()
+            set_string("Project_URL", "Please enter the access URL:")
         if result == "Remote API password":
             remote_api_password()
         if result == "Author name":
-            author_name()
+            set_string("Author_Name", "Please enter the author name:")
         if result == "Author introduction":
-            author_introduction()
+            set_string("Author_Introduction", "Please enter the author introduction:")
         if result == "Author avatar":
             author_avatar()
         if result == "Paging":
-            paging()
+            set_int("Paging", "Please enter the paging:")
         if result == "Time format":
-            time_format()
+            set_string("Time_Format", "Please enter the time format:")
         if result == "Editor":
             editor()
         if result == "Use CDN":
-            use_CDN()
+            set_bool("Use_CDN", "Use CDN?")
         if result == "Automatically convert Chinese characters to pinyin":
-            use_pinyin()
+            set_bool("Pinyin", "Use automatic conversion of Chinese characters to Pinyin?")
         save_config()
         time.sleep(0.5)
 
@@ -215,48 +216,35 @@ def setting_i18n(theme_name):
     return dialog.menu("Please select the i18n to be operated:", show_list)
 
 def setup_wizard():
-    project_name()
-    project_description()
-    project_url()
+    set_string("Project_Name", "Please enter the project name:")
+    set_string("Project_Description", "Please enter the project description:")
+    set_string("Project_URL", "Please enter the access URL:")
     remote_api_password()
-    author_name()
-    author_introduction()
+    set_string("Author_Name", "Please enter the author name:")
+    set_string("Author_Introduction", "Please enter the author introduction:")
     author_avatar()
-    paging()
-    time_format()
+    set_int("Paging", "Please enter the paging:")
+    set_string("Time_Format", "Please enter the time format:")
     editor()
-    use_CDN()
-    use_pinyin()
+    set_bool("Use_CDN", "Use CDN?")
+    set_bool("Pinyin", "Use automatic conversion of Chinese characters to Pinyin?")
     save_config()
 
 
-def use_CDN():
-    item = "Use_CDN"
+def set_string(item, message):
+    system_config[item] = dialog.prompt(message, system_config[item])
+
+
+def set_int(item, message):
+    system_config[item] = int(dialog.prompt(message, str(system_config[item])))
+
+
+def set_bool(item, message):
     status = "no"
     if system_config[item]:
         status = "yes"
-    system_config[item] = dialog.confirm("Use CDN?", status)
+    system_config[item] = dialog.confirm(message, status)
 
-def use_pinyin():
-    item = "Pinyin"
-    status = "no"
-    if system_config[item]:
-        status = "yes"
-    system_config[item] = dialog.confirm("Use automatic conversion of Chinese characters to Pinyin?", status)
-
-def project_name():
-    item = "Project_Name"
-    system_config[item] = dialog.prompt("Please enter the project name:", system_config[item])
-
-
-def project_description():
-    item = "Project_Description"
-    system_config[item] = dialog.prompt("Please enter the project description:", system_config[item])
-
-
-def project_url():
-    item = "Project_URL"
-    system_config[item] = dialog.prompt("Please enter the access URL:", system_config[item])
 
 
 def remote_api_password():
@@ -281,15 +269,6 @@ def remote_api_password():
         file.write_file("./config/control.json", json.dumps({"password": sha256_new_password}))
 
 
-def author_name():
-    item = "Author_Name"
-    system_config[item] = dialog.prompt("Please enter the author name:", system_config[item])
-
-
-def author_introduction():
-    item = "Author_Introduction"
-    system_config[item] = dialog.prompt("Please enter the author introduction:", system_config[item])
-
 
 def author_avatar():
     item = "Author_Image"
@@ -297,17 +276,6 @@ def author_avatar():
         from manage import get
         system_config[item] = get.get_gravatar(system_config["Author_Name"])
     system_config[item] = dialog.prompt("Please enter the author image:", system_config[item])
-
-
-def paging():
-    item = "Paging"
-    system_config[item] = int(dialog.prompt("Please enter the paging:", str(system_config[item])))
-
-
-def time_format():
-    item = "Time_Format"
-    system_config[item] = dialog.prompt("Please enter the time format:", system_config[item])
-
 
 def editor():
     item = "Editor"
