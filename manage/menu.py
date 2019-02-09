@@ -125,13 +125,14 @@ def get_menu_info(title_input="", name_input="", independent=False):
     if type:
         name = dialog.prompt("Please enter the page name:", name_input).strip()
     if not type:
-        if dialog.confirm("Is this an external link?", is_independent):
+        ext_link = dialog.confirm("Is this an external link?")
+        if ext_link:
+            if name_input == "":
+                name_input = "https://"
+            name = dialog.prompt("Please enter the address:", name_input).strip()
+        if not ext_link:
             page_list, page_index = select_list("./config/page.json")
             name = page_list[page_index]["name"]
-    if name is None:
-        if name_input == "":
-            name_input = "https://"
-        name = dialog.prompt("Please enter the address:", name_input).strip()
     if len(name) == 0:
         dialog.alert("The name can not be blank.")
         return {"title": None, "name": None, "type": False}
