@@ -125,8 +125,9 @@ def get_menu_info(title_input="", name_input="", independent=False):
     if type:
         name = dialog.prompt("Please enter the page name:", name_input).strip()
     if not type:
-        page_list, page_index = select_list("./config/page.json")
-        name = page_list[page_index]["name"]
+        if dialog.confirm("Is this an external link?", is_independent):
+            page_list, page_index = select_list("./config/page.json")
+            name = page_list[page_index]["name"]
     if name is None:
         if name_input == "":
             name_input = "https://"
