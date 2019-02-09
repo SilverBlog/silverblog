@@ -123,9 +123,11 @@ def get_menu_info(title_input="", name_input="", independent=False):
     type = dialog.confirm("Is this an independent page?", is_independent)
     name = None
     if type:
+        name = dialog.prompt("Please enter the page name:", name_input).strip()
+    if not type:
         page_list, page_index = select_list("./config/page.json")
         name = page_list[page_index]["name"]
-    if not type:
+    if name is None:
         if name_input == "":
             name_input = "https://"
         name = dialog.prompt("Please enter the address:", name_input).strip()

@@ -27,7 +27,7 @@ console.log("Success", "load the configuration file successfully!")
 
 def get_index(post_list, post_uuid):
     for item in post_list:
-        if item["uuid"] == post_uuid:
+        if "uuid" in item and item["uuid"] == post_uuid:
             return post_list.index(item)
     abort(404)
 

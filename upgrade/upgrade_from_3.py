@@ -61,6 +61,3 @@ def main():
     file.write_file("./config/control.json", file.json_format_dump(control_config))
     if os.path.exists("./upgrade/last_fetch_time.json"):
         os.remove("./upgrade/last_fetch_time.json")
-
-if __name__ == '__main__':
-    main()

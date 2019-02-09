@@ -28,7 +28,3 @@ def main():
             write_json = json.loads(file.read_file("./document/" + filename))
             write_json = change_time_fomart(write_json)
             file.write_file("./document/" + filename, json_format_dump(write_json))
-
-
-if __name__ == '__main__':
-    main()
