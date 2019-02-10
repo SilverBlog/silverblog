@@ -43,7 +43,7 @@ def article_manager():
     from manage import build_rss, post_manage
     while True:
         dialog.title = "Article manager"
-        menu_list = ["New", "Update", "Edit", "Delete", "=========================", "Back", "Exit"]
+        menu_list = ["New", "Update", "Edit", "Delete", "=" * 25, "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
@@ -68,9 +68,7 @@ def article_manager():
             post_manage.update_post()
         if result == "Delete":
             page_list, post_index = select_list("./config/page.json")
-            if page_list and dialog.confirm(
-                    "Are you sure you want to delete this article? (Warning! This operation is irreversible, please be careful!)",
-                    "no"):
+            if page_list and dialog.confirm("Are you sure you want to delete this article?", "no"):
                 post_manage.delete_post(page_list, post_index)
         if result == "Update":
             post_manage.update_post()
@@ -105,9 +103,7 @@ def menu_manager():
                 menu_manage.edit_menu(menu_list, menu_index, menu_info)
         if result == "Delete":
             menu_list, select_index = select_list("./config/menu.json")
-            if menu_list and dialog.confirm(
-                    "Are you sure you want to delete this item? (Warning! This operation is irreversible, please be careful!)",
-                    "no"):
+            if menu_list and dialog.confirm("Are you sure you want to delete this item?", "no"):
                 menu_manage.delete_menu(menu_list, select_index)
         time.sleep(0.5)
 
