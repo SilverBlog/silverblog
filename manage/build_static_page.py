@@ -78,6 +78,7 @@ def load_config():
     global page_list, page_name_list, menu_list, page_list
     for item in page_list:
         page_name_list.append(item["name"])
+        page_list[page_list.index(item)]["time_raw"] = item["time"]
         page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
 
 

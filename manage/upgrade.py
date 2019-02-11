@@ -44,7 +44,6 @@ def upgrade_check(fetch=True):
     return False
 
 def upgrade_pull():
-
     if not check_is_git():
         console.log("Error", "Not a git repository.")
         return False
