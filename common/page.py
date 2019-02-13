@@ -8,7 +8,8 @@ from common import file, markdown, post_map
 
 env = Environment(loader=PackageLoader('init', 'templates'))
 
-def format_datetime(value, format='%Y-%m-%d %H:%M'):
+
+def format_datetime(value, format='%Y-%m-%dT%H:%M:%SZ'):
     return str(time.strftime(format, value))
 
 def get_i18n_value(i18n, value):
