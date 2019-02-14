@@ -38,12 +38,6 @@ Custom:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog
 ```
 
-China:
-
-```
-bash -c "$(curl -fsSL https://code.aliyun.com/silverblogteam/silverblog/raw/master/install/install.sh)" -n silverblog -c
-```
-
 Docker:
 
 ```
