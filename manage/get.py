@@ -7,6 +7,7 @@ def get_name(name_input, convert_pinyin):
     name = name_input.replace(" ", "-").replace("。", ".").replace("，", ",")
     name = filter_name(re.sub('[/:*?,.<>|\'"\\\]', '', name))
     if convert_pinyin:
+        from xpinyin import Pinyin
         p = Pinyin()
         name = p.get_pinyin(name)
     return name
