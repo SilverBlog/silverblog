@@ -59,7 +59,7 @@ def get_system_config():
             if system_config["Use_CDN"]:
                 cdn_config_file = template_location + "cdn/cdn.json"
         cdn_file = yield from file.async_read_file(cdn_config_file)
-        static_file_list = yield from async_json_loads(cdn_file)
+        static_file_dict = yield from async_json_loads(cdn_file)
 
     if os.path.exists("./templates/{}/i18n".format(system_config["Theme"])):
         i18n_name = "en-US"
