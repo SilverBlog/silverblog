@@ -45,9 +45,9 @@ def get_system_config():
         console.log("Error",
                     "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
         exit(1)
-    if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
-        template_config_file = yield from file.async_read_file(
-            "./templates/{0}/config.json".format(system_config["Theme"]))
+    template_location = "./templates/{0}/".format(system_config["Theme"])
+    if os.path.exists(template_location + "config.json"):
+        template_config_file = yield from file.async_read_file(template_location + "config.json")
         template_config = yield from async_json_loads(template_config_file)
 
     if os.path.exists(template_location + "cdn"):
@@ -124,28 +124,7 @@ def publish():
     tasks = [
         build_post_page(filename, page_name_list, page_list, system_config, menu_list, template_config, i18n,
                         static_file_dict)
-        for filename in glob.glob("./document/*.md")]
-    if len(tasks) != 0:
-        loop.run_until_complete(asyncio.wait(tasks))
-        loop.close()
-
-    if not os.path.exists("./document/rss.xml"):
-        from manage import build_rss
-        build_rss.build_rss()
-    shutil.copyfile("./document/rss.xml", "./static_page/rss.xml")
-
-    shutil.copytree("./templates/{0}/static".format(system_config["Theme"]),
-                    "./static_page/static/{0}/".format(system_config["Theme"]))
-    if os.path.exists("./templates/static/user_file"):
-        shutil.copytree("./templates/static/user_file", "./static_page/static/user_file")
-    console.log("Success", "Create page success!")
-
-    if not os.path.exists("./static_page/.git"):
-        return True
-    import git
-    localtime = time.asctime(time.localtime(time.time()))
-    try:
-        repo = git.Repo("./static_page")
+        for filename in glob.glob("./document/*.md")
         repo.git.add("--all")
         if not repo.is_dirty():
             console.log("Success", "Build complete,No changes found.")
