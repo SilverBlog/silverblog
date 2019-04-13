@@ -89,7 +89,7 @@ if __name__ == '__main__':
         ssl_certificate ${ssl_fullchain};
         ssl_certificate_key ${ssl_key};
         ssl_prefer_server_ciphers on;
-        ssl_protocols TLSv1.3 TLSv1.2;
+        ssl_protocols TLSv1.3 TLSv1.2 TLSv1.1;
         ssl_ciphers "TLS13-AES-256-GCM-SHA384:TLS13-CHACHA20-POLY1305-SHA256:TLS13-AES-256-GCM-SHA256:TLS13-AES-256-CCM-8-SHA256:TLS13-AES-256-CCM-SHA256:EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+ECDSA+AES256:EECDH+aRSA+AES256:RSA+AES256:EECDH+ECDSA+AES256:EECDH+aRSA+AES256:RSA+AES256:EECDH+ECDSA+3DES:EECDH+aRSA+3DES:RSA+3DES:!MD5";
         keepalive_timeout 70;
         ssl_session_cache shared:SSL:10m;

@@ -122,3 +122,13 @@ def download_file(item, location):
     if not os.path.exists(write_path):
         os.mkdir(write_path)
     yield from file.async_write_binary_file("{}/{}".format(write_path, item["filename"]), result.content)
+
+
+def get_readme(theme_name):
+    console.log("Info", "Getting the readme of theme...")
+    try:
+        r = requests.get("https://raw.githubusercontent.com/silverblog-theme/{}/master/README.md".format(theme_name))
+        return r.text
+    except  requests.exceptions.RequestException:
+        console.log("Error", "Get the readme error.")
+        exit(1)

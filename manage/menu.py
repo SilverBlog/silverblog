@@ -91,6 +91,8 @@ def menu_manager():
         if result == "Edit":
             menu_list, menu_index = select_list("./config/menu.json")
             if menu_list:
+                address=None
+                independent=False
                 menu_item = menu_list[menu_index]
                 if "name" in menu_item:
                     address = menu_item["name"]
@@ -116,11 +118,11 @@ def get_menu_info(title_input="", name_input="", independent=False):
     is_independent = "no"
     if independent:
         is_independent = "yes"
-    type = dialog.confirm("Is this an independent page?", is_independent)
+    is_independent_type = dialog.confirm("Is this an independent page?", is_independent)
     name = None
-    if type:
+    if is_independent_type:
         name = dialog.prompt("Please enter the page name:", name_input).strip()
-    if not type:
+    if not is_independent_type:
         ext_link = dialog.confirm("Is this an external link?")
         if ext_link:
             if name_input == "":
@@ -132,7 +134,7 @@ def get_menu_info(title_input="", name_input="", independent=False):
     if len(name) == 0:
         dialog.alert("The name can not be blank.")
         return {"title": None, "name": None, "type": False}
-    return {"title": title, "name": name, "type": type}
+    return {"title": title, "name": name, "type": is_independent_type}
 
 def upgrade_system():
     from manage import upgrade

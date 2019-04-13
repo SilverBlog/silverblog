@@ -15,20 +15,20 @@ page_name_list = list()
 i18n = dict()
 static_file_dict = dict()
 @asyncio.coroutine
-def async_build_page(file_name, system_config, page_info, menu_list, template_config, i18n, static_file_dict):
-    return page.build_page(file_name, system_config, page_info, menu_list, template_config, i18n, static_file_dict)
+def async_build_page(file_name, config, page_info, menu, template, i18n_config, static_file):
+    return page.build_page(file_name, config, page_info, menu, template, i18n_config, static_file)
 
 @asyncio.coroutine
-def build_post_page(filename, page_name_list, page_list, system_config, menu_list, template_config, i18n,
-                    static_file_dict):
+def build_post_page(filename, post_name, post_list, config, menu, template, i18n_config,
+                    static_file):
     file_name = os.path.basename(filename).replace(".md", "")
     console.log("Build", "Processing file: ./static_page/post/{0}.html".format(file_name))
     page_info = None
-    if file_name in page_name_list:
-        this_page_index = page_name_list.index(file_name)
-        page_info = page_list[this_page_index]
-    content = yield from async_build_page(file_name, system_config, page_info, menu_list,
-                                          template_config, i18n, static_file_dict)
+    if file_name in post_name:
+        this_page_index = post_name.index(file_name)
+        page_info = post_list[this_page_index]
+    content = yield from async_build_page(file_name, config, page_info, menu,
+                                          template, i18n_config, static_file)
     if content is not None:
         yield from file.async_write_file("./static_page/post/{0}.html".format(file_name), content)
 

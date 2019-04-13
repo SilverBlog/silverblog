@@ -24,7 +24,8 @@ system_config = {
     "Editor": "nano",
     "i18n": "en-US",
     "Pinyin": False,
-    "Use_CDN": False
+    "Use_CDN": False,
+    "Lazyload": False
 }
 if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
@@ -74,8 +75,8 @@ def theme_manage():
         if result == "Install the theme":
             install_menu = ["View list", "Enter the theme package name"]
             result = dialog.menu("Please select an action", install_menu)
+            org_list = theme.get_orgs_list()
             if result == "View list":
-                org_list = theme.get_orgs_list()
                 item_list = list()
                 for item in org_list:
                     item_list.append(item["name"])
@@ -131,7 +132,7 @@ def manual_setup_list():
     while True:
         dialog.title = "Manual setup"
         menu_list = ["Project name", "Project description", "Access URL", "Remote API password", "Author name",
-                     "Author introduction", "Author avatar", "Paging", "Time format", "Editor", "Use CDN",
+                     "Author introduction", "Author avatar", "Paging", "Time format", "Editor", "Use CDN","Lazyload"
                      "Automatically convert Chinese characters to pinyin",
                      "=" * 50, "Back", "Exit"]
         result = dialog.menu("Please select the item you want to configure", menu_list)
@@ -161,6 +162,8 @@ def manual_setup_list():
             editor()
         if result == "Use CDN":
             set_bool("Use_CDN", "Use CDN?")
+        if result == "Lazyload":
+            set_bool("Lazyload", "Use image lazyload?")
         if result == "Automatically convert Chinese characters to pinyin":
             set_bool("Pinyin", "Use automatic conversion of Chinese characters to Pinyin?")
         save_config()
@@ -227,6 +230,7 @@ def setup_wizard():
     set_string("Time_Format", "Please enter the time format:")
     editor()
     set_bool("Use_CDN", "Use CDN?")
+    set_bool("Lazyload", "Use image lazyload?")
     set_bool("Pinyin", "Use automatic conversion of Chinese characters to Pinyin?")
     save_config()
 
@@ -250,9 +254,7 @@ def set_bool(item, message):
 def remote_api_password():
     notice = ""
     if os.path.exists("./config/control.json"):
-        control_config = json.loads(file.read_file("./config/control.json"))
         notice = "\n(Leave blank does not change)"
-    new_password = ""
     while True:
         new_password = dialog.prompt("Please enter the remote api password:" + notice, "", True)
         if notice != "" and len(new_password) == 0:

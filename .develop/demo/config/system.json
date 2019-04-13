@@ -10,5 +10,6 @@
   "Project_Name": "SilverBlog",
   "Time_Format": "%Y-%m-%d",
   "i18n": "en-US",
-  "Use_CDN": true
+  "Use_CDN": true,
+  "Lazyload": true
 }

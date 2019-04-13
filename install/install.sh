@@ -146,11 +146,14 @@ echo -e "\n> ./install_denpendency.py"
 python3 ./install_denpendency.py
 echo -e "\n> ./initialization.sh"
 bash ./initialization.sh
+read -p "Use systemd to manage startup? (y/N) :" yn
+if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
+bash ./systemd_install.sh
+fi
 cd ..
 echo "Change directory to $(pwd)"
-
+if [[ "$yn" != "Y" ]] || [[ "$yn" != "y" ]]; then
 read -p "Create a pm2 configuration file? (y/N) :" yn
-
 if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
 cat << EOF >pm2.json
 {
@@ -175,6 +178,7 @@ cat << EOF >pm2.json
     ]
 }
 EOF
+fi
 fi
 if [[ "$yn" != "Y" ]] || [[ "$yn" != "y" ]]; then
 read -p "Create a supervisord configuration file? (y/N) :" yn
@@ -205,8 +209,9 @@ if [[ -f "$HOME/.zshrc" ]]; then
 shell_config_file="$HOME/.zshrc"
 fi
 fi
-
+echo -e "\n> Silverblog successfully installed."
 echo -e "\nYou need to perform [./manage.py] to initialize your silverblog environment."
 echo -e "\nYou can add the following code to [${shell_config_file}] to quickly launch SilverBlog:"
 echo -e "\necho \"${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}\" >> ${shell_config_file}"
+echo -e "\nIMPORTANT: OPEN A NEW TERMINAL TAB/WINDOW or run `. ${shell_config_file}`before using Silverblog."
 echo -e "\nYou can generate an nginx configuration file using [./install/gen_nginx.py]."

@@ -14,6 +14,10 @@ mkdir ./templates/include
 
 echo "Setup missing configuration files..."
 
+if [[ ! -f "./uwsgi.json" ]]; then
+    cp ./example/uwsgi.json ./uwsgi.json
+fi
+
 if [[ ! -f "./config/menu.json" ]]; then
     echo "[]" > ./config/menu.json
 fi
