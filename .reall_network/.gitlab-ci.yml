@@ -64,12 +64,12 @@ release_github:
 
 
 unit_test_develop:
+  image: alpine
   stage: test
-  tags:
-    - pi-test
   only:
     - develop
   script:
+    - apk --no-cache add git openssl openssh-client bash curl wget chromium ttf-freefont wqy-zenhei@edge
     - python3 install/install_denpendency.py
     - bash install/initialization.sh
     - python3 install/gen_nginx.py
