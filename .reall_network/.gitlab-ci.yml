@@ -64,12 +64,12 @@ release_github:
 
 
 unit_test_develop:
-  image: alpine
+  image: ubuntu:latest
   stage: test
   only:
     - develop
   script:
-    - apk --no-cache add git openssl openssh-client bash curl wget chromium ttf-freefont wqy-zenhei@edge
+    - apt-get update && apt-get install -y uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git gnupg curl supervisor
     - python3 install/install_denpendency.py
     - bash install/initialization.sh
     - python3 install/gen_nginx.py
@@ -79,7 +79,6 @@ unit_test_develop:
     - cp -rf .develop/demo/config ./
     - cp -rf .develop/demo/document ./
     - python3 manage.py install_theme --name clearision
-    - rm /etc/nginx/sites-enabled/default && ln -s $(pwd)/nginx_config /etc/nginx/sites-enabled/default
     - python3 ./manage.py update
     - python3 ./manage.py build-page
     - cp .develop/unit_test/supervisord.conf ./
