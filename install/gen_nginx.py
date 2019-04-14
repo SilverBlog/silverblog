@@ -81,10 +81,12 @@ if __name__ == '__main__':
         if args.hsts:
             hsts = "add_header Strict-Transport-Security \"max-age=31536000;\" always;"
         if args.ocsp_must_staple:
-            ocsp = """ssl_stapling on;
+            ocsp = """
+            ssl_stapling on;
             ssl_stapling_verify on;
             """
-        ssl_config = """${hsts}
+        ssl_config = """
+        ${hsts}
         ${ocsp}
         ssl_certificate ${ssl_fullchain};
         ssl_certificate_key ${ssl_key};
