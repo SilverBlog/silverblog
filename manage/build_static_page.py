@@ -103,7 +103,8 @@ def publish():
 
     if not os.path.isdir("./static_page"):
         os.mkdir("./static_page")
-
+    if not os.path.exists("CNAME"):
+        file.write_file("./static_page/CNAME",system_config["Project_URL"].replace("http://","").replace("https://",""))
     page_row = page.get_page_row(system_config["Paging"], len(page_list))
     os.mkdir("./static_page/index/")
     console.log("Build", "Processing file: ./static_page/index.html")
