@@ -4,6 +4,7 @@ import json
 import tarfile
 import time
 import uuid
+import os
 
 from common import file
 
@@ -23,8 +24,8 @@ def add_menu_id(list_item):
 def add_tar_file(tar, dir_name):
     for root, path, files in os.walk(dir_name):
         for file in files:
-            fullpath = os.path.join(root, file)
-            tar.add(fullpath)
+            full_path = os.path.join(root, file)
+            tar.add(full_path)
 
 def main():
     if not os.path.exists("./backup"):
@@ -48,15 +49,17 @@ def main():
     control_config = dict()
     try:
         old_password_hash = json.loads(system_config["API_Password"])["hash_password"]
+        control_config["password"] = hmac.new(str("SiLvErBlOg").encode('utf-8'), str(old_password_hash).encode('utf-8'),
+                                              hashlib.sha256).hexdigest()
     except (ValueError, KeyError, TypeError):
-        return
+        #todo
+        pass
 
-    control_config["password"] = hmac.new(str("SiLvErBlOg").encode('utf-8'), str(old_password_hash).encode('utf-8'),
-                                          hashlib.sha256).hexdigest()
+
     del system_config["API_Password"]
     system_config["Pinyin"] = True
     system_config["Use_CDN"] = True
-
+    system_config["Lazyload"] = False
     file.write_file("./config/system.json", file.json_format_dump(system_config))
     file.write_file("./config/control.json", file.json_format_dump(control_config))
     if os.path.exists("./upgrade/last_fetch_time.json"):

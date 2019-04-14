@@ -132,7 +132,7 @@ def manual_setup_list():
     while True:
         dialog.title = "Manual setup"
         menu_list = ["Project name", "Project description", "Access URL", "Remote API password", "Author name",
-                     "Author introduction", "Author avatar", "Paging", "Time format", "Editor", "Use CDN","Lazyload"
+                     "Author introduction", "Author avatar", "Paging", "Time format", "Editor", "Use CDN","Image lazyload"
                      "Automatically convert Chinese characters to pinyin",
                      "=" * 50, "Back", "Exit"]
         result = dialog.menu("Please select the item you want to configure", menu_list)
@@ -163,7 +163,7 @@ def manual_setup_list():
         if result == "Use CDN":
             set_bool("Use_CDN", "Use CDN?")
         if result == "Lazyload":
-            set_bool("Lazyload", "Use image lazyload?")
+            set_bool("Image lazyload", "Use image lazyload?")
         if result == "Automatically convert Chinese characters to pinyin":
             set_bool("Pinyin", "Use automatic conversion of Chinese characters to Pinyin?")
         save_config()

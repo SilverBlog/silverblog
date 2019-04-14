@@ -11,5 +11,5 @@ def markdown(system_config,content):
         renderer = image_renderer()
 
     md = hoedown.Markdown(renderer,extensions=hoedown.EXT_FENCED_CODE | hoedown.EXT_HIGHLIGHT |
-                                            hoedown.EXT_AUTOLINK | hoedown.EXT_TABLES | hoedown.EXT_STRIKETHROUGH | hoedown.EXT_UNDERLINE).render
+                                            hoedown.EXT_AUTOLINK | hoedown.EXT_TABLES  | hoedown.EXT_STRIKETHROUGH | hoedown.EXT_UNDERLINE).render
     return md(content)
