@@ -79,6 +79,8 @@ unit_test_develop:
   stage: test
   only:
     - develop
+  tags:
+    - docker-build
   script:
     - python3 install/install_denpendency.py
     - bash install/initialization.sh
