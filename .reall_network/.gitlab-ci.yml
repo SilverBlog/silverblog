@@ -70,12 +70,11 @@ build_test_env:
     - docker-build
   when: manual
   script:
-    - docker build -t ${docker_tag_name}:test_env -f ./.develop/unit_test/Dockerfile .
-    - echo ${docker_hub_passwd} | docker login -u qwe7002 --password-stdin
-    - docker push ${docker_tag_name}:test_env
+    - docker build -t registry.git.reallserver.cn/${docker_tag_name}:test_env -f ./.develop/unit_test/Dockerfile .
+    - docker push registry.git.reallserver.cn/${docker_tag_name}:test_env
 
 unit_test_develop:
-  image: ${docker_tag_name}:test_env
+  image: registry.git.reallserver.cn/${docker_tag_name}:test_env
   stage: test
   only:
     - develop
