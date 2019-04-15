@@ -43,7 +43,7 @@ def article_manager():
     from manage import build_rss, post_manage
     while True:
         dialog.title = "Article manager"
-        menu_list = ["New", "Update", "Edit", "Delete", "=========================", "Back", "Exit"]
+        menu_list = ["New", "Update", "Edit", "Delete", "=" * 25, "Back", "Exit"]
         result = dialog.menu("Please select an action", menu_list)
         if result == "Exit":
             exit(0)
@@ -68,9 +68,7 @@ def article_manager():
             post_manage.update_post()
         if result == "Delete":
             page_list, post_index = select_list("./config/page.json")
-            if page_list and dialog.confirm(
-                    "Are you sure you want to delete this article? (Warning! This operation is irreversible, please be careful!)",
-                    "no"):
+            if page_list and dialog.confirm("Are you sure you want to delete this article?", "no"):
                 post_manage.delete_post(page_list, post_index)
         if result == "Update":
             post_manage.update_post()
@@ -93,6 +91,8 @@ def menu_manager():
         if result == "Edit":
             menu_list, menu_index = select_list("./config/menu.json")
             if menu_list:
+                address=None
+                independent=False
                 menu_item = menu_list[menu_index]
                 if "name" in menu_item:
                     address = menu_item["name"]
@@ -105,9 +105,7 @@ def menu_manager():
                 menu_manage.edit_menu(menu_list, menu_index, menu_info)
         if result == "Delete":
             menu_list, select_index = select_list("./config/menu.json")
-            if menu_list and dialog.confirm(
-                    "Are you sure you want to delete this item? (Warning! This operation is irreversible, please be careful!)",
-                    "no"):
+            if menu_list and dialog.confirm("Are you sure you want to delete this item?", "no"):
                 menu_manage.delete_menu(menu_list, select_index)
         time.sleep(0.5)
 
@@ -120,19 +118,23 @@ def get_menu_info(title_input="", name_input="", independent=False):
     is_independent = "no"
     if independent:
         is_independent = "yes"
-    type = dialog.confirm("Is this an independent page?", is_independent)
+    is_independent_type = dialog.confirm("Is this an independent page?", is_independent)
     name = None
-    if type:
-        page_list, page_index = select_list("./config/page.json")
-        name = page_list[page_index]["name"]
-    if not type:
-        if name_input == "":
-            name_input = "https://"
-        name = dialog.prompt("Please enter the address:", name_input).strip()
+    if is_independent_type:
+        name = dialog.prompt("Please enter the page name:", name_input).strip()
+    if not is_independent_type:
+        ext_link = dialog.confirm("Is this an external link?")
+        if ext_link:
+            if name_input == "":
+                name_input = "https://"
+            name = dialog.prompt("Please enter the address:", name_input).strip()
+        if not ext_link:
+            page_list, page_index = select_list("./config/page.json")
+            name = page_list[page_index]["name"]
     if len(name) == 0:
         dialog.alert("The name can not be blank.")
         return {"title": None, "name": None, "type": False}
-    return {"title": title, "name": name, "type": type}
+    return {"title": title, "name": name, "type": is_independent_type}
 
 def upgrade_system():
     from manage import upgrade

@@ -31,15 +31,15 @@ class rss_item(PyRSS2Gen.RSSItem):
 
 
 @asyncio.coroutine
-def async_markdown(raw):
-    return markdown.markdown(raw)
+def async_markdown(system_config,raw):
+    return markdown.markdown(system_config,raw)
 
 @asyncio.coroutine
-def make_rss_item(page_list, item, project_url):
+def make_rss_item(system_config,page_list, item, project_url):
     global rss_item_list
     location = "{0}/post/{1}".format(project_url, item["name"])
     raw_document = yield from file.async_read_file("./document/{0}.md".format(item["name"]))
-    desc = yield from async_markdown(raw_document)
+    desc = yield from async_markdown(system_config,raw_document)
     rss_item_list[page_list.index(item)] = rss_item(title=item["title"], link=location, description=desc,
                                                     guid=PyRSS2Gen.Guid(location),
                                                     pubDate=datetime.datetime.fromtimestamp(item["time"]))
@@ -50,7 +50,7 @@ def make_rss(project_name, project_url, project_description, page_list, system_c
         rss_item_list = list(range(0, len(page_list)))
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        tasks = [make_rss_item(page_list, item, system_config["Project_URL"]) for item in page_list]
+        tasks = [make_rss_item(system_config,page_list, item, system_config["Project_URL"]) for item in page_list]
         loop.run_until_complete(asyncio.wait(tasks))
         loop.close()
     rss = PyRSS2Gen.RSS2(

@@ -56,6 +56,7 @@ if __name__ == '__main__':
     theme_group.add_argument("--custom", help="Install the theme of the custom repository.", type=str)
     parser.add_argument_group("backup", "Back up the current data.")
     args = parser.parse_args()
+    system_config = json.loads(file.read_file("./config/system.json"))
     try:
         if args.command == "setting":
             from manage import setting

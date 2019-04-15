@@ -16,7 +16,7 @@ page_name_list = list()
 cache_index = dict()
 cache_post = dict()
 i18n = dict()
-static_file_list = dict()
+static_file_dict = dict()
 last_build_year = time.localtime(time.time())[0]
 
 @asyncio.coroutine
@@ -25,7 +25,7 @@ def async_json_loads(text):
 
 @asyncio.coroutine
 def get_system_config():
-    global system_config, template_config, i18n, static_file_list
+    global system_config, template_config, i18n, static_file_dict
     load_file = yield from file.async_read_file("./config/system.json")
     system_config = yield from async_json_loads(load_file)
     if len(system_config["Theme"]) == 0:
@@ -38,16 +38,16 @@ def get_system_config():
         template_config_file = yield from file.async_read_file(template_location + "config.json")
         template_config = yield from async_json_loads(template_config_file)
 
-        if os.path.exists(template_location + "cdn"):
-            cdn_config_file = None
-            if os.path.exists(template_location + "cdn/custom.json"):
-                cdn_config_file = template_location + "cdn/custom.json"
-            if cdn_config_file is None:
-                cdn_config_file = template_location + "cdn/local.json"
-                if system_config["Use_CDN"]:
-                    cdn_config_file = template_location + "cdn/cdn.json"
-            cdn_file = yield from file.async_read_file(cdn_config_file)
-            static_file_list = yield from async_json_loads(cdn_file)
+    if os.path.exists(template_location + "cdn"):
+        cdn_config_file = None
+        if os.path.exists(template_location + "cdn/custom.json"):
+            cdn_config_file = template_location + "cdn/custom.json"
+        if cdn_config_file is None:
+            cdn_config_file = template_location + "cdn/local.json"
+            if system_config["Use_CDN"]:
+                cdn_config_file = template_location + "cdn/cdn.json"
+        cdn_file = yield from file.async_read_file(cdn_config_file)
+        static_file_dict = yield from async_json_loads(cdn_file)
 
     if os.path.exists(template_location + "i18n"):
         i18n_name = "en-US"
@@ -88,6 +88,7 @@ def load_config():
     global page_list, page_name_list, menu_list, page_list
     for item in page_list:
         page_name_list.append(item["name"])
+        page_list[page_list.index(item)]["time_raw"] = item["time"]
         page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
     console.log("Success", "load the configuration file successfully!")
 
@@ -135,7 +136,7 @@ def index_route(page_index=1):
     if page_index == 0 or page_index > page_row:
         abort(404)
     result = page.build_index(page_index, page_row, system_config, page_list, menu_list, template_config, i18n,
-                              static_file_list)
+                              static_file_dict)
     if result is None:
         abort(404)
     console.log("Info", "Writing to cache: {0}".format(page_url))
@@ -168,7 +169,7 @@ def post_route(file_name=None):
         this_page_index = page_name_list.index(file_name)
         page_info = page_list[this_page_index]
     result = page.build_page(file_name, system_config, page_info, menu_list,
-                             template_config, i18n, static_file_list)
+                             template_config, i18n, static_file_dict)
     console.log("Info", "Writing to cache: {0}".format(page_url))
     if len(cache_post) >= 50:
         page_keys = sorted(cache_post.keys())

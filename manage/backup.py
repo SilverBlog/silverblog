@@ -26,5 +26,5 @@ def backup(version=None):
 def add_tar_file(tar, dir_name):
     for root, path, files in os.walk(dir_name):
         for file in files:
-            fullpath = os.path.join(root, file)
-            tar.add(fullpath)
+            full_path = os.path.join(root, file)
+            tar.add(full_path)

@@ -36,12 +36,6 @@ Custom:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog
 ```
 
-China:
-
-```
-bash -c "$(curl -fsSL https://code.aliyun.com/silverblogteam/silverblog/raw/master/install/install.sh)" -n silverblog -c
-```
-
 Docker:
 
 ```
@@ -60,7 +54,7 @@ deb http://archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe 
 deb http://security.ubuntu.com/ubuntu bionic-security main restricted universe multiverse
 ```
 
-You can select a theme in [SilverBlogTheme](https://github.com/SilverBlogTheme), then use `./manage.py` to install the configuration and configure it correctly in the configuration file below.
+You can select a theme in [silverblog-theme](https://github.com/silverblog-theme), then use `./manage.py` to install the configuration and configure it correctly in the configuration file below.
 
 This installation script uses the nginx + uwsgi execution mode by default. You can put the auto-generated `nginx_config` file into your nginx package's website configuration directory. If you need to use a third-party web client, don't forget to modify the CORS configuration in `nginx_config`.
 
