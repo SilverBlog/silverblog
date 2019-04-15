@@ -64,7 +64,7 @@ release_github:
 
 
 unit_test_develop:
-  image: ubuntu:latest
+  image: ubuntu:devel
   stage: test
   only:
     - develop
