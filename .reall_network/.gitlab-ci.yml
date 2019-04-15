@@ -23,7 +23,7 @@ build_demo:
     - echo "$SSH_PRIVATE_KEY" > deploy.key
     - chmod 0600 deploy.key
     - ssh-add deploy.key
-    - ssh qwe7002@demo.silverblog.org "docker-compose down && docker pull registry.git.reallserver.cn/${docker_tag_name}:demo && docker-compose up -d"
+    - ssh qwe7002@tw.silverblog.org "docker-compose down && docker pull registry.git.reallserver.cn/${docker_tag_name}:demo && docker-compose up -d"
 
 build_docker:
   services:
@@ -69,7 +69,7 @@ unit_test_develop:
   only:
     - develop
   script:
-    - apt-get update && apt-get install -y uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git gnupg curl supervisor nginx
+    - apt-get update && apt-get install -y uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git gnupg curl supervisor nginx chromium-browser fonts-noto-cjk
     - python3 install/install_denpendency.py
     - bash install/initialization.sh
     - python3 install/gen_nginx.py
