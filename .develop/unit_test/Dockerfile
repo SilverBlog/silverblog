@@ -10,5 +10,3 @@ RUN apt-key adv -v --keyserver hkp://keyserver.ubuntu.com:80 --receive-key e411e
 && apt-get update \
 && apt-get install -y nginx-reall \
 && mkdir -p /etc/nginx/sites-enabled && mkdir logs && mkdir /var/lib/nginx
-
-RUN  python3 install/install_denpendency.py
