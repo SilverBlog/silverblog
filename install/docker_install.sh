@@ -56,10 +56,6 @@ echo "Change directory to $(pwd)"
 
 bash install/initialization.sh
 
-
-sed -i '''s@./config/unix_socks/main.sock@0.0.0.0:5000@g' uwsgi.json
-sed -i '''s@./config/unix_socks/control.sock@0.0.0.0:5001@g' uwsgi.json
-
 if [[ ! -f "./docker-compose.yml" ]]; then
 cat << EOF > docker-compose.yml
 version: '3'
@@ -68,39 +64,10 @@ services:
     image: "${docker_image}"
     container_name: "${install_name}"
     restart: on-failure:10
-    command: python3 watch.py
-    networks:
-     - ${install_name}_net
+    command: /usr/bin/supervisord -c /home/silverblog/example/supervisor.conf
     volumes:
      - /etc/localtime:/etc/localtime:ro
      - $(pwd):/home/silverblog/
-  ${install_name}_control:
-    image: "${docker_image}"
-    container_name: "${install_name}_control"
-    restart: on-failure:10
-    command: python3 watch.py --control
-    networks:
-     - ${install_name}_net
-    volumes:
-     - /etc/localtime:/etc/localtime:ro
-     - $(pwd):/home/silverblog/
-  ${install_name}_nginx:
-    image: "nginx:alpine"
-    container_name: "${install_name}_nginx"
-    restart: on-failure:10
-    command: nginx -g \"daemon off;\"
-    networks:
-      - ${install_name}_net
-    depends_on:
-      - ${install_name}
-      - ${install_name}_control
-    ports:
-      - 80:80
-    volumes:
-      - $(pwd):/home/silverblog
-      - $(pwd)/nginx_config:/etc/nginx/conf.d/default.conf
-networks:
-  ${install_name}_net:
 EOF
 fi
 
