@@ -88,7 +88,8 @@ def upgrade_theme(theme_name):
         if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
             console.log("Info", "Updating theme, please wait...")
             remote.pull()
-            download_static_file(theme_name)
+            if os.path.exists("./templates/{}/package-metadata.json".format(theme_name)):
+                download_static_file(theme_name)
             console.log("Success", "The theme is upgrade successfully!")
             return
     console.log("Info", "No upgrade found.")
