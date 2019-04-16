@@ -10,16 +10,13 @@ if [[ $UID -eq 0 ]]; then
         exit 0
     fi
 fi
-china_install=false
+
 install_name="silverblog"
 
-while getopts "n:c" arg; do
+while getopts "n" arg; do
     case ${arg} in
          n)
             install_name=$OPTARG
-            ;;
-         c)
-            china_install=true
             ;;
          ?)
             echo "Unknown argument"
@@ -29,18 +26,10 @@ while getopts "n:c" arg; do
     esac
 done
 
-docker_image="silverblog/silverblog"
-repo_url=https://github.com/SilverBlogTeam/SilverBlog.git
-
-if [[ ${china_install} = true ]];then
-    docker_image="registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog"
-    repo_url=https://code.aliyun.com/silverblogteam/silverblog.git
-fi
-
 if [[ ! -f "initialization.sh" ]]; then
     if [[ ! -d ${install_name} ]]; then
         echo "Cloning silverblog..."
-        git clone ${repo_url} --depth=1 ${install_name}
+        git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 ${install_name}
     fi
     cd ${install_name}
     echo "Change directory to $(pwd)"
@@ -61,7 +50,7 @@ cat << EOF > docker-compose.yml
 version: '3'
 services:
   ${install_name}:
-    image: "${docker_image}"
+    image: silverblog/silverblog
     container_name: "${install_name}"
     restart: on-failure:10
     command: /usr/bin/supervisord -c /home/silverblog/example/supervisor.conf

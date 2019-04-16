@@ -36,11 +36,8 @@ build_docker:
   script:
     - docker build -t ${docker_tag_name} -f ./example/Dockerfile .
     - echo ${docker_hub_passwd} | docker login -u qwe7002 --password-stdin
-    - echo ${docker_hub_passwd} | docker login -u qwe7002@hotmail.com registry.cn-hangzhou.aliyuncs.com --password-stdin
     - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
-    - docker tag ${docker_tag_name}:buildin registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}:buildin
     - docker push ${docker_tag_name}
-    - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
 release_github:
   stage: deploy
   script:
@@ -49,11 +46,9 @@ release_github:
     - chmod 0600 deploy.key
     - ssh-add deploy.key
     - git push --set-upstream git@github.com:SilverBlogTeam/silverblog.git HEAD:refs/heads/$CI_COMMIT_REF_NAME
-    - git push --set-upstream git@code.aliyun.com:silverblogteam/silverblog.git HEAD:refs/heads/$CI_COMMIT_REF_NAME
     - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
     - cd wiki
     - git push -f --set-upstream git@github.com:SilverBlogTeam/silverblog.wiki.git HEAD:refs/heads/master
-    - git push -f --set-upstream git@code.aliyun.com:silverblogteam/silverblog.wiki.git HEAD:refs/heads/master
 
 
 
