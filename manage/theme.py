@@ -12,7 +12,7 @@ from common import file
 def get_orgs_list():
     console.log("Info", "Getting the list of theme...")
     try:
-        return requests.get("https://api.github.com/orgs/silverblog-theme/repos").json()
+        return requests.get("https://api.github.com/orgs/silverblogtheme/repos").json()
     except  requests.exceptions.RequestException:
         console.log("Error", "Get the theme list error.")
         exit(1)
@@ -43,7 +43,7 @@ def install_theme(theme_name, custom):
         console.log("Error", "This theme has been installed.")
         exit(1)
     console.log("Info", "Get the theme repository...")
-    git_repo = "https://github.com/silverblog-theme/{}.git".format(theme_name)
+    git_repo = "https://github.com/silverblogtheme/{}.git".format(theme_name)
     if custom:
         git_repo = theme_name
     try:
@@ -51,16 +51,22 @@ def install_theme(theme_name, custom):
     except git.exc.GitCommandError:
         console.log("Error", "Unable to clone theme repository.")
         exit(1)
-    config_example_file = "{}/config.example.json".format(repo_dir)
-    static_symlink = "./templates/static/{}".format(theme_name)
+    if os.path.exists("{}/package-metadata.json".format(repo_dir)):
+        config_example_file = "{}/config.example.json".format(repo_dir)
+        static_symlink = "./templates/static/{}".format(theme_name)
 
-    if not os.path.exists(static_symlink):
-        os.symlink("{}/templates/{}/static".format(os.getcwd(), theme_name), static_symlink)
+        if not os.path.exists(static_symlink):
+            os.symlink("{}/templates/{}/static".format(os.getcwd(), theme_name), static_symlink)
 
-    if os.path.exists(config_example_file):
-        shutil.copyfile(config_example_file, "{}/config.json".format(repo_dir))
+        if os.path.exists(config_example_file):
+            shutil.copyfile(config_example_file, "{}/config.json".format(repo_dir))
 
-    download_static_file(theme_name)
+        download_static_file(theme_name)
+    if not os.path.exists("{}/package-metadata.json".format(repo_dir)) and os.path.exists("{}/install.sh".format(repo_dir)):
+        result_code = os.system("cd templates && bash {}/install.sh".format(theme_name))
+        if (result_code >> 8) != 0:
+            console.log("Error", "An error occurred while executing the install script.")
+            exit(1)
     console.log("Success", "The theme is install successfully!")
 
 
@@ -89,9 +95,9 @@ def upgrade_theme(theme_name):
 
 
 def download_static_file(theme_name):
-    if not os.path.exists("./templates/{}/package.json".format(theme_name)):
+    if not os.path.exists("./templates/{}/package-metadata.json".format(theme_name)):
         return
-    download_list_file = "./templates/{}/package.json".format(theme_name)
+    download_list_file = "./templates/{}/package-metadata.json".format(theme_name)
     download_file_location = "./templates/{}/static/library".format(theme_name)
     if os.path.exists(download_file_location):
         shutil.rmtree(download_file_location)
