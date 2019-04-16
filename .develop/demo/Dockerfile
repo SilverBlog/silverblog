@@ -14,7 +14,6 @@ RUN apt-key adv -v --keyserver hkp://keyserver.ubuntu.com:80 --receive-key e411e
 COPY ./ /home/silverblog
 
 RUN  python3 install/install_denpendency.py \
-#&& python3 install/gen_nginx.py --domain demo.silverblog.org --hsts --ocsp_must_staple --cert_key "/home/silverblog/.acme.sh/demo.silverblog.org/demo.silverblog.org.key" --cert_fullchain "/home/silverblog/.acme.sh/demo.silverblog.org/fullchain.cer" \
 && ln -s /home/silverblog/.develop/demo/nginx_config /etc/nginx/sites-enabled/ \
 && echo "{\"install\":\"docker-buildin\"}" > install/install.lock \
 && bash /home/silverblog/install/initialization.sh \
@@ -24,4 +23,4 @@ RUN  python3 install/install_denpendency.py \
 && python3 manage.py update \
 && python3 manage.py install_theme --name clearision
 
-CMD [ "/usr/bin/supervisord","-c","/home/silverblog/example/supervisor-buildin.conf" ]
+CMD [ "/usr/bin/supervisord","-c","/home/silverblog/.develop/demo/supervisor.conf" ]

@@ -56,46 +56,10 @@ echo "Change directory to $(pwd)"
 
 bash install/initialization.sh
 
-embedded_nginx=false
-read -p "Use embedded nginx? (Y/N) :" yn
-if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
-embedded_nginx=true
-fi
 
 sed -i '''s@./config/unix_socks/main.sock@0.0.0.0:5000@g' uwsgi.json
 sed -i '''s@./config/unix_socks/control.sock@0.0.0.0:5001@g' uwsgi.json
 
-if [[ ${embedded_nginx} == false ]];then
-if [[ ! -f "./docker-compose.yml" ]]; then
-cat << EOF > docker-compose.yml
-version: '3'
-services:
-  ${install_name}:
-    user: user_docker
-    image: "${docker_image}"
-    container_name: "${install_name}"
-    restart: on-failure:10
-    command: python3 watch.py
-    volumes:
-     - /etc/localtime:/etc/localtime:ro
-     - $(pwd):/home/silverblog/
-    ports:
-     - "127.0.0.1:5000:5000"
-  ${install_name}_control:
-    image: "${docker_image}"
-    container_name: "${install_name}_control"
-    restart: on-failure:10
-    command: python3 watch.py --control
-    volumes:
-     - /etc/localtime:/etc/localtime:ro
-     - $(pwd):/home/silverblog/
-    ports:
-     - "127.0.0.1:5001:5001"
-EOF
-fi
-fi
-
-if [[ ${embedded_nginx} == true ]];then
 if [[ ! -f "./docker-compose.yml" ]]; then
 cat << EOF > docker-compose.yml
 version: '3'
@@ -138,9 +102,8 @@ services:
 networks:
   ${install_name}_net:
 EOF
-//todo
 fi
-fi
+
 
 if test $(ps h -o comm -p $$) = "bash"; then
 shell_config_file="$HOME/.bashrc"
