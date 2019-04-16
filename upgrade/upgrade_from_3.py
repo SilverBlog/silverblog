@@ -11,7 +11,8 @@ from common import file
 
 def add_page_id(list_item):
     list_item["uuid"] = str(uuid.uuid5(uuid.NAMESPACE_URL, list_item["name"]))
-    list_item["time"] = round(list_item["time"])
+    if "time" in list_item:
+        list_item["time"] = round(list_item["time"])
     return list_item
 
 
@@ -23,8 +24,8 @@ def add_menu_id(list_item):
 
 def add_tar_file(tar, dir_name):
     for root, path, files in os.walk(dir_name):
-        for file in files:
-            full_path = os.path.join(root, file)
+        for file_name in files:
+            full_path = os.path.join(root, file_name)
             tar.add(full_path)
 
 def main():
@@ -52,7 +53,6 @@ def main():
         control_config["password"] = hmac.new(str("SiLvErBlOg").encode('utf-8'), str(old_password_hash).encode('utf-8'),
                                               hashlib.sha256).hexdigest()
     except (ValueError, KeyError, TypeError):
-        #todo
         pass
 
 
