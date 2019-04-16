@@ -48,7 +48,7 @@ def install_theme(theme_name, custom):
         git_repo = theme_name
     try:
         git.Repo.clone_from(url=git_repo, to_path=repo_dir, depth=1)
-    except git.exc.GitCommandError as err:
+    except git.exc.GitCommandError:
         console.log("Error", "Unable to clone theme repository.")
         exit(1)
     config_example_file = "{}/config.example.json".format(repo_dir)
@@ -89,6 +89,8 @@ def upgrade_theme(theme_name):
 
 
 def download_static_file(theme_name):
+    if not os.path.exists("./templates/{}/package.json".format(theme_name)):
+        return
     download_list_file = "./templates/{}/package.json".format(theme_name)
     download_file_location = "./templates/{}/static/library".format(theme_name)
     if os.path.exists(download_file_location):
