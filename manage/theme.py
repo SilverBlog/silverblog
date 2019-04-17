@@ -12,7 +12,7 @@ from common import file
 def get_orgs_list():
     console.log("Info", "Getting the list of theme...")
     try:
-        return requests.get("https://api.github.com/orgs/silverblogtheme/repos").json()
+        return requests.get("https://api.github.com/orgs/silverblog-theme/repos").json()
     except  requests.exceptions.RequestException:
         console.log("Error", "Get the theme list error.")
         exit(1)
@@ -43,7 +43,7 @@ def install_theme(theme_name, custom):
         console.log("Error", "This theme has been installed.")
         exit(1)
     console.log("Info", "Get the theme repository...")
-    git_repo = "https://github.com/silverblogtheme/{}.git".format(theme_name)
+    git_repo = "https://github.com/silverblog-theme/{}.git".format(theme_name)
     if custom:
         git_repo = theme_name
     try:

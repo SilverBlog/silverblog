@@ -29,19 +29,19 @@ SilverBlog 是一個基於 Python3 的輕量級博客專案。
 Global:
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlog/SilverBlog/master/install/install.sh)"
 ```
 
 Custom:
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlog/SilverBlog/master/install/install.sh)" -n silverblog
 ```
 
 Docker:
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlog/SilverBlog/master/install/docker_install.sh)"
 ```
 
 如果您在使用一個全新安裝的Ubuntu 18.04，你可能需要修改`/etc/apt/source.list`文件，在`main`後添加`universe`和`multiverse`軟件源，這將保證安裝能夠順利執行。一個正確的配置如下：
@@ -134,9 +134,9 @@ git config user.name "your name"
 
 注意！您如果需要使用 SilverBlog 用戶端，請確保您使用了https安全協定。使用http如同將密碼告訴黑客！這將可能危害您的伺服器安全！
 
-您可以訪問 https://github.com/SilverBlogTeam/SilverBlog_Android/releases 下載最新android用戶端。
+您可以訪問 https://github.com/SilverBlog/SilverBlog_Android/releases 下載最新android用戶端。
 
-您可以自己編譯部署 https://github.com/SilverBlogTeam/silverblog_ios IOS客戶端。
+您可以自己編譯部署 https://github.com/SilverBlog/silverblog_ios IOS客戶端。
 
 您可以使用 SilverCreator(https://c.silverblog.org) 來管理你的博客。
 
@@ -153,16 +153,6 @@ SilverBlog 現已提供開發者預覽版本，您可以在倉庫根目錄下執
 如果您還不熟悉 GitHub 的 Fork and Pull 開發模式，您可以閱讀 [GitHub的文檔](https://help.github.com/articles/using-pull-requests) 獲得更多的信息。
 
 我們建議您在使用中文提出issue的同時，在下方附上英語翻譯版本，以便非中文母語地區開發者的閱讀和理解。
-
-## 關於亞洲地區的訪問加速
-
-您可以執行以下命令來更換您的倉庫源，這將加速您的更新：(亚洲地区服务由碼雲提供)
-
-```
-git remote set-url origin https://gitee.com/qwe7002/silverblog.git
-```
-
-您可以使用阿里雲提供的registry加速器來加快鏡像下載，修改image爲 `registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog` 即可
 
 ## 鳴謝
 

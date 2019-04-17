@@ -7,7 +7,7 @@ if test $(ps h -o comm -p $$) = "sh"; then
     exit 1
 fi
 
-`
+
 install_name="silverblog"
 
 while getopts "n" arg; do
