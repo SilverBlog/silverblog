@@ -65,6 +65,7 @@ def make_rss(project_name, project_url, project_description, page_list, system_c
 
 def build_rss():
     system_config = json.loads(file.read_file("./config/system.json"))
+    system_config["Lazyload"] = False
     page_list = json.loads(file.read_file("./config/page.json"))
     file.write_file("./document/rss.xml", make_rss(system_config["Project_Name"], system_config["Project_URL"],
                                                    system_config["Project_Description"],
