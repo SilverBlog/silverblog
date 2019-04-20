@@ -197,7 +197,10 @@ def create_post():
     post_uuid = ""
     if check_password(hash_content, sign, send_time):
         if len(name) == 0:
-            name = get.get_name(title, system_config["Pinyin"])
+            pinyin = True
+            if 'Pinyin' in system_config:
+                pinyin = system_config["Pinyin"]
+            name = get.get_name(title, pinyin)
         while os.path.exists("./document/{0}.md".format(name)):
             name = "{}-repeat".format(name)
         post_uuid = str(uuid.uuid5(uuid.NAMESPACE_URL, name))

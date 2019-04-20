@@ -7,21 +7,17 @@ if test $(ps h -o comm -p $$) = "sh"; then
     exit 1
 fi
 
-china_install=false
+
 install_name="silverblog"
 
-while getopts "n:c" arg; do
+while getopts "n" arg; do
     case ${arg} in
          n)
             install_name=$OPTARG
             ;;
-         c)
-            china_install=true
-            ;;
          ?)
             echo "Unknown argument"
             echo "use ./install.sh [-n <project name>] [-c]"
-            echo "[-c] option represents using a Chinese image source."
             exit 1
             ;;
     esac
@@ -123,14 +119,7 @@ fi
 if [[ ! -f "initialization.sh" ]]; then
     if [[ ! -d ${install_name} ]]; then
         echo -e "\nCloning silverblog..."
-
-        repo_url=https://github.com/silverblogteam/silverblog.git
-
-        if [[ ${china_install} = true ]];then
-            repo_url=https://code.aliyun.com/silverblogteam/silverblog.git
-        fi
-
-        git clone ${repo_url} --depth=1 ${install_name}
+        git clone https://github.com/silverblogteam/silverblog.git --depth=1 ${install_name}
     fi
     mv install.lock ${install_name}/install/install.lock
 
@@ -148,7 +137,7 @@ echo -e "\n> ./initialization.sh"
 bash ./initialization.sh
 read -p "Use systemd to manage startup? (y/N) :" yn
 if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
-bash ./systemd_install.sh
+bash ./systemd_install.sh -n ${install_name}
 fi
 cd ..
 echo "Change directory to $(pwd)"

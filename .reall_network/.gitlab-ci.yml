@@ -35,41 +35,42 @@ build_docker:
     - master
   script:
     - docker build -t ${docker_tag_name} -f ./example/Dockerfile .
-    - docker build -t ${docker_tag_name}:buildin -f ./example/Dockerfile-buildin .
     - echo ${docker_hub_passwd} | docker login -u qwe7002 --password-stdin
-    - echo ${docker_hub_passwd} | docker login -u qwe7002@hotmail.com registry.cn-hangzhou.aliyuncs.com --password-stdin
     - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
-    - docker tag ${docker_tag_name}:buildin registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}:buildin
     - docker push ${docker_tag_name}
-    - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
-    - docker push ${docker_tag_name}:buildin
-    - docker push registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}:buildin
 release_github:
   stage: deploy
-  only:
-    - master
-    - nightly
   script:
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" > deploy.key
     - chmod 0600 deploy.key
     - ssh-add deploy.key
     - git push --set-upstream git@github.com:SilverBlogTeam/silverblog.git HEAD:refs/heads/$CI_COMMIT_REF_NAME
-    - git push --set-upstream git@code.aliyun.com:silverblogteam/silverblog.git HEAD:refs/heads/$CI_COMMIT_REF_NAME
     - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
     - cd wiki
     - git push -f --set-upstream git@github.com:SilverBlogTeam/silverblog.wiki.git HEAD:refs/heads/master
-    - git push -f --set-upstream git@code.aliyun.com:silverblogteam/silverblog.wiki.git HEAD:refs/heads/master
 
 
+
+build_test_env:
+  services:
+    - docker:dind
+  tags:
+    - docker-build
+  when: manual
+  script:
+    - docker build -t registry.git.reallserver.cn/${docker_tag_name}:test_env -f ./.develop/unit_test/Dockerfile .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.git.reallserver.cn
+    - docker push registry.git.reallserver.cn/${docker_tag_name}:test_env
 
 unit_test_develop:
-  image: ubuntu:latest
+  image: registry.git.reallserver.cn/${docker_tag_name}:test_env
   stage: test
   only:
     - develop
+  tags:
+    - docker-build
   script:
-    - apt-get update && apt-get install -y uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git gnupg curl supervisor nginx chromium-browser fonts-noto-cjk
     - python3 install/install_denpendency.py
     - bash install/initialization.sh
     - python3 install/gen_nginx.py
@@ -82,8 +83,6 @@ unit_test_develop:
     - python3 ./manage.py build-page
     - cp .develop/unit_test/supervisord.conf ./
     - supervisord -c supervisord.conf
-    - chromium-browser --headless --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --window-size=1280,768 --screenshot http://127.0.0.1 && mv screenshot.png index.png
-    - chromium-browser --headless --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --window-size=1280,768 --screenshot http://127.0.0.1/post/demo-article && mv screenshot.png post.png
     - python3 ./.develop/unit_test/test.py
   artifacts:
     when: always

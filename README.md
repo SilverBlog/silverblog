@@ -27,19 +27,19 @@ You can install SilverBlog directly using the installation script:
 Global:
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlog/SilverBlog/master/install/install.sh)"
 ```
 
 Custom:
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlog/SilverBlog/master/install/install.sh)" -n silverblog
 ```
 
 Docker:
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlog/SilverBlog/master/install/docker_install.sh)"
 ```
 
 If you are using a new install of Ubuntu 18.04, you may need to modify the `/etc/apt/source.list` file and add `universe` and `multiverse` software sources after `main`, which will ensure the installation will run smoothly. A correct configuration is as follows:
@@ -133,9 +133,9 @@ You can try using the `/example/.travis.yml` script for automated submission.
 
 Warning! If you need to use the SilverBlog client, make sure you use the https security protocol. Using http is like telling a password to a hacker! This may compromise your server security!
 
-You can download the latest android client at https://github.com/SilverBlogTeam/SilverBlog_Android/releases.
+You can download the latest android client at https://github.com/SilverBlog/SilverBlog_Android/releases.
 
-You can compile and deploy the https://github.com/SilverBlogTeam/silverblog_ios IOS client yourself.
+You can compile and deploy the https://github.com/SilverBlog/silverblog_ios IOS client yourself.
 
 You can use SilverCreator (https://c.silverblog.org) to manage your blog.
 
@@ -152,16 +152,6 @@ We welcome you to report issue or pull request on GitHub of the SilverBlog proje
 If you are not yet familiar with GitHub's Fork and Pull development model, you can read the [GitHub Documentation](https://help.github.com/articles/using-pull-requests) for more information.
 
 We recommend that you use the Chinese language to raise an issue, and attach an English translation below to make it easier for non-Chinese native language developers to read and understand.
-
-## About access acceleration in Asia
-
-You can replace your repository source by executing the following command, which will speed up your update: (Asian region service is provided by gitee.com)
-
-```
-git remote set-url origin https://gitee.com/qwe7002/silverblog.git
-```
-
-You can use the registry accelerator provided by Alibaba Cloud to speed up the image download, and modify the image to `registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog`
 
 ## Thanks
 
