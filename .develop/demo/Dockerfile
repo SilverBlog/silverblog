@@ -15,7 +15,7 @@ COPY ./ /home/silverblog
 
 RUN  python3 install/install_denpendency.py \
 && ln -s /home/silverblog/.develop/demo/nginx_config /etc/nginx/sites-enabled/ \
-&& echo "{\"install\":\"docker\"}" > install/install.lock \
+&& echo "{\"install\":\"demo\"}" > install/install.lock \
 && bash /home/silverblog/install/initialization.sh \
 && cp -rf /home/silverblog/.develop/demo/config /home/silverblog/ \
 && cp -rf /home/silverblog/.develop/demo/document /home/silverblog/ \
