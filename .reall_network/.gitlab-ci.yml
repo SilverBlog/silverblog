@@ -38,6 +38,7 @@ build_docker:
     - echo ${docker_hub_passwd} | docker login -u qwe7002 --password-stdin
     - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
     - docker push ${docker_tag_name}
+
 release_github:
   stage: deploy
   script:
@@ -49,8 +50,6 @@ release_github:
     - git clone https://git.reallserver.cn/SilverBlog/SilverBlog.wiki.git wiki
     - cd wiki
     - git push -f --set-upstream git@github.com:SilverBlogTeam/silverblog.wiki.git HEAD:refs/heads/master
-
-
 
 build_test_env:
   services:
@@ -88,6 +87,4 @@ unit_test_develop:
     when: always
     paths:
       - logs/
-      - index.png
-      - post.png
     expire_in: 1 week
