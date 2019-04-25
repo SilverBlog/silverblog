@@ -1,5 +1,4 @@
-FROM ubuntu:devel
-
+FROM ubuntu:latest
 WORKDIR /home/silverblog/
 
 RUN apt-get update \

@@ -56,6 +56,8 @@ build_test_env:
     - docker:dind
   tags:
     - docker-build
+  only:
+    - develop
   when: manual
   script:
     - docker build -t registry.git.reallserver.cn/${docker_tag_name}:test_env -f ./.develop/unit_test/Dockerfile .
