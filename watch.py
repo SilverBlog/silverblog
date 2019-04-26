@@ -49,8 +49,7 @@ def KILL_handler(signum, frame):
     harakiri()
 
 def harakiri():
-    global process
-    process.kill()
+    kill_progress()
     console.log("Success", "Stopped SilverBlog server.")
     os._exit(0)
 
