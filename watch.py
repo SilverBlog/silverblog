@@ -36,9 +36,11 @@ class when_file_chanage(FileSystemEventHandler):
                 self.kill()
 
 def HUP_handler(signum, frame):
+    console.log("Info", "Received {} signal.".format(signum))
     kill_progress()
 
 def KILL_handler(signum, frame):
+    console.log("Info", "Received {} signal.".format(signum))
     harakiri()
 
 def harakiri():
