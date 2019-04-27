@@ -130,3 +130,4 @@ if __name__ == '__main__':
     with open("./nginx_config", "w", newline=None, encoding="utf-8") as f:
         print("Write the file: [./nginx_config]")
         f.write(nginx_config)
+        f.close()
