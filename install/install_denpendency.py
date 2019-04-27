@@ -6,7 +6,7 @@ import sys
 def main():
     try:
         from pip._internal import main as pip_main
-    except Exception:
+    except ModuleNotFoundError:
         from pip import main as pip_main
     install_command = ['install', "-U"]
     if os.geteuid() != 0:
