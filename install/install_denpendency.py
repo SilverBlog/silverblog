@@ -15,7 +15,7 @@ def main():
     if sys.version_info < (3, 4):
         print("Current python version is lower than 3.4, need to install asyncio.")
         install_command.append("asyncio")
-    install_qrcode_dependency = input("Do you want to install [qrcode_terminal] to support QR code login? (y/N)")
+    install_qrcode_dependency = str(input("Do you want to install [qrcode_terminal] to support QR code login? (y/N)"))
     if install_qrcode_dependency.lower() == 'y':
         install_command.append("qrcode_terminal")
     install_command.extend(["Flask", "hoedown", "xpinyin", "pyrss2gen", "gitpython", "requests", "watchdog"])
