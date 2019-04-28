@@ -19,6 +19,7 @@ def main():
     try:
         install_qrcode_dependency = str(input("Do you want to install [qrcode_terminal] to support QR code login? (y/N)"))
     except EOFError:
+        print("N")
         pass
     if install_qrcode_dependency.lower() == 'y':
         install_command.append("qrcode_terminal")
