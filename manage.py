@@ -7,6 +7,7 @@ import sys
 
 from common import file, console
 
+
 if os.path.exists("./install/install.lock"):
     if json.loads(file.read_file("./install/install.lock"))["install"] == "docker" and not os.environ.get(
             'DOCKER_CONTAINER', False):

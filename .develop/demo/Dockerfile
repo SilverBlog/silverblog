@@ -1,4 +1,7 @@
-FROM ubuntu:latest
+FROM ubuntu:devel
+# > At the moment, setting "LANG=C" on a Linux system *fundamentally breaks Python 3*, and that's not OK.
+ENV LANG C.UTF-8
+ENV DOCKER_CONTAINER yes
 WORKDIR /home/silverblog/
 
 RUN apt-get update \
@@ -23,5 +26,3 @@ RUN  python3 install/install_denpendency.py \
 && cp /home/silverblog/example/uwsgi.json /home/silverblog/ \
 && python3 manage.py update \
 && python3 manage.py install_theme --name clearision
-
-CMD [ "/usr/bin/supervisord","-c","/home/silverblog/example/supervisord.conf" ]

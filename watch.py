@@ -25,25 +25,31 @@ class when_file_chanage(FileSystemEventHandler):
         self.kill = kill_sub
         self.harakiri = self_harakiri
     def on_any_event(self, event):
-        if not os.path.basename(os.path.dirname(event.src_path)) == "static_page":
-            if event.src_path.endswith('watch.py'):
-                self.harakiri()
-            if not control and (
-                    event.src_path.endswith('.json') or event.src_path.endswith('.md') or event.src_path.endswith(
-                '.py') or event.src_path.endswith('.xml') or event.src_path.endswith('.html')):
-                self.kill()
-            if event.src_path.endswith('.py') or event.src_path.endswith('config/system.json') and control:
-                self.kill()
+        if os.path.basename(os.path.dirname(event.src_path)) == "static_page":
+            return
+        if event.src_path.endswith('watch.py'):
+            self.harakiri()
+        if event.src_path.endswith('.py'):
+            self.kill()
+        if not control:
+            endswith_list = ['.json','.md','.xml','.html']
+            for item in endswith_list:
+                if event.src_path.endswith(item):
+                    self.kill()
+                    break
+        if control and event.src_path.endswith('config/system.json'):
+            self.kill()
 
 def HUP_handler(signum, frame):
+    console.log("Info", "Received {} signal.".format(signum))
     kill_progress()
 
 def KILL_handler(signum, frame):
+    console.log("Info", "Received {} signal.".format(signum))
     harakiri()
 
 def harakiri():
-    global process
-    process.kill()
+    kill_progress()
     console.log("Success", "Stopped SilverBlog server.")
     os._exit(0)
 

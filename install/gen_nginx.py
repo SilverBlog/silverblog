@@ -2,13 +2,17 @@
 import argparse
 import os
 
-nginx_template = \
-    """
-    map $http_origin $cors_origin {
+origin_template = """
+map $http_origin $cors_origin {
         https://c.silverblog.org $http_origin;
         https://silvercreator.reallct.com $http_origin;
         default null;
-    }
+}
+"""
+
+
+nginx_template = \
+    """
     server {
         ${listen_port}
         ${server_name}
@@ -46,10 +50,13 @@ if __name__ == '__main__':
     parser.add_argument("--control_port", help="The Control service listening port.", type=str)
     parser.add_argument("--cert_key", help="SSL certificate key.", type=str)
     parser.add_argument("--cert_fullchain", help="SSL certificate fullchain.", type=str)
+    parser.add_argument("--allow_all_origin",help="Allow all sources without cross-domain checking.", action="store_true")
     parser.add_argument("--hsts", help="Use HSTS.", action="store_true")
     parser.add_argument("--ocsp_must_staple", help="Use OCSP Must-Staple.", action="store_true")
 
     args = parser.parse_args()
+    if args.allow_all_origin:
+        origin_template="$cors_origin=\"*\""
     pwd = None
     if args.pwd is not None:
         pwd = args.pwd
@@ -119,6 +126,8 @@ if __name__ == '__main__':
     nginx_config = nginx_config.replace("${uwsgi_pass_main}", uwsgi_pass_main)
     nginx_config = nginx_config.replace("${uwsgi_pass_control}", uwsgi_pass_control)
     nginx_config = nginx_config.replace("${pwd}", pwd)
+    nginx_config = origin_template + nginx_config
     with open("./nginx_config", "w", newline=None, encoding="utf-8") as f:
         print("Write the file: [./nginx_config]")
         f.write(nginx_config)
+        f.close()

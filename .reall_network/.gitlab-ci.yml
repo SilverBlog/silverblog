@@ -23,7 +23,7 @@ build_demo:
     - echo "$SSH_PRIVATE_KEY" > deploy.key
     - chmod 0600 deploy.key
     - ssh-add deploy.key
-    - ssh qwe7002@tw.silverblog.org "cd silverblog && docker-compose down && docker pull registry.git.reallserver.cn/${docker_tag_name}:demo && docker-compose up -d"
+    - ssh qwe7002@tw.silverblog.org "docker-compose down && docker-compose pull && docker-compose up -d"
 
 build_docker:
   services:
@@ -60,7 +60,7 @@ build_test_env:
     - develop
   when: manual
   script:
-    - docker build -t registry.git.reallserver.cn/${docker_tag_name}:test_env -f ./.develop/unit_test/Dockerfile .
+    - docker build -t registry.git.reallserver.cn/${docker_tag_name}:test_env ./.develop/unit_test/Dockerfile .
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.git.reallserver.cn
     - docker push registry.git.reallserver.cn/${docker_tag_name}:test_env
 

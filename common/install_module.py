@@ -19,7 +19,7 @@ def install_and_import(package):
 def install_package(package):
     try:
         from pip._internal import main
-    except Exception:
+    except ModuleNotFoundError:
         from pip import main
     install_command = ['install']
     if os.geteuid() != 0:
@@ -31,7 +31,7 @@ def install_package(package):
 def uninstall_package(package):
     try:
         from pip._internal import main
-    except Exception:
+    except ModuleNotFoundError:
         from pip import main
     install_command = ['uninstall']
     if os.geteuid() != 0:

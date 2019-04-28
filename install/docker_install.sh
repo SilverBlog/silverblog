@@ -45,6 +45,10 @@ echo "Change directory to $(pwd)"
 
 bash install/initialization.sh
 
+if [[ ! -f "./supervisor.conf" ]]; then
+cp ./example/supervisor.conf ./supervisor.conf
+fi
+
 if [[ ! -f "./docker-compose.yml" ]]; then
 cat << EOF > docker-compose.yml
 version: '3'
@@ -53,7 +57,7 @@ services:
     image: silverblog/silverblog
     container_name: "${install_name}"
     restart: on-failure:10
-    command: /usr/bin/supervisord -c /home/silverblog/example/supervisor.conf
+    command: /usr/bin/supervisord -c /home/silverblog/supervisor.conf
     volumes:
      - /etc/localtime:/etc/localtime:ro
      - $(pwd):/home/silverblog/
