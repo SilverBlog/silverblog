@@ -78,7 +78,7 @@ def get_rss_file():
 def load_config():
     console.log("Info", "Loading configuration...")
     if not os.path.exists("./config/system.json"):
-        console.log("Error", "system.json file not found.")
+        console.log("Error", "[system.json] file not found.")
         exit(1)
     asyncio.set_event_loop(asyncio.new_event_loop())
     loop = asyncio.get_event_loop()
