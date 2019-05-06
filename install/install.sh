@@ -141,7 +141,7 @@ bash ./systemd_install.sh -n ${install_name}
 fi
 cd ..
 echo "Change directory to $(pwd)"
-if [[ "$yn" != "Y" ]] || [[ "$yn" != "y" ]]; then
+if [[ "$yn" != "Y" ]] && [[ "$yn" != "y" ]]; then
 read -p "Create a pm2 configuration file? (y/N) :" yn
 if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
 cat << EOF >pm2.json
@@ -169,7 +169,7 @@ cat << EOF >pm2.json
 EOF
 fi
 fi
-if [[ "$yn" != "Y" ]] || [[ "$yn" != "y" ]]; then
+if [[ "$yn" != "Y" ]] && [[ "$yn" != "y" ]]; then
 read -p "Create a supervisord configuration file? (y/N) :" yn
 if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
 cat << EOF >supervisord.conf
@@ -203,7 +203,7 @@ read -p  "add command [${install_name}] to quickly launch SilverBlog? (y/N)" yn
 if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
 echo -e "\n> echo \"${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}\" >> ${shell_config_file}"
 echo "${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}" >> ${shell_config_file}
-echo -e "To get started you need Silverblog's bin directory (${shell_config_file}) in your PATH\n
+echo -e "\nTo get started you need Silverblog's bin directory (${shell_config_file}) in your PATH\n
 environment variable. Next time you log in this will be done automatically.\n\n
 To configure your current shell run source ${shell_config_file}"
 fi
