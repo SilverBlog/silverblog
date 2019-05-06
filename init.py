@@ -75,6 +75,8 @@ def get_rss_file():
     global rss
     if os.path.exists("./document/rss.xml"):
         rss = yield from file.async_read_file("./document/rss.xml")
+
+
 def load_config():
     console.log("Info", "Loading configuration...")
     if not os.path.exists("./config/system.json"):
@@ -117,43 +119,7 @@ def redirect_301(file_name, page_index=1):
         return redirect("/post/{0}/".format(file_name), code=301)
     abort(404)
 
-@app.route("/")
-@app.route("/index", strict_slashes=False)
-@app.route('/index/<int:page_index>', strict_slashes=False)
-def index_route(page_index=1):
-    page_url = "/index/{0}/".format(page_index)
-    localtime = time.localtime(time.time())
-    global last_build_year
-    if last_build_year != localtime[0]:
-        last_build_year = localtime[0]
-        cache_index.clear()
-        cache_post.clear()
-    if page_url in cache_index:
-        console.log("Success", "Get cache Success: {0}".format(page_url))
-        return cache_index[page_url]
-    console.log("Info", "Trying to build: {0}".format(page_url))
-    page_row = page.get_page_row(system_config["Paging"], len(page_list))
-    if page_index == 0 or page_index > page_row:
-        abort(404)
-    result = page.build_index(page_index, page_row, system_config, page_list, menu_list, template_config, i18n,
-                              static_file_dict)
-    if result is None:
-        abort(404)
-    console.log("Info", "Writing to cache: {0}".format(page_url))
-    if len(cache_index) >= 50:
-        page_keys = sorted(cache_index.keys())
-        console.log("Info", "Delete cache: {0}".format(page_keys[0]))
-        del cache_index[page_keys[0]]
-    cache_index[page_url] = result
-    console.log("Success", "Get success: {0}".format(page_url))
-    return result
-
-@app.route("/post/<file_name>")
-@app.route("/post/<file_name>/")
-def post_route(file_name=None):
-    if file_name is None or not os.path.exists("./document/{0}.md".format(file_name)):
-        abort(404)
-    page_url = "/post/{0}/".format(file_name)
+def check_build_year():
     global last_build_year
     localtime = time.localtime(time.time())
     if last_build_year != localtime[0]:
@@ -161,21 +127,67 @@ def post_route(file_name=None):
         last_build_year = localtime[0]
         cache_index.clear()
         cache_post.clear()
-    if page_url in cache_post:
+
+def get_index_cache(page_url):
+    check_build_year()
+    if page_url in cache_index:
         console.log("Success", "Get cache Success: {0}".format(page_url))
+        return cache_index[page_url]
+    return None
+
+def write_index_cache(page_url,content):
+    console.log("Info", "Writing to cache: {0}".format(page_url))
+    if len(cache_index) >= 50:
+        page_keys = sorted(cache_index.keys())
+        console.log("Info", "Delete cache: {0}".format(page_keys[0]))
+        del cache_index[page_keys[0]]
+    cache_index[page_url] = content
+
+@app.route("/")
+@app.route("/index", strict_slashes=False)
+@app.route('/index/<int:page_index>', strict_slashes=False)
+def index_route(page_index=1):
+    page_url = "/index/{0}/".format(page_index)
+    result = get_index_cache(page_url)
+    if result is None:
+        page_row = page.get_page_row(system_config["Paging"], len(page_list))
+        if page_index == 0 or page_index > page_row:
+            abort(404)
+        result = page.build_index(page_index, page_row, system_config, page_list, menu_list, template_config, i18n,
+                                  static_file_dict)
+    if result is None:
+        abort(404)
+    write_index_cache(page_url,result)
+    console.log("Success", "Get success: {0}".format(page_url))
+    return result
+
+def get_post_cache(page_url):
+    check_build_year()
+    if page_url in cache_post:
         return cache_post[page_url]
-    page_info = None
-    if file_name in page_name_list:
-        this_page_index = page_name_list.index(file_name)
-        page_info = page_list[this_page_index]
-    result = page.build_page(file_name, system_config, page_info, menu_list,
-                             template_config, i18n, static_file_dict)
+    return None
+def write_post_cache(page_url,content):
     console.log("Info", "Writing to cache: {0}".format(page_url))
     if len(cache_post) >= 50:
         page_keys = sorted(cache_post.keys())
         console.log("Info", "Delete cache: {0}".format(page_keys[0]))
         del cache_post[page_keys[0]]
-    cache_post[page_url] = result
-    console.log("Success", "Get success: {0}".format(page_url))
+    cache_post[page_url] = content
 
+@app.route("/post/<file_name>")
+@app.route("/post/<file_name>/")
+def post_route(file_name=None):
+    if file_name is None or not os.path.exists("./document/{0}.md".format(file_name)):
+        abort(404)
+    page_url = "/post/{0}/".format(file_name)
+    result = get_post_cache(page_url)
+    if result is None:
+        page_info = None
+        if file_name in page_name_list:
+            this_page_index = page_name_list.index(file_name)
+            page_info = page_list[this_page_index]
+        result = page.build_page(file_name, system_config, page_info, menu_list,
+                                 template_config, i18n, static_file_dict)
+        write_post_cache(page_url,result)
+    console.log("Success", "Get success: {0}".format(page_url))
     return result
