@@ -158,3 +158,15 @@ We recommend that you use the Chinese language to raise an issue, and attach an 
 Thanks to [@Liqueur Librazy](https://github.com/Librazy) for providing the demo program server for this project.
 
 Thanks [Jetbrains](https://www.jetbrains.com/) for providing a free All product IDE for this project
+
+## Give a cup of coffee and let me better maintain this project?
+
+- [Support me in Paypal](https://paypal.me/nico_ranshi)
+
+- Support me in Bitcoin (**17wmCCzy7hSSENnRBfUBMUSi7kdHYePrae**)
+
+- [Support me in Cloud QuickPass](https://static.reallct.com/2019/02/21/5c6d812840bac.png)
+
+- [Support me in Alipay](https://static.reallct.com/2019/03/05/5c7d4ebc3e1f0.jpg)
+
+Your donation will make me work better for this project.
