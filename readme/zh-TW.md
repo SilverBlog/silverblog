@@ -21,27 +21,26 @@ SilverBlog 是一個基於 Python3 的輕量級博客專案。
 * 完整的 [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/) 支持
 
 ## 如何安裝
+
 我們支持`freebsd`,`debian(ubuntu)`,`fedora`,`alpine`,`arch linux`直接部署，其他系統請使用Docker部署。
 
 
 您可以直接使用安裝腳本安裝 SilverBlog：
 
-Global:
-
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlog/SilverBlog/master/install/install.sh)"
+bash -c "$(curl -fsSL https://get.silverblog.org/master/install/install.sh)"
 ```
 
-Custom:
+Custom installation name:
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlog/SilverBlog/master/install/install.sh)" -n silverblog
+bash -c "$(curl -fsSL https://get.silverblog.org/master/install/install.sh)" -n silverblog
 ```
 
 Docker:
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlog/SilverBlog/master/install/docker_install.sh)"
+bash -c "$(curl -fsSL https://get.silverblog.org/master/install/docker_install.sh)"
 ```
 
 如果您在使用一個全新安裝的Ubuntu 18.04，你可能需要修改`/etc/apt/source.list`文件，在`main`後添加`universe`和`multiverse`軟件源，這將保證安裝能夠順利執行。一個正確的配置如下：
@@ -56,7 +55,7 @@ deb http://archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe 
 deb http://security.ubuntu.com/ubuntu bionic-security main restricted universe multiverse
 ```
 
-您可以在 [SilverBlogTheme](https://github.com/SilverBlogTheme) 中選擇一個主題，然後使用 `./manage.py` 來安裝配置 ，並在下面的配置文件中正確配置它。
+您可以在 [SilverBlog-Theme](https://github.com/SilverBlog-Theme) 中選擇一個主題，然後使用 `./manage.py` 來安裝配置 ，並在下面的配置文件中正確配置它。
 
 本安裝腳本默認使用 nginx + uwsgi 執行模式，您可以將程序自動生成的 `nginx_config` 文件放到您的 nginx 軟件包的網站配置目錄下。如果您需要使用第三方網頁用戶端，別忘了修改 `nginx_config` 中的CORS配置。
 
