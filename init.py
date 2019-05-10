@@ -94,8 +94,7 @@ def load_config():
         page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
     console.log("Success", "load the configuration file successfully!")
 
-
-app = Flask(__name__)
+app = Flask(__name__,static_folder="templates/static")
 load_config()
 
 @app.route("/rss/", strict_slashes=False)
