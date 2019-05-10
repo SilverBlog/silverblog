@@ -4,7 +4,7 @@
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog?ref=badge_shield)
 
-[中文版本](https://github.com/SilverBlog/silverblog/blob/master/readme/zh-TW.md)
+[中文版本](https://github.com/SilverBlog/silverblog/wiki/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
 
 SilverBlog is a lightweight blog project based on Python3.
 
