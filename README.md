@@ -165,6 +165,4 @@ Thanks [Jetbrains](https://www.jetbrains.com/) for providing a free All product 
 
 - [Support me in Cloud QuickPass](https://static.reallct.com/2019/02/21/5c6d812840bac.png)
 
-- [Support me in Alipay](https://static.reallct.com/2019/03/05/5c7d4ebc3e1f0.jpg)
-
 Your donation will make me work better for this project.
