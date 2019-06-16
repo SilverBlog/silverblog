@@ -9,11 +9,11 @@ from common import console
 from common import file
 
 
-def get_orgs_list():
+def get_package_list():
     console.log("Info", "Getting the list of theme...")
     try:
         return requests.get("https://api.github.com/orgs/silverblog-theme/repos").json()
-    except  requests.exceptions.RequestException:
+    except requests.exceptions.RequestException:
         console.log("Error", "Get the theme list error.")
         exit(1)
 
@@ -138,6 +138,6 @@ def get_readme(theme_name):
     try:
         r = requests.get("https://raw.githubusercontent.com/silverblog-theme/{}/master/README.md".format(theme_name))
         return r.text
-    except  requests.exceptions.RequestException:
+    except requests.exceptions.RequestException:
         console.log("Error", "Get the readme error.")
         exit(1)
