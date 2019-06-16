@@ -75,10 +75,10 @@ def theme_manage():
         if result == "Install the theme":
             install_menu = ["View list", "Enter the theme package name"]
             result = dialog.menu("Please select an action", install_menu)
-            org_list = theme.get_orgs_list()
+            package_list = theme.get_package_list()
             if result == "View list":
                 item_list = list()
-                for item in org_list:
+                for item in package_list:
                     item_list.append(item["name"])
                 theme_name = dialog.menu("Please select the theme you want to install:", item_list)
             if result == "Enter the theme package name":
@@ -87,7 +87,7 @@ def theme_manage():
                 dialog.alert("Theme name cannot be empty")
                 continue
             has_theme = False
-            for item in org_list:
+            for item in package_list:
                 if item["name"].lower() == theme_name.lower():
                     has_theme = True
             if not has_theme:

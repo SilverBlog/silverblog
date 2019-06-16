@@ -14,10 +14,6 @@ if not os.path.exists("./upgrade/current_version.json"):
 current_version_json = json.loads(file.read_file("./upgrade/current_version.json"))
 current_data_version = current_version_json["current_data_version"]
 
-def git_init():
-    repo = git.Repo("./")
-    remote = repo.remote()
-    return repo, remote
 
 
 def check_is_git():
@@ -31,13 +27,14 @@ def upgrade_check(fetch=True):
             console.log("Error", "Not a git repository.")
             exit(1)
         return False
-    repo, remote = git_init()
+    repo = git.Repo("./")
+    remote = repo.remote()
     if fetch:
         remote.fetch(repo.active_branch)
         try:
             if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
                 return True
-        except:
+        except git.BadObject:
             pass
         if current_data_version != new_data_version:
             return True
@@ -47,7 +44,8 @@ def upgrade_pull():
     if not check_is_git():
         console.log("Error", "Not a git repository.")
         return False
-    repo, remote = git_init()
+    repo = git.Repo("./")
+    remote = repo.remote()
     console.log("Info", "Current upgrade channel: {}".format(repo.active_branch))
     if repo.is_dirty():
         console.log("Error", "The current warehouse is modified and can not be upgraded automatically.")

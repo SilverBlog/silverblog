@@ -223,3 +223,7 @@ def git_publish():
         status = build_static_page.publish()
     result = {"status": status}
     return jsonify(result)
+
+@app.route('/control/', strict_slashes=False, methods=['OPTIONS'])
+def get_204():
+    abort(204)

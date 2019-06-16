@@ -89,6 +89,7 @@ if __name__ == '__main__':
             is_git = False
             if upgrade.check_is_git():
                 if upgrade.upgrade_check():
+                    start_to_pull="n"
                     if not args.yes:
                         start_to_pull = input('Find new version, do you want to upgrade? [y/N]')
                     if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y' or args.yes:
@@ -125,6 +126,8 @@ if __name__ == '__main__':
         from manage import build_rss, post_manage, get
         if args.command == "new":
             config = None
+            name=""
+            title=""
             if args.config is not None:
                 config = json.loads(file.read_file(args.config))
             if config is None:

@@ -2,7 +2,7 @@ import hoedown
 
 class image_renderer(hoedown.HtmlRenderer):
     def image(self, src, title, alt):
-        return "<img src=\"{}\" alt=\"{}\" lazyload=\"on\">".format(src,alt)
+        return "<img src=\"{}\" alt=\"{}\" title=\"{}\" lazyload=\"on\">".format(src,alt,title)
 
 
 def markdown(system_config,content):

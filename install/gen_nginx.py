@@ -5,6 +5,8 @@ import os
 origin_template = """
 map $http_origin $cors_origin {
         https://c.silverblog.org $http_origin;
+        https://beta.c.silverblog.org $http_origin;
+        https://compat.c.silverblog.org $http_origin;
         https://silvercreator.reallct.com $http_origin;
         default null;
 }

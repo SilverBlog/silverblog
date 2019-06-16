@@ -24,5 +24,4 @@ RUN  python3 install/install_denpendency.py \
 && cp -rf /home/silverblog/.develop/demo/config /home/silverblog/ \
 && cp -rf /home/silverblog/.develop/demo/document /home/silverblog/ \
 && cp /home/silverblog/example/uwsgi.json /home/silverblog/ \
-&& python3 manage.py update \
 && python3 manage.py install_theme --name clearision

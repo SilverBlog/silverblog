@@ -131,9 +131,9 @@ if [[ ! -f "initialization.sh" ]]; then
 
 fi
 
-echo -e "\n> ./install_denpendency.py"
+echo -e "> ./install_denpendency.py"
 python3 ./install_denpendency.py
-echo -e "\n> ./initialization.sh"
+echo -e "> ./initialization.sh"
 bash ./initialization.sh
 read -p "Use systemd to manage startup? (y/N) :" yn
 if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
@@ -141,7 +141,7 @@ bash ./systemd_install.sh -n ${install_name}
 fi
 cd ..
 echo "Change directory to $(pwd)"
-if [[ "$yn" != "Y" ]] || [[ "$yn" != "y" ]]; then
+if [[ "$yn" != "Y" ]] && [[ "$yn" != "y" ]]; then
 read -p "Create a pm2 configuration file? (y/N) :" yn
 if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
 cat << EOF >pm2.json
@@ -169,7 +169,7 @@ cat << EOF >pm2.json
 EOF
 fi
 fi
-if [[ "$yn" != "Y" ]] || [[ "$yn" != "y" ]]; then
+if [[ "$yn" != "Y" ]] && [[ "$yn" != "y" ]]; then
 read -p "Create a supervisord configuration file? (y/N) :" yn
 if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
 cat << EOF >supervisord.conf
@@ -201,14 +201,14 @@ fi
 
 read -p  "add command [${install_name}] to quickly launch SilverBlog? (y/N)" yn
 if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
-echo -e "\n> echo \"${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}\" >> ${shell_config_file}"
+echo -e "> echo \"${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}\" >> ${shell_config_file}"
 echo "${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}" >> ${shell_config_file}
-echo -e "To get started you need Silverblog's bin directory (${shell_config_file}) in your PATH\n
+echo -e "\nTo get started you need Silverblog's bin directory (${shell_config_file}) in your PATH\n
 environment variable. Next time you log in this will be done automatically.\n\n
 To configure your current shell run source ${shell_config_file}"
 fi
 
-echo -e "\n> Silverblog successfully installed."
+echo -e "> Silverblog successfully installed."
 echo -e "\nYou need to perform [./manage.py] to initialize your silverblog environment."
 echo -e "\nIMPORTANT: OPEN A NEW TERMINAL TAB/WINDOW or run `. ${shell_config_file}`before using Silverblog."
 echo -e "\nYou can generate an nginx configuration file using [./install/gen_nginx.py]."
