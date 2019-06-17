@@ -13,13 +13,13 @@ def install_and_import(package):
         if install_dependency.lower() == 'yes' or install_dependency.lower() == 'y':
             install_package(package)
     finally:
-        globals()[package] = importlib.import_module(package)
+        globals()[package] = importlib.import_module(package, __package__)
 
 
 def install_package(package):
     try:
         from pip._internal import main
-    except Exception:
+    except ModuleNotFoundError:
         from pip import main
     install_command = ['install']
     if os.geteuid() != 0:
@@ -31,7 +31,7 @@ def install_package(package):
 def uninstall_package(package):
     try:
         from pip._internal import main
-    except Exception:
+    except ModuleNotFoundError:
         from pip import main
     install_command = ['uninstall']
     if os.geteuid() != 0:

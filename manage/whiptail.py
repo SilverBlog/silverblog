@@ -1,5 +1,32 @@
 # whiptail.py - Use whiptail to display dialog boxes from shell scripts
-# Copyright (C) 2013 Marwan Alsabbagh
+# Copyright (c) 2013 by Marwan Alsabbagh and contributors.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without modification,
+# are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright
+#   notice, this list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above
+#   copyright notice, this list of conditions and the following
+#   disclaimer in the documentation and/or other materials provided
+#   with the distribution.
+#
+# * The names of the contributors may not be used to endorse or
+#   promote products derived from this software without specific
+#   prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+# ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Reall Computer modified 20171210
 
@@ -16,14 +43,6 @@ def flatten(data):
     return list(itertools.chain.from_iterable(data))
 
 
-command = None
-if os.system("command -v whiptail > /dev/null 2>&1") << 8 == 0:
-    command = 'whiptail'
-if os.system("command -v dialog > /dev/null 2>&1") << 8 == 0:
-    command = 'dialog'
-if command is None:
-    print("Please check if newt or dialog is installed.")
-    exit(1)
 
 class Whiptail(object):
     def __init__(self, title='', backtitle='', height=0, width=0,
@@ -33,11 +52,17 @@ class Whiptail(object):
         self.height = height
         self.width = width
         self.auto_exit = auto_exit
+        self.command = None
+        if os.system("command -v whiptail > /dev/null 2>&1") << 8 == 0:
+            self.command = 'whiptail'
+        if self.command is None:
+            print("Please check if newt is installed.")
+            exit(1)
 
     def run(self, control, msg, extra=(), exit_on=(1, 255)):
-        global command
+
         cmd = [
-            command, '--title', self.title, '--backtitle', self.backtitle,
+            self.command, '--title', self.title, '--backtitle', self.backtitle,
             '--' + control, msg, str(self.height), str(self.width)
         ]
         cmd += list(extra)
@@ -58,6 +83,9 @@ class Whiptail(object):
 
     def alert(self, msg):
         self.run('msgbox', msg)
+
+    def alert_muilt_line(self, msg):
+        self.run('msgbox', msg, ['--scrolltext'])
 
     def view_file(self, path):
         self.run('textbox', path, ['--scrolltext'])

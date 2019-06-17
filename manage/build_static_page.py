@@ -13,21 +13,22 @@ menu_list = list()
 template_config = dict()
 page_name_list = list()
 i18n = dict()
+static_file_dict = dict()
+@asyncio.coroutine
+def async_build_page(file_name, config, page_info, menu, template, i18n_config, static_file):
+    return page.build_page(file_name, config, page_info, menu, template, i18n_config, static_file)
 
 @asyncio.coroutine
-def async_build_page(file_name, system_config, page_info, menu_list, template_config, i18n):
-    return page.build_page(file_name, system_config, page_info, menu_list, template_config, i18n)
-
-@asyncio.coroutine
-def build_post_page(filename, page_name_list, page_list, system_config, menu_list, template_config, i18n):
+def build_post_page(filename, post_name, post_list, config, menu, template, i18n_config,
+                    static_file):
     file_name = os.path.basename(filename).replace(".md", "")
     console.log("Build", "Processing file: ./static_page/post/{0}.html".format(file_name))
     page_info = None
-    if file_name in page_name_list:
-        this_page_index = page_name_list.index(file_name)
-        page_info = page_list[this_page_index]
-    content = yield from async_build_page(file_name, system_config, page_info, menu_list,
-                                          template_config, i18n)
+    if file_name in post_name:
+        this_page_index = post_name.index(file_name)
+        page_info = post_list[this_page_index]
+    content = yield from async_build_page(file_name, config, page_info, menu,
+                                          template, i18n_config, static_file)
     if content is not None:
         yield from file.async_write_file("./static_page/post/{0}.html".format(file_name), content)
 
@@ -37,18 +38,29 @@ def async_json_loads(text):
 
 @asyncio.coroutine
 def get_system_config():
-    global system_config, template_config, i18n
+    global system_config, template_config, i18n, static_file_dict
     load_file = yield from file.async_read_file("./config/system.json")
     system_config = yield from async_json_loads(load_file)
-    del system_config["API_Password"]
     if len(system_config["Theme"]) == 0:
         console.log("Error",
                     "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
         exit(1)
-    if os.path.exists("./templates/{0}/config.json".format(system_config["Theme"])):
-        template_config_file = yield from file.async_read_file(
-            "./templates/{0}/config.json".format(system_config["Theme"]))
+    template_location = "./templates/{0}/".format(system_config["Theme"])
+    if os.path.exists(template_location + "config.json"):
+        template_config_file = yield from file.async_read_file(template_location + "config.json")
         template_config = yield from async_json_loads(template_config_file)
+
+    if os.path.exists(template_location + "cdn"):
+        cdn_config_file = None
+        if os.path.exists(template_location + "cdn/custom.json"):
+            cdn_config_file = template_location + "cdn/custom.json"
+        if cdn_config_file is None:
+            cdn_config_file = template_location + "cdn/local.json"
+            if system_config["Use_CDN"]:
+                cdn_config_file = template_location + "cdn/cdn.json"
+        cdn_file = yield from file.async_read_file(cdn_config_file)
+        static_file_dict = yield from async_json_loads(cdn_file)
+
     if os.path.exists("./templates/{}/i18n".format(system_config["Theme"])):
         i18n_name = "en-US"
         if "i18n" in system_config and len(system_config["i18n"]) != 0:
@@ -79,6 +91,7 @@ def load_config():
     global page_list, page_name_list, menu_list, page_list
     for item in page_list:
         page_name_list.append(item["name"])
+        page_list[page_list.index(item)]["time_raw"] = item["time"]
         page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
 
 
@@ -90,24 +103,28 @@ def publish():
 
     if not os.path.isdir("./static_page"):
         os.mkdir("./static_page")
-
+    if not os.path.exists("./static_page/CNAME"):
+        file.write_file("./static_page/CNAME",system_config["Project_URL"].replace("http://","").replace("https://","").replace("/",""))
     page_row = page.get_page_row(system_config["Paging"], len(page_list))
     os.mkdir("./static_page/index/")
     console.log("Build", "Processing file: ./static_page/index.html")
-    content = page.build_index(1, page_row, system_config, page_list, menu_list, template_config, i18n)
+    content = page.build_index(1, page_row, system_config, page_list, menu_list, template_config, i18n,
+                               static_file_dict)
     file.write_file("./static_page/index.html", content)
     if page_row != 1:
         file.write_file("./static_page/index/1.html", "<meta http-equiv='refresh' content='0.1; url=/'>")
         for page_id in range(2, page_row + 1):
             console.log("Build", "Processing file: ./static_page/index/{0}.html".format(str(page_id)))
-            content = page.build_index(page_id, page_row, system_config, page_list, menu_list, template_config, i18n)
+            content = page.build_index(page_id, page_row, system_config, page_list, menu_list, template_config, i18n,
+                                       static_file_dict)
             file.write_file("./static_page/index/{0}.html".format(str(page_id)), content)
 
     os.mkdir("./static_page/post/")
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     tasks = [
-        build_post_page(filename, page_name_list, page_list, system_config, menu_list, template_config, i18n)
+        build_post_page(filename, page_name_list, page_list, system_config, menu_list, template_config, i18n,
+                        static_file_dict)
         for filename in glob.glob("./document/*.md")]
     if len(tasks) != 0:
         loop.run_until_complete(asyncio.wait(tasks))
@@ -125,7 +142,7 @@ def publish():
     console.log("Success", "Create page success!")
 
     if not os.path.exists("./static_page/.git"):
-        return False
+        return True
     import git
     localtime = time.asctime(time.localtime(time.time()))
     try:
@@ -133,7 +150,7 @@ def publish():
         repo.git.add("--all")
         if not repo.is_dirty():
             console.log("Success", "Build complete,No changes found.")
-            return False
+            return True
         repo.git.commit("-m Release time：{0}".format(localtime))
     except git.exc.GitCommandError as e:
         console.log("Error", e.args[2].decode())

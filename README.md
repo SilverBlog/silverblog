@@ -1,10 +1,10 @@
 # SilverBlog
 
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/SilverBlogTeam/SilverBlog/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/SilverBlog/SilverBlog/blob/master/LICENSE)
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSilverBlogTeam%2Fsilverblog?ref=badge_shield)
 
-[中文版本](https://github.com/SilverBlogTeam/silverblog/blob/master/readme/zh-TW.md)
+[中文版本](https://github.com/SilverBlog/silverblog/wiki/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
 
 SilverBlog is a lightweight blog project based on Python3.
 
@@ -24,28 +24,20 @@ SilverBlog is a lightweight blog project based on Python3.
 We support `freebsd`,`debian(ubuntu)`, `fedora`, `alpine`, `arch linux` for direct deployment. For other systems, please use Docker deployment.
 You can install SilverBlog directly using the installation script:
 
-Global:
-
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)"
+bash -c "$(curl -fsSL https://get.silverblog.org/master/install/install.sh)"
 ```
 
-Custom:
+Custom installation name:
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/install.sh)" -n silverblog
-```
-
-China:
-
-```
-bash -c "$(curl -fsSL https://code.aliyun.com/silverblogteam/silverblog/raw/master/install/install.sh)" -n silverblog -c
+bash -c "$(curl -fsSL https://get.silverblog.org/master/install/install.sh)" -n silverblog
 ```
 
 Docker:
 
 ```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/SilverBlogTeam/SilverBlog/master/install/docker_install.sh)"
+bash -c "$(curl -fsSL https://get.silverblog.org/master/install/docker_install.sh)"
 ```
 
 If you are using a new install of Ubuntu 18.04, you may need to modify the `/etc/apt/source.list` file and add `universe` and `multiverse` software sources after `main`, which will ensure the installation will run smoothly. A correct configuration is as follows:
@@ -60,7 +52,7 @@ deb http://archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe 
 deb http://security.ubuntu.com/ubuntu bionic-security main restricted universe multiverse
 ```
 
-You can select a theme in [SilverBlogTheme](https://github.com/SilverBlogTheme), then use `./manage.py` to install the configuration and configure it correctly in the configuration file below.
+You can select a theme in [silverblog-theme](https://github.com/silverblog-theme), then use `./manage.py` to install the configuration and configure it correctly in the configuration file below.
 
 This installation script uses the nginx + uwsgi execution mode by default. You can put the auto-generated `nginx_config` file into your nginx package's website configuration directory. If you need to use a third-party web client, don't forget to modify the CORS configuration in `nginx_config`.
 
@@ -139,9 +131,9 @@ You can try using the `/example/.travis.yml` script for automated submission.
 
 Warning! If you need to use the SilverBlog client, make sure you use the https security protocol. Using http is like telling a password to a hacker! This may compromise your server security!
 
-You can download the latest android client at https://github.com/SilverBlogTeam/SilverBlog_Android/releases.
+You can download the latest android client at https://github.com/SilverBlog/SilverBlog_Android/releases.
 
-You can compile and deploy the https://github.com/SilverBlogTeam/silverblog_ios IOS client yourself.
+You can compile and deploy the https://github.com/SilverBlog/silverblog_ios IOS client yourself.
 
 You can use SilverCreator (https://c.silverblog.org) to manage your blog.
 
@@ -159,18 +151,18 @@ If you are not yet familiar with GitHub's Fork and Pull development model, you c
 
 We recommend that you use the Chinese language to raise an issue, and attach an English translation below to make it easier for non-Chinese native language developers to read and understand.
 
-## About access acceleration in Asia
-
-You can replace your repository source by executing the following command, which will speed up your update: (Asian region service is provided by gitee.com)
-
-```
-git remote set-url origin https://gitee.com/qwe7002/silverblog.git
-```
-
-You can use the registry accelerator provided by Alibaba Cloud to speed up the image download, and modify the image to `registry.cn-hangzhou.aliyuncs.com/silverblog/silverblog`
-
 ## Thanks
 
 Thanks to [@Liqueur Librazy](https://github.com/Librazy) for providing the demo program server for this project.
 
 Thanks [Jetbrains](https://www.jetbrains.com/) for providing a free All product IDE for this project
+
+## Give a cup of coffee and let me better maintain this project?
+
+- [Support me in Paypal](https://paypal.me/nico_ranshi)
+
+- Support me in Bitcoin (**17wmCCzy7hSSENnRBfUBMUSi7kdHYePrae**)
+
+- [Support me in Cloud QuickPass](https://static.reallct.com/2019/02/21/5c6d812840bac.png)
+
+Your donation will make me work better for this project.

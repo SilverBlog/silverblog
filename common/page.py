@@ -8,7 +8,8 @@ from common import file, markdown, post_map
 
 env = Environment(loader=PackageLoader('init', 'templates'))
 
-def format_datetime(value, format='%Y-%m-%d %H:%M'):
+
+def format_datetime(value, format='%Y-%m-%dT%H:%M:%SZ'):
     return str(time.strftime(format, value))
 
 def get_i18n_value(i18n, value):
@@ -28,7 +29,10 @@ def get_page_row(paging, page_list_len):
         page_row = 1
     return page_row
 
-def build_index(page, page_row, system_config, page_list, menu_list, template_config, i18n=None):
+
+def build_index(page, page_row, system_config, page_list, menu_list, template_config, i18n=None, static_file_list=None):
+    if static_file_list is None:
+        static_file_list = dict()
     page_info = {"title": "index"}
     paging = system_config["Paging"]
     start_num = -paging + (int(page) * paging)
@@ -42,20 +46,23 @@ def build_index(page, page_row, system_config, page_list, menu_list, template_co
                              system_config=system_config,
                              template_config=template_config,
                              page_row=page_row,
-                             now_page=page, now_time=time.localtime(), i18n=i18n)
+                             now_page=page, now_time=time.localtime(), i18n=i18n, static_file=static_file_list)
     return result
 
-def build_page(name, system_config, page_info, menu_list, template_config, i18n=None):
+
+def build_page(name, system_config, page_info, menu_list, template_config, i18n=None, static_file_list=None):
     content = file.read_file("./document/{0}.md".format(name))
     if page_info is None:
         page_info = {"title": "undefined"}
     if os.path.exists("./document/{0}.json".format(name)):
         page_info = json.loads(file.read_file("document/{0}.json".format(name)))
         if "time" in page_info:
+            page_info["time_raw"] = page_info["time"]
             page_info["time"] = str(post_map.build_time(page_info["time"], system_config))
-    document = markdown.markdown(content)
+
+    document = markdown.markdown(system_config,content)
     template = env.get_template("./{0}/post.html".format(system_config["Theme"]))
     result = template.render(page_info=page_info, menu_list=menu_list, content=document,
                              system_config=system_config, template_config=template_config,
-                             now_time=time.localtime(), i18n=i18n)
+                             now_time=time.localtime(), i18n=i18n, static_file=static_file_list)
     return result

@@ -1,40 +1,30 @@
-print("If the upgrade process fails, please re-upgrade")
 import json
 import os
-import shutil
 
-def read_file(filename):
-    f = open(filename, newline=None)
-    content = f.read()
-    return content
+from common import file
 
-def write_file(filename, content):
-    f = open(filename, "w", newline=None)
-    f.write(content)
-    f.close()
 
 def change_time_fomart(list_item):
     import time
-    system_info = json.loads(read_file("./config/system.json"))
+    system_info = json.loads(file.read_file("./config/system.json"))
     if "time" in list_item and isinstance(list_item["time"], str):
         list_item["time"] = time.mktime(time.strptime(list_item["time"], system_info["Time_Format"]))
     return list_item
 
-shutil.copyfile("./config/page.json", "./config/page.json.bak")
-write_json = json.loads(read_file("./config/page.json"))
-write_json = list(map(change_time_fomart, write_json))
-write_file("./config/page.json", file.json_format_dump(write_json))
 
-for filename in os.listdir("./document/"):
-    if filename.endswith(".json"):
-        write_json = json.loads(read_file("./document/" + filename))
-        write_json = change_time_fomart(write_json)
-        write_file("./document/" + filename, file.json_format_dump(write_json))
+def main():
+    if not os.path.exists("./backup"):
+        os.mkdir("./backup")
+    shutil.copytree("./config", "./backup/config")
+    shutil.copytree("./document", "./backup/document")
+    if os.path.exists("./templates/static/user_file"):
+        shutil.copytree("./templates/static/user_file", "./backup/static/user_file")
+    write_json = json.loads(file.read_file("./config/page.json"))
+    write_json = list(map(change_time_fomart, write_json))
+    file.write_file("./config/page.json", file.json_format_dump(write_json))
 
-os.system("cd ./install && bash install_python_dependency.sh")
-print("You can now remove the pypinyin support library")
-uninstall_dependency = input('Do you want to uninstall pypinyin now? [y/N]')
-if uninstall_dependency.lower() == 'yes' or uninstall_dependency.lower() == 'y':
-    os.system("sudo python3 -m pip uninstall pypinyin")
-print("We modified the startup script, please redeploy the startup script.")
-print("The template format has been modified. Please upgrade the template.")
+    for filename in os.listdir("./document/"):
+        if filename.endswith(".json"):
+            write_json = json.loads(file.read_file("./document/" + filename))
+            write_json = change_time_fomart(write_json)
+            file.write_file("./document/" + filename, json_format_dump(write_json))

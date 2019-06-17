@@ -52,6 +52,13 @@ if [[  -f "/etc/systemd/system/silverblog_control.service" ]]; then
 fi
 
 
+if [[  -f "/etc/systemd/system/${install_name}@.service" ]]; then
+    echo "Found old configuration file is being deleted."
+    ${use_superuser} systemctl disable ${install_name}@
+    ${use_superuser} systemctl stop ${install_name}@main
+    ${use_superuser} systemctl stop ${install_name}@control
+fi
+
 ${use_superuser} bash -c "cat << EOF >/etc/systemd/system/${install_name}@.service
 [Unit]
 Description=${install_name} server daemon

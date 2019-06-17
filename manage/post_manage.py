@@ -3,6 +3,7 @@ import json
 import os
 import shutil
 import time
+import uuid
 
 from common import file, console
 from manage import get
@@ -15,10 +16,13 @@ def new_post(config, independent=False):
     system_info = json.loads(file.read_file("./config/system.json"))
     title = config["title"]
     name = get.filter_name(config["name"])
+    post_uuid = str(uuid.uuid5(uuid.NAMESPACE_URL, name))
+    if "uuid" in config:
+        post_uuid = config["uuid"]
     if not os.path.exists("./document/{}.md".format(name)):
         editor = system_info["Editor"]
         os.system("{0} ./document/{1}.md".format(editor, name))
-    post_info = {"name": name, "title": title, "time": time.time()}
+    post_info = {"uuid": post_uuid, "name": name, "title": title, "time": round(time.time())}
     if not os.path.exists("./document/{}.md".format(name)):
         console.log("Error", "Cannot find [./document/{}.md]".format(name))
         exit(1)
@@ -39,34 +43,36 @@ def new_post(config, independent=False):
     console.log("Success", "Create a new article successfully!")
 
 
-def edit_post(page_list, post_index, config, editor=None, is_menu=False):
-    if page_list[post_index]["name"] is not config["name"]:
-        safe_name = get.filter_name(config["name"])
-        shutil.move("./document/{}.md".format(page_list[post_index]["name"]),
+def edit_post(post_list, post_index, config, editor=None, is_menu=False):
+    safe_name = get.filter_name(config["name"])
+    if post_list[post_index]["name"] is not config["name"]:
+        shutil.move("./document/{}.md".format(post_list[post_index]["name"]),
                     "./document/{}.md".format(safe_name))
-        if os.path.exists("./document/{}.json".format(page_list[post_index]["name"])):
-            shutil.move("./document/{}.json".format(page_list[post_index]["name"]),
+        if os.path.exists("./document/{}.json".format(post_list[post_index]["name"])):
+            shutil.move("./document/{}.json".format(post_list[post_index]["name"]),
                         "./document/{}.json".format(safe_name))
             config_file = json.loads(file.read_file("./document/{}.json".format(safe_name)))
             config_file["title"] = config["title"]
+            if "time" in config:
+                config_file = config["time"]
             file.write_file("./document/{}.json".format(safe_name),
                             file.json_format_dump(config_file))
-        page_list[post_index]["name"] = safe_name
+        post_list[post_index]["name"] = safe_name
     if editor is not None:
         os.system("{0} ./document/{1}.md".format(editor, safe_name))
-    page_list[post_index]["title"] = config["title"]
+    post_list[post_index]["title"] = config["title"]
     file_url = "./config/page.json"
     if is_menu:
         file_url = "./config/menu.json"
-    file.write_file(file_url, file.json_format_dump(page_list))
+    file.write_file(file_url, file.json_format_dump(post_list))
     console.log("Success", "Edit a new article successfully!")
 
 
-def delete_post(page_list, post_index):
-    file_name = page_list[post_index]["name"]
-    meta_backup = page_list[post_index]
-    del page_list[post_index]
-    file.write_file("./config/page.json", file.json_format_dump(page_list))
+def delete_post(post_list, post_index):
+    file_name = post_list[post_index]["name"]
+    meta_backup = post_list[post_index]
+    del post_list[post_index]
+    file.write_file("./config/page.json", file.json_format_dump(post_list))
     if not os.path.exists("./trash"):
         os.mkdir("./trash")
     check_file("{}.md".format(file_name))
