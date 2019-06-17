@@ -8,7 +8,7 @@ from common import console
 def get_orgs_list():
     console.log("Info", "Getting the list of theme...")
     try:
-        return requests.get("https://api.github.com/orgs/silverblogtheme/repos").json()
+        return requests.get("https://api.github.com/orgs/silverblog-theme/repos").json()
     except  requests.exceptions.RequestException:
         console.log("Error", "Get the theme list error.")
         exit(1)
@@ -31,7 +31,7 @@ def install_theme(name, custom):
         if running_in_root.lower() != 'y':
             exit(0)
     console.log("Info", "Getting the theme installation script...")
-    install_script_url = "https://raw.githubusercontent.com/silverblogtheme/{}/master/install.sh".format(name)
+    install_script_url = "https://raw.githubusercontent.com/silverblog-theme/{}/master/install.sh".format(name)
     if custom:
         install_script_url = name
     try:
