@@ -26,10 +26,8 @@ def install_package(package):
 
 
 def uninstall_package(package):
-    try:
-        from pip._internal import main
-    except ModuleNotFoundError:
-        from pip import main
+
+    from pip import main
     install_command = ['uninstall']
     if os.geteuid() != 0:
         install_command.append("--user")
