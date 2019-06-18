@@ -23,7 +23,7 @@ build_demo:
     - curl https://keystore.reallserver.cn/gitlab-sshkey/id_ecdsa -o deploy.key -u gitlab:${key_store_passwd}
     - chmod 0600 deploy.key
     - ssh-add deploy.key
-    - ssh qwe7002@tw.silverblog.org "cd silverblog && docker-compose down && docker-compose pull && docker-compose up -d"
+    - ssh qwe7002@tw.silverblog.org "cd silverblog && docker-compose pull && docker-compose up -d"
 
 build_docker:
   services:
