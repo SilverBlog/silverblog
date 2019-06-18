@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -o errexit
+# shellcheck disable=SC2046
 if test $(ps h -o comm -p $$) = "sh"; then
     echo "Please use bash to execute this script."
     exit 1
@@ -65,13 +66,15 @@ EOF
 fi
 
 
+# shellcheck disable=SC2046
 if test $(ps h -o comm -p $$) = "bash"; then
 shell_config_file="$HOME/.bashrc"
 if [[ -f "$HOME/.bash_profile" ]]; then
-shell_config_file="~/.bash_profile"
+shell_config_file="$HOME/.bash_profile"
 fi
 fi
 
+# shellcheck disable=SC2046
 if test $(ps h -o comm -p $$) = "zsh"; then
 if [[ -f "$HOME/.zshrc" ]]; then
 shell_config_file="$HOME/.zshrc"
@@ -80,11 +83,13 @@ fi
 
 read -p  "add command [${install_name}] to quickly launch SilverBlog? (y/N)" yn
 if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
-echo -e "\n> echo \"${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}\" >> ${shell_config_file}"
+echo -e "> echo \"${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}\" >> ${shell_config_file}"
 echo "${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}" >> ${shell_config_file}
+echo -e "\nTo get started you need Silverblog's bin directory (${shell_config_file}) in your PATH\n
+environment variable. Next time you log in this will be done automatically.\n\n
+To configure your current shell run source ${shell_config_file}"
 fi
 
 echo -e "\n> Silverblog successfully installed."
 echo -e "\nYou need to perform [./manage.py] to initialize your silverblog environment."
-echo -e "\nIMPORTANT: OPEN A NEW TERMINAL TAB/WINDOW or run `. ${shell_config_file}`before using Silverblog."
 echo -e "\nYou can generate an nginx configuration file using [./install/gen_nginx.py]."

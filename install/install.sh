@@ -2,6 +2,7 @@
 
 set -o errexit
 
+# shellcheck disable=SC2046
 if test $(ps h -o comm -p $$) = "sh"; then
     echo "Please use bash to execute this script."
     exit 1
@@ -186,13 +187,15 @@ EOF
 fi
 fi
 
+# shellcheck disable=SC2046
 if test $(ps h -o comm -p $$) = "bash"; then
 shell_config_file="$HOME/.bashrc"
 if [[ -f "$HOME/.bash_profile" ]]; then
-shell_config_file="~/.bash_profile"
+shell_config_file="/.bash_profile"
 fi
 fi
 
+# shellcheck disable=SC2046
 if test $(ps h -o comm -p $$) = "zsh"; then
 if [[ -f "$HOME/.zshrc" ]]; then
 shell_config_file="$HOME/.zshrc"
@@ -210,5 +213,4 @@ fi
 
 echo -e "> Silverblog successfully installed."
 echo -e "\nYou need to perform [./manage.py] to initialize your silverblog environment."
-echo -e "\nIMPORTANT: OPEN A NEW TERMINAL TAB/WINDOW or run `. ${shell_config_file}`before using Silverblog."
 echo -e "\nYou can generate an nginx configuration file using [./install/gen_nginx.py]."
