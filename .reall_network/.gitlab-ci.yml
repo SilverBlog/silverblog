@@ -57,7 +57,7 @@ build_test_env:
   tags:
     - docker-build
   only:
-    - develop
+    - nightly
   when: manual
   script:
     - docker build -t registry.git.reallserver.cn/${docker_tag_name}:test_env ./.develop/unit_test/Dockerfile .
@@ -68,7 +68,7 @@ unit_test_develop:
   image: registry.git.reallserver.cn/${docker_tag_name}:test_env
   stage: test
   only:
-    - develop
+    - nightly
   tags:
     - docker-build
   script:
