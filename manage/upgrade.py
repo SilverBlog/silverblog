@@ -55,7 +55,7 @@ def upgrade_pull():
 
 def upgrade_env():
     from install import install_denpendency
-    install_denpendency.main()
+    install_denpendency.install()
     console.log("Success", "Upgrade env Successful!")
 
 def upgrade_data():

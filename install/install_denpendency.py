@@ -3,11 +3,8 @@ import os
 import sys
 import importlib
 
-def main():
-    try:
-        from pip._internal import main as pip_main
-    except ModuleNotFoundError:
-        from pip import main as pip_main
+def install():
+    from pip import main as pip_main
     install_command = ['install', "-U"]
     if os.geteuid() != 0:
         print("The current user is not root and is installed in user mode.")
@@ -31,4 +28,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    install()
