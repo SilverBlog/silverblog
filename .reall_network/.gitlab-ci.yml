@@ -36,7 +36,6 @@ build_docker:
   script:
     - docker build -t ${docker_tag_name} -f ./example/Dockerfile .
     - docker login -u qwe7002 -p ${docker_hub_passwd}
-    - docker tag ${docker_tag_name} registry.cn-hangzhou.aliyuncs.com/${docker_tag_name}
     - docker push ${docker_tag_name}
 
 release_github:
