@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.8
 # > At the moment, setting "LANG=C" on a Linux system *fundamentally breaks Python 3*, and that's not OK.
 ENV LANG C.UTF-8
 ENV DOCKER_CONTAINER yes
@@ -13,5 +13,5 @@ RUN python3 -m pip install -U pip \
 && apk add --no-cache musl-dev gcc python3-dev \
 && python3 -m pip install supervisor \
 && python3 -m pip install Flask hoedown xpinyin pyrss2gen gitpython requests watchdog
-RUN addgroup silverblog && useradd -r -g silverblog silverblog
+RUN groupadd -r silverblog && useradd -r -g silverblog silverblog
 USER silverblog
