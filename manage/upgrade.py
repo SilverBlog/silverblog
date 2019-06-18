@@ -56,7 +56,7 @@ def upgrade_pull():
 def upgrade_env():
     from install import install_denpendency
     install_denpendency.main()
-    console.log("Success", "Upgrade data Successful!")
+    console.log("Success", "Upgrade env Successful!")
 
 def upgrade_data():
     if current_data_version != new_data_version:
