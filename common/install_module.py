@@ -26,7 +26,6 @@ def install_package(package):
 
 
 def uninstall_package(package):
-
     from pip import main
     install_command = ['uninstall']
     if os.geteuid() != 0:
