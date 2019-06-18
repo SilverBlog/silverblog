@@ -18,12 +18,12 @@ def install():
     try:
         importlib.import_module("qrcode_terminal")
     except ImportError:
-        install_qrcode_dependency = "n"
+        install_dependency = "n"
         try:
-            install_qrcode_dependency = str(input("Do you want to install [qrcode_terminal] to support QR code login? (y/N)"))
+            install_dependency = str(input("Do you want to install [qrcode_terminal] to support QR code login? (y/N)"))
         except EOFError:
             print("N")
-        if install_qrcode_dependency.lower() == 'y':
+        if install_dependency.lower() == 'y':
             install_command.append("qrcode_terminal")
     install_command.extend(["Flask", "hoedown", "xpinyin", "pyrss2gen", "gitpython", "requests", "watchdog"])
     pip_main(install_command)
