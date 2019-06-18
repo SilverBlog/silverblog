@@ -20,7 +20,7 @@ build_demo:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.git.reallserver.cn
     - docker push registry.git.reallserver.cn/${docker_tag_name}:demo
     - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" > deploy.key
+    - curl https://keystore.reallserver.cn/gitlab-sshkey/id_ecdsa -o deploy.key -u gitlab:${key_store_passwd}
     - chmod 0600 deploy.key
     - ssh-add deploy.key
     - ssh qwe7002@tw.silverblog.org "cd silverblog && docker-compose down && docker-compose pull && docker-compose up -d"
@@ -42,7 +42,7 @@ release_github:
   stage: deploy
   script:
     - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" > deploy.key
+    - curl https://keystore.reallserver.cn/gitlab-sshkey/id_ecdsa -o deploy.key -u gitlab:${key_store_passwd}
     - chmod 0600 deploy.key
     - ssh-add deploy.key
     - git push --set-upstream git@github.com:SilverBlogTeam/silverblog.git HEAD:refs/heads/$CI_COMMIT_REF_NAME
