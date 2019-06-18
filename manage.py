@@ -91,7 +91,7 @@ if __name__ == '__main__':
                 if upgrade.upgrade_check():
                     start_to_pull="n"
                     if not args.yes:
-                        start_to_pull = input('Find new version, do you want to upgrade? [y/N]')
+                        start_to_pull = input('Found new version, do you want to upgrade? [y/N]')
                     if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y' or args.yes:
                         upgrade.upgrade_pull()
                 is_git = True

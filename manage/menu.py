@@ -140,7 +140,7 @@ def upgrade_system():
     from manage import upgrade
     dialog.title = "Upgrade"
     upgrade_check = upgrade.upgrade_check()
-    if upgrade_check and dialog.confirm("Find new version, do you want to upgrade?", "no"):
+    if upgrade_check and dialog.confirm("Found new version, do you want to upgrade?", "no"):
         upgrade.upgrade_pull()
     if not upgrade_check:
         dialog.alert("No upgrade found.")
