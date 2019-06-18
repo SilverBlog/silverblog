@@ -119,7 +119,7 @@ fi
 if [[ ! -f "initialization.sh" ]]; then
     if [[ ! -d ${install_name} ]]; then
         echo -e "\nCloning silverblog..."
-        git clone https://github.com/silverblogteam/silverblog.git --depth=1 ${install_name}
+        git clone https://github.com/silverblogteam/silverblog.git ${install_name}
     fi
     mv install.lock ${install_name}/install/install.lock
 

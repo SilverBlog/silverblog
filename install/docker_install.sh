@@ -29,7 +29,7 @@ done
 if [[ ! -f "initialization.sh" ]]; then
     if [[ ! -d ${install_name} ]]; then
         echo "Cloning silverblog..."
-        git clone https://github.com/SilverBlogTeam/SilverBlog.git --depth=1 ${install_name}
+        git clone https://github.com/SilverBlogTeam/SilverBlog.git ${install_name}
     fi
     cd ${install_name}
     echo "Change directory to $(pwd)"
