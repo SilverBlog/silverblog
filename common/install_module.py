@@ -17,18 +17,24 @@ def install_and_import(package):
 
 
 def install_package(package):
-    from pip import main
+    try:
+        from pip import main as pip_main
+    except ImportError:
+        from pip._internal import main as pip_main
     install_command = ['install']
     if os.geteuid() != 0:
         install_command.append("--user")
     install_command.append(package)
-    main(install_command)
+    pip_main(install_command)
 
 
 def uninstall_package(package):
-    from pip import main
+    try:
+        from pip import main as pip_main
+    except ImportError:
+        from pip._internal import main as pip_main
     install_command = ['uninstall']
     if os.geteuid() != 0:
         install_command.append("--user")
     install_command.append(package)
-    main(install_command)
+    pip_main(install_command)

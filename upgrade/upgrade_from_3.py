@@ -1,3 +1,7 @@
+if __name__ == '__main__':
+    print("The upgrade script has changed. You need to execute the upgrade command again to update the data structure.")
+    exit(0)
+
 import hashlib
 import hmac
 import json
