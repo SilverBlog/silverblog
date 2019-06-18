@@ -12,7 +12,7 @@ RUN apk upgrade --no-cache \
 RUN python3 -m pip install -U pip \
 && apk add --no-cache musl-dev gcc python3-dev \
 && python3 -m pip install supervisor \
-&& python3 install/install_denpendency.py
+&& python3 -m Flask hoedown xpinyin pyrss2gen gitpython requests watchdog qrcode_terminal
 
 RUN groupadd -r silverblog && useradd -r -g silverblog silverblog
 USER silverblog

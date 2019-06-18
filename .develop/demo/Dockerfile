@@ -17,7 +17,7 @@ RUN pip3 install supervisor
 
 COPY ./ /home/silverblog
 
-RUN  python3 install/install_denpendency.py \
+RUN python3 install/install_denpendency.py \
 && ln -s /home/silverblog/.develop/demo/nginx_config /etc/nginx/sites-enabled/ \
 && echo "{\"install\":\"demo\"}" > install/install.lock \
 && bash /home/silverblog/install/initialization.sh \
