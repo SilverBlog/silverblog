@@ -1,7 +1,7 @@
 {
   "uwsgi": {
     "socket": "./config/unix_socks/main.sock",
-    "processes": 2,
+    "processes": 4,
     "threads": 4,
     "plugins": "python3",
     "master": true,
@@ -12,7 +12,7 @@
   "control": {
     "socket": "./config/unix_socks/control.sock",
     "processes": 1,
-    "threads": 2,
+    "threads": 4,
     "plugins": "python3",
     "master": true,
     "module": "control_server",
