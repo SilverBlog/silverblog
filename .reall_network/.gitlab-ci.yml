@@ -59,7 +59,7 @@ build_test_env:
     - nightly
   when: manual
   script:
-    - docker build -t registry.git.reallserver.cn/${docker_tag_name}:test_env ./.develop/unit_test/Dockerfile .
+    - docker build -t registry.git.reallserver.cn/${docker_tag_name}:test_env -f ./.develop/unit_test/Dockerfile .
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.git.reallserver.cn
     - docker push registry.git.reallserver.cn/${docker_tag_name}:test_env
 
