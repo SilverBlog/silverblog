@@ -27,37 +27,6 @@ while getopts "n:c:" arg; do
     esac
 done
 
-function build_uwsgi_install(){
-    if [[ ! -f "/usr/local/bin/uwsgi" ]]; then
-        ${use_superuser} portsnap fetch extract update
-        set +o errexit
-        cd /usr/ports/devel/jansson/
-        echo "Change directory to $(pwd)"
-        ${use_superuser} make install clean
-        cd -
-        echo "Change directory to $(pwd)"
-        set -o errexit
-        echo "Downloading latest uWSGI tarball..."
-        curl -o uwsgi_latest_from_installer.tar.gz http://projects.unbit.it/downloads/uwsgi-latest.tar.gz
-        mkdir uwsgi_latest_from_installer
-        tar zvxC uwsgi_latest_from_installer --strip-components=1 -f uwsgi_latest_from_installer.tar.gz
-        rm uwsgi_latest_from_installer.tar.gz
-        cd uwsgi_latest_from_installer
-        echo "Change directory to $(pwd)"
-        ${use_superuser} python3 uwsgiconfig.py --build
-        ${use_superuser} mv uwsgi /usr/local/bin/uwsgi
-        cd ..
-        echo "Change directory to $(pwd)"
-        rm -rf uwsgi_latest_from_installer
-    fi
-
-}
-
-function build_pip_install(){
-    curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py
-    ${use_superuser} python3 get-pip.py
-    rm get-pip.py
-}
 
 use_superuser=""
 if [[ $UID -ne 0 ]]; then
@@ -78,8 +47,44 @@ if command -v pkg >/dev/null 2>&1; then
     echo "The current package manager is pkg"
     echo "> ${use_superuser} pkg install newt nginx git python3"
     ${use_superuser} pkg install newt nginx git python3
-    build_uwsgi_install
-    build_pip_install
+    if [[ ! -f "/usr/local/bin/uwsgi" ]]; then
+        echo "> ${use_superuser} portsnap fetch extract update"
+        ${use_superuser} portsnap fetch extract update
+
+        set +o errexit
+        cd /usr/ports/devel/jansson/
+        echo "Change directory to $(pwd)"
+        echo "> ${use_superuser} make install clean"
+        ${use_superuser} make install clean
+        cd -
+        echo "Change directory to $(pwd)"
+        set -o errexit
+        echo "Downloading latest uWSGI tarball..."
+        echo "> curl -o uwsgi_latest_from_installer.tar.gz http://projects.unbit.it/downloads/uwsgi-latest.tar.gz"
+        curl -o uwsgi_latest_from_installer.tar.gz http://projects.unbit.it/downloads/uwsgi-latest.tar.gz
+        echo "> mkdir uwsgi_latest_from_installer"
+        mkdir uwsgi_latest_from_installer
+        echo "> tar zvxC uwsgi_latest_from_installer --strip-components=1 -f uwsgi_latest_from_installer.tar.gz"
+        tar zvxC uwsgi_latest_from_installer --strip-components=1 -f uwsgi_latest_from_installer.tar.gz
+        echo "> rm uwsgi_latest_from_installer.tar.gz"
+        rm uwsgi_latest_from_installer.tar.gz
+        cd uwsgi_latest_from_installer
+        echo "Change directory to $(pwd)"
+        echo "> ${use_superuser} python3 uwsgiconfig.py --build"
+        ${use_superuser} python3 uwsgiconfig.py --build
+        echo "> ${use_superuser} mv uwsgi /usr/local/bin/uwsgi"
+        ${use_superuser} mv uwsgi /usr/local/bin/uwsgi
+        cd ..
+        echo "Change directory to $(pwd)"
+        echo "> rm -rf uwsgi_latest_from_installer"
+        rm -rf uwsgi_latest_from_installer
+    fi
+    echo "> curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py"
+    curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py
+    echo "> ${use_superuser} python3 get-pip.py"
+    ${use_superuser} python3 get-pip.py
+    echo "> rm get-pip.py"
+    rm get-pip.py
     echo "{\"install\":\"pkg\"}" > install.lock
 fi
 
