@@ -100,7 +100,6 @@ if [[ ! -f "initialization.sh" ]]; then
     git fetch
     cd install
     echo "Change directory to $(pwd)"
-
 fi
 
 echo -e "> ./install_denpendency.py"

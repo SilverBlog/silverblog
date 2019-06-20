@@ -28,10 +28,10 @@ You can install SilverBlog directly using the installation script:
 bash -c "$(curl -fsSL https://get.silverblog.org/master/install/install.sh)"
 ```
 
-Custom installation name:
+Custom:
 
 ```
-bash -c "$(curl -fsSL https://get.silverblog.org/master/install/install.sh)" -n silverblog
+bash -c "$(curl -fsSL https://get.silverblog.org/master/install/install.sh)" -n silverblog -c nightly
 ```
 
 BSD:
