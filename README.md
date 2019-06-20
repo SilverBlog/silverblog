@@ -34,6 +34,12 @@ Custom installation name:
 bash -c "$(curl -fsSL https://get.silverblog.org/master/install/install.sh)" -n silverblog
 ```
 
+BSD:
+
+```
+bash -c "$(curl -fsSL https://get.silverblog.org/master/install/bsd_install.sh)"
+```
+
 Docker:
 
 ```

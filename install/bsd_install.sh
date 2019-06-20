@@ -10,15 +10,18 @@ fi
 
 
 install_name="silverblog"
-
-while getopts "n" arg; do
+install_branch="master"
+while getopts "n:c:" arg; do
     case ${arg} in
          n)
             install_name=$OPTARG
             ;;
+         c)
+            install_branch=$OPTARG
+            ;;
          ?)
             echo "Unknown argument"
-            echo "use ./install.sh [-n <project name>] [-c]"
+            echo "use ./bsd_install.sh [-n <project name>] [-c <Install channel name>]"
             exit 1
             ;;
     esac
@@ -88,7 +91,7 @@ fi
 if [[ ! -f "initialization.sh" ]]; then
     if [[ ! -d ${install_name} ]]; then
         echo -e "\nCloning silverblog..."
-        git clone https://github.com/silverblogteam/silverblog.git ${install_name}
+        git clone -b ${install_branch} https://github.com/silverblog/silverblog.git ${install_name}
     fi
     mv install.lock ${install_name}/install/install.lock
 

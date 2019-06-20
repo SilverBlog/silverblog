@@ -21,7 +21,7 @@ do
             ;;
         ?)
             echo "Unknown argument"
-            echo "use ./systemd_install.sh -u <user> -n <project name>"
+            echo "use ./systemd_install.sh [-u <user>] [-n <project name>]"
             exit 1
             ;;
     esac
