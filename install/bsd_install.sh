@@ -24,6 +24,37 @@ while getopts "n" arg; do
     esac
 done
 
+function build_uwsgi_install(){
+    if [[ ! -f "/usr/local/bin/uwsgi" ]]; then
+        ${use_superuser} portsnap fetch extract update
+        set +o errexit
+        cd /usr/ports/devel/jansson/
+        echo "Change directory to $(pwd)"
+        ${use_superuser} make install clean
+        cd -
+        echo "Change directory to $(pwd)"
+        set -o errexit
+        echo "Downloading latest uWSGI tarball..."
+        curl -o uwsgi_latest_from_installer.tar.gz http://projects.unbit.it/downloads/uwsgi-latest.tar.gz
+        mkdir uwsgi_latest_from_installer
+        tar zvxC uwsgi_latest_from_installer --strip-components=1 -f uwsgi_latest_from_installer.tar.gz
+        rm uwsgi_latest_from_installer.tar.gz
+        cd uwsgi_latest_from_installer
+        echo "Change directory to $(pwd)"
+        ${use_superuser} python3 uwsgiconfig.py --build
+        ${use_superuser} mv uwsgi /usr/local/bin/uwsgi
+        cd ..
+        echo "Change directory to $(pwd)"
+        rm -rf uwsgi_latest_from_installer
+    fi
+
+}
+
+function build_pip_install(){
+    curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py
+    ${use_superuser} python3 get-pip.py
+    rm get-pip.py
+}
 
 use_superuser=""
 if [[ $UID -ne 0 ]]; then
@@ -40,36 +71,13 @@ fi
 
 echo -e "\nInstalling Dependency..."
 
-if command -v apt-get >/dev/null 2>&1; then
-    echo "The current package manager is apt-get"
-    echo "> ${use_superuser} apt-get update"
-    ${use_superuser} apt-get update
-    echo "> ${use_superuser} apt-get install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git"
-    ${use_superuser} apt-get install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git
-    echo "{\"install\":\"apt-get\"}" > install.lock
-fi
-
-if command -v pacman >/dev/null 2>&1; then
-    echo "The current package manager is pacman"
-    echo "> ${use_superuser} pacman -S nginx uwsgi python python-pip python-wheel libnewt uwsgi-plugin-python git gcc"
-    ${use_superuser} pacman -S nginx uwsgi python python-pip python-wheel libnewt uwsgi-plugin-python git gcc
-    echo "{\"install\":\"pacman\"}" > install.lock
-fi
-
-if command -v dnf >/dev/null 2>&1; then
-    echo "The current package manager is dnf"
-    echo "> ${use_superuser} dnf install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-devel python3-wheel git gcc redhat-rpm-config"
-    ${use_superuser} dnf install nginx uwsgi uwsgi-plugin-python3 python3-pip python3-devel python3-wheel git gcc redhat-rpm-config
-    echo "{\"install\":\"dnf\"}" > install.lock
-fi
-
-if command -v apk >/dev/null 2>&1; then
-    echo "The current package manager is apk"
-    echo "> ${use_superuser} apk add --no-cache --update procps"
-    ${use_superuser} apk add --no-cache --update procps
-    echo "> ${use_superuser} apk add --no-cache python3 python3-dev git uwsgi uwsgi-python3 newt ca-certificates musl-dev gcc python3-dev nginx"
-    ${use_superuser} apk add --no-cache python3 python3-dev git uwsgi uwsgi-python3 newt ca-certificates musl-dev gcc python3-dev nginx
-    echo "{\"install\":\"apk\"}" > install.lock
+if command -v pkg >/dev/null 2>&1; then
+    echo "The current package manager is pkg"
+    echo "> ${use_superuser} pkg install newt nginx git python3"
+    ${use_superuser} pkg install newt nginx git python3
+    build_uwsgi_install
+    build_pip_install
+    echo "{\"install\":\"pkg\"}" > install.lock
 fi
 
 
