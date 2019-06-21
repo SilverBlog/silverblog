@@ -60,7 +60,7 @@ def make_rss(project_name, project_url, project_description, page_list, system_c
         lastBuildDate=datetime.datetime.now(),
         items=rss_item_list,
         generator="SilverBlog",
-        docs="https://github.com/SilverBlogTeam")
+        docs="https://silverblog.org")
     return rss.to_xml(encoding='utf-8')
 
 def build_rss():
