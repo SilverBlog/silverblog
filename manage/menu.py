@@ -142,10 +142,10 @@ def upgrade_system():
     upgrade_check = upgrade.upgrade_check()
     if upgrade_check and dialog.confirm("Found new version, do you want to upgrade?", "no"):
         upgrade.upgrade_pull()
+        upgrade.upgrade_env()
+        upgrade.upgrade_data()
     if not upgrade_check:
         dialog.alert("No upgrade found.")
-    upgrade.upgrade_env()
-    upgrade.upgrade_data()
     exit(0)
 
 def select_list(list_name):

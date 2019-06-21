@@ -88,10 +88,10 @@ if __name__ == '__main__':
 
             is_git = False
             upgrade_check_status = False
+            start_to_pull = "n"
             if upgrade.check_is_git():
                 upgrade_check_status = upgrade.upgrade_check()
                 if upgrade_check_status:
-                    start_to_pull="n"
                     if not args.yes:
                         start_to_pull = input('Found new version, do you want to upgrade? [y/N]')
                     if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y' or args.yes:
@@ -99,8 +99,9 @@ if __name__ == '__main__':
                 is_git = True
             if not is_git or upgrade_check_status:
                 console.log("Info", "No upgrade found")
-            upgrade.upgrade_env()
-            upgrade.upgrade_data()
+            if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y' or args.yes:
+                upgrade.upgrade_env()
+                upgrade.upgrade_data()
             exit(0)
 
         if args.command == "backup":
