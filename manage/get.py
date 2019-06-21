@@ -1,5 +1,5 @@
 import re
-
+import traceback
 from common import file, console
 
 
@@ -50,6 +50,7 @@ def get_gravatar(author_name):
         gravatar_hash = r["entry"][0]["hash"]
         console.log("Success", "Get Gravatar URL success.")
     except (TypeError, ValueError, requests.exceptions.RequestException):
+        print(traceback.format_exc())
         console.log("Error", "Get Gravatar URL error,use default avatar.")
     return "https://secure.gravatar.com/avatar/{0}".format(gravatar_hash)
 

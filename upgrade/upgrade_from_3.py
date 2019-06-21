@@ -9,6 +9,7 @@ import tarfile
 import time
 import uuid
 import os
+import traceback
 
 from common import file
 
@@ -57,7 +58,7 @@ def main():
         control_config["password"] = hmac.new(str("SiLvErBlOg").encode('utf-8'), str(old_password_hash).encode('utf-8'),
                                               hashlib.sha256).hexdigest()
     except (ValueError, KeyError, TypeError):
-        pass
+        print(traceback.format_exc())
 
 
     del system_config["API_Password"]
