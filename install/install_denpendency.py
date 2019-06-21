@@ -29,6 +29,8 @@ def install():
     pip_main(install_command)
 
 
+def main():
+    install()
 
 if __name__ == '__main__':
     install()
