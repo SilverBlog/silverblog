@@ -87,6 +87,7 @@ if __name__ == '__main__':
             from manage import upgrade
 
             is_git = False
+            upgrade_check_status = False
             if upgrade.check_is_git():
                 upgrade_check_status = upgrade.upgrade_check()
                 if upgrade_check_status:
