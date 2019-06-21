@@ -32,14 +32,14 @@ def upgrade_check(fetch=True):
     console.log("Info", "Current version: {}".format(repo.git.rev_parse("HEAD", short=7)))
     if fetch:
         remote.fetch(repo.active_branch)
-        console.log("Info", "New version: {}".format(repo.git.rev_parse("FETCH_HEAD", short=7)))
+        console.log("Info", "Remote version: {}".format(repo.git.rev_parse("FETCH_HEAD", short=7)))
         try:
             if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
                 return True
         except git.BadObject:
             pass
         if current_data_version != new_data_version:
-            return True
+            return
     return False
 
 def upgrade_pull():
