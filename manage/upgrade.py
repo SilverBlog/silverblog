@@ -29,10 +29,10 @@ def upgrade_check(fetch=True):
         return False
     repo = git.Repo("./")
     remote = repo.remote()
-    console.log("Info", "Current version: {}".format(repo.git.rev_parse("HEAD", short=4)))
+    console.log("Info", "Current version: {}".format(repo.git.rev_parse("HEAD", short=7)))
     if fetch:
         remote.fetch(repo.active_branch)
-        console.log("Info", "New version: {}".format(repo.git.rev_parse("FETCH_HEAD", short=4)))
+        console.log("Info", "New version: {}".format(repo.git.rev_parse("FETCH_HEAD", short=7)))
         try:
             if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
                 return True
@@ -54,7 +54,7 @@ def upgrade_pull():
         exit(1)
     console.log("Info", "Pulling updates.")
     remote.pull()
-    console.log("Info", "Current version: {}".format(repo.git.rev_parse("HEAD", short=4)))
+    console.log("Info", "Current version: {}".format(repo.git.rev_parse("HEAD", short=7)))
     console.log("Success", "Upgrade code Successful!")
 
 def upgrade_env():
