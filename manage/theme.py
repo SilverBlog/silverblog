@@ -2,6 +2,7 @@ import asyncio
 import json
 import os
 import shutil
+import traceback
 
 import requests
 
@@ -47,8 +48,9 @@ def install_theme(theme_name, custom):
     if custom:
         git_repo = theme_name
     try:
-        git.Repo.clone_from(url=git_repo, to_path=repo_dir, depth=1)
+        git.Repo.clone_from(url=git_repo, to_path=repo_dir)
     except git.exc.GitCommandError:
+        print(traceback.format_exc())
         console.log("Error", "Unable to clone theme repository.")
         exit(1)
     if os.path.exists("{}/package-metadata.json".format(repo_dir)):
@@ -139,5 +141,6 @@ def get_readme(theme_name):
         r = requests.get("https://raw.githubusercontent.com/silverblog-theme/{}/master/README.md".format(theme_name))
         return r.text
     except requests.exceptions.RequestException:
+        print(traceback.format_exc())
         console.log("Error", "Get the readme error.")
         exit(1)
