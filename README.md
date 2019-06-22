@@ -155,6 +155,8 @@ We welcome you to report issue or pull request on GitHub of the SilverBlog proje
 
 If you are not yet familiar with GitHub's Fork and Pull development model, you can read the [GitHub Documentation](https://help.github.com/articles/using-pull-requests) for more information.
 
+The primary language used for commit messages are Chinese. You can use English or Chinese in commit messages.
+
 We recommend that you use the Chinese language to raise an issue, and attach an English translation below to make it easier for non-Chinese native language developers to read and understand.
 
 ## Thanks
