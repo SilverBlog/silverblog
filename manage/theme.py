@@ -13,7 +13,7 @@ from common import file
 def get_package_list():
     console.log("Info", "Getting the list of theme...")
     try:
-        return requests.get("https://api.github.com/orgs/silverblog-theme/repos").json()
+        return requests.get("https://get-theme.silverblog.org/get/repo/list").json()
     except requests.exceptions.RequestException:
         console.log("Error", "Get the theme list error.")
         exit(1)
@@ -44,7 +44,7 @@ def install_theme(theme_name, custom):
         console.log("Error", "This theme has been installed.")
         exit(1)
     console.log("Info", "Get the theme repository...")
-    git_repo = "https://github.com/silverblog-theme/{}.git".format(theme_name)
+    git_repo = "https://get-theme.silverblog.org/get/repo/{}".format(theme_name)
     if custom:
         git_repo = theme_name
     try:
@@ -138,7 +138,7 @@ def download_file(item, location):
 def get_readme(theme_name):
     console.log("Info", "Getting the readme of theme...")
     try:
-        r = requests.get("https://raw.githubusercontent.com/silverblog-theme/{}/master/README.md".format(theme_name))
+        r = requests.get("https://get-theme.silverblog.org/get/readme/{}".format(theme_name))
         return r.text
     except requests.exceptions.RequestException:
         print(traceback.format_exc())
