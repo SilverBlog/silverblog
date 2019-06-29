@@ -71,7 +71,6 @@ unit_test_develop:
   tags:
     - docker-build
   script:
-    - python3 install/install_denpendency.py
     - bash install/initialization.sh
     - python3 install/gen_nginx.py
     - ln -sf $(pwd)/nginx_config /etc/nginx/sites-enabled/default
