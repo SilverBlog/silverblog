@@ -2,7 +2,7 @@
 
 访问 [SilverCreator](https://c.silverblog.org/) 以体验 SilverBlog 的在线编辑功能。输入 `demo.silverblog.org` 进入编辑，并在提交编辑时使用 `SilverBlog` 作为密码。
 
-还有一个用于在手机上管理的Android和iOS应用程序，可在[Google Play商店](https://play.google.com/store/apps/details?id=org.SilverBlog.client)和[GitHub（适用于iOS）](https://github.com/SilverBlogTeam/silverblog_ios)中找到。
+还有一个用于在手机上管理的Android和iOS应用程序，可在[Google Play商店（适用于Android）](https://play.google.com/store/apps/details?id=org.SilverBlog.client)和[GitHub（适用于iOS）](https://github.com/SilverBlogTeam/silverblog_ios)中找到。
 
 您还可以使用以下QR码通过应用登录：
 
