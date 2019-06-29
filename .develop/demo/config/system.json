@@ -11,5 +11,6 @@
   "Time_Format": "%Y-%m-%d",
   "i18n": "en-US",
   "Use_CDN": true,
-  "Lazyload": true
+  "Lazyload": true,
+  "Pinyin": false
 }
