@@ -44,9 +44,12 @@ def install_theme(theme_name, custom):
         console.log("Error", "This theme has been installed.")
         exit(1)
     console.log("Info", "Get the theme repository...")
-    git_repo = "https://get-theme.silverblog.org/get/repo/{}".format(theme_name)
+    git_repo=""
     if custom:
         git_repo = theme_name
+    if not custom:
+        request = requests.get("https://get-theme.silverblog.org/get/repo/{}".format(theme_name), allow_redirects=False)
+        git_repo = request.headers['Location']
     try:
         git.Repo.clone_from(url=git_repo, to_path=repo_dir)
     except git.exc.GitCommandError:
