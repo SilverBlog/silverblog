@@ -1,17 +1,15 @@
-This is SilverBlog's official demo server. Here you can try to add, modify, and delete articles to experience SilverBlog's convenience and speed.
+This is the official demo for SilverBlog. You can try to add, update and delete articles to have a feel of the swiftness and the déjà vu of SilverBlog.
 
-This article has been set to protected mode, please do not attempt to modify, delete this article.
+For the demo purpose, this article has been set as protected. Please do not try to update or delete this article.
 
-Visit [Silver Creator](https://c.silverblog.org/) to experience the online editing of SilverBlog. Enter `https://demo.silverblog.org` into the edit and use `SilverBlog` as the password when submitting the edit.
+All content management is done at the [SilverCreator](https://c.silverblog.org/). Open the Silver Creator, enter `demo.silverblog.org` when prompted for an URL. Use `SilverBlog` when prompted for a password.
 
-The Android editor can be found in [here](https://play.google.com/store/apps/details?id=org.SilverBlog.client).
+There is also an Android and iOS App for the mobile content creation, which can be found at the [Google Play Store](https://play.google.com/store/apps/details?id=org.SilverBlog.client) and [GitHub (for iOS)](https://github.com/SilverBlogTeam/silverblog_ios).
 
-The ios editor can be found in [here](https://github.com/SilverBlogTeam/silverblog_ios).
+You can also use following QR-code to signin via the app:
 
-Mobile client automatically configures two-dimensional code:
-
-![](https://static.bilisound.cn/1546076741.svg)
+![QRcode](https://cdn.silverblog.org/1546076741.svg)
 
 ***
 
-Many thanks to Jetbrains,Librazy for its great support for this project.
+Many thanks to Jetbrains and Librazy for its great support for this project.
