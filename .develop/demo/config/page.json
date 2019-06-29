@@ -1,13 +1,13 @@
 [
   {
-    "excerpt": "This is SilverBlog's official demo server. Here you can try to add, modify, and delete articles to experience SilverBlog's convenience and speed.",
+    "excerpt": "",
     "time": 0,
     "name": "demo-article",
     "title": "Demo Article",
     "uuid": "c3472075-440f-42d9-9421-3e83d46568d4"
   },
   {
-    "excerpt": "这里是 SilverBlog 的官方演示服务器。在这里你可以尝试添加、修改、删除文章以体验SilverBlog的便捷与迅速。本文章已被设置为保护模式，请不要尝试修改，删除这篇文章。访问 Silver Creator 以体验 SilverBlog 的在线编辑功能。输入 https://demo.silverblog.org 进入编辑，并在提交编辑时使用 SilverBlog 作为密码。",
+    "excerpt": "",
     "time": 0,
     "name": "demo-article-zh",
     "title": "演示文章",
