@@ -3,7 +3,7 @@ FROM ubuntu:devel
 ENV LANG C.UTF-8
 ENV DOCKER_CONTAINER yes
 WORKDIR /home/silverblog/
-
+COPY ./ /home/silverblog
 RUN apt-get update \
 && apt-get install -y uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git gnupg curl
 
@@ -14,8 +14,6 @@ RUN apt-key adv -v --keyserver hkp://keyserver.ubuntu.com:80 --receive-key e411e
 && mkdir -p /etc/nginx/sites-enabled && mkdir logs && mkdir /var/lib/nginx
 
 RUN pip3 install supervisor
-
-COPY ./ /home/silverblog
 
 RUN python3 install/install_denpendency.py \
 && ln -s /home/silverblog/.develop/demo/nginx_config /etc/nginx/sites-enabled/ \

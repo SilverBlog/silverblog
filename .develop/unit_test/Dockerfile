@@ -1,5 +1,6 @@
 FROM ubuntu:devel
-
+ENV LANG C.UTF-8
+ENV DOCKER_CONTAINER yes
 WORKDIR /home/silverblog/
 
 RUN apt-get update \

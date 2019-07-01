@@ -7,9 +7,9 @@ import requests
 host = "http://127.0.0.1/"
 time.sleep(10)
 def get(url):
-    r = requests.get(host + url)
-    if r.status_code != 200:
-        print("{}:{}".format(url, r.status_code))
+    request = requests.get(host + url)
+    if request.status_code != 200:
+        print("{}:{}".format(url, request.status_code))
         exit(1)
 
 
