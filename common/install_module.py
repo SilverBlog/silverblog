@@ -20,6 +20,7 @@ def install_package(package):
     try:
         from pip import main as pip_main
     except ImportError:
+        # noinspection PyProtectedMember
         from pip._internal import main as pip_main #Loading a pip with version < 10.0.0
     install_command = ['install']
     if os.geteuid() != 0:
@@ -32,6 +33,7 @@ def uninstall_package(package):
     try:
         from pip import main as pip_main
     except ImportError:
+        # noinspection PyProtectedMember
         from pip._internal import main as pip_main #Loading a pip with version < 10.0.0
     install_command = ['uninstall']
     if os.geteuid() != 0:

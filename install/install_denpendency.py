@@ -3,6 +3,9 @@ import os
 import sys
 import importlib
 install_command = ['install', "-U"]
+
+
+# noinspection PyProtectedMember
 def install():
     try:
         from pip import main as pip_main
