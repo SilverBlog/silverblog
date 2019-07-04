@@ -7,12 +7,13 @@ import git
 from common import file, console
 
 new_data_version = 4
-current_data_version = new_data_version
+new_env_version = 1
 if not os.path.exists("./upgrade/current_version.json"):
     file.write_file("./upgrade/current_version.json",
-                    json.dumps({"current_data_version": new_data_version}))
-current_version_json = json.loads(file.read_file("./upgrade/current_version.json"))
-current_data_version = current_version_json["current_data_version"]
+                    json.dumps({"current_data_version": new_data_version,"current_env_version":new_env_version}))
+version_json = json.loads(file.read_file("./upgrade/current_version.json"))
+current_data_version = version_json["current_data_version"]
+current_env_version = version_json["current_env_version"]
 
 
 def check_is_git():
@@ -57,9 +58,13 @@ def upgrade_pull():
 
 
 def upgrade_env():
-    from install import install_denpendency
-    install_denpendency.install()
-    console.log("Success", "Upgrade env Successful!")
+    if current_env_version != new_env_version:
+        from install import install_denpendency
+        install_denpendency.install()
+        file.write_file("./upgrade/current_version.json",
+                        json.dumps(
+                            {"current_data_version": current_data_version, "current_env_version": new_env_version}))
+        console.log("Success", "Upgrade env Successful!")
 
 
 def upgrade_data():
@@ -71,5 +76,6 @@ def upgrade_data():
                 upgrade_item = importlib.import_module("upgrade.upgrade_from_{}".format(index), __package__)
                 upgrade_item.main()
         file.write_file("./upgrade/current_version.json",
-                        json.dumps({"current_data_version": new_data_version}))
+                        json.dumps(
+                            {"current_data_version": new_data_version, "current_env_version": current_env_version}))
         console.log("Success", "Upgrade data Successful!")

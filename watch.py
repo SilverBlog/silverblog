@@ -42,17 +42,19 @@ class when_file_chanage(FileSystemEventHandler):
         if control and event.src_path.endswith('config/system.json'):
             self.kill()
 
-
+# noinspection PyPep8Naming
 def HUP_handler(signum, frame):
     console.log("Info", "Received {} signal.".format(signum))
     kill_progress()
 
 
+# noinspection PyPep8Naming
 def KILL_handler(signum, frame):
     console.log("Info", "Received {} signal.".format(signum))
     harakiri()
 
 
+# noinspection PyProtectedMember
 def harakiri():
     kill_progress()
     console.log("Success", "Stopped SilverBlog server.")
