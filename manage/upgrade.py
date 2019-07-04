@@ -41,7 +41,7 @@ def upgrade_check():
         return True
     if current_env_version != new_env_version:
         return True
-    console.log("Info", "No upgrade found")
+    console.log("Info", "No upgrade found.")
     return False
 
 
@@ -63,16 +63,18 @@ def upgrade_pull():
 
 def upgrade_env():
     if current_env_version != new_env_version:
+        console.log("Info","Upgrade the environment, please wait...")
         from install import install_denpendency
         install_denpendency.install()
         file.write_file("./upgrade/current_version.json",
                         json.dumps(
                             {"current_data_version": current_data_version, "current_env_version": new_env_version}))
-        console.log("Success", "Upgrade env Successful!")
+        console.log("Success", "Upgrade environment Successful!")
 
 
 def upgrade_data():
     if current_data_version != new_data_version:
+        console.log("Info","Upgrade the data, please wait...")
         from manage import backup
         backup.backup(str(current_data_version))
         for index in range(current_data_version, new_data_version):
