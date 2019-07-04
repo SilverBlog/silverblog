@@ -100,7 +100,7 @@ if __name__ == '__main__':
                     exit(0)
             if upgrade_check_status:
                 console.log("Info", "No upgrade found")
-                exit(0)
+            exit(0)
         if args.command == "backup":
             from manage import backup
 
