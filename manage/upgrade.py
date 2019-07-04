@@ -26,25 +26,22 @@ def check_is_git():
     return False
 
 
-def upgrade_check(fetch=True):
+def upgrade_check():
     if not check_is_git():
-        if fetch:
-            console.log("Error", "Not a git repository.")
-            exit(1)
-        return False
+        console.log("Error", "Not a git repository.")
+        exit(1)
     repo = git.Repo("./")
     remote = repo.remote()
     console.log("Info", "Current version: {}".format(repo.git.rev_parse("HEAD", short=7)))
-    if fetch:
-        remote.fetch(repo.active_branch)
-        console.log("Info", "Remote version: {}".format(repo.git.rev_parse("FETCH_HEAD", short=7)))
-        if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
-            return True
-        if current_data_version != new_data_version:
-            return True
-        if current_env_version != new_env_version:
-            return True
-        console.log("Info", "No upgrade found")
+    remote.fetch(repo.active_branch)
+    console.log("Info", "Remote version: {}".format(repo.git.rev_parse("FETCH_HEAD", short=7)))
+    if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
+        return True
+    if current_data_version != new_data_version:
+        return True
+    if current_env_version != new_env_version:
+        return True
+    console.log("Info", "No upgrade found")
     return False
 
 
