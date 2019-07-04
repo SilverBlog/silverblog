@@ -12,8 +12,12 @@ if not os.path.exists("./upgrade/current_version.json"):
     file.write_file("./upgrade/current_version.json",
                     json.dumps({"current_data_version": new_data_version,"current_env_version":new_env_version}))
 version_json = json.loads(file.read_file("./upgrade/current_version.json"))
-current_data_version = version_json["current_data_version"]
-current_env_version = version_json["current_env_version"]
+current_data_version = new_data_version
+current_env_version = new_env_version
+if "current_data_version" in version_json:
+    current_data_version = version_json["current_data_version"]
+if "current_env_version" in version_json:
+    current_env_version = version_json["current_env_version"]
 
 
 def check_is_git():
