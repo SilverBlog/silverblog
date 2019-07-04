@@ -97,8 +97,6 @@ if __name__ == '__main__':
                         upgrade.upgrade_pull()
                         upgrade.upgrade_env()
                         upgrade.upgrade_data()
-            if upgrade_check_status:
-                console.log("Info", "No upgrade found")
             exit(0)
         if args.command == "backup":
             from manage import backup

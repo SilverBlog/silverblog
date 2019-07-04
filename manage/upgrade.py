@@ -41,7 +41,10 @@ def upgrade_check(fetch=True):
         if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
             return True
         if current_data_version != new_data_version:
-            return
+            return True
+        if current_env_version != new_env_version:
+            return True
+        console.log("Info", "No upgrade found")
     return False
 
 
