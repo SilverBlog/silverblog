@@ -5,7 +5,6 @@ if __name__ == '__main__':
 import json
 import os
 import shutil
-
 from common import file
 
 
@@ -32,4 +31,4 @@ def main():
         if filename.endswith(".json"):
             write_json = json.loads(file.read_file("./document/" + filename))
             write_json = change_time_fomart(write_json)
-            file.write_file("./document/" + filename, json_format_dump(write_json))
+            file.write_file("./document/" + filename, file.json_format_dump(write_json))
