@@ -86,7 +86,6 @@ if __name__ == '__main__':
         if args.command == "upgrade":
             from manage import upgrade
 
-            is_git = False
             upgrade_check_status = False
             start_to_pull = "n"
             if upgrade.check_is_git():
@@ -96,14 +95,12 @@ if __name__ == '__main__':
                         start_to_pull = input('Found new version, do you want to upgrade? [y/N]')
                     if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y' or args.yes:
                         upgrade.upgrade_pull()
-                is_git = True
-            if not is_git or upgrade_check_status:
+                        upgrade.upgrade_env()
+                        upgrade.upgrade_data()
+                    exit(0)
+            if upgrade_check_status:
                 console.log("Info", "No upgrade found")
-            if start_to_pull.lower() == 'yes' or start_to_pull.lower() == 'y' or args.yes:
-                upgrade.upgrade_env()
-                upgrade.upgrade_data()
-            exit(0)
-
+                exit(0)
         if args.command == "backup":
             from manage import backup
 
