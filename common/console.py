@@ -5,6 +5,7 @@ style = {
 }
 ISOTIMEFORMAT = "%Y/%m/%d %X"
 
+
 def log(state, message):
     now_time = time.strftime(ISOTIMEFORMAT, time.localtime())
     color = 0

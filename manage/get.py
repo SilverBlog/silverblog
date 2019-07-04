@@ -1,5 +1,6 @@
 import re
 import traceback
+
 from common import file, console
 
 
@@ -10,16 +11,19 @@ def get_name(name_input, convert_pinyin):
         name = get_pinyin(name)
     return name
 
+
 def get_pinyin(name):
     from xpinyin import Pinyin
     p = Pinyin()
     return p.get_pinyin(name)
+
 
 def is_chinese(uchar):
     if '\u4e00' <= uchar <= '\u9fff':
         return True
     else:
         return False
+
 
 def get_excerpt(filename):
     content = file.read_file(filename)
@@ -42,6 +46,7 @@ def get_excerpt(filename):
             split_index = comma_index - 1
         excerpt = excerpt_output[:split_index].replace("\n", "").strip()
     return excerpt
+
 
 def get_gravatar(author_name):
     import requests

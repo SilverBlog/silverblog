@@ -57,8 +57,10 @@ def setting_menu(main_run=False):
         if result == "Theme package manage":
             theme_manage()
 
+
 def save_config():
     file.write_file("./config/system.json", file.json_format_dump(system_config))
+
 
 def theme_manage():
     from manage import theme
@@ -132,7 +134,8 @@ def manual_setup_list():
     while True:
         dialog.title = "Manual setup"
         menu_list = ["Project name", "Project description", "Access URL", "Remote API password", "Author name",
-                     "Author introduction", "Author avatar", "Paging", "Time format", "Editor", "Use CDN","Image lazyload",
+                     "Author introduction", "Author avatar", "Paging", "Time format", "Editor", "Use CDN",
+                     "Image lazyload",
                      "Automatically convert Chinese characters to pinyin",
                      "=" * 50, "Back", "Exit"]
         result = dialog.menu("Please select the item you want to configure", menu_list)
@@ -191,6 +194,7 @@ def select_theme():
         return None
     return dialog.menu("Please select the theme to be operated:", directories)
 
+
 def setting_theme_config(theme_name):
     theme_config = json.loads(file.read_file("./templates/{}/config.json".format(theme_name)))
     for item in theme_config:
@@ -210,6 +214,7 @@ def setting_theme_config(theme_name):
     file.write_file("./templates/{}/config.json".format(theme_name), file.json_format_dump(theme_config))
     return
 
+
 def setting_i18n(theme_name):
     dir_list = os.listdir("./templates/{0}/i18n".format(theme_name))
     show_list = list()
@@ -217,6 +222,7 @@ def setting_i18n(theme_name):
         if item.endswith(".json"):
             show_list.append(item.replace(".json", ""))
     return dialog.menu("Please select the i18n to be operated:", show_list)
+
 
 def setup_wizard():
     set_string("Project_Name", "Please enter the project name:")
@@ -250,7 +256,6 @@ def set_bool(item, message):
     system_config[item] = dialog.confirm(message, status)
 
 
-
 def remote_api_password():
     notice = ""
     if os.path.exists("./config/control.json"):
@@ -271,13 +276,13 @@ def remote_api_password():
         file.write_file("./config/control.json", json.dumps({"password": sha256_new_password}))
 
 
-
 def author_avatar():
     item = "Author_Image"
     if dialog.confirm("Use Gravatar?", "no"):
         from manage import get
         system_config[item] = get.get_gravatar(system_config["Author_Name"])
     system_config[item] = dialog.prompt("Please enter the author image:", system_config[item])
+
 
 def editor():
     item = "Editor"

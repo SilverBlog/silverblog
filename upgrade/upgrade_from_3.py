@@ -5,11 +5,11 @@ if __name__ == '__main__':
 import hashlib
 import hmac
 import json
+import os
 import tarfile
 import time
-import uuid
-import os
 import traceback
+import uuid
 
 from common import file
 
@@ -32,6 +32,7 @@ def add_tar_file(tar, dir_name):
         for file_name in files:
             full_path = os.path.join(root, file_name)
             tar.add(full_path)
+
 
 def main():
     if not os.path.exists("./backup"):
@@ -59,7 +60,6 @@ def main():
                                               hashlib.sha256).hexdigest()
     except (ValueError, KeyError, TypeError):
         print(traceback.format_exc())
-
 
     del system_config["API_Password"]
     system_config["Pinyin"] = True

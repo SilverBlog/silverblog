@@ -17,13 +17,16 @@ def write_file(file_name, content):
         f.write(content)
     return True
 
+
 @asyncio.coroutine
 def async_read_file(file_name):
     return read_file(file_name)
 
+
 @asyncio.coroutine
 def async_write_file(filename, content):
     return write_file(filename, content)
+
 
 def list_dirs(folder):
     return [d for d in os.listdir(folder) if os.path.isdir(os.path.join(folder, d))]

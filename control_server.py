@@ -40,6 +40,7 @@ def convert_timestamp(item):
     item["time"] = sec_to_ms(item["time"])
     return item
 
+
 def check_password(content, sign, send_time):
     global password_error_counter, error_time, submit_lock, total_error_counter, sign_list
     timestamp = time.time()
@@ -223,6 +224,7 @@ def git_publish():
         status = build_static_page.publish()
     result = {"status": status}
     return jsonify(result)
+
 
 @app.route('/control/', strict_slashes=False, methods=['OPTIONS'])
 def get_204():

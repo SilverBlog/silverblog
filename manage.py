@@ -7,19 +7,18 @@ import sys
 
 from common import file, console
 
-
 if os.path.exists("./install/install.lock"):
     if json.loads(file.read_file("./install/install.lock"))["install"] == "docker" and not os.environ.get(
             'DOCKER_CONTAINER', False):
-            args = ""
-            for arg in sys.argv[1:]:
-                args = args + " " + arg
-            result_code = os.system(
-                "docker run -it --rm -v {0}:/home/silverblog silverblog/silverblog ./manage.py{1}".format(
+        args = ""
+        for arg in sys.argv[1:]:
+            args = args + " " + arg
+        result_code = os.system(
+            "docker run -it --rm -v {0}:/home/silverblog silverblog/silverblog ./manage.py{1}".format(
                 os.getcwd(), args))
-            if (result_code >> 8) == 127:
-                console.log("Error", "Please install docker or upgrade the current docker image and try again.")
-            exit(result_code)
+        if (result_code >> 8) == 127:
+            console.log("Error", "Please install docker or upgrade the current docker image and try again.")
+        exit(result_code)
 if __name__ == '__main__':
     if not os.path.exists("./config/page.json") or not os.path.exists("./config/menu.json"):
         console.log("Error", "Please execute the installation wizard first.")
@@ -33,12 +32,13 @@ if __name__ == '__main__':
 
     if len(sys.argv) == 1:
         from manage import menu
+
         menu.use_whiptail_mode()
         exit(0)
     parser = argparse.ArgumentParser("SilverBlog management tool")
     parser.add_argument("command", help="The name of the function to execute.", )
 
-    #new
+    # new
     new_parser = parser.add_argument_group('new', "Create a new article.")
     new_parser.add_argument("-c", "--config", help="The configuration file location you want to load.", type=str)
     new_parser.add_argument("-i", "--independent", help="Generate an article that does not appear in the article list.",
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     upgrade_parser.add_argument("-y", "--yes", help="Assume yes for all questions, do not ask.", action="store_true")
     parser.add_argument_group('setting', "Setting program.")
     parser.add_argument_group('qrcode', "Output client qrcode.")
-    #build-gh-page
+    # build-gh-page
     parser.add_argument_group("build-page", "Generate static pages.")
     theme_group = parser.add_argument_group("install_theme")
     theme_group.add_argument("--name", help="Install the theme in the official repository.", type=str)
@@ -117,20 +117,22 @@ if __name__ == '__main__':
                 custom = True
                 name = args.custom
             from manage import theme
+
             theme.install_theme(name, custom)
             exit(0)
 
-
         if args.command == "build-page":
             from manage import build_static_page
+
             build_static_page.publish()
             exit(0)
 
         from manage import build_rss, post_manage, get
+
         if args.command == "new":
             config = None
-            name=""
-            title=""
+            name = ""
+            title = ""
             if args.config is not None:
                 config = json.loads(file.read_file(args.config))
             if config is None:

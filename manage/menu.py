@@ -13,6 +13,8 @@ dialog.height = 15
 dialog.backtitle = "SilverBlog management tool"
 if os.path.exists("./config/system.json"):
     system_config = json.loads(file.read_file("./config/system.json"))
+
+
 def use_whiptail_mode():
     menu_list = ["Article manager", "Menu manager", "Build static page", "Setting", "=" * 25, "Exit"]
     if upgrade.check_is_git():
@@ -75,6 +77,7 @@ def article_manager():
         build_rss.build_rss()
         time.sleep(0.5)
 
+
 def menu_manager():
     while True:
         dialog.title = "Menu manager"
@@ -91,8 +94,8 @@ def menu_manager():
         if result == "Edit":
             menu_list, menu_index = select_list("./config/menu.json")
             if menu_list:
-                address=None
-                independent=False
+                address = None
+                independent = False
                 menu_item = menu_list[menu_index]
                 if "name" in menu_item:
                     address = menu_item["name"]
@@ -136,6 +139,7 @@ def get_menu_info(title_input="", name_input="", independent=False):
         return {"title": None, "name": None, "type": False}
     return {"title": title, "name": name, "type": is_independent_type}
 
+
 def upgrade_system():
     from manage import upgrade
     dialog.title = "Upgrade"
@@ -147,6 +151,7 @@ def upgrade_system():
     if not upgrade_check:
         dialog.alert("No upgrade found.")
     exit(0)
+
 
 def select_list(list_name):
     page_title_list = list()

@@ -12,13 +12,16 @@ env = Environment(loader=PackageLoader('init', 'templates'))
 def format_datetime(value, format='%Y-%m-%dT%H:%M:%SZ'):
     return str(time.strftime(format, value))
 
+
 def get_i18n_value(i18n, value):
     if value in i18n:
         return i18n[value]
     return value
 
+
 env.filters["get_i18n_value"] = get_i18n_value
 env.filters['format_datetime'] = format_datetime
+
 
 def get_page_row(paging, page_list_len):
     page_row_mod = divmod(page_list_len, paging)
@@ -60,7 +63,7 @@ def build_page(name, system_config, page_info, menu_list, template_config, i18n=
             page_info["time_raw"] = page_info["time"]
             page_info["time"] = str(post_map.build_time(page_info["time"], system_config))
 
-    document = markdown.markdown(system_config,content)
+    document = markdown.markdown(system_config, content)
     template = env.get_template("./{0}/post.html".format(system_config["Theme"]))
     result = template.render(page_info=page_info, menu_list=menu_list, content=document,
                              system_config=system_config, template_config=template_config,

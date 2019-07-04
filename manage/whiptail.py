@@ -39,9 +39,9 @@ from subprocess import Popen, PIPE
 
 Response = namedtuple('Response', 'returncode value')
 
+
 def flatten(data):
     return list(itertools.chain.from_iterable(data))
-
 
 
 class Whiptail(object):

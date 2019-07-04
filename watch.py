@@ -19,11 +19,13 @@ if os.environ.get('DOCKER_CONTAINER', False):
 process = None
 control = False
 
+
 class when_file_chanage(FileSystemEventHandler):
     def __init__(self, kill_sub, self_harakiri):
         super().__init__()
         self.kill = kill_sub
         self.harakiri = self_harakiri
+
     def on_any_event(self, event):
         if os.path.basename(os.path.dirname(event.src_path)) == "static_page":
             return
@@ -32,7 +34,7 @@ class when_file_chanage(FileSystemEventHandler):
         if event.src_path.endswith('.py'):
             self.kill()
         if not control:
-            endswith_list = ['.json','.md','.xml','.html']
+            endswith_list = ['.json', '.md', '.xml', '.html']
             for item in endswith_list:
                 if event.src_path.endswith(item):
                     self.kill()
@@ -40,18 +42,22 @@ class when_file_chanage(FileSystemEventHandler):
         if control and event.src_path.endswith('config/system.json'):
             self.kill()
 
+
 def HUP_handler(signum, frame):
     console.log("Info", "Received {} signal.".format(signum))
     kill_progress()
+
 
 def KILL_handler(signum, frame):
     console.log("Info", "Received {} signal.".format(signum))
     harakiri()
 
+
 def harakiri():
     kill_progress()
     console.log("Success", "Stopped SilverBlog server.")
     os._exit(0)
+
 
 def kill_progress():
     global process
@@ -90,6 +96,7 @@ def start_watch(cmd, debug):
                 sys.stderr.flush()
     observer.stop()
     return return_code
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--main", action="store_true",

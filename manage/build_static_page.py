@@ -14,9 +14,12 @@ template_config = dict()
 page_name_list = list()
 i18n = dict()
 static_file_dict = dict()
+
+
 @asyncio.coroutine
 def async_build_page(file_name, config, page_info, menu, template, i18n_config, static_file):
     return page.build_page(file_name, config, page_info, menu, template, i18n_config, static_file)
+
 
 @asyncio.coroutine
 def build_post_page(filename, post_name, post_list, config, menu, template, i18n_config,
@@ -32,9 +35,11 @@ def build_post_page(filename, post_name, post_list, config, menu, template, i18n
     if content is not None:
         yield from file.async_write_file("./static_page/post/{0}.html".format(file_name), content)
 
+
 @asyncio.coroutine
 def async_json_loads(text):
     return json.loads(text)
+
 
 @asyncio.coroutine
 def get_system_config():
@@ -70,17 +75,20 @@ def get_system_config():
             i18n_file = yield from file.async_read_file(i18n_filename)
             i18n = yield from async_json_loads(i18n_file)
 
+
 @asyncio.coroutine
 def get_menu_list():
     global menu_list
     load_file = yield from file.async_read_file("./config/menu.json")
     menu_list = yield from async_json_loads(load_file)
 
+
 @asyncio.coroutine
 def get_page_list():
     global page_list
     load_file = yield from file.async_read_file("./config/page.json")
     page_list = yield from async_json_loads(load_file)
+
 
 def load_config():
     asyncio.set_event_loop(asyncio.new_event_loop())
@@ -104,7 +112,8 @@ def publish():
     if not os.path.isdir("./static_page"):
         os.mkdir("./static_page")
     if not os.path.exists("./static_page/CNAME"):
-        file.write_file("./static_page/CNAME",system_config["Project_URL"].replace("http://","").replace("https://","").replace("/",""))
+        file.write_file("./static_page/CNAME",
+                        system_config["Project_URL"].replace("http://", "").replace("https://", "").replace("/", ""))
     page_row = page.get_page_row(system_config["Paging"], len(page_list))
     os.mkdir("./static_page/index/")
     console.log("Build", "Processing file: ./static_page/index.html")

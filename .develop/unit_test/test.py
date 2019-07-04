@@ -6,6 +6,8 @@ import requests
 
 host = "http://127.0.0.1/"
 time.sleep(10)
+
+
 def get(url):
     request = requests.get(host + url)
     if request.status_code != 200:
@@ -37,7 +39,7 @@ sign_text = title + name + hashlib.sha512(content.encode("utf-8")).hexdigest()
 send_time = int(round(time.time() * 1000))
 sign = build_hash(password_hash, sign_text, send_time)
 r = requests.post(host + "control/v2/new", json={"content": content, "name": name, "title": title,
-                                                  "sign": sign, "send_time": send_time})
+                                                 "sign": sign, "send_time": send_time})
 print("new:" + r.text)
 if not r.json()["status"]:
     print("ERROR:new")

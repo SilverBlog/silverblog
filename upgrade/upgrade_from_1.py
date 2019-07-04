@@ -5,6 +5,7 @@ if __name__ == '__main__':
 import json
 import os
 import shutil
+
 from common import file
 
 

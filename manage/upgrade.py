@@ -1,7 +1,7 @@
 import importlib
 import json
 import os
-import traceback
+
 import git
 
 from common import file, console
@@ -15,11 +15,11 @@ current_version_json = json.loads(file.read_file("./upgrade/current_version.json
 current_data_version = current_version_json["current_data_version"]
 
 
-
 def check_is_git():
     if os.system('git rev-parse 2> /dev/null > /dev/null') == 0:
         return True
     return False
+
 
 def upgrade_check(fetch=True):
     if not check_is_git():
@@ -39,6 +39,7 @@ def upgrade_check(fetch=True):
             return
     return False
 
+
 def upgrade_pull():
     if not check_is_git():
         console.log("Error", "Not a git repository.")
@@ -54,10 +55,12 @@ def upgrade_pull():
     console.log("Info", "Current version: {}".format(repo.git.rev_parse("HEAD", short=7)))
     console.log("Success", "Upgrade code Successful!")
 
+
 def upgrade_env():
     from install import install_denpendency
     install_denpendency.install()
     console.log("Success", "Upgrade env Successful!")
+
 
 def upgrade_data():
     if current_data_version != new_data_version:

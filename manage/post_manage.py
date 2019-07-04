@@ -76,8 +76,8 @@ def delete_post(post_list, post_index):
     if not os.path.exists("./trash"):
         os.mkdir("./trash")
     timestamp = int(round(time.time() * 1000))
-    file.write_file("./trash/{}_{}.json".format(timestamp,file_name), file.json_format_dump(meta_backup))
-    shutil.move("./document/{}.md".format(file_name), "./trash/{}_{}.md".format(timestamp,file_name))
+    file.write_file("./trash/{}_{}.json".format(timestamp, file_name), file.json_format_dump(meta_backup))
+    shutil.move("./document/{}.md".format(file_name), "./trash/{}_{}.md".format(timestamp, file_name))
 
 
 def update_post():

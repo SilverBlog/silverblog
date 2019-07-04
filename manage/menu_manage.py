@@ -17,6 +17,7 @@ def add_menu(menu_info):
     menu_file.append(menu_item)
     file.write_file("./config/menu.json", file.json_format_dump(menu_file))
 
+
 def edit_menu(menu_list, menu_index, menu_info):
     menu_item = dict()
     menu_item["title"] = menu_info["title"]
@@ -30,6 +31,7 @@ def edit_menu(menu_list, menu_index, menu_info):
     if menu_info["type"] and menu_info["editor"] is not None:
         os.system("{0} ./document/{1}.md".format(menu_info["editor"], menu_item["name"]))
     file.write_file("./config/menu.json", file.json_format_dump(menu_list))
+
 
 def delete_menu(menu_list, select_index):
     del menu_list[select_index]

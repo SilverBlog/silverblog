@@ -19,9 +19,11 @@ i18n = dict()
 static_file_dict = dict()
 last_build_year = time.localtime(time.time())[0]
 
+
 @asyncio.coroutine
 def async_json_loads(text):
     return json.loads(text)
+
 
 @asyncio.coroutine
 def get_system_config():
@@ -58,17 +60,20 @@ def get_system_config():
             i18n_file = yield from file.async_read_file(i18n_filename)
             i18n = yield from async_json_loads(i18n_file)
 
+
 @asyncio.coroutine
 def get_menu_list():
     global menu_list
     load_file = yield from file.async_read_file("./config/menu.json")
     menu_list = yield from async_json_loads(load_file)
 
+
 @asyncio.coroutine
 def get_page_list():
     global page_list
     load_file = yield from file.async_read_file("./config/page.json")
     page_list = yield from async_json_loads(load_file)
+
 
 @asyncio.coroutine
 def get_rss_file():
@@ -94,8 +99,10 @@ def load_config():
         page_list[page_list.index(item)]["time"] = str(post_map.build_time(item["time"], system_config))
     console.log("Success", "load the configuration file successfully!")
 
-app = Flask(__name__,static_folder="templates/static")
+
+app = Flask(__name__, static_folder="templates/static")
 load_config()
+
 
 @app.route("/rss/", strict_slashes=False)
 def result_rss():
@@ -103,9 +110,11 @@ def result_rss():
         abort(404)
     return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
 
+
 @app.route("/static/")
 def static_file():
     abort(400)
+
 
 @app.route("/<file_name>/p/<int:page_index>", strict_slashes=False)
 @app.route("/<file_name>", strict_slashes=False)
@@ -118,6 +127,7 @@ def redirect_301(file_name, page_index=1):
         return redirect("/post/{0}/".format(file_name), code=301)
     abort(404)
 
+
 def check_build_year():
     global last_build_year
     localtime = time.localtime(time.time())
@@ -127,6 +137,7 @@ def check_build_year():
         cache_index.clear()
         cache_post.clear()
 
+
 def get_index_cache(page_url):
     check_build_year()
     if page_url in cache_index:
@@ -134,13 +145,15 @@ def get_index_cache(page_url):
         return cache_index[page_url]
     return None
 
-def write_index_cache(page_url,content):
+
+def write_index_cache(page_url, content):
     console.log("Info", "Writing to cache: {0}".format(page_url))
     if len(cache_index) >= 50:
         page_keys = sorted(cache_index.keys())
         console.log("Info", "Delete cache: {0}".format(page_keys[0]))
         del cache_index[page_keys[0]]
     cache_index[page_url] = content
+
 
 @app.route("/")
 @app.route("/index", strict_slashes=False)
@@ -156,22 +169,26 @@ def index_route(page_index=1):
                                   static_file_dict)
     if result is None:
         abort(404)
-    write_index_cache(page_url,result)
+    write_index_cache(page_url, result)
     console.log("Success", "Get success: {0}".format(page_url))
     return result
+
 
 def get_post_cache(page_url):
     check_build_year()
     if page_url in cache_post:
         return cache_post[page_url]
     return None
-def write_post_cache(page_url,content):
+
+
+def write_post_cache(page_url, content):
     console.log("Info", "Writing to cache: {0}".format(page_url))
     if len(cache_post) >= 50:
         page_keys = sorted(cache_post.keys())
         console.log("Info", "Delete cache: {0}".format(page_keys[0]))
         del cache_post[page_keys[0]]
     cache_post[page_url] = content
+
 
 @app.route("/post/<file_name>")
 @app.route("/post/<file_name>/")
@@ -187,6 +204,6 @@ def post_route(file_name=None):
             page_info = page_list[this_page_index]
         result = page.build_page(file_name, system_config, page_info, menu_list,
                                  template_config, i18n, static_file_dict)
-        write_post_cache(page_url,result)
+        write_post_cache(page_url, result)
     console.log("Success", "Get success: {0}".format(page_url))
     return result

@@ -44,7 +44,7 @@ def install_theme(theme_name, custom):
         console.log("Error", "This theme has been installed.")
         exit(1)
     console.log("Info", "Get the theme repository...")
-    git_repo=""
+    git_repo = ""
     if custom:
         git_repo = theme_name
     if not custom:
@@ -67,7 +67,8 @@ def install_theme(theme_name, custom):
             shutil.copyfile(config_example_file, "{}/config.json".format(repo_dir))
 
         download_static_file(theme_name)
-    if not os.path.exists("{}/package-metadata.json".format(repo_dir)) and os.path.exists("{}/install.sh".format(repo_dir)):
+    if not os.path.exists("{}/package-metadata.json".format(repo_dir)) and os.path.exists(
+            "{}/install.sh".format(repo_dir)):
         result_code = os.system("cd templates && bash {}/install.sh".format(theme_name))
         if (result_code >> 8) != 0:
             console.log("Error", "An error occurred while executing the install script.")
