@@ -7,11 +7,13 @@ def get_name(name_input, convert_pinyin):
     name = name_input.replace(" ", "-").replace("。", ".").replace("，", ",")
     name = filter_name(re.sub('[/:*?,.<>|\'"\\\]', '', name))
     if convert_pinyin:
-        from xpinyin import Pinyin
-        p = Pinyin()
-        name = p.get_pinyin(name)
+        name = get_pinyin(name)
     return name
 
+def get_pinyin(name):
+    from xpinyin import Pinyin
+    p = Pinyin()
+    return p.get_pinyin(name)
 
 def is_chinese(uchar):
     if '\u4e00' <= uchar <= '\u9fff':
