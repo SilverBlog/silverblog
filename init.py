@@ -179,7 +179,7 @@ def get_post_cache(page_url):
 
 def write_post_cache(page_url, content):
     console.log("Info", "Writing to cache: {0}".format(page_url))
-    if len(cache_post) >= 50:
+    if len(cache_post) >= 100:
         page_keys = sorted(cache_post.keys())
         console.log("Info", "Delete cache: {0}".format(page_keys[0]))
         del cache_post[page_keys[0]]
