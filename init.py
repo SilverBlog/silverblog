@@ -18,7 +18,7 @@ cache_post = dict()
 i18n = dict()
 static_file_dict = dict()
 last_build_year = time.localtime(time.time())[0]
-use_redis = os.path.exists("./config/redis.json")
+use_redis = False
 redis_config = dict()
 
 if use_redis:
@@ -26,12 +26,11 @@ if use_redis:
         import redis
     except ImportError:
         console.log("Error","Please install the [redis] package to support this feature.")
-        use_redis=False
 
 def get_redis_connect(config):
-    return redis.Redis(host=config["host"], port=config["port"], password=config["password"],
-                db=config["db"])
-
+    if config is not None:
+        return redis.Redis(host=config["host"], port=config["port"], password=config["password"], db=config["db"])
+    return None
 @asyncio.coroutine
 def async_json_loads(text):
     return json.loads(text)
@@ -39,15 +38,17 @@ def async_json_loads(text):
 
 @asyncio.coroutine
 def get_system_config():
-    global system_config, template_config, i18n, static_file_dict, redis_config
+    global system_config, template_config, i18n, static_file_dict, redis_config,use_redis
     load_file = yield from file.async_read_file("./config/system.json")
     system_config = yield from async_json_loads(load_file)
 
-    if use_redis:
+    if os.path.exists("./config/redis.json"):
         redis_config_file = yield from file.async_read_file("./config/redis.json")
-        redis_config = async_json_loads(redis_config_file)
-        redis_connect = get_redis_connect(redis_config)
-        redis_connect.flushdb()
+        redis_config = yield from async_json_loads(redis_config_file)
+        if redis_config is not None:
+            use_redis=True
+            redis_connect = get_redis_connect(redis_config)
+            redis_connect.flushdb()
     if len(system_config["Theme"]) == 0:
         console.log("Error",
                     "If you do not get the Theme you installed, check your configuration file and the Theme installation.")

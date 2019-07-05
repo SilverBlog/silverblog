@@ -21,6 +21,7 @@ def install():
 
     test_install("qrcode_terminal", "Do you want to install [qrcode_terminal] to support QR code login?")
     test_install("xpinyin", "Do you want to install [xpinyin] to support pinyin slug?")
+    test_install("redis", "Do you want to install [redis] to support redis?")
     install_command.extend(["Flask", "hoedown", "pyrss2gen", "gitpython", "requests", "watchdog"])
     pip_main(install_command)
 
