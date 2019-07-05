@@ -18,7 +18,15 @@ cache_post = dict()
 i18n = dict()
 static_file_dict = dict()
 last_build_year = time.localtime(time.time())[0]
+use_redis = os.path.exists("./config/redis.json")
+redis_config = dict()
 
+if use_redis:
+    import redis
+
+def get_redis_connect(config):
+    return redis.Redis(host=config["host"], port=config["port"], password=config["password"],
+                db=config["db"])
 
 @asyncio.coroutine
 def async_json_loads(text):
@@ -27,9 +35,15 @@ def async_json_loads(text):
 
 @asyncio.coroutine
 def get_system_config():
-    global system_config, template_config, i18n, static_file_dict
+    global system_config, template_config, i18n, static_file_dict, redis_config
     load_file = yield from file.async_read_file("./config/system.json")
     system_config = yield from async_json_loads(load_file)
+
+    if use_redis:
+        redis_config_file = yield from file.async_read_file("./config/redis.json")
+        redis_config = async_json_loads(redis_config_file)
+        redis_connect = get_redis_connect(redis_config)
+        redis_connect.flushdb()
     if len(system_config["Theme"]) == 0:
         console.log("Error",
                     "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
@@ -140,6 +154,12 @@ def check_build_year():
 
 def get_index_cache(page_url):
     check_build_year()
+    if use_redis:
+        redis_connect = get_redis_connect(redis_config)
+        if redis_connect.exists(page_url):
+            console.log("Success", "Get redis Success: {0}".format(page_url))
+            return redis_connect.get(page_url)
+        return None
     if page_url in cache_index:
         console.log("Success", "Get cache Success: {0}".format(page_url))
         return cache_index[page_url]
@@ -147,6 +167,11 @@ def get_index_cache(page_url):
 
 
 def write_index_cache(page_url, content):
+    if use_redis:
+        redis_connect = get_redis_connect(redis_config)
+        redis_connect.set(page_url,content)
+        console.log("Info", "Writing to redis: {0}".format(page_url))
+        return
     console.log("Info", "Writing to cache: {0}".format(page_url))
     cache_index[page_url] = content
 
@@ -172,17 +197,29 @@ def index_route(page_index=1):
 
 def get_post_cache(page_url):
     check_build_year()
+    if use_redis:
+        redis_connect = get_redis_connect(redis_config)
+        if redis_connect.exists(page_url):
+            console.log("Success", "Get redis Success: {0}".format(page_url))
+            return redis_connect.get(page_url)
+        return None
     if page_url in cache_post:
+        console.log("Success", "Get cache Success: {0}".format(page_url))
         return cache_post[page_url]
     return None
 
 
 def write_post_cache(page_url, content):
-    console.log("Info", "Writing to cache: {0}".format(page_url))
+    if use_redis:
+        redis_connect = get_redis_connect(redis_config)
+        redis_connect.set(page_url,content)
+        console.log("Info", "Writing to redis: {0}".format(page_url))
+        return
     if len(cache_post) >= 100:
         page_keys = sorted(cache_post.keys())
         console.log("Info", "Delete cache: {0}".format(page_keys[0]))
         del cache_post[page_keys[0]]
+    console.log("Info", "Writing to cache: {0}".format(page_url))
     cache_post[page_url] = content
 
 
