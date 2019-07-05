@@ -25,6 +25,7 @@ if use_redis:
     try:
         import redis
     except ImportError:
+        console.log("Error","Please install the [redis] package to support this feature.")
         use_redis=False
 
 def get_redis_connect(config):
