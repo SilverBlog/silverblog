@@ -21,7 +21,7 @@ last_build_year = time.localtime(time.time())[0]
 use_redis = False
 redis_config = dict()
 
-if use_redis:
+if os.path.exists("./config/redis.json"):
     try:
         import redis
     except ImportError:
