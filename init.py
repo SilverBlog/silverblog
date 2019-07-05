@@ -22,7 +22,10 @@ use_redis = os.path.exists("./config/redis.json")
 redis_config = dict()
 
 if use_redis:
-    import redis
+    try:
+        import redis
+    except ImportError:
+        use_redis=False
 
 def get_redis_connect(config):
     return redis.Redis(host=config["host"], port=config["port"], password=config["password"],
