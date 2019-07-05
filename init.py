@@ -130,10 +130,11 @@ load_config()
 
 @app.route("/rss/", strict_slashes=False)
 def result_rss():
+    global rss
     rss_result = rss
     if use_redis:
         redis_connect = get_redis_connect(redis_config)
-        rss_result = redis_connect.get(rss)
+        rss_result = redis_connect.get("rss")
     if rss_result is None:
         abort(404)
     return rss_result, 200, {'Content-Type': 'text/xml; charset=utf-8'}
