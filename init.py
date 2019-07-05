@@ -25,12 +25,15 @@ if os.path.exists("./config/redis.json"):
     try:
         import redis
     except ImportError:
-        console.log("Error","Please install the [redis] package to support this feature.")
+        console.log("Error", "Please install the [redis] package to support this feature.")
+
 
 def get_redis_connect(config):
     if config is not None:
         return redis.Redis(host=config["host"], port=config["port"], password=config["password"], db=config["db"])
     return None
+
+
 @asyncio.coroutine
 def async_json_loads(text):
     return json.loads(text)
@@ -38,17 +41,26 @@ def async_json_loads(text):
 
 @asyncio.coroutine
 def get_system_config():
-    global system_config, template_config, i18n, static_file_dict, redis_config,use_redis
+    global system_config, template_config, i18n, static_file_dict, redis_config, use_redis
     load_file = yield from file.async_read_file("./config/system.json")
     system_config = yield from async_json_loads(load_file)
+    rss_file = None
+    if os.path.exists("./document/rss.xml"):
+        rss_file = yield from file.async_read_file("./document/rss.xml")
 
     if os.path.exists("./config/redis.json"):
         redis_config_file = yield from file.async_read_file("./config/redis.json")
         redis_config = yield from async_json_loads(redis_config_file)
         if redis_config is not None:
-            use_redis=True
+            use_redis = True
             redis_connect = get_redis_connect(redis_config)
             redis_connect.flushdb()
+            if rss_file is not None:
+                redis_connect.set("rss", rss_file)
+    if not use_redis:
+        global rss
+        rss = rss_file
+
     if len(system_config["Theme"]) == 0:
         console.log("Error",
                     "If you do not get the Theme you installed, check your configuration file and the Theme installation.")
@@ -94,13 +106,6 @@ def get_page_list():
     page_list = yield from async_json_loads(load_file)
 
 
-@asyncio.coroutine
-def get_rss_file():
-    global rss
-    if os.path.exists("./document/rss.xml"):
-        rss = yield from file.async_read_file("./document/rss.xml")
-
-
 def load_config():
     console.log("Info", "Loading configuration...")
     if not os.path.exists("./config/system.json"):
@@ -108,7 +113,7 @@ def load_config():
         exit(1)
     asyncio.set_event_loop(asyncio.new_event_loop())
     loop = asyncio.get_event_loop()
-    tasks = [get_system_config(), get_page_list(), get_menu_list(), get_rss_file()]
+    tasks = [get_system_config(), get_page_list(), get_menu_list()]
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
     global page_list, page_name_list, menu_list, page_list
@@ -125,9 +130,13 @@ load_config()
 
 @app.route("/rss/", strict_slashes=False)
 def result_rss():
-    if rss is None:
+    rss_result = rss
+    if use_redis:
+        redis_connect = get_redis_connect(redis_config)
+        rss_result = redis_connect.get(rss)
+    if rss_result is None:
         abort(404)
-    return rss, 200, {'Content-Type': 'text/xml; charset=utf-8'}
+    return rss_result, 200, {'Content-Type': 'text/xml; charset=utf-8'}
 
 
 @app.route("/static/")
@@ -174,7 +183,7 @@ def get_index_cache(page_url):
 def write_index_cache(page_url, content):
     if use_redis:
         redis_connect = get_redis_connect(redis_config)
-        redis_connect.set(page_url,content)
+        redis_connect.set(page_url, content)
         console.log("Info", "Writing to redis: {0}".format(page_url))
         return
     console.log("Info", "Writing to cache: {0}".format(page_url))
@@ -217,7 +226,7 @@ def get_post_cache(page_url):
 def write_post_cache(page_url, content):
     if use_redis:
         redis_connect = get_redis_connect(redis_config)
-        redis_connect.set(page_url,content)
+        redis_connect.set(page_url, content)
         console.log("Info", "Writing to redis: {0}".format(page_url))
         return
     if len(cache_post) >= 100:
