@@ -5,7 +5,7 @@ ENV DOCKER_CONTAINER yes
 WORKDIR /home/silverblog/
 COPY ./ /home/silverblog
 RUN apt-get update \
-&& apt-get install -y uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git gnupg curl nginx
+&& apt-get install -y uwsgi uwsgi-plugin-python3 python3-pip python3-dev python3-wheel git curl nginx
 
 RUN pip3 install supervisor
 
