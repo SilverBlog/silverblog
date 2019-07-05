@@ -148,10 +148,6 @@ def get_index_cache(page_url):
 
 def write_index_cache(page_url, content):
     console.log("Info", "Writing to cache: {0}".format(page_url))
-    if len(cache_index) >= 50:
-        page_keys = sorted(cache_index.keys())
-        console.log("Info", "Delete cache: {0}".format(page_keys[0]))
-        del cache_index[page_keys[0]]
     cache_index[page_url] = content
 
 

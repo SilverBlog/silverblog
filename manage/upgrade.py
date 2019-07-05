@@ -33,6 +33,7 @@ def upgrade_check():
     repo = git.Repo("./")
     remote = repo.remote()
     console.log("Info", "Current version: {}".format(repo.git.rev_parse("HEAD", short=7)))
+    console.log("Info","Checking for updates, please wait...")
     remote.fetch(repo.active_branch)
     console.log("Info", "Remote version: {}".format(repo.git.rev_parse("FETCH_HEAD", short=7)))
     if repo.rev_parse("HEAD") != repo.rev_parse("FETCH_HEAD"):
