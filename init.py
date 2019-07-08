@@ -23,6 +23,8 @@ redis_config = dict()
 
 if os.path.exists("./config/redis.json"):
     try:
+        # This package may not exist.
+        # noinspection PyUnresolvedReferences
         import redis
     except ImportError:
         console.log("Error", "Please install the [redis] package to support this feature.")

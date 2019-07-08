@@ -34,7 +34,7 @@ if os.path.exists("./config/system.json"):
 def setting_menu(main_run=False):
     while True:
         dialog.title = "Setting"
-        menu_list = ["Using Setup Wizard", "Using Manual setup",
+        menu_list = ["Using Manual setup",
                      "Theme package manage", "Create a backup", "=" * 25,
                      ]
         if not main_run:
@@ -50,8 +50,6 @@ def setting_menu(main_run=False):
             from manage import backup
             backup.backup()
             dialog.alert("The backup is complete.")
-        if result == "Using Setup Wizard":
-            setup_wizard()
         if result == "Using Manual setup":
             manual_setup_list()
         if result == "Theme package manage":
@@ -168,6 +166,9 @@ def manual_setup_list():
         if result == "Lazyload":
             set_bool("Image lazyload", "Use image lazyload?")
         if result == "Automatically convert Chinese characters to pinyin":
+            from common import install_module
+
+            install_module.install_and_import("xpinyin")
             set_bool("Pinyin", "Use automatic conversion of Chinese characters to Pinyin?")
         save_config()
         time.sleep(0.5)
@@ -237,7 +238,11 @@ def setup_wizard():
     editor()
     set_bool("Use_CDN", "Use CDN?")
     set_bool("Lazyload", "Use image lazyload?")
-    set_bool("Pinyin", "Use automatic conversion of Chinese characters to Pinyin?")
+    try:
+        from xpinyin import Pinyin
+        set_bool("Pinyin", "Use automatic conversion of Chinese characters to Pinyin?")
+    except ImportError:
+        pass
     save_config()
 
 

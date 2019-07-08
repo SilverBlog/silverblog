@@ -83,7 +83,7 @@ fi
 
 read -p  "add command [${install_name}] to quickly launch SilverBlog? (y/N)" yn
 if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
-echo -e "> echo \"${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}\" >> ${shell_config_file}"
+echo -e "> echo \"${install_name}() {(cd \"$(pwd)\"&&./manage.py \$@)}\" >> ${shell_config_file}"
 echo "${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}" >> ${shell_config_file}
 echo -e "\nTo get started you need Silverblog's bin directory (${shell_config_file}) in your PATH\n
 environment variable. Next time you log in this will be done automatically.\n\n

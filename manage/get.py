@@ -13,10 +13,14 @@ def get_name(name_input, convert_pinyin):
 
 
 def get_pinyin(name):
-    from xpinyin import Pinyin
+    try:
+        # This package may not exist.
+        from xpinyin import Pinyin
+    except ImportError:
+        console.log("Error", "Please install the [xpinyin] package to support this feature.")
+        return name
     p = Pinyin()
     return p.get_pinyin(name)
-
 
 def is_chinese(uchar):
     if '\u4e00' <= uchar <= '\u9fff':
