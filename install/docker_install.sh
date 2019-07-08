@@ -82,6 +82,7 @@ fi
 fi
 
 read -p  "add command [${install_name}] to quickly launch SilverBlog? (y/N)" yn
+
 if [[ "$yn" == "Y" ]] || [[ "$yn" == "y" ]]; then
 echo -e "> echo \"${install_name}() {(cd \"$(pwd)\"&&./manage.py \$@)}\" >> ${shell_config_file}"
 echo "${install_name}() {(cd \"$(pwd)\"&&./manage.py \\\$@)}" >> ${shell_config_file}

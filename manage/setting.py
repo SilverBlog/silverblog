@@ -34,7 +34,7 @@ if os.path.exists("./config/system.json"):
 def setting_menu(main_run=False):
     while True:
         dialog.title = "Setting"
-        menu_list = ["Using Manual setup",
+        menu_list = ["Basic system setting",
                      "Theme package manage", "Create a backup", "=" * 25,
                      ]
         if not main_run:
@@ -50,10 +50,32 @@ def setting_menu(main_run=False):
             from manage import backup
             backup.backup()
             dialog.alert("The backup is complete.")
-        if result == "Using Manual setup":
-            manual_setup_list()
+        if result == "Basic system setting":
+            basic_system_setting()
         if result == "Theme package manage":
             theme_manage()
+
+
+def setup_wizard():
+    dialog.title = "Initialize system setting"
+    set_string("Project_Name", "Please enter the project name:")
+    set_string("Project_Description", "Please enter the project description:")
+    set_string("Project_URL", "Please enter the access URL:")
+    remote_api_password()
+    set_string("Author_Name", "Please enter the author name:")
+    set_string("Author_Introduction", "Please enter the author introduction:")
+    author_avatar()
+    set_int("Paging", "Please enter the paging:")
+    set_string("Time_Format", "Please enter the time format:")
+    editor()
+    set_bool("Use_CDN", "Use CDN?")
+    set_bool("Lazyload", "Use image lazyload?")
+    try:
+        from xpinyin import Pinyin
+        set_bool("Pinyin", "Use automatic conversion of Chinese characters to Pinyin?")
+    except ImportError:
+        pass
+    save_config()
 
 
 def save_config():
@@ -128,9 +150,9 @@ def theme_manage():
         time.sleep(0.5)
 
 
-def manual_setup_list():
+def basic_system_setting():
     while True:
-        dialog.title = "Manual setup"
+        dialog.title = "Basic system setting"
         menu_list = ["Project name", "Project description", "Access URL", "Remote API password", "Author name",
                      "Author introduction", "Author avatar", "Paging", "Time format", "Editor", "Use CDN",
                      "Image lazyload",
@@ -223,27 +245,6 @@ def setting_i18n(theme_name):
         if item.endswith(".json"):
             show_list.append(item.replace(".json", ""))
     return dialog.menu("Please select the i18n to be operated:", show_list)
-
-
-def setup_wizard():
-    set_string("Project_Name", "Please enter the project name:")
-    set_string("Project_Description", "Please enter the project description:")
-    set_string("Project_URL", "Please enter the access URL:")
-    remote_api_password()
-    set_string("Author_Name", "Please enter the author name:")
-    set_string("Author_Introduction", "Please enter the author introduction:")
-    author_avatar()
-    set_int("Paging", "Please enter the paging:")
-    set_string("Time_Format", "Please enter the time format:")
-    editor()
-    set_bool("Use_CDN", "Use CDN?")
-    set_bool("Lazyload", "Use image lazyload?")
-    try:
-        from xpinyin import Pinyin
-        set_bool("Pinyin", "Use automatic conversion of Chinese characters to Pinyin?")
-    except ImportError:
-        pass
-    save_config()
 
 
 def set_string(item, message):

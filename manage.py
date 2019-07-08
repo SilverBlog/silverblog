@@ -29,7 +29,6 @@ if __name__ == '__main__':
         setting.setup_wizard()
         setting.theme_manage()
         exit(0)
-    print(sys.argv)
     if len(sys.argv) == 1:
         from manage import menu
 
