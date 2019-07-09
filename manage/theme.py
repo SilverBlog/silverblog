@@ -124,7 +124,7 @@ def download_static_file(theme_name):
 
 @asyncio.coroutine
 def get_file(url):
-    console.log("info", "Downloading file: " + url)
+    console.log("info", "Downloading file:" + url)
     return requests.get(url)
 
 
