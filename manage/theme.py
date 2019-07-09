@@ -111,15 +111,13 @@ def download_static_file(theme_name):
     os.mkdir(download_file_location)
     package_info = json.loads(file.read_file(download_list_file))
 
-    download_list = list()
     if "download" in package_info:
         download_list = package_info["download"]
-
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    tasks = [download_file(item, download_file_location) for item in download_list]
-    loop.run_until_complete(asyncio.wait(tasks))
-    loop.close()
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        tasks = [download_file(item, download_file_location) for item in download_list]
+        loop.run_until_complete(asyncio.wait(tasks))
+        loop.close()
 
 
 @asyncio.coroutine
