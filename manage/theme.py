@@ -32,6 +32,8 @@ def get_package_info(package_url):
     try:
         return requests.get(package_url).text
     except requests.exceptions.RequestException:
+        print(traceback.format_exc())
+        console.log("Info","The package meta information file could not be found.")
         return None
 
 
