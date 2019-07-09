@@ -1,14 +1,14 @@
 [
-  {
-    "title": "Home Page",
-    "absolute": "https://silverblog.org"
-  },
-  {
-    "title": "Github",
-    "absolute": "https://github.com/silverblog"
-  },
-  {
-    "title": "SilverCreator",
-    "absolute": "https://c.silverblog.org"
-  }
+	{
+		"title": "Home Page",
+		"absolute": "https://silverblog.org"
+	},
+	{
+		"title": "Github",
+		"absolute": "https://github.com/silverblog"
+	},
+	{
+		"title": "SilverCreator",
+		"absolute": "https://c.silverblog.org"
+	}
 ]
