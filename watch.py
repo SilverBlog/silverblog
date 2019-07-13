@@ -122,6 +122,8 @@ cmd = ["uwsgi", "--json", job_name, "--chmod-socket=666"]
 if not args.debug:
     if not os.path.exists("./logs"):
         os.mkdir("./logs")
+    if not os.path.exists("./config/unix_socks"):
+        os.mkdir("./config/unix_socks")
     cmd.append("--logto")
     cmd.append("./logs/{}.log".format(job))
     cmd.append("--threaded-logger")
