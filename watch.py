@@ -20,6 +20,7 @@ process = None
 control = False
 
 
+# noinspection PyPep8Naming
 class when_file_chanage(FileSystemEventHandler):
     def __init__(self, kill_sub, self_harakiri):
         super().__init__()
