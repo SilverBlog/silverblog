@@ -1,7 +1,7 @@
 {
 	"Project_Description": "A fast and lightweight blog framework based on Python3 development",
 	"Project_URL": "https://demo.silverblog.org",
-	"Author_Image": "https://avatars0.githubusercontent.com/u/26021809?v=4&s=200",
+	"Author_Image": "https://cdn.silverblog.org/method-draw-image.svg",
 	"Author_Name": "SilverBlog",
 	"Author_Introduction": "A fast and lightweight blog framework based on Python3 development",
 	"Paging": 10,
