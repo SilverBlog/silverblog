@@ -32,7 +32,7 @@ def test_install(name, question):
     except ImportError:
         install_dependency = "n"
         try:
-            install_dependency = str(input("{}(y/N)").format(question))
+            install_dependency = str(input("{}(y/N)".format(question)))
         except EOFError:
             print("N")
         if install_dependency.lower() == 'y':
