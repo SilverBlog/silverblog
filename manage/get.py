@@ -34,9 +34,8 @@ def get_excerpt(filename):
     excerpt_output = re.sub('<[\\s\\S]*?>[\\s\\S]*?<[\\s\\S]*?>|<[\\s\\S]*?/>', '', content)
     excerpt_output = re.sub('(!\[(.*?)\]\([^)]*\))', '', excerpt_output)
     excerpt_output = re.sub('\[(.*?)\].*?(\(.*?/.*?\))', '\g<1>', excerpt_output)
-    excerpt_output = re.sub('\*+|`|#+|>+|~+|=+|-+|_', '', excerpt_output)
-    excerpt = excerpt_output.replace("\n", "").strip()
-    if len(excerpt) > 140:
+    excerpt_output = re.sub('\*+|`|#+|>+|~+|===+|---+|- |\+ |_', '', excerpt_output)
+    if len(excerpt_output) > 140:
         split_index = 140
         excerpt_output_replace = excerpt_output.replace("。", ".").replace("，", ",")
         newline_index = excerpt_output_replace.find("\n", 140, 340)
@@ -48,7 +47,8 @@ def get_excerpt(filename):
             split_index = dot_index - 1
         if dot_index == -1 and comma_index != -1:
             split_index = comma_index - 1
-        excerpt = excerpt_output[:split_index].replace("\n", "").strip()
+        excerpt_output = excerpt_output[:split_index].strip()
+    excerpt = excerpt_output.replace("\n", " ")
     return excerpt
 
 
@@ -67,6 +67,4 @@ def get_gravatar(author_name):
 
 
 def filter_name(name):
-    sub = re.sub('[/:*?<>|\'"\\\]', '', name)
-    sub = sub.replace(".", "")
-    return sub
+    return re.sub('[/:*?<>|\'"\\\]', '', name).replace(".", "")
